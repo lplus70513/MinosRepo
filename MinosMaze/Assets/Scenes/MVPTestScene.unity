@@ -234,7 +234,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHandSize: 10
   cardPrefab: {fileID: 4242832466906094473, guid: 2b3bcc96197235c43908769f802f3fc2, type: 3}
-  splineContainer: {fileID: 1682156490}
+  splineContainer: {fileID: 1670044388}
   spawnPoint: {fileID: 761744264}
 --- !u!1 &633721139
 GameObject:
@@ -489,7 +489,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 761744264}
-  - {fileID: 1682156491}
+  - {fileID: 1670044387}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1512444858
@@ -576,7 +576,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &1682156489
+--- !u!1 &1670044386
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -584,8 +584,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1682156491}
-  - component: {fileID: 1682156490}
+  - component: {fileID: 1670044387}
+  - component: {fileID: 1670044388}
   m_Layer: 0
   m_Name: HandSpline
   m_TagString: Untagged
@@ -593,13 +593,28 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1682156490
+--- !u!4 &1670044387
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1670044386}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1460786882}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1670044388
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1682156489}
+  m_GameObject: {fileID: 1670044386}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dab5c7d4c32e743048dfca98e2d5914f, type: 3}
@@ -622,59 +637,59 @@ MonoBehaviour:
   - m_EditModeType: 1
     m_Knots:
     - Position:
-        x: -7
-        y: -3
+        x: -5
+        y: -3.5
         z: 0
       TangentIn:
         x: -0
         y: -0
-        z: -0.70710677
+        z: -0.5024938
       TangentOut:
         x: 0
         y: 0
-        z: 0.70710677
+        z: 0.5024938
       Rotation:
         value:
-          x: 0.46329767
-          y: 0.53418666
-          z: 0.5341866
-          w: 0.46329755
+          x: 0.4744724
+          y: 0.5242861
+          z: 0.52428615
+          w: 0.47447243
     - Position:
         x: 0
-        y: -2
+        y: -3
         z: 0
       TangentIn:
         x: 0
         y: 0
-        z: -3.860013
+        z: -3.10372
       TangentOut:
         x: 0
         y: 0
-        z: 3.860013
+        z: 3.10372
       Rotation:
         value:
-          x: 0.5006474
-          y: 0.49935213
-          z: 0.49935174
-          w: 0.5006471
+          x: 0.49941722
+          y: 0.5005824
+          z: 0.50058234
+          w: 0.49941668
     - Position:
-        x: 7
-        y: -3
+        x: 5
+        y: -3.5
         z: 0
       TangentIn:
         x: -0
         y: -0
-        z: -0.70710677
+        z: -0.5024938
       TangentOut:
         x: 0
         y: 0
-        z: 0.70710677
+        z: 0.5024938
       Rotation:
         value:
-          x: 0.53418666
-          y: 0.4632976
-          z: 0.46329755
-          w: 0.53418654
+          x: 0.52428615
+          y: 0.4744724
+          z: 0.4744724
+          w: 0.5242861
     m_MetaData:
     - Mode: 0
       Tension: 0.5
@@ -693,21 +708,6 @@ MonoBehaviour:
       m_Data: []
   m_Knots:
     m_KnotsLink: []
---- !u!4 &1682156491
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1682156489}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1460786882}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2074423569
 GameObject:
   m_ObjectHideFlags: 0
