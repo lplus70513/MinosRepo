@@ -20,8 +20,6 @@ public class HandManager : MonoBehaviour
     private void Awake()
     {
         mainCamera = Camera.main;
-        if (mainCamera == null)
-            Debug.LogError("No main camera found! Please set a camera as 'MainCamera'.");
     }
 
     private void Update()

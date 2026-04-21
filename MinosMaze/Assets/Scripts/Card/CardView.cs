@@ -13,4 +13,16 @@ public class CardView : MonoBehaviour
 
     [SerializeField] private SpriteRenderer image;
     [SerializeField] private SpriteRenderer background;
+
+    public Card Card { get; private set; }
+
+    public void SetUp(Card card)
+    {
+        Card = card;
+        Name.Text = card.Name;
+        Description.Text = card.Description;   
+        Cost.Text = card.Cost.ToString();
+        image.sprite = card.Image;
+    }
+
 }
