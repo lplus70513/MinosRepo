@@ -622,23 +622,23 @@ MonoBehaviour:
   - m_EditModeType: 1
     m_Knots:
     - Position:
-        x: -6
+        x: -7
         y: -3
         z: 0
       TangentIn:
         x: -0
         y: -0
-        z: -0.6082763
+        z: -0.70710677
       TangentOut:
         x: 0
         y: 0
-        z: 0.6082763
+        z: 0.70710677
       Rotation:
         value:
-          x: 0.45705605
-          y: 0.53953665
-          z: 0.53953665
-          w: 0.4570561
+          x: 0.46329767
+          y: 0.53418666
+          z: 0.5341866
+          w: 0.46329755
     - Position:
         x: 0
         y: -2
@@ -655,26 +655,26 @@ MonoBehaviour:
         value:
           x: 0.5006474
           y: 0.49935213
-          z: 0.49935177
+          z: 0.49935174
           w: 0.5006471
     - Position:
-        x: 6
+        x: 7
         y: -3
         z: 0
       TangentIn:
         x: -0
         y: -0
-        z: -0.6082763
+        z: -0.70710677
       TangentOut:
         x: 0
         y: 0
-        z: 0.6082763
+        z: 0.70710677
       Rotation:
         value:
-          x: 0.5395366
-          y: 0.45705605
-          z: 0.45705605
-          w: 0.53953665
+          x: 0.53418666
+          y: 0.4632976
+          z: 0.46329755
+          w: 0.53418654
     m_MetaData:
     - Mode: 0
       Tension: 0.5
