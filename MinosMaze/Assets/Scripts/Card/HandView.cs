@@ -74,46 +74,29 @@ public class HandView : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 负责实例化预制体并注入数据
-    /// </summary>
+    // 实例化预制体
     private GameObject CreateCardVisual(CardData data)
     {
-        if (cardPrefab == null)
-        {
-            Debug.LogError("Card Prefab 未分配！");
-            return null;
-        }
-
-        // 实例化
         GameObject newCardGO = Instantiate(cardPrefab, spawnPoint.position, spawnPoint.rotation, transform);
 
-        // 获取 CardView 组件并注入数据
         CardView cardView = newCardGO.GetComponent<CardView>();
         if (cardView != null)
         {
-            Card cardModel = new Card(data); // 创建逻辑层数据
-            cardView.SetUp(cardModel);       // 注入到视觉层
+            Card cardModel = new Card(data); 
+            cardView.SetUp(cardModel);       
         }
-        else
-        {
-            Debug.LogError("Card Prefab 上缺少 CardView 组件！");
-        }
-
         return newCardGO;
     }
 
     private void UpdateCardZOrder()
     {
-        // 遍历所有卡牌，根据其在列表中的顺序设置 Z 轴
         for (int i = 0; i < handCards.Count; i++)
         {
             var (cardGO, originalZ) = handCards[i];
-            // Z 轴层级：索引越大，Z越小（越靠前）
+
             float newZ = originalZ - i * 0.01f;
 
-            // 立即更新Z或者使用动画
-            cardGO.transform.DOKill(); // 停止之前的移动动画，避免冲突
+            cardGO.transform.DOKill(); 
             cardGO.transform.DOMoveZ(newZ, 0.3f);
         }
     }
@@ -123,9 +106,8 @@ public class HandView : MonoBehaviour
         if (handCards.Count == 0) return;
         if (splineContainer == null) return;
 
-        // 计算排布参数
         float cardSpacing = 1f / maxHandSize;
-        // 居中算法：(总宽 - 当前占用宽) / 2
+
         float firstCardPosition = 0.5f - (handCards.Count - 1) * cardSpacing / 2;
 
         Spline spline = splineContainer.Splines[0];
@@ -136,21 +118,17 @@ public class HandView : MonoBehaviour
             var (cardGO, originalZ) = handCards[i];
             float p = firstCardPosition + (i * cardSpacing);
 
-            // 计算目标位置
             Vector3 position = spline.EvaluatePosition(p);
-            // 保持原有的 Z 轴层级，而不是用 spline 上的 Z
             position.z = originalZ - i * 0.01f;
 
-            // 计算旋转（面向摄像机，但根据曲线切线倾斜）
             Vector3 tangent = spline.EvaluateTangent(p);
             if (tangent.sqrMagnitude < 1e-8f) tangent = Vector3.right;
 
             Quaternion rotation = Quaternion.LookRotation(cameraForward, Vector3.Cross(cameraForward, tangent));
 
-            // 应用动画
             cardGO.transform.DOKill();
-            cardGO.transform.DOMove(position, 0.25f).SetEase(Ease.OutBack);
-            cardGO.transform.DORotateQuaternion(rotation, 0.25f);
+            cardGO.transform.DOMove(position, 0.5f).SetEase(Ease.OutBack, 0.45f);
+            cardGO.transform.DORotateQuaternion(rotation, 0.5f);
         }
     }
 }
