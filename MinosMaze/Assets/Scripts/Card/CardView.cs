@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 public class CardView : MonoBehaviour
 {
     [SerializeField] private TMP_Text Name;
-    [SerializeField] private TMP_Text Cost;
+    [SerializeField] private TMP_Text CostText; 
     [SerializeField] private TMP_Text Description;
 
     [SerializeField] private GameObject wrapper;
@@ -19,10 +17,9 @@ public class CardView : MonoBehaviour
     public void SetUp(Card card)
     {
         Card = card;
-        Name.Text = card.Name;
-        Description.Text = card.Description;   
-        Cost.Text = card.Cost.ToString();
+        Name.text = card.Name;
+        Description.text = card.Description;
+        CostText.text = card.Cost.ToString();
         image.sprite = card.Image;
     }
-
 }

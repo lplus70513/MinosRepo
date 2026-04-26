@@ -229,13 +229,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 405930301}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e3239cb068d3d649a01f459ac9c6489, type: 3}
+  m_Script: {fileID: 11500000, guid: c3001c609992a1d4586833db74c1a2cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxHandSize: 10
   cardPrefab: {fileID: 4242832466906094473, guid: 2b3bcc96197235c43908769f802f3fc2, type: 3}
   splineContainer: {fileID: 1670044388}
   spawnPoint: {fileID: 761744264}
+  dataForTesting:
+  - {fileID: 11400000, guid: 247bce01a77cce349b8bc3ae8e7dcf7c, type: 2}
+  - {fileID: 11400000, guid: 711effcc07d52aa4295bfa7ac87dd894, type: 2}
 --- !u!1 &633721139
 GameObject:
   m_ObjectHideFlags: 0

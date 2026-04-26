@@ -109,7 +109,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 365117651368074703}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -558,7 +558,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: {fileID: 6582807206867724146}
-  Cost: {fileID: 4487722360705061221}
+  CostText: {fileID: 4487722360705061221}
   Description: {fileID: 2735942190591337174}
   wrapper: {fileID: 4281932033187073241}
   image: {fileID: 310138319197517699}
@@ -626,8 +626,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8639188996641028111}
-  - {fileID: 5364298998585503567}
   - {fileID: 1409771280145208538}
+  - {fileID: 5364298998585503567}
   - {fileID: 8164968131649015860}
   - {fileID: 6359906540912116033}
   m_Father: {fileID: 1360470329005973494}
@@ -666,8 +666,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -3.42}
-  m_SizeDelta: {x: 20, y: 5}
+  m_AnchoredPosition: {x: 0, y: -1.88}
+  m_SizeDelta: {x: 3, y: 2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &7033375038046918451
 MeshRenderer:
