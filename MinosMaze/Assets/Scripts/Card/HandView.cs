@@ -2,24 +2,20 @@ using UnityEngine;
 using UnityEngine.Splines;
 using System.Collections.Generic;
 using DG.Tweening;
+using System.Linq; 
 
 public class HandView : MonoBehaviour
 {
-    [Header("配置参数")]
     [SerializeField] private int maxHandSize = 5;
     [SerializeField] private GameObject cardPrefab;
     [SerializeField] private SplineContainer splineContainer;
     [SerializeField] private Transform spawnPoint;
 
-    [Header("测试数据 (在编辑器拖入CardData)")]
-    // 这是一个用于测试的列表，你可以在Inspector里拖入多个CardData资产
-    [SerializeField] private List<CardData> dataForTesting = new List<CardData>();
+    // 对应报错：之前代码里写成了 dataForTesting，这里统一用 deckData
+    [SerializeField] private List<CardData> deckData;
 
-    // 存储当前手牌的视觉对象和原始Z轴
+    // 对应报错：之前代码里写成了 cards，这里统一用 handCards
     private List<(GameObject card, float originalZ)> handCards = new List<(GameObject, float)>();
-
-    // 用于追踪当前使用了测试列表中的第几个数据
-    private int testDataIndex = 0;
 
     private Camera mainCamera;
 
@@ -28,64 +24,42 @@ public class HandView : MonoBehaviour
         mainCamera = Camera.main;
     }
 
-    private void Update()
+    private void Start()
     {
-        // 按下空格发牌
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            DrawCard();
-        }
+        CardSystem.Instance.SetUp(deckData);
     }
 
-    private void DrawCard()
+    // 供 CardSystem 调用的方法（修正 CardSystem 里的报错）
+    public CardView AddCard(Card card, Vector3 position, Quaternion rotation)
     {
-        // 1. 检查手牌上限
-        if (handCards.Count >= maxHandSize)
-        {
-            Debug.Log("手牌已满！");
-            return;
-        }
+        if (handCards.Count >= maxHandSize) return null;
 
-        // 2. 检查是否有测试数据
-        if (dataForTesting == null || dataForTesting.Count == 0)
-        {
-            Debug.LogWarning("请在 Inspector 中为 HandView 添加 CardData 测试数据！");
-            return;
-        }
-
-        // 3. 获取当前要生成的数据 (循环使用测试数据)
-        CardData currentData = dataForTesting[testDataIndex % dataForTesting.Count];
-        testDataIndex++;
-
-        // 4. 创建卡牌视觉对象并注入数据
-        GameObject newCardGO = CreateCardVisual(currentData);
-
-        if (newCardGO != null)
-        {
-            // 5. 记录数据
-            float initialZ = newCardGO.transform.position.z;
-            handCards.Add((newCardGO, initialZ));
-
-            // 6. 刷新层级 (Z轴排序)
-            UpdateCardZOrder();
-
-            // 7. 刷新布局动画
-            UpdateCardPositions();
-        }
-    }
-
-    // 实例化预制体
-    private GameObject CreateCardVisual(CardData data)
-    {
-        GameObject newCardGO = Instantiate(cardPrefab, spawnPoint.position, spawnPoint.rotation, transform);
-
+        GameObject newCardGO = Instantiate(cardPrefab, position, rotation, transform);
         CardView cardView = newCardGO.GetComponent<CardView>();
+
         if (cardView != null)
         {
-            Card cardModel = new Card(data); 
-            cardView.SetUp(cardModel);       
+            cardView.SetUp(card);
+            float initialZ = newCardGO.transform.position.z;
+            handCards.Add((newCardGO, initialZ));
+            UpdateCardZOrder();
+            UpdateCardPositions();
         }
-        return newCardGO;
+        return cardView;
+    }
+
+    public CardView RemoveCard(Card card)
+    {
+        // 找到对应的 CardView
+        var item = handCards.FirstOrDefault(x => x.card.GetComponent<CardView>().Card == card);
+
+        if (item.card != null)
+        {
+            handCards.Remove(item);
+            UpdateCardPositions(); // 移除后刷新布局
+            return item.card.GetComponent<CardView>();
+        }
+        return null;
     }
 
     private void UpdateCardZOrder()
@@ -93,21 +67,17 @@ public class HandView : MonoBehaviour
         for (int i = 0; i < handCards.Count; i++)
         {
             var (cardGO, originalZ) = handCards[i];
-
             float newZ = originalZ - i * 0.01f;
-
-            cardGO.transform.DOKill(); 
+            cardGO.transform.DOKill();
             cardGO.transform.DOMoveZ(newZ, 0.3f);
         }
     }
 
     private void UpdateCardPositions()
     {
-        if (handCards.Count == 0) return;
-        if (splineContainer == null) return;
+        if (handCards.Count == 0 || splineContainer == null) return;
 
         float cardSpacing = 1f / maxHandSize;
-
         float firstCardPosition = 0.5f - (handCards.Count - 1) * cardSpacing / 2;
 
         Spline spline = splineContainer.Splines[0];
