@@ -1,5 +1,7 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using System.Collections.Generic;
 
 public class CardView : MonoBehaviour
 {
@@ -14,6 +16,10 @@ public class CardView : MonoBehaviour
 
     public Card Card { get; private set; }
 
+    private Vector3 dragStartPosition;
+
+    private Quaternion dragStartRotation;
+
     public void SetUp(Card card)
     {
         Card = card;
@@ -25,6 +31,7 @@ public class CardView : MonoBehaviour
 
     void OnMouseEnter()
     {
+        if (!Interactions.Instance.PlayerCanHover()) return;
         wrapper.SetActive(false);
         Vector3 pos = new(transform.position.x, -2, 0);
         CardViewHoverSystem.Instance.Show(Card,pos);
@@ -32,7 +39,50 @@ public class CardView : MonoBehaviour
 
     void OnMouseExit()
     {
+        if (!Interactions.Instance.PlayerCanHover()) return;
         CardViewHoverSystem.Instance.Hide();
         wrapper.SetActive(true);
+    }
+
+    void OnMouseDown()
+    {
+        if (!Interactions.Instance.PlayerCanInteract()) return;
+        Interactions.Instance.PlayerIsDragging = true;
+        wrapper.SetActive(true);
+        CardViewHoverSystem.Instance.Hide();
+        dragStartPosition = transform.position;
+        dragStartRotation = transform.rotation;
+        transform.rotation = Quaternion.Euler(0, 0, 0);
+        transform.position = MouseUtil.GetMousePositionInWorldSpace(-1);
+    }
+
+    void OnMouseDrag()
+    {
+        if (!Interactions.Instance.PlayerCanInteract()) return;
+        transform.position = MouseUtil.GetMousePositionInWorldSpace(-1);
+    }
+
+    void OnMouseUp()
+    {
+        if (!Interactions.Instance.PlayerCanInteract()) return;
+        if (Physics.Raycast(transform.position, Vector3.forward, out RaycastHit hit, 10f))
+        {
+            // 如果松开鼠标的位置与其它的卡牌重叠，也将卡牌返回到初始位置
+            if (hit.transform.tag == "Card")
+            {
+                transform.position = dragStartPosition;
+                transform.rotation = dragStartRotation;
+            }
+            else
+            {
+                // Play card
+            }
+        }
+        else
+        {
+            transform.position = dragStartPosition;
+            transform.rotation = dragStartRotation;
+        }
+        Interactions.Instance.PlayerIsDragging = false;
     }
 }

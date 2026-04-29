@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening; // 引入 DOTween 命名空间以使用动画
+using DG.Tweening;
 
 public class CardSystem : Singleton<CardSystem>
 {
@@ -17,6 +17,7 @@ public class CardSystem : Singleton<CardSystem>
     {
         ActionSystem.AttachPerformer<DrawCardsGA>(DrawCardsPerformer);
         ActionSystem.AttachPerformer<DiscardAllCardsGA>(DiscardAllCardsPerformer);
+        ActionSystem.AttachPerformer<PlayCardGA>(PlayCardPerformer);
         ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPreReaction, ReactionTiming.PRE);
         ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
     }
@@ -25,6 +26,7 @@ public class CardSystem : Singleton<CardSystem>
     {
         ActionSystem.DetachPerformer<DrawCardsGA>();
         ActionSystem.DetachPerformer<DiscardAllCardsGA>();
+        ActionSystem.DetachPerformer<PlayCardGA>();
         ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnemyTurnPreReaction, ReactionTiming.PRE);
         ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
     }
@@ -57,6 +59,11 @@ public class CardSystem : Singleton<CardSystem>
                 yield return DrawCard();
             }
         }
+    }
+
+    private IEnumerator PlayCardPerformer(PlayCardGA playCardGA)
+    {
+
     }
 
     private IEnumerator DiscardAllCardsPerformer(DiscardAllCardsGA discardAllCardsGA)
@@ -139,16 +146,22 @@ public class CardSystem : Singleton<CardSystem>
 
     private IEnumerator DiscardCard(CardView cardView)
     {
-        // 卡牌缩小动画
-        cardView.transform.DOScale(Vector3.zero, 0.15f);
+        if (cardView == null || cardView.gameObject == null)
+            yield break;
 
-        // 卡牌移动到弃牌堆位置的动画
-        Tween tween = cardView.transform.DOMove(discardPilePoint.position, 0.15f);
+        Transform t = cardView.transform;
 
-        // 等待动画完成
-        yield return tween.WaitForCompletion();
+        // 关键：先 Kill 所有正在运行的动画，避免后续访问
+        t.DOKill();
 
-        // 动画完成后销毁卡牌游戏对象
+        // 执行动画
+        t.DOScale(Vector3.zero, 0.15f);
+        Tween moveTween = t.DOMove(discardPilePoint.position, 0.15f);
+
+        // 等待动画完成（安全）
+        yield return moveTween.WaitForCompletion();
+
+        // 确保动画结束后再销毁
         Destroy(cardView.gameObject);
     }
 }

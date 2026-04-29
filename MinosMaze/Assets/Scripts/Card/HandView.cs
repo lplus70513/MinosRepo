@@ -6,15 +6,11 @@ using System.Linq;
 
 public class HandView : MonoBehaviour
 {
-    [SerializeField] private int maxHandSize = 5;
+    [SerializeField] private int maxHandSize = 10;
     [SerializeField] private GameObject cardPrefab;
     [SerializeField] private SplineContainer splineContainer;
     [SerializeField] private Transform spawnPoint;
 
-    // 对应报错：之前代码里写成了 dataForTesting，这里统一用 deckData
-    [SerializeField] private List<CardData> deckData;
-
-    // 对应报错：之前代码里写成了 cards，这里统一用 handCards
     private List<(GameObject card, float originalZ)> handCards = new List<(GameObject, float)>();
 
     private Camera mainCamera;
@@ -24,12 +20,6 @@ public class HandView : MonoBehaviour
         mainCamera = Camera.main;
     }
 
-    private void Start()
-    {
-        CardSystem.Instance.SetUp(deckData);
-    }
-
-    // 供 CardSystem 调用的方法（修正 CardSystem 里的报错）
     public CardView AddCard(Card card, Vector3 position, Quaternion rotation)
     {
         if (handCards.Count >= maxHandSize) return null;
@@ -50,13 +40,12 @@ public class HandView : MonoBehaviour
 
     public CardView RemoveCard(Card card)
     {
-        // 找到对应的 CardView
         var item = handCards.FirstOrDefault(x => x.card.GetComponent<CardView>().Card == card);
 
         if (item.card != null)
         {
             handCards.Remove(item);
-            UpdateCardPositions(); // 移除后刷新布局
+            UpdateCardPositions();
             return item.card.GetComponent<CardView>();
         }
         return null;
