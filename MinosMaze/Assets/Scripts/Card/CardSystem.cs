@@ -63,7 +63,11 @@ public class CardSystem : Singleton<CardSystem>
 
     private IEnumerator PlayCardPerformer(PlayCardGA playCardGA)
     {
-
+        hand.Remove(playCardGA.Card);
+        CardView cardView = handView.RemoveCard(playCardGA.Card);
+        yield return DiscardCard(cardView);
+        // perform effects
+        // º”»Î∆˙≈∆∂—
     }
 
     private IEnumerator DiscardAllCardsPerformer(DiscardAllCardsGA discardAllCardsGA)

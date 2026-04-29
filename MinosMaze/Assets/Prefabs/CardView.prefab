@@ -561,6 +561,9 @@ MonoBehaviour:
   CostText: {fileID: 4487722360705061221}
   Description: {fileID: 2735942190591337174}
   wrapper: {fileID: 4281932033187073241}
+  dropLayer:
+    serializedVersion: 2
+    m_Bits: 64
   image: {fileID: 310138319197517699}
   background: {fileID: 0}
 --- !u!65 &3094705833287484296

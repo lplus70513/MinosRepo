@@ -11,6 +11,8 @@ public class CardView : MonoBehaviour
 
     [SerializeField] private GameObject wrapper;
 
+    [SerializeField] private LayerMask dropLayer;
+
     [SerializeField] private SpriteRenderer image;
     [SerializeField] private SpriteRenderer background;
 
@@ -65,7 +67,7 @@ public class CardView : MonoBehaviour
     void OnMouseUp()
     {
         if (!Interactions.Instance.PlayerCanInteract()) return;
-        if (Physics.Raycast(transform.position, Vector3.forward, out RaycastHit hit, 10f))
+        if (Physics.Raycast(transform.position, Vector3.forward, out RaycastHit hit, 10f, dropLayer))
         {
             // 如果松开鼠标的位置与其它的卡牌重叠，也将卡牌返回到初始位置
             if (hit.transform.tag == "Card")
@@ -75,7 +77,8 @@ public class CardView : MonoBehaviour
             }
             else
             {
-                // Play card
+                PlayCardGA playCardGA = new(Card);
+                ActionSystem.Instance.Perform(playCardGA);
             }
         }
         else
