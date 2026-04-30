@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// 游戏行为控制器 
+
 public class ActionSystem : Singleton<ActionSystem>
 {
     private List<GameAction> reactions = null;
@@ -13,12 +15,19 @@ public class ActionSystem : Singleton<ActionSystem>
     private static Dictionary<Type, List<Action<GameAction>>> postSubs = new();
     private static Dictionary<Type, Func<GameAction,IEnumerator>> performers = new();
 
+    // Perform执行函数
     public void Perform(GameAction action, System.Action OnPerformFinished = null)
     {
+        // 防止重复输入，当存在正在执行的动作，将不会执行新动作
         if (IsPerforming) return;
+
+        // 开始执行当前动作，阻止其它动作执行
         IsPerforming = true;
+
+        // 启动核心流程Flow，传入动作
         StartCoroutine(Flow(action, () =>
         {
+            // 完成执行
             IsPerforming =  false;
             OnPerformFinished?.Invoke(); 
         }));
