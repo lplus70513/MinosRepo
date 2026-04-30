@@ -1,4 +1,4 @@
-[System.Serializeable]
+[System.Serializable]
 
 public abstract class Effect
 {
