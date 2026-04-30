@@ -67,6 +67,10 @@ public class CardSystem : Singleton<CardSystem>
         CardView cardView = handView.RemoveCard(playCardGA.Card);
         yield return DiscardCard(cardView);
 
+        // 消耗费用 
+        SpendCostGA spendCostGA = new(playCardGA.Card.Cost);
+        ActionSystem.Instance.AddReaction(spendCostGA);
+
         // 执行卡牌效果
         foreach (var effect in playCardGA.Card.Effects)
         {

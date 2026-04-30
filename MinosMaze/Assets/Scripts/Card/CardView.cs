@@ -67,7 +67,7 @@ public class CardView : MonoBehaviour
     void OnMouseUp()
     {
         if (!Interactions.Instance.PlayerCanInteract()) return;
-        if (Physics.Raycast(transform.position, Vector3.forward, out RaycastHit hit, 10f, dropLayer))
+        if (CostSystem.Instance.HasEnoughCost(Card.Cost) && Physics.Raycast(transform.position, Vector3.forward, out RaycastHit hit, 10f, dropLayer))
         {
             // 如果松开鼠标的位置与其它的卡牌重叠，也将卡牌返回到初始位置
             if (hit.transform.tag == "Card")
