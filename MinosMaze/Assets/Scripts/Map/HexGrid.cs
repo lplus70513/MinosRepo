@@ -1,56 +1,50 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class HexGrid : MonoBehaviour
 {
-    public  int width = 6;
-    public  int height = 6;
-    public  HexCell cellPrefab;
+    public int mapRadius = 2;
 
-    public Text cellLabelPrefab;
+    public GameObject hexPrefab;
 
-	Canvas gridCanvas;
+    void Awake()
+    {
+        CreateHexagonMap();
+    }
 
-    HexMesh hexMesh;
+    void CreateHexagonMap()
+    {
+        Vector3 center = Vector3.zero;
 
-    HexCell[]  cells;
-
-    void  Awake () {
-        gridCanvas = GetComponentInChildren<Canvas>();
-		hexMesh = GetComponentInChildren<HexMesh>();
-
-        gridCanvas = GetComponentInChildren<Canvas>();
-
-        cells  = new HexCell[height * width];
-
-        for  (int z = 0, i = 0; z < height; z++) {
-            for  (int x = 0; x < width; x++) {
-                        CreateCell(x,  z, i++);
+        for (int z = -mapRadius; z <= mapRadius; z++)
+        {
+            // x 的起始和结束位置取决于当前的 z 值，以保证形状是六边形
+            for (int x = -mapRadius - Mathf.Min(z,0) ; x <= mapRadius - Mathf.Max(z,0); x++)
+            {
+                // 计算该六边形在世界空间中的位置
+                Vector3 position = center + GetHexWorldPosition(x, z);
+                
+                // 实例化单个六边形格
+                CreateHexCell(position, x, z);
             }
         }
     }
 
-    void Start () {
-		hexMesh.Triangulate(cells);
-	}
+    Vector3 GetHexWorldPosition(int x, int z)
+    {
+        Vector3 position;
+        position.x = (2*x + z) * HexMetrics.innerRadius;
+        position.y = 0f;
+        position.z = -z * HexMetrics.outerRadius * 1.5f ;
+        return position;
+    }
 
-    void  CreateCell (int x, int z, int i) {
-        Vector3  position;
-        position.x = (x + z * 0.5f - z / 2) * (HexMetrics.innerRadius * 2f);
-		position.y = 0f;
-		position.z = z * (HexMetrics.outerRadius * 1.5f);
-
-        HexCell  cell = cells[i] = Instantiate(cellPrefab);
-        cell.transform.SetParent(transform,  false);
-        cell.transform.localPosition  = position;
-
-        Text label = Instantiate<Text>(cellLabelPrefab);
-		label.rectTransform.SetParent(gridCanvas.transform, false);
-		label.rectTransform.anchoredPosition =
-			new Vector2(position.x, position.z);
-		label.text = x.ToString() + "\n" + z.ToString();
+      void CreateHexCell(Vector3 position, int x, int z)
+    {
+        Instantiate(hexPrefab, position, Quaternion.Euler(0, 90, 0), transform);
     }
 
 }
