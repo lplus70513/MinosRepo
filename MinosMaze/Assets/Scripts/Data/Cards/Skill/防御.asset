@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 02002abe5e65cfb4184b51fd307203e9, type: 3}
-  m_Name: "\u6233\u523A"
+  m_Name: "\u9632\u5FA1"
   m_EditorClassIdentifier: 
-  <Description>k__BackingField: "\u5BF9\u654C\u4EBA\u9020\u62104\u70B9\u4F24\u5BB3"
+  <Description>k__BackingField: "\u83B7\u5F975\u70B9\u683C\u6321"
   <Cost>k__BackingField: 1
-  <Image>k__BackingField: {fileID: -1562414915, guid: 8b53220f14bb4604c8466583a33faaa2, type: 3}
+  <Image>k__BackingField: {fileID: 1709695921, guid: 1ed825c84a4d3aa438bfa70d107b81fb, type: 3}
   <Effects>k__BackingField: []
   references:
     version: 2
