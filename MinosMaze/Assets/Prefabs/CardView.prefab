@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6359906540912116033}
   - component: {fileID: 310138319197517699}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 5364298998585503567}
   - component: {fileID: 1978708114827805839}
   - component: {fileID: 4487722360705061221}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cost
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -265,7 +265,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8639188996641028111}
   - component: {fileID: 1604305387359374185}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CardBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -350,7 +350,7 @@ GameObject:
   - component: {fileID: 1409771280145208538}
   - component: {fileID: 6384826925994595038}
   - component: {fileID: 6582807206867724146}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Name
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -522,7 +522,7 @@ GameObject:
   - component: {fileID: 7567974863817647472}
   - component: {fileID: 3094705833287484296}
   - component: {fileID: 5368086959718973116}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CardView
   m_TagString: Card
   m_Icon: {fileID: 0}
@@ -608,7 +608,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7926752912940771812}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Wrapper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -646,7 +646,7 @@ GameObject:
   - component: {fileID: 8164968131649015860}
   - component: {fileID: 7033375038046918451}
   - component: {fileID: 2735942190591337174}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Description
   m_TagString: Untagged
   m_Icon: {fileID: 0}

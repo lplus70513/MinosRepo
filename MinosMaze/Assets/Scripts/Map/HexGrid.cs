@@ -45,12 +45,10 @@ public class HexGrid : MonoBehaviour
       void CreateHexCell(Vector3 position, int x, int z)
     {
         GameObject hexCellObject = Instantiate(hexPrefab, position, Quaternion.Euler(0, 90, 0), transform);
-
         HexCell hexCell = hexCellObject.GetComponent<HexCell>();
 
+        // 传递轴向坐标系中的坐标
         hexCell.SetCoord(x, z);
-
-
     }
 
 }

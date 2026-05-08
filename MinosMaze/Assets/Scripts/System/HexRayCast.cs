@@ -13,13 +13,21 @@ public class HexRayCast : MonoBehaviour
         screenRay = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(screenRay,out hitinfo))
         {
-            //执行光标移动相关函数
+            //执行光标悬停相关函数
+            HoverObject();
+
+
             if (Input.GetMouseButtonDown(0))
             {
                 ClickObject();
             }
         }
    
+    }
+
+    void HoverObject()
+    {
+        
     }
 
     void ClickObject()
