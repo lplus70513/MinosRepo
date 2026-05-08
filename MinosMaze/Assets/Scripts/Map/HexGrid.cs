@@ -44,7 +44,13 @@ public class HexGrid : MonoBehaviour
 
       void CreateHexCell(Vector3 position, int x, int z)
     {
-        Instantiate(hexPrefab, position, Quaternion.Euler(0, 90, 0), transform);
+        GameObject hexCellObject = Instantiate(hexPrefab, position, Quaternion.Euler(0, 90, 0), transform);
+
+        HexCell hexCell = hexCellObject.GetComponent<HexCell>();
+
+        hexCell.SetCoord(x, z);
+
+
     }
 
 }
