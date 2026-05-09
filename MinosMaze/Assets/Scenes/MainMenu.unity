@@ -205,7 +205,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1755987042}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2141762266348596123, guid: 80f34151d5ab7324c913d32a916a48d1, type: 3}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: OpenSettings
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
 --- !u!114 &53487181
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -552,6 +564,7 @@ GameObject:
   - component: {fileID: 733256164}
   - component: {fileID: 733256163}
   - component: {fileID: 733256162}
+  - component: {fileID: 733256165}
   m_Layer: 5
   m_Name: "\u6E38\u620F\u5F00\u59CB"
   m_TagString: Untagged
@@ -576,7 +589,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -489, y: -157}
+  m_AnchoredPosition: {x: -489, y: -136}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &733256162
@@ -673,6 +686,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 733256160}
   m_CullTransparentMesh: 1
+--- !u!114 &733256165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 733256160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13f9421da66d68e4e95fcf1552268992, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  settingsButton: {fileID: 733256162}
 --- !u!1 &897365252
 GameObject:
   m_ObjectHideFlags: 0
@@ -1115,7 +1141,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1443272878}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8860447386518366660, guid: 80f34151d5ab7324c913d32a916a48d1, type: 3}
+        m_TargetAssemblyTypeName: QuitGame, Assembly-CSharp
+        m_MethodName: Exit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
 --- !u!114 &1443272878
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -9,6 +9,17 @@ public class CardSystem : Singleton<CardSystem>
     [SerializeField] private Transform drawPilePoint;
     [SerializeField] private Transform discardPilePoint;
 
+    // [新增] 获取牌堆数据的公共方法
+    // 返回副本以保护内部数据不被外部修改
+    public List<Card> GetDrawPileCopy() => new List<Card>(drawPile);
+    public List<Card> GetDiscardPileCopy() => new List<Card>(discardPile);
+    public List<Card> GetHandCopy() => new List<Card>(hand);
+
+    // [新增] 获取完整初始牌组 (如果需要查看整套卡组构成)
+    // 假设你在 SetUp 时保存了初始数据，或者你可以遍历所有区域汇总
+    // 这里简单提供一个获取当前所有卡牌总数的辅助方法
+    public int GetTotalCardCount() => drawPile.Count + discardPile.Count + hand.Count;
+
     private readonly List<Card> drawPile = new();
     private readonly List<Card> discardPile = new();
     private readonly List<Card> hand = new();

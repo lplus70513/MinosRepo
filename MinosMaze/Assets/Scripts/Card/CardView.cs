@@ -29,6 +29,7 @@ public class CardView : MonoBehaviour
         Description.text = card.Description;
         CostText.text = card.Cost.ToString();
         image.sprite = card.Image;
+        background.sprite = card.Background;
     }
 
     void OnMouseEnter()

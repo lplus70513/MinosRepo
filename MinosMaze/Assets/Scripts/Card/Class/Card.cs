@@ -8,6 +8,7 @@ public class Card
     public string Name => data.name;
     public string Description => data.Description;
     public Sprite Image => data.Image;
+    public Sprite Background => data.Background;
     public List<Effect> Effects => data.Effects;
     public int Cost { get; private set; }
 

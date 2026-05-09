@@ -266,7 +266,7 @@ GameObject:
   - component: {fileID: 8639188996641028111}
   - component: {fileID: 1604305387359374185}
   m_Layer: 7
-  m_Name: CardBackground
+  m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -565,7 +565,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   image: {fileID: 310138319197517699}
-  background: {fileID: 0}
+  background: {fileID: 1604305387359374185}
 --- !u!65 &3094705833287484296
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -15,6 +15,7 @@ MonoBehaviour:
   <Description>k__BackingField: "\u83B7\u5F975\u70B9\u683C\u6321"
   <Cost>k__BackingField: 1
   <Image>k__BackingField: {fileID: 1709695921, guid: 1ed825c84a4d3aa438bfa70d107b81fb, type: 3}
+  <Background>k__BackingField: {fileID: 1370473001, guid: 7e9643d6638fe744ca4f76a79d6457f3, type: 3}
   <Effects>k__BackingField: []
   references:
     version: 2
