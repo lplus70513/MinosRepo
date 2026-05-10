@@ -83,9 +83,10 @@ public class CardSystem : Singleton<CardSystem>
         ActionSystem.Instance.AddReaction(spendCostGA);
 
         // 执行卡牌效果
-        foreach (var effect in playCardGA.Card.Effects)
+        foreach (var effectWrapper  in playCardGA.Card.OtherEffects)
         {
-            PerformEffectGA performEffectGA = new(effect);
+            List<CombatantView> targets = effectWrapper.TargetMode.GetTargets();
+            PerformEffectGA performEffectGA = new(effectWrapper.Effect, targets);
             ActionSystem.Instance.AddReaction(performEffectGA);
         }
         // 加入弃牌堆
@@ -111,7 +112,7 @@ public class CardSystem : Singleton<CardSystem>
                 yield return DiscardCard(cardView);
 
                 // 将卡牌移动到弃牌堆逻辑列表
-                discardPile.Add(card);
+                // discardPile.Add(card);
             }
         }
         // 最后确保逻辑手牌列表被清空
@@ -171,6 +172,8 @@ public class CardSystem : Singleton<CardSystem>
 
     private IEnumerator DiscardCard(CardView cardView)
     {
+        discardPile.Add(cardView.Card);
+
         if (cardView == null || cardView.gameObject == null)
             yield break;
 
