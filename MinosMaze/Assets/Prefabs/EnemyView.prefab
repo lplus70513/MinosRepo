@@ -133,7 +133,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -274,6 +274,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2991164109857207937}
     m_Modifications:
+    - target: {fileID: 1719434057555261839, guid: f4ca6b579c1655a41ac57e8e8d03c188, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1803431911191261092, guid: f4ca6b579c1655a41ac57e8e8d03c188, type: 3}
       propertyPath: m_Name
       value: CombantantViewBase

@@ -16,7 +16,7 @@ MonoBehaviour:
     7 \u70B9\u4F24\u5BB3\uFF0C\u7ED9\u4E88\u654C\u4EBA1\u5C42\u6D41\u8840"
   <Cost>k__BackingField: 2
   <Image>k__BackingField: {fileID: 65924260, guid: 213b2572c3f436c4bb86d27dbdfb23a6, type: 3}
-  <Background>k__BackingField: {fileID: 0}
+  <Background>k__BackingField: {fileID: 2004051598, guid: c6dd1d8aa674a1342a0e69187a61a93b, type: 3}
   <Effects>k__BackingField: []
   references:
     version: 2
