@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2443809329434693140}
   - component: {fileID: 2962340002905955851}
   - component: {fileID: 7567285096148274089}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: AttackText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -182,7 +182,7 @@ GameObject:
   - component: {fileID: 2991164109857207937}
   - component: {fileID: 1414801507606140994}
   - component: {fileID: 1498730298514503906}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: EnemyView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -284,11 +284,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1803431911191261092, guid: f4ca6b579c1655a41ac57e8e8d03c188, type: 3}
       propertyPath: m_Layer
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 3884946357491250882, guid: f4ca6b579c1655a41ac57e8e8d03c188, type: 3}
       propertyPath: m_Layer
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4642150031482637499, guid: f4ca6b579c1655a41ac57e8e8d03c188, type: 3}
       propertyPath: m_LocalPosition.x
@@ -336,7 +336,7 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: f507a497253146f4b904b3b6d0815c0c, type: 3}
     - target: {fileID: 7291326551366580304, guid: f4ca6b579c1655a41ac57e8e8d03c188, type: 3}
       propertyPath: m_Layer
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

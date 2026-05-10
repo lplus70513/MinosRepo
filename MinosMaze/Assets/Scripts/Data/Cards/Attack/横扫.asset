@@ -17,7 +17,13 @@ MonoBehaviour:
   <Cost>k__BackingField: 2
   <Image>k__BackingField: {fileID: 65924260, guid: 213b2572c3f436c4bb86d27dbdfb23a6, type: 3}
   <Background>k__BackingField: {fileID: 2004051598, guid: c6dd1d8aa674a1342a0e69187a61a93b, type: 3}
-  <Effects>k__BackingField: []
+  <ManualTargetEffect>k__BackingField:
+    rid: 5015277394648891393
+  <OtherEffects>k__BackingField: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 5015277394648891393
+      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 7

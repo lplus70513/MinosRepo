@@ -82,6 +82,13 @@ public class CardSystem : Singleton<CardSystem>
         SpendCostGA spendCostGA = new(playCardGA.Card.Cost);
         ActionSystem.Instance.AddReaction(spendCostGA);
 
+        // 检查是否选择了手动目标
+        if(playCardGA.Card.ManualTargetEffect != null)
+        {
+            PerformEffectGA performEffectGA = new(playCardGA.Card.ManualTargetEffect, new() { playCardGA.ManualTarget });
+            ActionSystem.Instance.AddReaction(performEffectGA);
+        }
+
         // 执行卡牌效果
         foreach (var effectWrapper  in playCardGA.Card.OtherEffects)
         {
