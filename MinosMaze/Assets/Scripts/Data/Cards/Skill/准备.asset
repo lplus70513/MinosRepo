@@ -14,13 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Description>k__BackingField: "\u62BD\u4E24\u5F20\u724C"
   <Cost>k__BackingField: 1
-  <Image>k__BackingField: {fileID: 0}
-  <Effects>k__BackingField:
-  - rid: 999010353552818176
+  <Image>k__BackingField: {fileID: -1562414915, guid: 8b53220f14bb4604c8466583a33faaa2, type: 3}
+  <Background>k__BackingField: {fileID: 1370473001, guid: 7e9643d6638fe744ca4f76a79d6457f3, type: 3}
+  <ManualTargetEffect>k__BackingField:
+    rid: 5015277388307890180
+  <OtherEffects>k__BackingField: []
   references:
     version: 2
     RefIds:
-    - rid: 999010353552818176
+    - rid: 5015277388307890180
       type: {class: DrawCardEffects, ns: , asm: Assembly-CSharp}
       data:
         drawAmount: 2
