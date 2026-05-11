@@ -13,7 +13,7 @@ public class HexRayCast : MonoBehaviour
 
     public int HexCoordX;
 
-    public int HexCoordz;
+    public int HexCoordZ;
 
     void Start()
     {
