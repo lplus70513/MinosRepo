@@ -7,15 +7,30 @@ public class HexRayCast : MonoBehaviour
 {
     Ray screenRay;
 
-    private RaycastHit hitinfo;
+    private RaycastHit hitInfo;
+
+    private int mapLayerMask;
+
+    public int HexCoordX;
+
+    public int HexCoordz;
+
+    void Start()
+    {
+        Debug.Log($"成功加载HexRayCast");
+
+        int layerIndex = LayerMask.NameToLayer("MapLayer");
+
+        mapLayerMask = 1 << layerIndex;
+    }
+
     void Update()
     {
         screenRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(screenRay,out hitinfo))
+        if (Physics.Raycast(screenRay,out hitInfo,1000f,mapLayerMask))
         {
             //执行光标悬停相关函数
             HoverObject();
-
 
             if (Input.GetMouseButtonDown(0))
             {
@@ -27,11 +42,23 @@ public class HexRayCast : MonoBehaviour
 
     void HoverObject()
     {
-        
+        //Debug.Log($"成功执行HoverObject");
     }
 
     void ClickObject()
     {
-        
+        Debug.Log($"成功执行ClickObject");
+        if (Physics.Raycast(screenRay,out hitInfo,1000f,mapLayerMask))
+        {
+            HexCell cell = hitInfo.collider.GetComponent<HexCell>();
+
+            var (x, z) = cell.GetCoord();
+
+            Debug.Log($"点击了六角格，坐标为: X={x}, Z={z}");
+
+            HexCoordX = x;
+
+            HexCoordZ = z;
+        }
     }
 }

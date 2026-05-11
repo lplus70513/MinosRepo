@@ -13,4 +13,9 @@ public class HexCell : MonoBehaviour
         hexCoordX = x;
         hexCoordZ = z;
     }
+
+    public (int x, int z) GetCoord()
+    {
+        return (hexCoordX, hexCoordZ);
+    }
 }
