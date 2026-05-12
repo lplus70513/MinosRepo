@@ -15,9 +15,15 @@ public class HexRayCast : MonoBehaviour
 
     public int HexCoordZ;
 
+    Camera myCamera;
+
     void Start()
     {
         Debug.Log($"成功加载HexRayCast");
+
+        GameObject cameraObject = GameObject.FindGameObjectWithTag("3D Camera");
+
+        myCamera = cameraObject.GetComponent<Camera>();
 
         int layerIndex = LayerMask.NameToLayer("MapLayer");
 
@@ -26,7 +32,7 @@ public class HexRayCast : MonoBehaviour
 
     void Update()
     {
-        screenRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+        screenRay = myCamera.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(screenRay,out hitInfo,1000f,mapLayerMask))
         {
             //执行光标悬停相关函数
