@@ -90,18 +90,14 @@ public class CardView : MonoBehaviour
 
     void OnMouseUp()
     {
-        Debug.Log("[CardView] OnMouseUp triggered."); // 调试：鼠标抬起
-
         if (!Interactions.Instance.PlayerCanInteract())
         {
-            Debug.LogWarning("[CardView] Player cannot interact on release.");
             return;
         }
 
         // --- 分支 1：指向性卡牌 ---
         if (Card.ManualTargetEffect != null)
         {
-            Debug.Log("[CardView] Ending Targeting System...");
             Vector3 mousePos = MouseUtil.GetMousePositionInWorldSpace(-1);
             EnemyView target = ManualTargetSystem.Instance.EndTargeting(mousePos);
 

@@ -19,7 +19,7 @@ public class HexRayCast : MonoBehaviour
 
     void Start()
     {
-        Debug.Log($"成功加载HexRayCast");
+        // Debug.Log($"成功加载HexRayCast");
 
         GameObject cameraObject = GameObject.FindGameObjectWithTag("3D Camera");
 
@@ -53,7 +53,7 @@ public class HexRayCast : MonoBehaviour
 
     void ClickObject()
     {
-        Debug.Log($"成功执行ClickObject");
+        // Debug.Log($"成功执行ClickObject");
         if (Physics.Raycast(screenRay,out hitInfo,1000f,mapLayerMask))
         {
             HexCell cell = hitInfo.collider.GetComponent<HexCell>();

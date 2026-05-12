@@ -10,31 +10,31 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 02002abe5e65cfb4184b51fd307203e9, type: 3}
-  m_Name: "\u6A2A\u626B"
+  m_Name: "\u8FD1\u8EAB\u7F20\u6597"
   m_EditorClassIdentifier: 
-  <Description>k__BackingField: "\u5BF9\u8303\u56F4\u5185\u654C\u4EBA\u9020\u6210
-    7 \u70B9\u4F24\u5BB3\uFF0C\u7ED9\u4E88\u654C\u4EBA1\u5C42\u6D41\u8840"
-  <Cost>k__BackingField: 2
-  <Image>k__BackingField: {fileID: 65924260, guid: 213b2572c3f436c4bb86d27dbdfb23a6, type: 3}
-  <Background>k__BackingField: {fileID: 2004051598, guid: c6dd1d8aa674a1342a0e69187a61a93b, type: 3}
+  <Description>k__BackingField: "\u5BF9\u654C\u4EBA\u9020\u6210 3\u4F24\u5BB32\u6B21\uFF0C\u7ED9\u4E88\u654C\u4EBA
+    1 \u865A\u5F31"
+  <Cost>k__BackingField: 1
+  <Image>k__BackingField: {fileID: 0}
+  <Background>k__BackingField: {fileID: 0}
   <ManualTargetEffect>k__BackingField:
-    rid: 5015277394648891393
+    rid: 5015277433663258626
   <OtherEffects>k__BackingField:
   - <TargetMode>k__BackingField:
-      rid: 5015277433663258624
+      rid: 5015277433663258628
     <Effect>k__BackingField:
-      rid: 5015277433663258625
+      rid: 5015277433663258627
   references:
     version: 2
     RefIds:
-    - rid: 5015277394648891393
+    - rid: 5015277433663258626
       type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
       data:
-        damageAmount: 7
-    - rid: 5015277433663258624
+        damageAmount: 3
+    - rid: 5015277433663258627
+      type: {class: WeaknessEffect, ns: , asm: Assembly-CSharp}
+      data:
+        weaknessAmount: 1
+    - rid: 5015277433663258628
       type: {class: ManualTargetTM, ns: , asm: Assembly-CSharp}
       data: 
-    - rid: 5015277433663258625
-      type: {class: BleedEffect, ns: , asm: Assembly-CSharp}
-      data:
-        bleedAmount: 1
