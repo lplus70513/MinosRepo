@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfb69654e4d485b4d94d0b07ecccb27a, type: 3}
   m_Name: "\u7EA2\u8272\u53F2\u83B1\u59C6"
   m_EditorClassIdentifier: 
-  <Image>k__BackingField: {fileID: 21300000, guid: 5a6b479b88461f740af24b07e33065a1, type: 3}
+  <Image>k__BackingField: {fileID: -1879758174, guid: 652938cc25f2a0e41a73e290c93758ec, type: 3}
   <Health>k__BackingField: 26
   <AttackPower>k__BackingField: 6

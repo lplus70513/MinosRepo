@@ -5,15 +5,14 @@ using DG.Tweening;
 
 public class EnemyBoardView : MonoBehaviour
 {
-    [SerializeField] private List<Transform> slots;
+    [SerializeField] private Transform enemyParent;
 
     public List<EnemyView> EnemyViews { get; private set; } = new();
 
-    public void AddEnemy(EnemyData enemyData)
+    public void AddEnemy(EnemyData enemyData, Vector3 position, Quaternion rotation)
     {
-        Transform slot = slots[EnemyViews.Count];
-        EnemyView enemyView = EnemyViewCreator.Instance.CreateEnemyView(enemyData, slot.position, slot.rotation);
-        enemyView.transform.parent = slot;
+        EnemyView enemyView = EnemyViewCreator.Instance.CreateEnemyView(enemyData, position, rotation);
+        enemyView.transform.parent = enemyParent;
         EnemyViews.Add(enemyView);
     }
 

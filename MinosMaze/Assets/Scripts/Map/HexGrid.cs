@@ -1,8 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class HexGrid : MonoBehaviour
 {
@@ -10,8 +7,11 @@ public class HexGrid : MonoBehaviour
 
     public GameObject hexPrefab;
 
+    private static Dictionary<(int x, int z), HexCell> cellDict = new();
+
     void Awake()
     {
+        cellDict.Clear();
         CreateHexagonMap();
     }
 
@@ -21,13 +21,9 @@ public class HexGrid : MonoBehaviour
 
         for (int z = -mapRadius; z <= mapRadius; z++)
         {
-            // x 的起始和结束位置取决于当前的 z 值，以保证形状是六边形
             for (int x = -mapRadius - Mathf.Min(z,0) ; x <= mapRadius - Mathf.Max(z,0); x++)
             {
-                // 计算该六边形在世界空间中的位置
                 Vector3 position = center + GetHexWorldPosition(x, z);
-                
-                // 实例化单个六边形格
                 CreateHexCell(position, x, z);
             }
         }
@@ -42,13 +38,19 @@ public class HexGrid : MonoBehaviour
         return position;
     }
 
-      void CreateHexCell(Vector3 position, int x, int z)
+    void CreateHexCell(Vector3 position, int x, int z)
     {
         GameObject hexCellObject = Instantiate(hexPrefab, position, Quaternion.Euler(0, 90, 0), transform);
         HexCell hexCell = hexCellObject.GetComponent<HexCell>();
-
-        // 传递轴向坐标系中的坐标
         hexCell.SetCoord(x, z);
+        cellDict[(x, z)] = hexCell;
     }
 
+    public static Vector3 GetStandingPoint(int x, int z)
+    {
+        if (cellDict.TryGetValue((x, z), out HexCell cell) && cell.standingPoint != null)
+            return cell.standingPoint.position;
+        Debug.LogWarning($"[HexGrid] 未找到六角格 ({x}, {z}) 或 standingPoint 为空");
+        return Vector3.zero;
+    }
 }

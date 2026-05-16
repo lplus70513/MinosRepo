@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using DG.Tweening; // È·±£ÒýÓÃÁË DOTween
+using DG.Tweening; // È·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ DOTween
 
 public class CombatantView : MonoBehaviour
 {
@@ -15,6 +15,28 @@ public class CombatantView : MonoBehaviour
     public int CurrentHealth { get; private set; }
 
     private Dictionary<StatusEffectType, int> statusEffects = new();
+
+    private static Camera camera3D;
+    private static Material alwaysVisibleMaterial;
+
+    void Awake()
+    {
+        if (camera3D == null)
+        {
+            var camObj = GameObject.FindGameObjectWithTag("3D Camera");
+            if (camObj != null) camera3D = camObj.GetComponent<Camera>();
+        }
+
+        if (alwaysVisibleMaterial == null)
+        {
+            Shader shader = Shader.Find("Custom/SpriteAlwaysVisible");
+            if (shader != null)
+                alwaysVisibleMaterial = new Material(shader);
+        }
+
+        if (spriteRenderer != null && alwaysVisibleMaterial != null)
+            spriteRenderer.material = alwaysVisibleMaterial;
+    }
 
     protected void SetupBase(int health, Sprite image)
     {
@@ -70,7 +92,7 @@ public class CombatantView : MonoBehaviour
         {
             statusEffects.Add(type, stackCount);
         }
-        // µ÷ÓÃ·½·¨
+        // ï¿½ï¿½ï¿½Ã·ï¿½ï¿½ï¿½
         statusEffectsUI.UpdateStatusEffectUI(type, GetStatusEffectStacks(type));
     }
 
@@ -85,7 +107,7 @@ public class CombatantView : MonoBehaviour
             }
         }
 
-        // ÐÞ¸Äµã 2: ÐÞ¸´Æ´Ð´´íÎó GetStstusEffectStakes -> GetStatusEffectStacks
+        // ï¿½Þ¸Äµï¿½ 2: ï¿½Þ¸ï¿½Æ´Ð´ï¿½ï¿½ï¿½ï¿½ GetStstusEffectStakes -> GetStatusEffectStacks
         statusEffectsUI.UpdateStatusEffectUI(type, GetStatusEffectStacks(type));
     }
 
@@ -93,5 +115,13 @@ public class CombatantView : MonoBehaviour
     {
         if (statusEffects.ContainsKey(type)) return statusEffects[type];
         else return 0;
+    }
+
+    void LateUpdate()
+    {
+        if (camera3D != null)
+        {
+            transform.rotation = camera3D.transform.rotation;
+        }
     }
 }

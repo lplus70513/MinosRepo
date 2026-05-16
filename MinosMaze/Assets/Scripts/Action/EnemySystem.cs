@@ -23,11 +23,18 @@ public class EnemySystem : Singleton<EnemySystem>
         ActionSystem.DetachPerformer<KillEnemyGA>();
     }
 
-    public void Setup(List<EnemyData> enemyDatas)
+    public void Setup(List<EnemyData> enemyDatas, List<Vector2Int> spawnCoords)
     {
-        foreach(var enemyData in enemyDatas)
+        for (int i = 0; i < enemyDatas.Count; i++)
         {
-            enemyBoardView.AddEnemy(enemyData);
+            Vector3 pos = Vector3.zero;
+            Quaternion rot = Quaternion.identity;
+            if (i < spawnCoords.Count)
+            {
+                Vector2Int coord = spawnCoords[i];
+                pos = HexGrid.GetStandingPoint(coord.x, coord.y);
+            }
+            enemyBoardView.AddEnemy(enemyDatas[i], pos, rot);
         }
     }
 
@@ -44,11 +51,15 @@ public class EnemySystem : Singleton<EnemySystem>
     private IEnumerator AttackHeroPerformer(AttackHeroGA attackHeroGA)
     {
         EnemyView attacker = attackHeroGA.Attacker;
-        Tween tween = attacker.transform.DOMoveX(attacker.transform.position.x - 1f, 0.15f);
+        HeroView heroView = HeroSystem.Instance.HeroView;
+        Vector3 direction = (heroView.transform.position - attacker.transform.position).normalized;
+        Vector3 startPos = attacker.transform.position;
+        Vector3 targetPos = startPos + direction * 1f;
+        Tween tween = attacker.transform.DOMove(targetPos, 0.15f);
         yield return tween.WaitForCompletion();
-        attacker.transform.DOMoveX(attacker.transform.position.x + 1f, 0.25f);
+        attacker.transform.DOMove(startPos, 0.25f);
         // Deal Damage
-        DealDamageGA dealDamageGA = new(attacker.AttackPower, new() { HeroSystem.Instance.HeroView }, attackHeroGA.Caster);
+        DealDamageGA dealDamageGA = new(attacker.AttackPower, new() { heroView }, attackHeroGA.Caster);
         ActionSystem.Instance.AddReaction(dealDamageGA);
     }
 

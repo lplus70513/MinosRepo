@@ -2,10 +2,14 @@ using UnityEngine;
 
 public class HeroSystem : Singleton<HeroSystem>
 {
-    [field: SerializeField] public HeroView HeroView { get; private set; }
+    [SerializeField] private HeroView heroViewPrefab;
 
-    public void Setup(HeroData heroData)
+    public HeroView HeroView { get; private set; }
+
+    public void Setup(HeroData heroData, Vector2Int spawnCoord)
     {
+        Vector3 pos = HexGrid.GetStandingPoint(spawnCoord.x, spawnCoord.y);
+        HeroView = Instantiate(heroViewPrefab, pos, Quaternion.identity);
         HeroView.Setup(heroData);
     }
 }

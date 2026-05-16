@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6175800288518200060}
   - component: {fileID: 6630097134241971516}
-  m_Layer: 7
+  m_Layer: 10
   m_Name: HeroView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26,9 +26,9 @@ Transform:
   m_GameObject: {fileID: 910320502548123126}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -7.4, y: 0, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
-  m_ConstrainProportionsScale: 1
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3171575942417793010}
   m_Father: {fileID: 0}
@@ -56,6 +56,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6175800288518200060}
     m_Modifications:
+    - target: {fileID: 1436599677730339057, guid: f4ca6b579c1655a41ac57e8e8d03c188, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 1719434057555261839, guid: f4ca6b579c1655a41ac57e8e8d03c188, type: 3}
       propertyPath: m_text
       value: "HP\uFF1A999"
@@ -70,15 +74,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1803431911191261092, guid: f4ca6b579c1655a41ac57e8e8d03c188, type: 3}
       propertyPath: m_Layer
-      value: 7
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3884946357491250882, guid: f4ca6b579c1655a41ac57e8e8d03c188, type: 3}
       propertyPath: m_Layer
-      value: 7
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4642150031482637499, guid: f4ca6b579c1655a41ac57e8e8d03c188, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.93
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4642150031482637499, guid: f4ca6b579c1655a41ac57e8e8d03c188, type: 3}
       propertyPath: m_LocalPosition.y
@@ -122,7 +126,11 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: 5bc6733dbf780de4ab29f09c79fd0eb7, type: 3}
     - target: {fileID: 7291326551366580304, guid: f4ca6b579c1655a41ac57e8e8d03c188, type: 3}
       propertyPath: m_Layer
-      value: 7
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7680074407275148936, guid: f4ca6b579c1655a41ac57e8e8d03c188, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
