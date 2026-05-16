@@ -8,7 +8,9 @@ public class HexCell : MonoBehaviour
 
     public int hexCoordZ = 0;
 
-     public void SetCoord(int x, int z)
+    public Transform standingPoint;
+
+    public void SetCoord(int x, int z)
     {
         hexCoordX = x;
         hexCoordZ = z;

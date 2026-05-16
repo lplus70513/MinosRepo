@@ -15,6 +15,8 @@ public class HexRayCast : MonoBehaviour
 
     public int HexCoordZ;
 
+    public Transform hexStandingPoint;
+
     Camera myCamera;
 
     void Start()
@@ -59,6 +61,8 @@ public class HexRayCast : MonoBehaviour
             HexCell cell = hitInfo.collider.GetComponent<HexCell>();
 
             var (x, z) = cell.GetCoord();
+
+            hexStandingPoint = cell.standingPoint;
 
             Debug.Log($"点击了六角格，坐标为: X={x}, Z={z}");
 
