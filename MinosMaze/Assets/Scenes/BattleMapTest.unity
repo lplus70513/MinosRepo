@@ -245,9 +245,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baf3b88a6734e414e8f3a574fc16741f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HexCoordX: 0
-  HexCoordZ: 0
-  hexStandingPoint: {fileID: 0}
 --- !u!4 &1159337260
 Transform:
   m_ObjectHideFlags: 0
