@@ -24,4 +24,9 @@ public class ManualTargetSystem : Singleton<ManualTargetSystem>
         }
         return null;
     }
+
+    public void StopTargeting()
+    {
+        arrowView.gameObject.SetActive(false);
+    }
 }
