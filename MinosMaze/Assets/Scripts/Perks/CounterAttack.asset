@@ -12,16 +12,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 289c8e7f72535104f993816b3b528144, type: 3}
   m_Name: CounterAttack
   m_EditorClassIdentifier: 
-  <Image>k__BackingField: {fileID: 0}
+  <Image>k__BackingField: {fileID: 21300000, guid: 53b58f1c7d75a0644a583801120e0aac, type: 3}
+  <PerkCondition>k__BackingField:
+    rid: 5015277524310032384
   <AutoTargetEffect>k__BackingField:
-    <TargetMode>k__BackingField:
-      rid: -2
-    <Effect>k__BackingField:
-      rid: -2
-  <UseAutoTarget>k__BackingField: 1
-  <UseActionAsTarget>k__BackingField: 0
+    rid: 5015277524310032385
+  <UseAutoTarget>k__BackingField: 0
+  <UseActionAsTarget>k__BackingField: 1
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+    - rid: 5015277524310032384
+      type: {class: OnEnemyAttackCondition, ns: , asm: Assembly-CSharp}
+      data:
+        reactionTiming: 1
+    - rid: 5015277524310032385
+      type: {class: AutoTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: -2
+        <Effect>k__BackingField:
+          rid: 5015277524310032386
+    - rid: 5015277524310032386
+      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 5
