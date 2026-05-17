@@ -14,6 +14,7 @@ public class EnemySystem : Singleton<EnemySystem>
         ActionSystem.AttachPerformer<EnemyTurnGA>(EnemyTurnPerformer);
         ActionSystem.AttachPerformer<AttackHeroGA>(AttackHeroPerformer);
         ActionSystem.AttachPerformer<KillEnemyGA>(KillEnemyPerformer);
+        ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPreReaction, ReactionTiming.PRE);
     }
 
     void OnDisable()
@@ -21,6 +22,7 @@ public class EnemySystem : Singleton<EnemySystem>
         ActionSystem.DetachPerformer<EnemyTurnGA>();
         ActionSystem.DetachPerformer<AttackHeroGA>();
         ActionSystem.DetachPerformer<KillEnemyGA>();
+        ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnemyTurnPreReaction, ReactionTiming.PRE);
     }
 
     public void Setup(List<EnemyData> enemyDatas, List<Vector2Int> spawnCoords)
@@ -29,12 +31,15 @@ public class EnemySystem : Singleton<EnemySystem>
         {
             Vector3 pos = Vector3.zero;
             Quaternion rot = Quaternion.identity;
+            int hexX = 0, hexZ = 0;
             if (i < spawnCoords.Count)
             {
                 Vector2Int coord = spawnCoords[i];
+                hexX = coord.x;
+                hexZ = coord.y;
                 pos = HexGrid.GetStandingPoint(coord.x, coord.y);
             }
-            enemyBoardView.AddEnemy(enemyDatas[i], pos, rot);
+            enemyBoardView.AddEnemy(enemyDatas[i], pos, rot, hexX, hexZ);
         }
     }
 
@@ -42,10 +47,51 @@ public class EnemySystem : Singleton<EnemySystem>
     {
         foreach(var enemy in enemyBoardView.EnemyViews)
         {
-            AttackHeroGA attackHeroGA = new(enemy);
-            ActionSystem.Instance.AddReaction(attackHeroGA);
+            switch (enemy.EnemyType)
+            {
+                case EnemyType.Normal:
+                    QueueNormalAttack(enemy, enemyTurnGA);
+                    break;
+            }
         }
         yield return null;
+    }
+
+    private void EnemyTurnPreReaction(EnemyTurnGA enemyTurnGA)
+    {
+        foreach(var enemy in enemyBoardView.EnemyViews)
+        {
+            switch (enemy.EnemyType)
+            {
+                case EnemyType.Normal:
+                    QueueNormalMove(enemy, enemyTurnGA);
+                    break;
+            }
+        }
+    }
+
+    private void QueueNormalMove(EnemyView enemy, EnemyTurnGA ga)
+    {
+        HeroView hero = HeroSystem.Instance.HeroView;
+        int dist = HexGrid.HexDistance(enemy.HexCoordX, enemy.HexCoordZ, hero.HexCoordX, hero.HexCoordZ);
+        if (dist <= 1) return;
+
+        var path = HexPathfinder.FindPath(enemy.HexCoordX, enemy.HexCoordZ, hero.HexCoordX, hero.HexCoordZ, enemy);
+        if (path != null && path.Count >= 2)
+        {
+            var (x, z) = path[1];
+            ga.PreReactions.Add(new MoveGA(enemy, x, z));
+        }
+    }
+
+    private void QueueNormalAttack(EnemyView enemy, EnemyTurnGA ga)
+    {
+        HeroView hero = HeroSystem.Instance.HeroView;
+        int dist = HexGrid.HexDistance(enemy.HexCoordX, enemy.HexCoordZ, hero.HexCoordX, hero.HexCoordZ);
+        if (dist <= 1)
+        {
+            ga.PerformReactions.Add(new AttackHeroGA(enemy));
+        }
     }
 
     private IEnumerator AttackHeroPerformer(AttackHeroGA attackHeroGA)

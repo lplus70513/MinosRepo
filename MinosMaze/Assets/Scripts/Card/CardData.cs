@@ -14,6 +14,10 @@ public class CardData : ScriptableObject
 
     [field: SerializeField] public Sprite Background { get; private set; }
 
+    [field: SerializeField] public bool HasAttackRange { get; private set; } = false;
+
+    [field: SerializeField] public int AttackRange { get; private set; } = 1;
+
     [field: SerializeReference, SR] public Effect ManualTargetEffect { get; private set; } = null;
 
     [field: SerializeField] public List<AutoTargetEffect> OtherEffects { get; private set; }

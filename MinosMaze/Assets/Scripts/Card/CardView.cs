@@ -67,6 +67,11 @@ public class CardView : MonoBehaviour
             Interactions.Instance.PlayerIsTargeting = true;
             targetingCard = this;
             ManualTargetSystem.Instance.StartTargeting(transform.position);
+            if (Card.HasAttackRange)
+            {
+                HeroView hero = HeroSystem.Instance.HeroView;
+                HexGrid.HighlightCellsInRange(hero.HexCoordX, hero.HexCoordZ, Card.AttackRange);
+            }
         }
         else
         {
@@ -187,6 +192,17 @@ public class CardView : MonoBehaviour
         bool hasCost = CostSystem.Instance.HasEnoughCost(Card.Cost);
         if (!hasCost) Debug.LogWarning("[CardView] Not enough Cost!");
 
+        if (target != null && hasCost && Card.HasAttackRange)
+        {
+            HeroView hero = HeroSystem.Instance.HeroView;
+            int dist = HexGrid.HexDistance(hero.HexCoordX, hero.HexCoordZ, target.HexCoordX, target.HexCoordZ);
+            if (dist > Card.AttackRange)
+            {
+                Debug.LogWarning($"[CardView] 目标({target.name})超出攻击范围 (距离={dist}, 范围={Card.AttackRange})");
+                target = null;
+            }
+        }
+
         if (target != null && hasCost)
         {
             Debug.Log("[CardView] SUCCESS: Performing PlayCardGA with Target.");
@@ -214,5 +230,6 @@ public class CardView : MonoBehaviour
         if (targetingCard == this) targetingCard = null;
         Interactions.Instance.PlayerIsTargeting = false;
         ManualTargetSystem.Instance.StopTargeting();
+        HexGrid.ClearAllHighlights();
     }
 }

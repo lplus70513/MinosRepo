@@ -11,6 +11,9 @@ public class CombatantView : MonoBehaviour
 
     [SerializeField] private StatusEffectsUI statusEffectsUI;
 
+    public int HexCoordX { get; set; }
+    public int HexCoordZ { get; set; }
+
     public int MaxHealth { get; private set; }
     public int CurrentHealth { get; private set; }
 

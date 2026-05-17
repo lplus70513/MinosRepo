@@ -15,6 +15,8 @@ public class MatchSetupSystem : MonoBehaviour
 
     private void Start()
     {
+        _ = MoveSystem.Instance;
+        _ = PlayerMovementSystem.Instance;
         HeroSystem.Instance.Setup(heroData, heroSpawnCoord);
         EnemySystem.Instance.Setup(enemyDatas, enemySpawnCoords);
         CardSystem.Instance.SetUp(heroData.Deck);

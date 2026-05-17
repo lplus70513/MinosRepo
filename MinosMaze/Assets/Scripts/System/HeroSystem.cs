@@ -10,6 +10,6 @@ public class HeroSystem : Singleton<HeroSystem>
     {
         Vector3 pos = HexGrid.GetStandingPoint(spawnCoord.x, spawnCoord.y);
         HeroView = Instantiate(heroViewPrefab, pos, Quaternion.identity);
-        HeroView.Setup(heroData);
+        HeroView.Setup(heroData, spawnCoord.x, spawnCoord.y);
     }
 }

@@ -13,6 +13,10 @@ public class Card
 
     public Sprite Background => data.Background;
 
+    public bool HasAttackRange => data.HasAttackRange;
+
+    public int AttackRange => data.AttackRange;
+
     public Effect ManualTargetEffect => data.ManualTargetEffect;
 
     public List<AutoTargetEffect> OtherEffects => data.OtherEffects;

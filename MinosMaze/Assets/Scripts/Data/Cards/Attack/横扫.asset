@@ -17,13 +17,11 @@ MonoBehaviour:
   <Cost>k__BackingField: 2
   <Image>k__BackingField: {fileID: 65924260, guid: 213b2572c3f436c4bb86d27dbdfb23a6, type: 3}
   <Background>k__BackingField: {fileID: 2004051598, guid: c6dd1d8aa674a1342a0e69187a61a93b, type: 3}
+  <HasAttackRange>k__BackingField: 0
+  <AttackRange>k__BackingField: 1
   <ManualTargetEffect>k__BackingField:
     rid: 5015277394648891393
-  <OtherEffects>k__BackingField:
-  - <TargetMode>k__BackingField:
-      rid: 5015277433663258624
-    <Effect>k__BackingField:
-      rid: 5015277433663258625
+  <OtherEffects>k__BackingField: []
   references:
     version: 2
     RefIds:
@@ -31,10 +29,3 @@ MonoBehaviour:
       type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
       data:
         damageAmount: 7
-    - rid: 5015277433663258624
-      type: {class: ManualTargetTM, ns: , asm: Assembly-CSharp}
-      data: 
-    - rid: 5015277433663258625
-      type: {class: BleedEffect, ns: , asm: Assembly-CSharp}
-      data:
-        bleedAmount: 1

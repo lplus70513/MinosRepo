@@ -10,6 +10,10 @@ public class HexCell : MonoBehaviour
 
     public Transform standingPoint;
 
+    [SerializeField] private GameObject highlightIndicator;
+
+    [SerializeField] private GameObject moveHighlightIndicator;
+
     public void SetCoord(int x, int z)
     {
         hexCoordX = x;
@@ -19,5 +23,17 @@ public class HexCell : MonoBehaviour
     public (int x, int z) GetCoord()
     {
         return (hexCoordX, hexCoordZ);
+    }
+
+    public void SetHighlight(bool active)
+    {
+        if (highlightIndicator != null)
+            highlightIndicator.SetActive(active);
+    }
+
+    public void SetMoveHighlight(bool active)
+    {
+        if (moveHighlightIndicator != null)
+            moveHighlightIndicator.SetActive(active);
     }
 }

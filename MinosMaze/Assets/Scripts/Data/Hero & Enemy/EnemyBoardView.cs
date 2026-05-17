@@ -9,9 +9,9 @@ public class EnemyBoardView : MonoBehaviour
 
     public List<EnemyView> EnemyViews { get; private set; } = new();
 
-    public void AddEnemy(EnemyData enemyData, Vector3 position, Quaternion rotation)
+    public void AddEnemy(EnemyData enemyData, Vector3 position, Quaternion rotation, int hexX, int hexZ)
     {
-        EnemyView enemyView = EnemyViewCreator.Instance.CreateEnemyView(enemyData, position, rotation);
+        EnemyView enemyView = EnemyViewCreator.Instance.CreateEnemyView(enemyData, position, rotation, hexX, hexZ);
         enemyView.transform.parent = enemyParent;
         EnemyViews.Add(enemyView);
     }

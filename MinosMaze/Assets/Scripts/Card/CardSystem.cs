@@ -9,15 +9,15 @@ public class CardSystem : Singleton<CardSystem>
     [SerializeField] private Transform drawPilePoint;
     [SerializeField] private Transform discardPilePoint;
 
-    // [ÐÂÔö] »ñÈ¡ÅÆ¶ÑÊý¾ÝµÄ¹«¹²·½·¨
-    // ·µ»Ø¸±±¾ÒÔ±£»¤ÄÚ²¿Êý¾Ý²»±»Íâ²¿ÐÞ¸Ä
+    // [ï¿½ï¿½ï¿½ï¿½] ï¿½ï¿½È¡ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ÝµÄ¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    // ï¿½ï¿½ï¿½Ø¸ï¿½ï¿½ï¿½ï¿½Ô±ï¿½ï¿½ï¿½ï¿½Ú²ï¿½ï¿½ï¿½ï¿½Ý²ï¿½ï¿½ï¿½ï¿½â²¿ï¿½Þ¸ï¿½
     public List<Card> GetDrawPileCopy() => new List<Card>(drawPile);
     public List<Card> GetDiscardPileCopy() => new List<Card>(discardPile);
     public List<Card> GetHandCopy() => new List<Card>(hand);
 
-    // [ÐÂÔö] »ñÈ¡ÍêÕû³õÊ¼ÅÆ×é (Èç¹ûÐèÒª²é¿´ÕûÌ×¿¨×é¹¹³É)
-    // ¼ÙÉèÄãÔÚ SetUp Ê±±£´æÁË³õÊ¼Êý¾Ý£¬»òÕßÄã¿ÉÒÔ±éÀúËùÓÐÇøÓò»ã×Ü
-    // ÕâÀï¼òµ¥Ìá¹©Ò»¸ö»ñÈ¡µ±Ç°ËùÓÐ¿¨ÅÆ×ÜÊýµÄ¸¨Öú·½·¨
+    // [ï¿½ï¿½ï¿½ï¿½] ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½é¿´ï¿½ï¿½ï¿½×¿ï¿½ï¿½é¹¹ï¿½ï¿½)
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ SetUp Ê±ï¿½ï¿½ï¿½ï¿½ï¿½Ë³ï¿½Ê¼ï¿½ï¿½ï¿½Ý£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¹©Ò»ï¿½ï¿½ï¿½ï¿½È¡ï¿½ï¿½Ç°ï¿½ï¿½ï¿½Ð¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     public int GetTotalCardCount() => drawPile.Count + discardPile.Count + hand.Count;
 
     private readonly List<Card> drawPile = new();
@@ -78,52 +78,57 @@ public class CardSystem : Singleton<CardSystem>
         CardView cardView = handView.RemoveCard(playCardGA.Card);
         yield return DiscardCard(cardView);
 
-        // ÏûºÄ·ÑÓÃ 
+        // ï¿½ï¿½ï¿½Ä·ï¿½ï¿½ï¿½ 
         SpendCostGA spendCostGA = new(playCardGA.Card.Cost);
         ActionSystem.Instance.AddReaction(spendCostGA);
 
-        // ¼ì²éÊÇ·ñÑ¡ÔñÁËÊÖ¶¯Ä¿±ê
+        // ï¿½ï¿½ï¿½ï¿½Ç·ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½Ö¶ï¿½Ä¿ï¿½ï¿½
         if(playCardGA.Card.ManualTargetEffect != null)
         {
             PerformEffectGA performEffectGA = new(playCardGA.Card.ManualTargetEffect, new() { playCardGA.ManualTarget });
             ActionSystem.Instance.AddReaction(performEffectGA);
         }
 
-        // Ö´ÐÐ¿¨ÅÆÐ§¹û
+        // Ö´ï¿½Ð¿ï¿½ï¿½ï¿½Ð§ï¿½ï¿½
         foreach (var effectWrapper  in playCardGA.Card.OtherEffects)
         {
             List<CombatantView> targets = effectWrapper.TargetMode.GetTargets();
+            if (playCardGA.Card.HasAttackRange && targets != null)
+            {
+                HeroView hero = HeroSystem.Instance.HeroView;
+                targets = targets.FindAll(t => HexGrid.HexDistance(hero.HexCoordX, hero.HexCoordZ, t.HexCoordX, t.HexCoordZ) <= playCardGA.Card.AttackRange);
+            }
             PerformEffectGA performEffectGA = new(effectWrapper.Effect, targets);
             ActionSystem.Instance.AddReaction(performEffectGA);
         }
-        // ¼ÓÈëÆúÅÆ¶Ñ
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½
     }
 
     private IEnumerator DiscardAllCardsPerformer(DiscardAllCardsGA discardAllCardsGA)
     {
-        // ×¢Òâ£º±éÀúÊ±ÐÞ¸Ä¼¯ºÏ»á±¨´í£¬½¨Òé´´½¨¸±±¾»ò·´Ïò±éÀú¡£
-        // ÕâÀï¼ÙÉè handView.RemoveCard »á°²È«µØ´Ó handCards ÖÐÒÆ³ý¶ÔÓ¦Ïî¡£
-        // µ«Èç¹û handView ½ö´¦ÀíÊÓ¾õ£¬Âß¼­²ãÈÔÐèÇå¿Õ hand¡£
-        // Îª°²È«Æð¼û£¬ÎÒÃÇÏÈÊÕ¼¯ËùÓÐÒª¶ªÆúµÄ¿¨ÅÆ£¬ÔÙÒÀ´Î´¦Àí¡£
+        // ×¢ï¿½â£ºï¿½ï¿½ï¿½ï¿½Ê±ï¿½Þ¸Ä¼ï¿½ï¿½Ï»á±¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½é´´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ handView.RemoveCard ï¿½á°²È«ï¿½Ø´ï¿½ handCards ï¿½ï¿½ï¿½Æ³ï¿½ï¿½ï¿½Ó¦ï¿½î¡£
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ handView ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¾ï¿½ï¿½ï¿½ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ handï¿½ï¿½
+        // Îªï¿½ï¿½È«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¼ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½Æ£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î´ï¿½ï¿½ï¿½ï¿½ï¿½
         List<Card> cardsToDiscard = new List<Card>(hand);
         foreach (var card in cardsToDiscard)
         {
-            // ´ÓÂß¼­ÊÖÅÆÖÐÒÆ³ý
+            // ï¿½ï¿½ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ³ï¿½
             hand.Remove(card);
 
-            // ´ÓÊÓ¾õÊÖÅÆÖÐÒÆ³ý²¢»ñÈ¡ÊÓÍ¼
+            // ï¿½ï¿½ï¿½Ó¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ³ï¿½ï¿½ï¿½ï¿½ï¿½È¡ï¿½ï¿½Í¼
             CardView cardView = handView.RemoveCard(card);
             if (cardView != null)
             {
-                // ¶ªÆú¿¨ÅÆµÄÊÓ¾õÐ§¹û
+                // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æµï¿½ï¿½Ó¾ï¿½Ð§ï¿½ï¿½
                 yield return DiscardCard(cardView);
 
-                // ½«¿¨ÅÆÒÆ¶¯µ½ÆúÅÆ¶ÑÂß¼­ÁÐ±í
+                // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ß¼ï¿½ï¿½Ð±ï¿½
                 // discardPile.Add(card);
             }
         }
-        // ×îºóÈ·±£Âß¼­ÊÖÅÆÁÐ±í±»Çå¿Õ
-        // hand.Clear(); // ÒòÎªÎÒÃÇÒÑ¾­ÔÚÑ­»·¿ªÊ¼Ç°¾ÍÇå³ýÁË£¬ÕâÀï¿ÉÒÔ×¢ÊÍµô
+        // ï¿½ï¿½ï¿½È·ï¿½ï¿½ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        // hand.Clear(); // ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½Ñ­ï¿½ï¿½ï¿½ï¿½Ê¼Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×¢ï¿½Íµï¿½
     }
 
 
@@ -145,35 +150,35 @@ public class CardSystem : Singleton<CardSystem>
 
     private IEnumerator DrawCard()
     {
-        // 1. ´ÓÅÆ¶Ñ³éÒ»ÕÅÅÆ£¨Ê¹ÓÃÄãÌá¹©µÄ ListExtensions.Draw ·½·¨£©
+        // 1. ï¿½ï¿½ï¿½Æ¶Ñ³ï¿½Ò»ï¿½ï¿½ï¿½Æ£ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½ï¿½á¹©ï¿½ï¿½ ListExtensions.Draw ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         Card drawnCard = drawPile.Draw();
 
-        // 2. Èç¹ûÅÆ¶ÑÎª¿Õ£¬Draw ·½·¨»á·µ»Ø null£¬´ËÊ±²»Ó¦¼ÌÐø
+        // 2. ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½Îªï¿½Õ£ï¿½Draw ï¿½ï¿½ï¿½ï¿½ï¿½á·µï¿½ï¿½ nullï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½
         if (drawnCard == null)
         {
-            Debug.LogWarning("ÊÔÍ¼´Ó¿ÕÅÆ¶Ñ³éÅÆ£¡");
-            yield break; // ÍË³öÐ­³Ì
+            Debug.LogWarning("ï¿½ï¿½Í¼ï¿½Ó¿ï¿½ï¿½Æ¶Ñ³ï¿½ï¿½Æ£ï¿½");
+            yield break; // ï¿½Ë³ï¿½Ð­ï¿½ï¿½
         }
 
-        // 3. ½«³éµ½µÄÅÆ¼ÓÈëÊÖÅÆÂß¼­ÁÐ±í
+        // 3. ï¿½ï¿½ï¿½éµ½ï¿½ï¿½ï¿½Æ¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß¼ï¿½ï¿½Ð±ï¿½
         hand.Add(drawnCard);
 
-        // 4. ÇëÇó HandView ´´½¨²¢Ìí¼Ó¿¨ÅÆµÄÊÓ¾õ¶ÔÏó
-        //    ´«Èë¿¨ÅÆÄ£ÐÍºÍ³õÊ¼Éú³ÉÎ»ÖÃ/Ðý×ª
+        // 4. ï¿½ï¿½ï¿½ï¿½ HandView ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¿ï¿½ï¿½Æµï¿½ï¿½Ó¾ï¿½ï¿½ï¿½ï¿½ï¿½
+        //    ï¿½ï¿½ï¿½ë¿¨ï¿½ï¿½Ä£ï¿½ÍºÍ³ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½/ï¿½ï¿½×ª
         CardView cardView = handView.AddCard(drawnCard, drawPilePoint.position, drawPilePoint.rotation);
 
-        // 5. Èç¹ûÐèÒªµÈ´ýÊÓ¾õÐ§¹ûÍê³É£¨±ÈÈç¿¨ÅÆ·ÉÈëÊÖÅÆµÄ¶¯»­£©£¬¿ÉÒÔÔÚ´Ë´¦ yield
-        //    µ«Ä¿Ç° HandView.AddCard ÊÇÍ¬²½µÄ£¬ËùÒÔÕâÀï²»ÐèÒª¶îÍâµÄ yield¡£
-        //    Èç¹û HandView.AddCard ·µ»ØÁËÐ­³Ì£¨±ÈÈç¶¯»­£©£¬ÔòÓ¦Ð´³É£º
+        // 5. ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½È´ï¿½ï¿½Ó¾ï¿½Ð§ï¿½ï¿½ï¿½ï¿½É£ï¿½ï¿½ï¿½ï¿½ç¿¨ï¿½Æ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÆµÄ¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú´Ë´ï¿½ yield
+        //    ï¿½ï¿½Ä¿Ç° HandView.AddCard ï¿½ï¿½Í¬ï¿½ï¿½ï¿½Ä£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï²»ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ yieldï¿½ï¿½
+        //    ï¿½ï¿½ï¿½ HandView.AddCard ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð­ï¿½Ì£ï¿½ï¿½ï¿½ï¿½ç¶¯ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦Ð´ï¿½É£ï¿½
         //    if(cardView != null) yield return StartCoroutine(handView.PlayDrawAnimation(cardView)); 
-        //    µ«ÏÖÔÚÎÒÃÇ¼ÙÉèËüÊÇ¼´Ê±Íê³ÉµÄ¡£
+        //    ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¼ï¿½Ê±ï¿½ï¿½ÉµÄ¡ï¿½
     }
 
     private void RefillDeck()
     {
-        // ½«ÆúÅÆ¶ÑÏ´ÅÆºó·ÅÈë³éÅÆ¶Ñ
+        // ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½Ï´ï¿½Æºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½
         drawPile.AddRange(discardPile);
-        // Çå¿ÕÆúÅÆ¶Ñ
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½
         discardPile.Clear();
     }
 
@@ -186,17 +191,17 @@ public class CardSystem : Singleton<CardSystem>
 
         Transform t = cardView.transform;
 
-        // ¹Ø¼ü£ºÏÈ Kill ËùÓÐÕýÔÚÔËÐÐµÄ¶¯»­£¬±ÜÃâºóÐø·ÃÎÊ
+        // ï¿½Ø¼ï¿½ï¿½ï¿½ï¿½ï¿½ Kill ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÐµÄ¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         t.DOKill();
 
-        // Ö´ÐÐ¶¯»­
+        // Ö´ï¿½Ð¶ï¿½ï¿½ï¿½
         t.DOScale(Vector3.zero, 0.15f);
         Tween moveTween = t.DOMove(discardPilePoint.position, 0.15f);
 
-        // µÈ´ý¶¯»­Íê³É£¨°²È«£©
+        // ï¿½È´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É£ï¿½ï¿½ï¿½È«ï¿½ï¿½
         yield return moveTween.WaitForCompletion();
 
-        // È·±£¶¯»­½áÊøºóÔÙÏú»Ù
+        // È·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         Destroy(cardView.gameObject);
     }
 }

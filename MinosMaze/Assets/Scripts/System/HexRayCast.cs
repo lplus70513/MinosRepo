@@ -55,7 +55,6 @@ public class HexRayCast : MonoBehaviour
 
     void ClickObject()
     {
-        // Debug.Log($"成功执行ClickObject");
         if (Physics.Raycast(screenRay,out hitInfo,1000f,mapLayerMask))
         {
             HexCell cell = hitInfo.collider.GetComponent<HexCell>();
@@ -69,6 +68,8 @@ public class HexRayCast : MonoBehaviour
             HexCoordX = x;
 
             HexCoordZ = z;
+
+            PlayerMovementSystem.Instance.HandleClick(x, z);
         }
     }
 }
