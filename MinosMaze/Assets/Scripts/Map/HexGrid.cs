@@ -67,11 +67,13 @@ public class HexGrid : MonoBehaviour
 
     public static int HexDistance(int x1, int z1, int x2, int z2)
     {
-        int q1 = x1 - (z1 - (z1 & 1)) / 2;
-        int r1 = z1;
-        int q2 = x2 - (z2 - (z2 & 1)) / 2;
-        int r2 = z2;
-        return (Mathf.Abs(q1 - q2) + Mathf.Abs(r1 - r2) + Mathf.Abs(q1 + r1 - q2 - r2)) / 2;
+        int q1 = x1 + z1;
+        int r1 = -z1;
+        int s1 = -q1 - r1;
+        int q2 = x2 + z2;
+        int r2 = -z2;
+        int s2 = -q2 - r2;
+        return (Mathf.Abs(q1 - q2) + Mathf.Abs(r1 - r2) + Mathf.Abs(s1 - s2)) / 2;
     }
 
     public static List<(int x, int z)> GetCoordsInRange(int centerX, int centerZ, int range)
@@ -93,10 +95,7 @@ public class HexGrid : MonoBehaviour
     public static List<(int x, int z)> GetWalkableNeighbors(int x, int z, CombatantView exclude = null)
     {
         List<(int x, int z)> neighbors = new();
-        int parity = z & 1;
-        (int dx, int dz)[] offsets = parity == 0
-            ? new (int, int)[] { (1, 0), (0, -1), (-1, -1), (-1, 0), (-1, 1), (0, 1) }
-            : new (int, int)[] { (1, 0), (1, -1), (0, -1), (-1, 0), (0, 1), (1, 1) };
+        (int dx, int dz)[] offsets = { (1, 0), (-1, 0), (0, 1), (-1, 1), (1, -1), (0, -1) };
 
         foreach (var (dx, dz) in offsets)
         {
