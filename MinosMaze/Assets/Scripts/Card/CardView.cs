@@ -104,7 +104,7 @@ public class CardView : MonoBehaviour
 
         if (Card.ManualTargetEffect != null)
         {
-            CancelTargeting();
+            ResolveTargeting();
             return;
         }
 
@@ -163,8 +163,7 @@ public class CardView : MonoBehaviour
 
         if (!Interactions.Instance.PlayerCanInteract()) return;
 
-        Vector3 mousePos = MouseUtil.GetMousePositionInWorldSpace(-1);
-        EnemyView target = ManualTargetSystem.Instance.EndTargeting(mousePos);
+        EnemyView target = ManualTargetSystem.Instance.EndTargeting();
 
         bool hasCost = CostSystem.Instance.HasEnoughCost(Card.Cost);
 

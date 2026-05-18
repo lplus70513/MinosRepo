@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// ÓÎÏ·ÐÐÎª¿ØÖÆÆ÷ 
+// ï¿½ï¿½Ï·ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
 
 public class ActionSystem : Singleton<ActionSystem>
 {
@@ -15,19 +15,19 @@ public class ActionSystem : Singleton<ActionSystem>
     private static Dictionary<Type, List<Action<GameAction>>> postSubs = new();
     private static Dictionary<Type, Func<GameAction,IEnumerator>> performers = new();
 
-    // PerformÖ´ÐÐº¯Êý
+    // PerformÖ´ï¿½Ðºï¿½ï¿½ï¿½
     public void Perform(GameAction action, System.Action OnPerformFinished = null)
     {
-        // ·ÀÖ¹ÖØ¸´ÊäÈë£¬µ±´æÔÚÕýÔÚÖ´ÐÐµÄ¶¯×÷£¬½«²»»áÖ´ÐÐÐÂ¶¯×÷
+        // ï¿½ï¿½Ö¹ï¿½Ø¸ï¿½ï¿½ï¿½ï¿½ë£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ÐµÄ¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ï¿½ï¿½Â¶ï¿½ï¿½ï¿½
         if (IsPerforming) return;
 
-        // ¿ªÊ¼Ö´ÐÐµ±Ç°¶¯×÷£¬×èÖ¹ÆäËü¶¯×÷Ö´ÐÐ
+        // ï¿½ï¿½Ê¼Ö´ï¿½Ðµï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ï¿½
         IsPerforming = true;
 
-        // Æô¶¯ºËÐÄÁ÷³ÌFlow£¬´«Èë¶¯×÷
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Flowï¿½ï¿½ï¿½ï¿½ï¿½ë¶¯ï¿½ï¿½
         StartCoroutine(Flow(action, () =>
         {
-            // Íê³ÉÖ´ÐÐ
+            // ï¿½ï¿½ï¿½Ö´ï¿½ï¿½
             IsPerforming =  false;
             OnPerformFinished?.Invoke(); 
         }));
