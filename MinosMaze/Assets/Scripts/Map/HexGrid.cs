@@ -52,6 +52,11 @@ public class HexGrid : MonoBehaviour
         return cell;
     }
 
+    public static bool ContainsCell(int x, int z)
+    {
+        return cellDict.ContainsKey((x, z));
+    }
+
     public static Vector3 GetStandingPoint(int x, int z)
     {
         if (cellDict.TryGetValue((x, z), out HexCell cell) && cell.standingPoint != null)

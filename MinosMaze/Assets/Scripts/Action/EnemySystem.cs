@@ -59,28 +59,35 @@ public class EnemySystem : Singleton<EnemySystem>
 
     private void EnemyTurnPreReaction(EnemyTurnGA enemyTurnGA)
     {
+        HashSet<(int, int)> reservedCells = new();
         foreach(var enemy in enemyBoardView.EnemyViews)
         {
             switch (enemy.EnemyType)
             {
                 case EnemyType.Normal:
-                    QueueNormalMove(enemy, enemyTurnGA);
+                    QueueNormalMove(enemy, enemyTurnGA, reservedCells);
                     break;
             }
         }
     }
 
-    private void QueueNormalMove(EnemyView enemy, EnemyTurnGA ga)
+    private void QueueNormalMove(EnemyView enemy, EnemyTurnGA ga, HashSet<(int, int)> reservedCells)
     {
         HeroView hero = HeroSystem.Instance.HeroView;
         int dist = HexGrid.HexDistance(enemy.HexCoordX, enemy.HexCoordZ, hero.HexCoordX, hero.HexCoordZ);
         if (dist <= 1) return;
 
-        var path = HexPathfinder.FindPath(enemy.HexCoordX, enemy.HexCoordZ, hero.HexCoordX, hero.HexCoordZ, enemy);
+        var extraExcluded = new HashSet<(int, int)>(reservedCells);
+        extraExcluded.Remove((enemy.HexCoordX, enemy.HexCoordZ));
+        var path = HexPathfinder.FindPath(enemy.HexCoordX, enemy.HexCoordZ, hero.HexCoordX, hero.HexCoordZ, enemy, extraExcluded);
         if (path != null && path.Count >= 2)
         {
             var (x, z) = path[1];
-            ga.PreReactions.Add(new MoveGA(enemy, x, z));
+            if (!reservedCells.Contains((x, z)))
+            {
+                reservedCells.Add((x, z));
+                ga.PreReactions.Add(new MoveGA(enemy, x, z));
+            }
         }
     }
 
@@ -98,6 +105,14 @@ public class EnemySystem : Singleton<EnemySystem>
     {
         EnemyView attacker = attackHeroGA.Attacker;
         HeroView heroView = HeroSystem.Instance.HeroView;
+
+        int dist = HexGrid.HexDistance(attacker.HexCoordX, attacker.HexCoordZ, heroView.HexCoordX, heroView.HexCoordZ);
+        if (dist > 1)
+        {
+            Debug.LogWarning($"[EnemySystem] {attacker.name} 攻击距离不足 (距离={dist})，跳过攻击");
+            yield break;
+        }
+
         Vector3 direction = (heroView.transform.position - attacker.transform.position).normalized;
         Vector3 startPos = attacker.transform.position;
         Vector3 targetPos = startPos + direction * 1f;

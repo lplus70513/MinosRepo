@@ -3,7 +3,8 @@ using UnityEngine;
 
 public static class HexPathfinder
 {
-    public static List<(int x, int z)> FindPath(int startX, int startZ, int goalX, int goalZ, CombatantView exclude = null)
+    public static List<(int x, int z)> FindPath(int startX, int startZ, int goalX, int goalZ,
+        CombatantView exclude = null, HashSet<(int, int)> extraExcluded = null)
     {
         if (startX == goalX && startZ == goalZ)
             return new List<(int, int)> { (startX, startZ) };
@@ -28,9 +29,23 @@ public static class HexPathfinder
             closedSet.Add((current.X, current.Z));
 
             var neighbors = HexGrid.GetWalkableNeighbors(current.X, current.Z, exclude);
+
+            // 目标格被英雄占用时 GetWalkableNeighbors 会将其排除，手动补回
+            if (HexGrid.HexDistance(current.X, current.Z, goalX, goalZ) == 1)
+            {
+                bool goalInNeighbors = false;
+                foreach (var (nx, nz) in neighbors)
+                {
+                    if (nx == goalX && nz == goalZ) { goalInNeighbors = true; break; }
+                }
+                if (!goalInNeighbors && HexGrid.ContainsCell(goalX, goalZ))
+                    neighbors.Add((goalX, goalZ));
+            }
+
             foreach (var (nx, nz) in neighbors)
             {
                 if (closedSet.Contains((nx, nz))) continue;
+                if (extraExcluded != null && extraExcluded.Contains((nx, nz)) && (nx != goalX || nz != goalZ)) continue;
 
                 int g = current.G + 1;
                 if (nodeDict.TryGetValue((nx, nz), out PathNode existing))
