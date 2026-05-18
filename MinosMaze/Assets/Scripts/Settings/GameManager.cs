@@ -5,12 +5,12 @@ public class GameManager : MonoBehaviour
 {
     private static GameManager _instance;
 
-    // ÓÅ»¯µã£ºÌá¹©Ò»¸ö¹«¹²µÄÖ»¶ÁÊôĞÔ£¬Íâ²¿ÎŞ·¨ĞŞ¸Ä
+    // ï¿½Å»ï¿½ï¿½ã£ºï¿½á¹©Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö»ï¿½ï¿½ï¿½ï¿½ï¿½Ô£ï¿½ï¿½â²¿ï¿½Ş·ï¿½ï¿½Ş¸ï¿½
     public static GameManager Instance
     {
         get
         {
-            // Èç¹ûÊµÀıÎª¿Õ£¬³¢ÊÔÔÚ³¡¾°ÖĞ²éÕÒ£¨·ÀÖ¹Awake»¹Ã»Ö´ĞĞÊ±µÄ·ÃÎÊ£©
+            // ï¿½ï¿½ï¿½Êµï¿½ï¿½Îªï¿½Õ£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú³ï¿½ï¿½ï¿½ï¿½Ğ²ï¿½ï¿½Ò£ï¿½ï¿½ï¿½Ö¹Awakeï¿½ï¿½Ã»Ö´ï¿½ï¿½Ê±ï¿½Ä·ï¿½ï¿½Ê£ï¿½
             if (_instance == null)
             {
                 _instance = FindObjectOfType<GameManager>();
@@ -19,24 +19,24 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    [Header("UI ÒıÓÃ")]
+    [Header("UI ï¿½ï¿½ï¿½ï¿½")]
     public GameObject SettingsPanel;
 
     private void Awake()
     {
-        // 1. µ¥Àı¼ì²é
+        // 1. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         if (_instance != null && _instance != this)
         {
             Destroy(gameObject);
             return;
         }
 
-        // 2. ¸³Öµ²¢³Ö¾Ã»¯
+        // 2. ï¿½ï¿½Öµï¿½ï¿½ï¿½Ö¾Ã»ï¿½
         _instance = this;
         DontDestroyOnLoad(gameObject);
 
-        // 3. ¼ÓÔØÖ÷²Ëµ¥
-        // ½¨Òé£º¼ÓÒ»¸öÅĞ¶Ï£¬·ÀÖ¹ÖØ¸´¼ÓÔØ
+        // 3. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½
+        // ï¿½ï¿½ï¿½é£ºï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ğ¶Ï£ï¿½ï¿½ï¿½Ö¹ï¿½Ø¸ï¿½ï¿½ï¿½ï¿½ï¿½
         if (SceneManager.GetSceneByName("MainMenu").isLoaded == false)
         {
             SceneManager.LoadScene("MainMenu", LoadSceneMode.Additive);
@@ -44,35 +44,50 @@ public class GameManager : MonoBehaviour
 
         if (SettingsPanel == null)
         {
-            // ³¢ÊÔÔÚ³¡¾°ÖĞÍ¨¹ıÃû×Ö²éÕÒ
+            // ï¿½ï¿½ï¿½ï¿½ï¿½Ú³ï¿½ï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½ï¿½ï¿½ï¿½Ö²ï¿½ï¿½ï¿½
             GameObject panelObj = GameObject.Find("SettingsPanel");
             if (panelObj != null)
             {
                 SettingsPanel = panelObj;
-                Debug.Log("×Ô¶¯ÕÒµ½ÁË SettingsPanel£¡");
+                Debug.Log("ï¿½Ô¶ï¿½ï¿½Òµï¿½ï¿½ï¿½ SettingsPanelï¿½ï¿½");
             }
         }
     }
 
     public void OpenSettings()
     {
+        FindSettingsPanelIfNull();
         if (SettingsPanel != null)
         {
             SettingsPanel.SetActive(true);
-            Debug.Log("ÉèÖÃ½çÃæÒÑ´ò¿ª");
+            Debug.Log("è®¾ç½®é¢æ¿å·²æ‰“å¼€");
         }
         else
         {
-            Debug.LogError("´íÎó£ºSettingsPanel ÒıÓÃÎ´¸³Öµ£¡Çë¼ì²é³¡¾°0µÄInspector¡£");
+            Debug.LogError("è®¾ç½®SettingsPanel å¼•ç”¨æœªèµ‹å€¼ï¼è¯·æ£€æŸ¥åœºæ™¯0çš„Inspectorã€‚");
         }
     }
 
     public void CloseSettings()
     {
+        FindSettingsPanelIfNull();
         if (SettingsPanel != null)
         {
             SettingsPanel.SetActive(false);
-            Debug.Log("ÉèÖÃ½çÃæÒÑ¹Ø±Õ");
+            Debug.Log("è®¾ç½®é¢æ¿å·²å…³é—­");
+        }
+    }
+
+    private void FindSettingsPanelIfNull()
+    {
+        if (SettingsPanel == null)
+        {
+            GameObject panelObj = GameObject.Find("SettingsPanel");
+            if (panelObj != null)
+            {
+                SettingsPanel = panelObj;
+                Debug.Log("è‡ªåŠ¨æ‰¾åˆ°äº† SettingsPanelï¼");
+            }
         }
     }
 }
