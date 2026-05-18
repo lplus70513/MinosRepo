@@ -52,18 +52,15 @@ public class CardView : MonoBehaviour
 
     void OnMouseDown()
     {
-        Debug.Log($"[CardView] OnMouseDown: {Card.Name}");
 
         if (!Interactions.Instance.PlayerCanInteract())
         {
-            Debug.LogWarning("[CardView] Player cannot interact (Blocked by Interactions).");
             return;
         }
 
         if (Card.ManualTargetEffect != null)
         {
             if (Interactions.Instance.PlayerIsDragging) return;
-            Debug.Log("[CardView] Detected ManualTargetEffect. Starting Targeting System.");
             Interactions.Instance.PlayerIsTargeting = true;
             targetingCard = this;
             ManualTargetSystem.Instance.StartTargeting(transform.position);
@@ -76,7 +73,6 @@ public class CardView : MonoBehaviour
         else
         {
             if (targetingCard != null) targetingCard.CancelTargeting();
-            Debug.Log("[CardView] No ManualTargetEffect. Starting Drag logic.");
             Interactions.Instance.PlayerIsDragging = true;
             wrapper.SetActive(true);
             CardViewHoverSystem.Instance.Hide();
@@ -112,34 +108,25 @@ public class CardView : MonoBehaviour
             return;
         }
 
-        Debug.Log("[CardView] Non-targeted card logic.");
         bool hasCost = CostSystem.Instance.HasEnoughCost(Card.Cost);
 
         bool hitSomething = Physics.Raycast(transform.position, Vector3.forward, out RaycastHit hit, 10f, dropLayer);
 
         if (hasCost && hitSomething)
         {
-            Debug.Log($"[CardView] Raycast Hit: {hit.transform.name}, Tag: {hit.transform.tag}");
-
             if (hit.transform.tag == "Card")
             {
-                Debug.Log("[CardView] Hit another Card. Returning to start.");
                 transform.position = dragStartPosition;
                 transform.rotation = dragStartRotation;
             }
             else
             {
-                Debug.Log("[CardView] SUCCESS: Performing PlayCardGA (No Target).");
                 PlayCardGA playCardGA = new(Card);
                 ActionSystem.Instance.Perform(playCardGA);
             }
         }
         else
         {
-            if (!hasCost) Debug.LogWarning("[CardView] Not enough cost.");
-            if (!hitSomething) Debug.LogWarning("[CardView] Raycast hit nothing valid.");
-
-            Debug.Log("[CardView] Returning card to hand.");
             transform.position = dragStartPosition;
             transform.rotation = dragStartRotation;
         }
@@ -161,7 +148,6 @@ public class CardView : MonoBehaviour
             hoverOtherCardTimer += Time.deltaTime;
             if (hoverOtherCardTimer >= 0.5f)
             {
-                Debug.Log("[CardView] Hovering over another card for 0.5s, cancel targeting.");
                 CancelTargeting();
             }
         }
@@ -180,17 +166,7 @@ public class CardView : MonoBehaviour
         Vector3 mousePos = MouseUtil.GetMousePositionInWorldSpace(-1);
         EnemyView target = ManualTargetSystem.Instance.EndTargeting(mousePos);
 
-        if (target == null)
-        {
-            Debug.LogWarning("[CardView] Target is NULL. Did you release over an enemy?");
-        }
-        else
-        {
-            Debug.Log($"[CardView] Target acquired: {target.name}");
-        }
-
         bool hasCost = CostSystem.Instance.HasEnoughCost(Card.Cost);
-        if (!hasCost) Debug.LogWarning("[CardView] Not enough Cost!");
 
         if (target != null && hasCost && Card.HasAttackRange)
         {
@@ -198,20 +174,17 @@ public class CardView : MonoBehaviour
             int dist = HexGrid.HexDistance(hero.HexCoordX, hero.HexCoordZ, target.HexCoordX, target.HexCoordZ);
             if (dist > Card.AttackRange)
             {
-                Debug.LogWarning($"[CardView] 目标({target.name})超出攻击范围 (距离={dist}, 范围={Card.AttackRange})");
                 target = null;
             }
         }
 
         if (target != null && hasCost)
         {
-            Debug.Log("[CardView] SUCCESS: Performing PlayCardGA with Target.");
             PlayCardGA playCardGA = new(Card, target);
             ActionSystem.Instance.Perform(playCardGA);
             return;
         }
 
-        Debug.Log("[CardView] Conditions failed. Card remains in hand.");
         CardViewHoverSystem.Instance.Hide();
         wrapper.SetActive(true);
     }
@@ -219,7 +192,6 @@ public class CardView : MonoBehaviour
     private void CancelTargeting()
     {
         CleanupTargeting();
-        Debug.Log("[CardView] Targeting cancelled.");
         CardViewHoverSystem.Instance.Hide();
         wrapper.SetActive(true);
         hoverOtherCardTimer = 0f;
