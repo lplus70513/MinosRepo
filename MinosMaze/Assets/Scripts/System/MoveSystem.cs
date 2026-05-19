@@ -18,7 +18,7 @@ public class MoveSystem : Singleton<MoveSystem>
     {
         CombatantView mover = moveGA.Mover;
 
-        if (HexGrid.IsCellOccupied(moveGA.ToX, moveGA.ToZ, mover))
+        if (HexMove.IsCellOccupied(moveGA.ToX, moveGA.ToZ, mover))
         {
             Debug.LogWarning($"[MoveSystem] {mover.name} 目标格 ({moveGA.ToX}, {moveGA.ToZ}) 已被占据，跳过移动");
             yield break;

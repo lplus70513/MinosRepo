@@ -29,11 +29,11 @@ public class PlayerMovementSystem : Singleton<PlayerMovementSystem>
             if (shouldShow)
             {
                 HeroView hero = HeroSystem.Instance.HeroView;
-                HexGrid.HighlightMoveCellsInRange(hero.HexCoordX, hero.HexCoordZ, RemainingMovementPoints);
+                HexMove.HighlightMoveCellsInRange(hero.HexCoordX, hero.HexCoordZ, RemainingMovementPoints);
             }
             else
             {
-                HexGrid.ClearMoveHighlights();
+                HexMove.ClearMoveHighlights();
             }
             highlightsVisible = shouldShow;
         }
@@ -61,7 +61,7 @@ public class PlayerMovementSystem : Singleton<PlayerMovementSystem>
         int dist = HexGrid.HexDistance(hero.HexCoordX, hero.HexCoordZ, hexX, hexZ);
         if (dist != 1) return;
 
-        if (HexGrid.IsCellOccupied(hexX, hexZ)) return;
+        if (HexMove.IsCellOccupied(hexX, hexZ)) return;
 
         RemainingMovementPoints--;
         MoveGA moveGA = new(hero, hexX, hexZ);

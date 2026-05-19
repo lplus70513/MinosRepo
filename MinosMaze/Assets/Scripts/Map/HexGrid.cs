@@ -1,12 +1,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// 六边形地图生成与管理器。
+// 负责在 Awake 时根据 mapRadius 生成六角格地图，
+// 并提供坐标查询、距离计算、范围获取、邻居获取、高亮显示等静态工具方法。
 public class HexGrid : MonoBehaviour
 {
+    // 地图半径（以六角格为单位的环数），0 = 仅中心一格
     public int mapRadius = 2;
 
+    // 六角格预制体，需挂载 HexCell 组件
     public GameObject hexPrefab;
 
+    // 轴向坐标 (x, z) → HexCell 的映射字典，全局静态以便跨类访问
     private static Dictionary<(int x, int z), HexCell> cellDict = new();
 
     void Awake()
@@ -15,12 +21,15 @@ public class HexGrid : MonoBehaviour
         CreateHexagonMap();
     }
 
+    // 生成六边形区域地图：以 (0,0) 为中心，逐 Z 层、逐 X 列生成六角格。
+    // 内层循环的 X 范围在两端各缩进，形成六边形轮廓。
     void CreateHexagonMap()
     {
         Vector3 center = Vector3.zero;
 
         for (int z = -mapRadius; z <= mapRadius; z++)
         {
+            // 每一行 Z 的 X 范围：越靠近两端越窄，形成六边形形状
             for (int x = -mapRadius - Mathf.Min(z,0) ; x <= mapRadius - Mathf.Max(z,0); x++)
             {
                 Vector3 position = center + GetHexWorldPosition(x, z);
@@ -29,6 +38,9 @@ public class HexGrid : MonoBehaviour
         }
     }
 
+    // 轴向坐标 (x, z) → 世界坐标（Y 轴固定为 0）。
+    // 水平偏移：(2*x + z) * innerRadius，错行排列实现六边形平铺。
+    // 垂直偏移：-z * outerRadius * 1.5，保证行与行之间紧密贴合。
     Vector3 GetHexWorldPosition(int x, int z)
     {
         Vector3 position;
@@ -38,6 +50,7 @@ public class HexGrid : MonoBehaviour
         return position;
     }
 
+    // 在指定世界坐标处实例化一个六角格，设置其轴向坐标并注册到 cellDict
     void CreateHexCell(Vector3 position, int x, int z)
     {
         GameObject hexCellObject = Instantiate(hexPrefab, position, Quaternion.Euler(0, 90, 0), transform);
@@ -46,17 +59,20 @@ public class HexGrid : MonoBehaviour
         cellDict[(x, z)] = hexCell;
     }
 
+    // 根据轴向坐标获取 HexCell，不存在则返回 null
     public static HexCell GetCell(int x, int z)
     {
         cellDict.TryGetValue((x, z), out HexCell cell);
         return cell;
     }
 
+    // 检查指定轴向坐标处是否存在六角格
     public static bool ContainsCell(int x, int z)
     {
         return cellDict.ContainsKey((x, z));
     }
 
+    // 获取指定六角格上挂载的 standingPoint 世界坐标（单位站立位置）
     public static Vector3 GetStandingPoint(int x, int z)
     {
         if (cellDict.TryGetValue((x, z), out HexCell cell) && cell.standingPoint != null)
@@ -65,8 +81,12 @@ public class HexGrid : MonoBehaviour
         return Vector3.zero;
     }
 
+    // 计算两个轴向坐标之间的六边形距离（步数）。
+    // 内部将轴向坐标转为立方体坐标 (q, r, s) 后取切比雪夫距离。
+    // 公式：distance = (|Δq| + |Δr| + |Δs|) / 2
     public static int HexDistance(int x1, int z1, int x2, int z2)
     {
+        // 轴向 → 立方体坐标
         int q1 = x1 + z1;
         int r1 = -z1;
         int s1 = -q1 - r1;
@@ -76,6 +96,7 @@ public class HexGrid : MonoBehaviour
         return (Mathf.Abs(q1 - q2) + Mathf.Abs(r1 - r2) + Mathf.Abs(s1 - s2)) / 2;
     }
 
+    // 获取以 (centerX, centerZ) 为中心、range 步内的所有六角格坐标（含中心）
     public static List<(int x, int z)> GetCoordsInRange(int centerX, int centerZ, int range)
     {
         List<(int x, int z)> result = new();
@@ -92,35 +113,7 @@ public class HexGrid : MonoBehaviour
         return result;
     }
 
-    public static List<(int x, int z)> GetWalkableNeighbors(int x, int z, CombatantView exclude = null)
-    {
-        List<(int x, int z)> neighbors = new();
-        (int dx, int dz)[] offsets = { (1, 0), (-1, 0), (0, 1), (-1, 1), (1, -1), (0, -1) };
-
-        foreach (var (dx, dz) in offsets)
-        {
-            int nx = x + dx;
-            int nz = z + dz;
-            if (cellDict.ContainsKey((nx, nz)) && !IsCellOccupied(nx, nz, exclude))
-                neighbors.Add((nx, nz));
-        }
-        return neighbors;
-    }
-
-    public static bool IsCellOccupied(int x, int z, CombatantView exclude = null)
-    {
-        HeroView hero = HeroSystem.Instance.HeroView;
-        if (hero != null && hero != exclude && hero.HexCoordX == x && hero.HexCoordZ == z)
-            return true;
-
-        foreach (var enemy in EnemySystem.Instance.Enemies)
-        {
-            if (enemy != null && enemy != exclude && enemy.HexCoordX == x && enemy.HexCoordZ == z)
-                return true;
-        }
-        return false;
-    }
-
+    // 高亮显示中心格 range 步内的所有格子（用于显示攻击范围等）
     public static void HighlightCellsInRange(int centerX, int centerZ, int range)
     {
         var coords = GetCoordsInRange(centerX, centerZ, range);
@@ -131,6 +124,7 @@ public class HexGrid : MonoBehaviour
         }
     }
 
+    // 清除所有格子的攻击高亮
     public static void ClearAllHighlights()
     {
         foreach (var cell in cellDict.Values)
@@ -139,22 +133,6 @@ public class HexGrid : MonoBehaviour
         }
     }
 
-    public static void HighlightMoveCellsInRange(int centerX, int centerZ, int range)
-    {
-        var coords = GetCoordsInRange(centerX, centerZ, range);
-        foreach (var (x, z) in coords)
-        {
-            if (IsCellOccupied(x, z)) continue;
-            HexCell cell = GetCell(x, z);
-            if (cell != null) cell.SetMoveHighlight(true);
-        }
-    }
-
-    public static void ClearMoveHighlights()
-    {
-        foreach (var cell in cellDict.Values)
-        {
-            cell.SetMoveHighlight(false);
-        }
-    }
+    // 供 HexMove 遍历所有六角格的外部访问器
+    public static IEnumerable<HexCell> AllCells => cellDict.Values;
 }
