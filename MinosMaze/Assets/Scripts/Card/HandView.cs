@@ -93,6 +93,15 @@ public class HandView : MonoBehaviour
         hoveredCardIndex = null;
     }
 
+    public Vector3 GetHandCenterPosition()
+    {
+        if (splineContainer == null) return transform.position;
+        Spline spline = splineContainer.Splines[0];
+        Vector3 pos = spline.EvaluatePosition(0.5f);
+        pos.z = transform.position.z - 0.5f;
+        return pos;
+    }
+
     private int FindCardIndex(CardView cardView)
     {
         for (int i = 0; i < handCards.Count; i++)

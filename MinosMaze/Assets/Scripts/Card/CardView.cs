@@ -17,12 +17,16 @@ public class CardView : MonoBehaviour
     [SerializeField] private float hoverScale = 1.3f;
     [SerializeField] private float hoverYOffset = 1.5f;
     [SerializeField] private float hoverZOffset = -0.5f;
-    [SerializeField] private float dragAlpha = 0.4f;
     [SerializeField] private float animDuration = 0.25f;
+    [SerializeField] private int sortingOrderBoost = 100;
 
     public Card Card { get; private set; }
     public HandView handView;
     public int handIndex;
+
+    private enum DragState { None, Hovered, DraggingNonPlay, DraggingPlay }
+
+    private DragState state;
 
     private Vector3 dragStartPosition;
     private Quaternion dragStartRotation;
@@ -34,19 +38,22 @@ public class CardView : MonoBehaviour
     private float hoverOtherCardTimer;
 
     private bool isHovered;
-    private bool isReturning;
+    private bool wasInPlayArea;
     private Vector3 wrapperOrigLocalPos;
     private Vector3 wrapperOrigLocalScale;
-    private SpriteRenderer[] allRenderers;
-    private TMP_Text[] allTexts;
+    private Renderer[] allRenderers;
+    private int[] origSortingOrders;
 
     void Awake()
     {
-        allRenderers = GetComponentsInChildren<SpriteRenderer>();
-        allTexts = GetComponentsInChildren<TMP_Text>();
         wrapperOrigLocalPos = wrapper.transform.localPosition;
         wrapperOrigLocalScale = wrapper.transform.localScale;
         dragStartScale = transform.localScale;
+
+        allRenderers = GetComponentsInChildren<Renderer>(true);
+        origSortingOrders = new int[allRenderers.Length];
+        for (int i = 0; i < allRenderers.Length; i++)
+            origSortingOrders[i] = allRenderers[i].sortingOrder;
     }
 
     public void SetUp(Card card)
@@ -65,7 +72,6 @@ public class CardView : MonoBehaviour
     {
         if (!Interactions.Instance.PlayerCanInteract()) return;
         if (!Interactions.Instance.PlayerCanHover()) return;
-        if (isReturning) return;
         hoveredCard = this;
     }
 
@@ -84,13 +90,21 @@ public class CardView : MonoBehaviour
         if (targetingCard != null && targetingCard != this)
             targetingCard.CancelTargeting();
 
-        EndHoverImmediate();
-
         dragStartPosition = transform.position;
         dragStartRotation = transform.rotation;
         dragStartScale = transform.localScale;
 
-        ManualTargetSystem.Instance.StartTargeting(dragStartPosition);
+        if (!isHovered)
+        {
+            BringToFront();
+            wrapper.transform.DOKill();
+            Vector3 raised = wrapperOrigLocalPos;
+            raised.y = hoverYOffset;
+            raised.z = hoverZOffset;
+            wrapper.transform.localPosition = raised;
+            wrapper.transform.localScale = Vector3.one * hoverScale;
+            isHovered = true;
+        }
 
         Interactions.Instance.PlayerIsDragging = true;
 
@@ -106,16 +120,42 @@ public class CardView : MonoBehaviour
         }
 
         handView?.OnCardDragStarted(this);
-        SetAlpha(dragAlpha, 0.15f);
 
         transform.rotation = Quaternion.Euler(0, 0, 0);
         transform.position = MouseUtil.GetMousePositionInWorldSpace(-1);
+
+        state = DragState.DraggingNonPlay;
+        wasInPlayArea = false;
     }
 
     void OnMouseDrag()
     {
         if (!Interactions.Instance.PlayerCanInteract()) return;
-        transform.position = MouseUtil.GetMousePositionInWorldSpace(-1);
+
+        bool inPlayArea = IsMouseInPlayArea();
+
+        if (Card.ManualTargetEffect != null)
+        {
+            if (inPlayArea && !wasInPlayArea)
+            {
+                EnterPlayAreaTargeting();
+            }
+            else if (!inPlayArea && wasInPlayArea)
+            {
+                LeavePlayAreaTargeting();
+            }
+
+            if (state == DragState.DraggingNonPlay)
+            {
+                transform.position = MouseUtil.GetMousePositionInWorldSpace(-1);
+            }
+        }
+        else
+        {
+            transform.position = MouseUtil.GetMousePositionInWorldSpace(-1);
+        }
+
+        wasInPlayArea = inPlayArea;
     }
 
     void OnMouseUp()
@@ -126,32 +166,67 @@ public class CardView : MonoBehaviour
             return;
         }
 
+        bool inPlayArea = IsMouseInPlayArea();
+
         if (Card.ManualTargetEffect != null)
         {
-            ResolveTargeting();
-            return;
-        }
-
-        bool hasCost = CostSystem.Instance.HasEnoughCost(Card.Cost);
-        bool hitSomething = Physics.Raycast(transform.position, Vector3.forward, out RaycastHit hit, 10f, dropLayer);
-
-        if (hasCost && hitSomething)
-        {
-            if (hit.transform.tag == "Card")
+            if (inPlayArea)
+            {
+                ResolveTargeting();
+            }
+            else
             {
                 CancelDrag();
             }
-            else
+            return;
+        }
+
+        if (inPlayArea)
+        {
+            bool hasCost = CostSystem.Instance.HasEnoughCost(Card.Cost);
+            if (hasCost)
             {
                 CleanupDragOnSuccess();
                 PlayCardGA playCardGA = new(Card);
                 ActionSystem.Instance.Perform(playCardGA);
+            }
+            else
+            {
+                CancelDrag();
             }
         }
         else
         {
             CancelDrag();
         }
+    }
+
+    // ==================== Play-area transitions (targeting) ====================
+
+    void EnterPlayAreaTargeting()
+    {
+        state = DragState.DraggingPlay;
+        if (handView != null)
+        {
+            Vector3 handCenter = handView.GetHandCenterPosition();
+            transform.DOKill();
+            transform.position = handCenter;
+        }
+        ManualTargetSystem.Instance.StartTargeting(transform.position);
+    }
+
+    void LeavePlayAreaTargeting()
+    {
+        state = DragState.DraggingNonPlay;
+        ManualTargetSystem.Instance.StopTargeting();
+        transform.position = MouseUtil.GetMousePositionInWorldSpace(-1);
+    }
+
+    bool IsMouseInPlayArea()
+    {
+        Vector3 mousePos = MouseUtil.GetMousePositionInWorldSpace(-1);
+        return Physics.Raycast(mousePos, Vector3.forward, out RaycastHit hit, 10f, dropLayer)
+               && hit.transform.tag != "Card";
     }
 
     // ==================== Update ====================
@@ -197,6 +272,7 @@ public class CardView : MonoBehaviour
     {
         if (isHovered) return;
         isHovered = true;
+        BringToFront();
         handView?.OnCardHovered(this);
 
         wrapper.transform.DOKill();
@@ -209,24 +285,15 @@ public class CardView : MonoBehaviour
 
     void EndHoverAnimation()
     {
+        if (!isHovered) return;
         isHovered = false;
+        state = DragState.None;
+        RestoreSortingOrder();
         handView?.OnCardUnhovered(this);
 
         wrapper.transform.DOKill();
         wrapper.transform.DOLocalMove(wrapperOrigLocalPos, animDuration).SetEase(Ease.OutQuad);
         wrapper.transform.DOScale(wrapperOrigLocalScale, animDuration).SetEase(Ease.OutQuad);
-    }
-
-    void EndHoverImmediate()
-    {
-        if (!isHovered) return;
-        isHovered = false;
-        if (hoveredCard == this) hoveredCard = null;
-        if (previousHoveredCard == this) previousHoveredCard = null;
-        wrapper.transform.DOKill();
-        wrapper.transform.localPosition = wrapperOrigLocalPos;
-        wrapper.transform.localScale = wrapperOrigLocalScale;
-        handView?.OnCardUnhovered(this);
     }
 
     // ==================== Targeting ====================
@@ -293,10 +360,15 @@ public class CardView : MonoBehaviour
         if (targetingCard == this) targetingCard = null;
         HexGrid.ClearAllHighlights();
 
-        isReturning = true;
-        SetAlpha(1f, 0.15f);
+        state = DragState.None;
+
+        RestoreSortingOrder();
+        wrapper.transform.DOKill();
+        wrapper.transform.DOLocalMove(wrapperOrigLocalPos, animDuration).SetEase(Ease.OutQuad);
+        wrapper.transform.DOScale(wrapperOrigLocalScale, animDuration).SetEase(Ease.OutQuad);
+        isHovered = false;
+
         handView?.OnCardDragEnded(this);
-        DOVirtual.DelayedCall(animDuration + 0.55f, () => { if (this) isReturning = false; });
     }
 
     void CleanupDragOnSuccess()
@@ -306,22 +378,23 @@ public class CardView : MonoBehaviour
         ManualTargetSystem.Instance.StopTargeting();
         if (targetingCard == this) targetingCard = null;
         HexGrid.ClearAllHighlights();
+        state = DragState.None;
+        isHovered = false;
+        RestoreSortingOrder();
         handView?.ClearDragState();
     }
 
-    // ==================== Alpha ====================
+    // ==================== Sorting Order ====================
 
-    void SetAlpha(float alpha, float duration = 0f)
+    void BringToFront()
     {
-        foreach (var sr in allRenderers)
-        {
-            sr.DOKill();
-            sr.DOFade(alpha, duration);
-        }
-        foreach (var t in allTexts)
-        {
-            t.DOKill();
-            t.DOFade(alpha, duration);
-        }
+        for (int i = 0; i < allRenderers.Length; i++)
+            allRenderers[i].sortingOrder = origSortingOrders[i] + sortingOrderBoost;
+    }
+
+    void RestoreSortingOrder()
+    {
+        for (int i = 0; i < allRenderers.Length; i++)
+            allRenderers[i].sortingOrder = origSortingOrders[i];
     }
 }
