@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: "\u7EA2\u8272\u53F2\u83B1\u59C6"
   m_EditorClassIdentifier: 
   <Image>k__BackingField: {fileID: -1879758174, guid: 652938cc25f2a0e41a73e290c93758ec, type: 3}
+  <DisplayName>k__BackingField: "\u53F2\u83B1\u59C6"
   <Health>k__BackingField: 26
   <AttackPower>k__BackingField: 6
+  <Type>k__BackingField: 0

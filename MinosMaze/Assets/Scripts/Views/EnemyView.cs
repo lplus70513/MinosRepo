@@ -9,12 +9,15 @@ public class EnemyView : CombatantView
 
     public int AttackPower { get; set; }
 
+    public string DisplayName { get; private set; }
+
     public EnemyType EnemyType { get; private set; }
 
     public void Setup(EnemyData enemyData, int hexX, int hexZ)
     {
         HexCoordX = hexX;
         HexCoordZ = hexZ;
+        DisplayName = enemyData.DisplayName;
         EnemyType = enemyData.Type;
         AttackPower = enemyData.AttackPower;
         UpdateAttackText();
