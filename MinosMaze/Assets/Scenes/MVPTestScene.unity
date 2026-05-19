@@ -1486,6 +1486,7 @@ MonoBehaviour:
   cardPrefab: {fileID: 4242832466906094473, guid: 2b3bcc96197235c43908769f802f3fc2, type: 3}
   splineContainer: {fileID: 1670044388}
   spawnPoint: {fileID: 761744264}
+  hoverGapRatio: 0.15
 --- !u!1001 &420230359
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4117,7 +4118,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 43.7, y: -248.3}
+  m_AnchoredPosition: {x: 78, y: -229}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &1419236041
