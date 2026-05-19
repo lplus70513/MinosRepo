@@ -9,6 +9,9 @@ public class MatchSetupSystem : MonoBehaviour
     [SerializeField] private PerkData perkData;
     [SerializeField] private List<EnemyData> enemyDatas;
 
+    [Header("UI")]
+    [SerializeField] private HealthBarPanel healthBarPanel;
+
     [Header("六角格生成坐标")]
     [SerializeField] private Vector2Int heroSpawnCoord = Vector2Int.zero;
     [SerializeField] private List<Vector2Int> enemySpawnCoords;
@@ -19,6 +22,8 @@ public class MatchSetupSystem : MonoBehaviour
         _ = PlayerMovementSystem.Instance;
         HeroSystem.Instance.Setup(heroData, heroSpawnCoord);
         EnemySystem.Instance.Setup(enemyDatas, enemySpawnCoords);
+        if (healthBarPanel != null)
+            healthBarPanel.SetupBattle(HeroSystem.Instance.HeroView, EnemySystem.Instance.Enemies);
         CardSystem.Instance.SetUp(heroData.Deck);
         PerkSystem.Instance.AddPerk(new Perk(perkData));
         DrawCardsGA drawCardsGA = new(5);

@@ -1,45 +1,44 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class HealthBarUI : MonoBehaviour
 {
-    /*
-    public Image hpBar;
-    public Image delayBar;
-    private float maxHealth = 70f;
-    private float currentHealth;
+    [SerializeField] private Image fillImage;
+    [SerializeField] private Image bufferImage;
+    [SerializeField] private float bufferDuration = 0.5f;
 
-    private Coroutine delayCoroutine;
+    private int maxHealth;
+    private Tween bufferTween;
 
-    private void start()
+    public void Initialize(int maxHp, int currentHp)
     {
-        currentHealth = maxHealth;
-        UpdateBars(1f);
+        maxHealth = maxHp;
+        float fill = (float)currentHp / maxHp;
+
+        bufferImage.type = Image.Type.Filled;
+        bufferImage.fillMethod = Image.FillMethod.Horizontal;
+        bufferImage.color = Color.white;
+        bufferImage.transform.SetAsFirstSibling();
+
+        fillImage.type = Image.Type.Filled;
+        fillImage.fillMethod = Image.FillMethod.Horizontal;
+
+        fillImage.fillAmount = fill;
+        bufferImage.fillAmount = fill;
     }
 
-    private void Update()
+    public void SetHealth(int newHealth)
     {
-        if (Input.GetKeyDown(KeyCode.Q)) TakeDamage(10f);
-        if (Input.GetKeyDown(KeyCode.R)) FullHealth();
+        float targetFill = (float)newHealth / maxHealth;
+        fillImage.fillAmount = targetFill;
+
+        bufferTween?.Kill();
+        bufferTween = bufferImage.DOFillAmount(targetFill, bufferDuration);
     }
 
-    private void UpdateBars(float targetFill)
+    private void OnDestroy()
     {
-        hpBar.fillAmount = targetFill;
-        if(delayCoroutine != null)
-        {
-            StopCoroutine(delayCoroutine);
-        }
-        delayCoroutine = StartCoroutine(DelayBarLerp(targetfill));
+        bufferTween?.Kill();
     }
-
-    IEnumerator DelayBarLerp(float targetFill)
-    {
-        yield return delayBar.fillAmount;
-        for(float t = 0; t<0.25f;)
-    }
-
-    */
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,6 +17,8 @@ public class CombatantView : MonoBehaviour
 
     public int MaxHealth { get; private set; }
     public int CurrentHealth { get; private set; }
+
+    public event Action<CombatantView, int> OnHealthChanged;
 
     private Dictionary<StatusEffectType, int> statusEffects = new();
 
@@ -46,6 +49,7 @@ public class CombatantView : MonoBehaviour
         MaxHealth = CurrentHealth = health;
         spriteRenderer.sprite = image;
         UpdateHealthText();
+        OnHealthChanged?.Invoke(this, CurrentHealth);
     }
 
     private void UpdateHealthText()
@@ -83,6 +87,7 @@ public class CombatantView : MonoBehaviour
 
         transform.DOShakePosition(0.2f, 0.5f);
         UpdateHealthText();
+        OnHealthChanged?.Invoke(this, CurrentHealth);
     }
 
     public void AddStatusEffect(StatusEffectType type, int stackCount)
