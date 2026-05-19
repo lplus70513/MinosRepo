@@ -82,11 +82,16 @@ public class GameManager : MonoBehaviour
     {
         if (SettingsPanel == null)
         {
-            GameObject panelObj = GameObject.Find("SettingsPanel");
-            if (panelObj != null)
+            // GameObject.Find 找不到非激活物体，SettingsPanel 默认关闭，需要换用能查找非激活的 API
+            var allObjects = FindObjectsByType<GameObject>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            foreach (var obj in allObjects)
             {
-                SettingsPanel = panelObj;
-                Debug.Log("自动找到了 SettingsPanel！");
+                if (obj.name == "SettingsPanel")
+                {
+                    SettingsPanel = obj;
+                    Debug.Log("自动找到了 SettingsPanel！");
+                    break;
+                }
             }
         }
     }
