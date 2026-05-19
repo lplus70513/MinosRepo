@@ -6,6 +6,7 @@ public class HealthBarPanel : MonoBehaviour
     [SerializeField] private HealthBarUI playerBar;
     [SerializeField] private HealthBarUI enemyBarPrefab;
     [SerializeField] private RectTransform enemyBarContainer;
+    [SerializeField] private Vector3 enemyBarScale = Vector3.one;
 
     private Dictionary<CombatantView, HealthBarUI> barMap = new();
 
@@ -25,6 +26,7 @@ public class HealthBarPanel : MonoBehaviour
             enemy.OnHealthChanged += OnCombatantHealthChanged;
             var bar = Instantiate(enemyBarPrefab, enemyBarContainer);
             bar.Initialize(enemy.MaxHealth, enemy.CurrentHealth);
+            bar.transform.localScale = enemyBarScale;
             barMap[enemy] = bar;
         }
     }
