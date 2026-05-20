@@ -3,12 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using DG.Tweening; // ȷ�������� DOTween
+using DG.Tweening;
+using Spine;
+using Spine.Unity;
 
 public class CombatantView : MonoBehaviour
 {
     [SerializeField] private TMP_Text healthText;
     [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private SkeletonAnimation skeletonAnimation;
 
     [SerializeField] private StatusEffectsUI statusEffectsUI;
 
@@ -21,6 +24,8 @@ public class CombatantView : MonoBehaviour
     public event Action<CombatantView, int> OnHealthChanged;
 
     private Dictionary<StatusEffectType, int> statusEffects = new();
+
+    protected bool facingRight = false;
 
     private static Camera camera3D;
     private static Material alwaysVisibleMaterial;
@@ -42,14 +47,65 @@ public class CombatantView : MonoBehaviour
 
         if (spriteRenderer != null && alwaysVisibleMaterial != null)
             spriteRenderer.material = alwaysVisibleMaterial;
+
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
+            spriteRenderer.receiveShadows = true;
+        }
     }
 
     protected void SetupBase(int health, Sprite image)
     {
         MaxHealth = CurrentHealth = health;
-        spriteRenderer.sprite = image;
+        if (spriteRenderer != null)
+            spriteRenderer.sprite = image;
+
+        if (skeletonAnimation != null)
+            FreezeAtFirstFrame();
+
         UpdateHealthText();
         OnHealthChanged?.Invoke(this, CurrentHealth);
+    }
+
+    private void FreezeAtFirstFrame()
+    {
+        if (skeletonAnimation.Skeleton == null || skeletonAnimation.Skeleton.Data == null) return;
+        var anim = skeletonAnimation.Skeleton.Data.FindAnimation("animation");
+        if (anim != null)
+            anim.Apply(skeletonAnimation.Skeleton, 0, 0, false, null, 1, MixBlend.Setup, MixDirection.In);
+        skeletonAnimation.enabled = false;
+    }
+
+    public IEnumerator PlayAttackAnimation()
+    {
+        if (skeletonAnimation == null) yield break;
+        if (skeletonAnimation.Skeleton == null || skeletonAnimation.Skeleton.Data == null) yield break;
+        var anim = skeletonAnimation.Skeleton.Data.FindAnimation("animation");
+        if (anim == null) yield break;
+
+        skeletonAnimation.enabled = true;
+        var track = skeletonAnimation.AnimationState.SetAnimation(0, "animation", false);
+
+        while (!track.IsComplete)
+            yield return null;
+
+        FreezeAtFirstFrame();
+    }
+
+    public void SetFacing(int targetHexX, int targetHexZ)
+    {
+        int worldDx = 2 * (targetHexX - HexCoordX) + (targetHexZ - HexCoordZ);
+        bool shouldFaceRight = worldDx > 0;
+        if (shouldFaceRight == facingRight) return;
+        facingRight = shouldFaceRight;
+
+        float absX = Mathf.Abs(transform.localScale.x);
+        float targetX = absX * (facingRight ? -1f : 1f);
+
+        Sequence seq = DOTween.Sequence();
+        seq.Append(transform.DOScaleX(0, 0.06f).SetEase(Ease.InQuad));
+        seq.Append(transform.DOScaleX(targetX, 0.06f).SetEase(Ease.OutQuad));
     }
 
     private void UpdateHealthText()

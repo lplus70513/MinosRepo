@@ -85,6 +85,10 @@ public class CardSystem : Singleton<CardSystem>
         // ����Ƿ�ѡ�����ֶ�Ŀ��
         if(playCardGA.Card.ManualTargetEffect != null)
         {
+            HeroView hero = HeroSystem.Instance.HeroView;
+            hero.SetFacing(playCardGA.ManualTarget.HexCoordX, playCardGA.ManualTarget.HexCoordZ);
+            yield return hero.PlayAttackAnimation();
+
             PerformEffectGA performEffectGA = new(playCardGA.Card.ManualTargetEffect, new() { playCardGA.ManualTarget });
             ActionSystem.Instance.AddReaction(performEffectGA);
         }

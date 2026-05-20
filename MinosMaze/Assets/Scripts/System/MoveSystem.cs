@@ -25,6 +25,7 @@ public class MoveSystem : Singleton<MoveSystem>
         }
 
         Vector3 targetPos = HexGrid.GetStandingPoint(moveGA.ToX, moveGA.ToZ);
+        mover.SetFacing(moveGA.ToX, moveGA.ToZ);
         Tween tween = mover.transform.DOMove(targetPos, 0.2f);
         yield return tween.WaitForCompletion();
         mover.HexCoordX = moveGA.ToX;
