@@ -5044,7 +5044,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b51ac4c003971d4fb93455fef0b9030, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  heroViewPrefab: {fileID: 6630097134241971516, guid: 02d470dff74f7e24fa2671bc4949ec5c, type: 3}
+  heroViewPrefab: {fileID: 7100000000000010000, guid: 1ce6e464003096c469412a0e46341b74, type: 3}
 --- !u!1 &1912773960
 GameObject:
   m_ObjectHideFlags: 0
