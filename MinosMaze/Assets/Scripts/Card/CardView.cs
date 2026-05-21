@@ -14,11 +14,10 @@ public class CardView : MonoBehaviour
     [SerializeField] private SpriteRenderer background;
 
     [Header("动画参数")]
-    [SerializeField] private float hoverScale = 1.3f;
+    [SerializeField] private float hoverScale = 1.2f;
     [SerializeField] private float hoverYOffset = 1.5f;
     [SerializeField] private float hoverZOffset = -0.5f;
     [SerializeField] private float animDuration = 0.25f;
-    [SerializeField] private int sortingOrderBoost = 100;
 
     public Card Card { get; private set; }
     public HandView handView;
@@ -42,7 +41,12 @@ public class CardView : MonoBehaviour
     private Vector3 wrapperOrigLocalPos;
     private Vector3 wrapperOrigLocalScale;
     private Renderer[] allRenderers;
+    private int[] origSortingLayerIDs;
     private int[] origSortingOrders;
+    private int[] origRenderQueues;
+    private Canvas[] allCanvases;
+    private int[] origCanvasSortingLayerIDs;
+    private int[] origCanvasSortingOrders;
 
     void Awake()
     {
@@ -51,9 +55,24 @@ public class CardView : MonoBehaviour
         dragStartScale = transform.localScale;
 
         allRenderers = GetComponentsInChildren<Renderer>(true);
+        origSortingLayerIDs = new int[allRenderers.Length];
         origSortingOrders = new int[allRenderers.Length];
+        origRenderQueues = new int[allRenderers.Length];
         for (int i = 0; i < allRenderers.Length; i++)
+        {
+            origSortingLayerIDs[i] = allRenderers[i].sortingLayerID;
             origSortingOrders[i] = allRenderers[i].sortingOrder;
+            origRenderQueues[i] = allRenderers[i].sharedMaterial.renderQueue;
+        }
+
+        allCanvases = GetComponentsInChildren<Canvas>(true);
+        origCanvasSortingLayerIDs = new int[allCanvases.Length];
+        origCanvasSortingOrders = new int[allCanvases.Length];
+        for (int i = 0; i < allCanvases.Length; i++)
+        {
+            origCanvasSortingLayerIDs[i] = allCanvases[i].sortingLayerID;
+            origCanvasSortingOrders[i] = allCanvases[i].sortingOrder;
+        }
     }
 
     public void SetUp(Card card)
@@ -388,13 +407,49 @@ public class CardView : MonoBehaviour
 
     void BringToFront()
     {
+        int topID = GetTopSortingLayerID();
         for (int i = 0; i < allRenderers.Length; i++)
-            allRenderers[i].sortingOrder = origSortingOrders[i] + sortingOrderBoost;
+        {
+            allRenderers[i].sortingLayerID = topID;
+            allRenderers[i].sortingOrder = 32767;
+            allRenderers[i].material.renderQueue = 5000;
+        }
+        for (int i = 0; i < allCanvases.Length; i++)
+        {
+            allCanvases[i].overrideSorting = true;
+            allCanvases[i].sortingLayerID = topID;
+            allCanvases[i].sortingOrder = 32767;
+        }
     }
 
     void RestoreSortingOrder()
     {
         for (int i = 0; i < allRenderers.Length; i++)
+        {
+            allRenderers[i].sortingLayerID = origSortingLayerIDs[i];
             allRenderers[i].sortingOrder = origSortingOrders[i];
+            allRenderers[i].material.renderQueue = origRenderQueues[i];
+        }
+        for (int i = 0; i < allCanvases.Length; i++)
+        {
+            allCanvases[i].overrideSorting = false;
+            allCanvases[i].sortingLayerID = origCanvasSortingLayerIDs[i];
+            allCanvases[i].sortingOrder = origCanvasSortingOrders[i];
+        }
+    }
+
+    private static int GetTopSortingLayerID()
+    {
+        int bestID = 0;
+        int bestValue = int.MinValue;
+        foreach (var layer in SortingLayer.layers)
+        {
+            if (layer.value > bestValue)
+            {
+                bestValue = layer.value;
+                bestID = layer.id;
+            }
+        }
+        return bestID;
     }
 }
