@@ -38,6 +38,7 @@ public class CardView : MonoBehaviour
 
     private bool isHovered;
     private bool wasInPlayArea;
+    private bool isTransitioning;
     private Vector3 wrapperOrigLocalPos;
     private Vector3 wrapperOrigLocalScale;
     private Renderer[] allRenderers;
@@ -155,16 +156,16 @@ public class CardView : MonoBehaviour
 
         if (Card.ManualTargetEffect != null)
         {
-            if (inPlayArea && !wasInPlayArea)
+            if (inPlayArea && !wasInPlayArea && !isTransitioning)
             {
                 EnterPlayAreaTargeting();
             }
-            else if (!inPlayArea && wasInPlayArea)
+            else if (!inPlayArea && wasInPlayArea && !isTransitioning)
             {
                 LeavePlayAreaTargeting();
             }
 
-            if (state == DragState.DraggingNonPlay)
+            if (state == DragState.DraggingNonPlay && !isTransitioning)
             {
                 transform.position = MouseUtil.GetMousePositionInWorldSpace(-1);
             }
@@ -224,21 +225,32 @@ public class CardView : MonoBehaviour
 
     void EnterPlayAreaTargeting()
     {
+        isTransitioning = true;
         state = DragState.DraggingPlay;
-        if (handView != null)
-        {
-            Vector3 handCenter = handView.GetHandCenterPosition();
-            transform.DOKill();
-            transform.position = handCenter;
-        }
-        ManualTargetSystem.Instance.StartTargeting(transform.position);
+        Vector3 target = handView != null ? handView.GetHandCenterPosition() : transform.position;
+        transform.DOKill();
+        transform.DOMove(target, animDuration).SetEase(Ease.OutBack, 0.7f)
+            .OnComplete(() =>
+            {
+                ManualTargetSystem.Instance.StartTargeting(transform.position);
+                isTransitioning = false;
+                wasInPlayArea = true;
+            });
     }
 
     void LeavePlayAreaTargeting()
     {
-        state = DragState.DraggingNonPlay;
+        isTransitioning = true;
         ManualTargetSystem.Instance.StopTargeting();
-        transform.position = MouseUtil.GetMousePositionInWorldSpace(-1);
+        state = DragState.DraggingNonPlay;
+        Vector3 mousePos = MouseUtil.GetMousePositionInWorldSpace(-1);
+        transform.DOKill();
+        transform.DOMove(mousePos, animDuration * 0.5f).SetEase(Ease.OutQuad)
+            .OnComplete(() =>
+            {
+                isTransitioning = false;
+                wasInPlayArea = false;
+            });
     }
 
     bool IsMouseInPlayArea()
@@ -380,6 +392,7 @@ public class CardView : MonoBehaviour
         HexGrid.ClearAllHighlights();
 
         state = DragState.None;
+        isTransitioning = false;
 
         RestoreSortingOrder();
         wrapper.transform.DOKill();
@@ -398,6 +411,7 @@ public class CardView : MonoBehaviour
         if (targetingCard == this) targetingCard = null;
         HexGrid.ClearAllHighlights();
         state = DragState.None;
+        isTransitioning = false;
         isHovered = false;
         RestoreSortingOrder();
         handView?.ClearDragState();
