@@ -13,9 +13,10 @@ public class HexGrid : MonoBehaviour
     public GameObject hexPrefab;
 
     // 轴向坐标 (x, z) → HexCell 的映射字典，全局静态以便跨类访问
-    private static Dictionary<(int x, int z), HexCell> cellDict = new();
+    // protected 使得 WorldMapGrid 子类可写入同一字典
+    protected static Dictionary<(int x, int z), HexCell> cellDict = new();
 
-    void Awake()
+    protected virtual void Awake()
     {
         cellDict.Clear();
         CreateHexagonMap();
@@ -23,7 +24,7 @@ public class HexGrid : MonoBehaviour
 
     // 生成六边形区域地图：以 (0,0) 为中心，逐 Z 层、逐 X 列生成六角格。
     // 内层循环的 X 范围在两端各缩进，形成六边形轮廓。
-    void CreateHexagonMap()
+    protected virtual void CreateHexagonMap()
     {
         Vector3 center = Vector3.zero;
 
@@ -41,7 +42,7 @@ public class HexGrid : MonoBehaviour
     // 轴向坐标 (x, z) → 世界坐标（Y 轴固定为 0）。
     // 水平偏移：(2*x + z) * innerRadius，错行排列实现六边形平铺。
     // 垂直偏移：-z * outerRadius * 1.5，保证行与行之间紧密贴合。
-    Vector3 GetHexWorldPosition(int x, int z)
+    protected virtual Vector3 GetHexWorldPosition(int x, int z)
     {
         Vector3 position;
         position.x = (2*x + z) * HexMetrics.innerRadius;
@@ -50,10 +51,22 @@ public class HexGrid : MonoBehaviour
         return position;
     }
 
-    // 在指定世界坐标处实例化一个六角格，设置其轴向坐标并注册到 cellDict
-    void CreateHexCell(Vector3 position, int x, int z)
+    // 获取指定坐标处应使用的格子预制体（子类可覆写以支持多 prefab）
+    protected virtual GameObject GetPrefabForCell(int x, int z)
     {
-        GameObject hexCellObject = Instantiate(hexPrefab, position, Quaternion.Euler(0, 90, 0), transform);
+        return hexPrefab;
+    }
+
+    // 在指定世界坐标处实例化一个六角格，设置其轴向坐标并注册到 cellDict
+    protected virtual void CreateHexCell(Vector3 position, int x, int z)
+    {
+        GameObject prefab = GetPrefabForCell(x, z);
+        if (prefab == null)
+        {
+            Debug.LogWarning($"[HexGrid] 坐标 ({x}, {z}) 无对应 prefab，跳过创建");
+            return;
+        }
+        GameObject hexCellObject = Instantiate(prefab, position, Quaternion.Euler(0, 90, 0), transform);
         HexCell hexCell = hexCellObject.GetComponent<HexCell>();
         hexCell.SetCoord(x, z);
         cellDict[(x, z)] = hexCell;

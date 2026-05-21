@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -21,6 +22,15 @@ public class GameManager : MonoBehaviour
 
     [Header("UI ����")]
     public GameObject SettingsPanel;
+
+    [Header("大地图配置")]
+    [SerializeField] private string worldMapSceneName = "WorldMap";
+
+    // 大地图可序列化状态，跨场景保存/恢复
+    public WorldMapState WorldMapState = new();
+
+    // 当前加载的遭遇子场景名
+    private string currentEncounterScene;
 
     private void Awake()
     {
@@ -94,5 +104,66 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    // ========== 大地图场景管理 ==========
+
+    // 开始新游戏：卸载 MainMenu，加载大地图
+    public void NewGame()
+    {
+        WorldMapState = new WorldMapState();
+        if (SceneManager.GetSceneByName("MainMenu").isLoaded)
+            SceneManager.UnloadSceneAsync("MainMenu");
+        SceneManager.LoadScene(worldMapSceneName, LoadSceneMode.Additive);
+    }
+
+    // 保存大地图状态（由 WorldMapMovementSystem 在场景跳转前调用）
+    public void SaveWorldMapState(int x, int z, int movePoints)
+    {
+        WorldMapState.playerPosX = x;
+        WorldMapState.playerPosZ = z;
+        WorldMapState.remainingMovePoints = movePoints;
+    }
+
+    // 进入遭遇子场景：保存状态，卸载大地图，加载子场景
+    public void EnterEncounter(string sceneName)
+    {
+        currentEncounterScene = sceneName;
+        StartCoroutine(EnterEncounterRoutine(sceneName));
+    }
+
+    private IEnumerator EnterEncounterRoutine(string sceneName)
+    {
+        AsyncOperation unload = SceneManager.UnloadSceneAsync(worldMapSceneName);
+        if (unload != null)
+            yield return unload;
+        SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
+    }
+
+    // 退出遭遇子场景：标记当前格为已清除，卸载子场景，重新加载大地图
+    public void ExitEncounter()
+    {
+        Vector2Int cell = new(WorldMapState.playerPosX, WorldMapState.playerPosZ);
+        if (!WorldMapState.clearedCells.Contains(cell))
+            WorldMapState.clearedCells.Add(cell);
+
+        StartCoroutine(ExitEncounterRoutine());
+    }
+
+    private IEnumerator ExitEncounterRoutine()
+    {
+        if (!string.IsNullOrEmpty(currentEncounterScene))
+        {
+            AsyncOperation unload = SceneManager.UnloadSceneAsync(currentEncounterScene);
+            if (unload != null)
+                yield return unload;
+        }
+        SceneManager.LoadScene(worldMapSceneName, LoadSceneMode.Additive);
+    }
+
+    // GameOver：移动点耗尽且未到 BOSS 格（暂留空）
+    public void OnGameOver()
+    {
+        Debug.Log("[GameManager] 移动点耗尽，游戏失败");
     }
 }

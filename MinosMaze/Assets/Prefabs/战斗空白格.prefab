@@ -373,6 +373,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hexCoordX: 0
   hexCoordZ: 0
+  cellType: 0
   standingPoint: {fileID: 2899570962975638757}
   highlightIndicator: {fileID: 576996413807545402}
   moveHighlightIndicator: {fileID: 7340127723209937601}

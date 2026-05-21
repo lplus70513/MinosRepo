@@ -17,6 +17,8 @@ public class HexRayCast : MonoBehaviour
 
     public Transform hexStandingPoint;
 
+    public MapCellType CurrentCellType { get; private set; }
+
     Camera myCamera;
 
     void Start()
@@ -69,7 +71,12 @@ public class HexRayCast : MonoBehaviour
 
             HexCoordZ = z;
 
-            PlayerMovementSystem.Instance.HandleClick(x, z);
+            CurrentCellType = cell.cellType;
+
+            if (cell.IsBattleCell)
+                PlayerMovementSystem.Instance.HandleClick(x, z);
+            else if (cell.IsWorldMapCell)
+                WorldMapMovementSystem.Instance.HandleClick(x, z);
         }
     }
 }
