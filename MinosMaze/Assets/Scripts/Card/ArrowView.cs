@@ -106,7 +106,7 @@ public class ArrowView : MonoBehaviour
 
             rects[i].transform.position = pos;
             if (tangent.sqrMagnitude > 1e-8f)
-                rects[i].transform.right = tangent.normalized;
+                rects[i].transform.up = tangent.normalized;
         }
     }
 
@@ -118,7 +118,7 @@ public class ArrowView : MonoBehaviour
         Vector3 tangentEnd = CubicBezierTangent(startPosition, p1, p2, endPosition, 1f);
 
         if (tangentEnd.sqrMagnitude > 1e-8f)
-            arrowHead.transform.right = tangentEnd.normalized;
+            arrowHead.transform.up = tangentEnd.normalized;
     }
 
     private void CalculateControlPoints(Vector3 p0, Vector3 p3, out Vector3 p1, out Vector3 p2)
