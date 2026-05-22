@@ -106,9 +106,16 @@ public class GameManager : MonoBehaviour
         }
     }
 
+
+    public void GameStart()
+    {
+        SceneManager.LoadScene("Scene2");
+    }
+
     // ========== 大地图场景管理 ==========
 
     // 开始新游戏：卸载 MainMenu，加载大地图
+
     public void NewGame()
     {
         WorldMapState = new WorldMapState();
