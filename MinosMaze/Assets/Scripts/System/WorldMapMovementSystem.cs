@@ -76,12 +76,12 @@ public class WorldMapMovementSystem : Singleton<WorldMapMovementSystem>
         return true;
     }
 
-    // 高亮当前英雄周围距离=1的格子
+    // 高亮当前玩家周围距离=1的格子
     private void ShowAdjacentHighlights()
     {
-        HeroView hero = HeroSystem.Instance.HeroView;
-        if (hero == null) return;
-        HexMove.HighlightMoveCellsInRange(hero.HexCoordX, hero.HexCoordZ, 1);
+        WorldMapPlayerView player = WorldMapPlayerSystem.Instance.PlayerView;
+        if (player == null) return;
+        HexMove.HighlightMoveCellsInRange(player.HexCoordX, player.HexCoordZ, 1);
     }
 
     private void ClearAllHighlights()
@@ -95,20 +95,20 @@ public class WorldMapMovementSystem : Singleton<WorldMapMovementSystem>
         if (isMoving) return;
         if (MovePoints <= 0) return;
 
-        HeroView hero = HeroSystem.Instance.HeroView;
-        if (hero == null) return;
+        WorldMapPlayerView player = WorldMapPlayerSystem.Instance.PlayerView;
+        if (player == null) return;
 
-        int dist = HexGrid.HexDistance(hero.HexCoordX, hero.HexCoordZ, hexX, hexZ);
+        int dist = HexGrid.HexDistance(player.HexCoordX, player.HexCoordZ, hexX, hexZ);
         if (dist != 1) return;
 
         HexCell targetCell = HexGrid.GetCell(hexX, hexZ);
         if (targetCell == null) return;
         if (!targetCell.IsWorldMapCell) return;
 
-        StartCoroutine(MoveToCell(hero, hexX, hexZ, targetCell.cellType));
+        StartCoroutine(MoveToCell(player, hexX, hexZ, targetCell.cellType));
     }
 
-    private IEnumerator MoveToCell(HeroView hero, int hexX, int hexZ, MapCellType cellType)
+    private IEnumerator MoveToCell(WorldMapPlayerView player, int hexX, int hexZ, MapCellType cellType)
     {
         isMoving = true;
         ClearAllHighlights();
@@ -116,11 +116,11 @@ public class WorldMapMovementSystem : Singleton<WorldMapMovementSystem>
 
         MovePoints--;
         Vector3 targetPos = HexGrid.GetStandingPoint(hexX, hexZ);
-        Tween tween = hero.transform.DOMove(targetPos, moveDuration);
+        Tween tween = player.transform.DOMove(targetPos, moveDuration);
         yield return tween.WaitForCompletion();
 
-        hero.HexCoordX = hexX;
-        hero.HexCoordZ = hexZ;
+        player.HexCoordX = hexX;
+        player.HexCoordZ = hexZ;
 
         // 根据抵达格类型处理场景跳转
         string sceneName = GetSceneForCellType(cellType);
@@ -160,9 +160,9 @@ public class WorldMapMovementSystem : Singleton<WorldMapMovementSystem>
         GameManager gm = GameManager.Instance;
         if (gm == null) return;
 
-        HeroView hero = HeroSystem.Instance.HeroView;
-        if (hero != null)
-            gm.SaveWorldMapState(hero.HexCoordX, hero.HexCoordZ, MovePoints);
+        WorldMapPlayerView player = WorldMapPlayerSystem.Instance.PlayerView;
+        if (player != null)
+            gm.SaveWorldMapState(player.HexCoordX, player.HexCoordZ, MovePoints, player.CurrentHealth, player.MaxHealth);
     }
 
     // 外部补给移动点

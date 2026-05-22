@@ -337,11 +337,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25c715160eb6a2e45807cb3b6bbf6e17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapRadius: 7
-  hexPrefab: {fileID: 0}
+  mapRadius: 5
+  hexPrefab: {fileID: 508066840148608474, guid: 2691d139ece13ac41bab5b4bcb2644a4, type: 3}
   birthCoord: {x: 2, y: 0}
   initialMovePoints: 9
-  heroData: {fileID: 0}
+  playerMaxHealth: 100
   cellPrefabMap: []
   randomPool: []
 --- !u!4 &1124998874

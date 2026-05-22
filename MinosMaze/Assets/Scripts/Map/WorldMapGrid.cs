@@ -24,7 +24,7 @@ public class WorldMapGrid : HexGrid
     [Header("大地图配置")]
     [SerializeField] private Vector2Int birthCoord = new(2, 0);
     [SerializeField] private int initialMovePoints = 10;
-    [SerializeField] private HeroData heroData;
+    [SerializeField] private int playerMaxHealth = 100;
 
     [Header("格子类型-Prefab映射")]
     [SerializeField] private CellPrefabMapping[] cellPrefabMap;
@@ -45,7 +45,7 @@ public class WorldMapGrid : HexGrid
         BuildPrefabLookup();
         BuildCellTypeLayout();
         base.Awake(); // 生成格子，过程中会调用 GetPrefabForCell / CreateHexCell
-        PositionHero();
+        PositionPlayer();
     }
 
     // 构建 prefab 类型查找表
@@ -128,12 +128,14 @@ public class WorldMapGrid : HexGrid
         }
     }
 
-    // 放置英雄：优先从 GameManager 恢复位置，否则使用出生格
-    private void PositionHero()
+    // 放置玩家：优先从 GameManager 恢复位置与生命值，否则使用出生格与默认属性
+    private void PositionPlayer()
     {
         GameManager gm = GameManager.Instance;
         int posX = birthCoord.x;
         int posZ = birthCoord.y;
+        int maxHp = playerMaxHealth;
+        int curHp = playerMaxHealth;
 
         if (gm != null)
         {
@@ -143,12 +145,17 @@ public class WorldMapGrid : HexGrid
                 posX = state.playerPosX;
                 posZ = state.playerPosZ;
             }
+            if (state != null && state.maxHealth > 0)
+            {
+                maxHp = state.maxHealth;
+                curHp = state.currentHealth;
+            }
         }
 
-        if (heroData != null && HeroSystem.Instance != null)
+        if (WorldMapPlayerSystem.Instance != null)
         {
             Vector2Int spawnCoord = new(posX, posZ);
-            HeroSystem.Instance.Setup(heroData, spawnCoord);
+            WorldMapPlayerSystem.Instance.Setup(spawnCoord, maxHp, curHp);
         }
     }
 }

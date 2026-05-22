@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
 
     [Header("大地图配置")]
     [SerializeField] private string worldMapSceneName = "WorldMap";
+    [SerializeField] private HeroData heroData;
 
     // 大地图可序列化状态，跨场景保存/恢复
     public WorldMapState WorldMapState = new();
@@ -119,17 +120,30 @@ public class GameManager : MonoBehaviour
     public void NewGame()
     {
         WorldMapState = new WorldMapState();
+        if (heroData != null)
+        {
+            WorldMapState.maxHealth = heroData.Health;
+            WorldMapState.currentHealth = heroData.Health;
+        }
         if (SceneManager.GetSceneByName("MainMenu").isLoaded)
             SceneManager.UnloadSceneAsync("MainMenu");
         SceneManager.LoadScene(worldMapSceneName, LoadSceneMode.Additive);
     }
 
     // 保存大地图状态（由 WorldMapMovementSystem 在场景跳转前调用）
-    public void SaveWorldMapState(int x, int z, int movePoints)
+    public void SaveWorldMapState(int x, int z, int movePoints, int currentHealth, int maxHealth)
     {
         WorldMapState.playerPosX = x;
         WorldMapState.playerPosZ = z;
         WorldMapState.remainingMovePoints = movePoints;
+        WorldMapState.currentHealth = currentHealth;
+        WorldMapState.maxHealth = maxHealth;
+    }
+
+    // 战斗结束时保存玩家生命值（由战斗场景退出按钮调用）
+    public void SaveBattleResult(int currentHealth)
+    {
+        WorldMapState.currentHealth = currentHealth;
     }
 
     // 进入遭遇子场景：保存状态，卸载大地图，加载子场景

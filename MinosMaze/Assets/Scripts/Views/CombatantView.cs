@@ -146,6 +146,13 @@ public class CombatantView : MonoBehaviour
         OnHealthChanged?.Invoke(this, CurrentHealth);
     }
 
+    public void SetCurrentHealth(int health)
+    {
+        CurrentHealth = Mathf.Clamp(health, 0, MaxHealth);
+        UpdateHealthText();
+        OnHealthChanged?.Invoke(this, CurrentHealth);
+    }
+
     public void AddStatusEffect(StatusEffectType type, int stackCount)
     {
         if (statusEffects.ContainsKey(type))

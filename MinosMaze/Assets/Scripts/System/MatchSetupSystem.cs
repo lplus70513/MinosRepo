@@ -21,6 +21,12 @@ public class MatchSetupSystem : MonoBehaviour
         _ = MoveSystem.Instance;
         _ = PlayerMovementSystem.Instance;
         HeroSystem.Instance.Setup(heroData, heroSpawnCoord);
+        // 如果大地图携带了生命值，覆盖当前生命值
+        var gm = GameManager.Instance;
+        if (gm != null && gm.WorldMapState != null && gm.WorldMapState.maxHealth > 0)
+        {
+            HeroSystem.Instance.HeroView.SetCurrentHealth(gm.WorldMapState.currentHealth);
+        }
         EnemySystem.Instance.Setup(enemyDatas, enemySpawnCoords);
         if (healthBarPanel != null)
             healthBarPanel.SetupBattle(HeroSystem.Instance.HeroView, EnemySystem.Instance.Enemies);

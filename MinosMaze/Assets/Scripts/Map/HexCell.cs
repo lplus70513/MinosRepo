@@ -74,4 +74,3 @@ public class HexCell : MonoBehaviour
             moveHighlightIndicator.SetActive(active);
     }
 }
-    
