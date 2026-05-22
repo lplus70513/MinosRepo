@@ -134,6 +134,7 @@ public class CombatantView : MonoBehaviour
         if (remainingDamage > 0)
         {
             CurrentHealth -= remainingDamage;
+            DamageTextManager.Instance.ShowDamage(transform.position, remainingDamage);
             if (CurrentHealth < 0)
             {
                 CurrentHealth = 0;
