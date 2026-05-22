@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7766888799972288182}
   - component: {fileID: 5697115340672956439}
   - component: {fileID: 1878810001995395356}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: WorldMapPlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
