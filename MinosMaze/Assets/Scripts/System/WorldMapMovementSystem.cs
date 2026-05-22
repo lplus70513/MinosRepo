@@ -76,17 +76,26 @@ public class WorldMapMovementSystem : Singleton<WorldMapMovementSystem>
         return true;
     }
 
-    // 高亮当前玩家周围距离=1的格子
+    // 高亮当前玩家周围距离=1的格子（自实现，不依赖 HexMove，大地图无 EnemySystem）
     private void ShowAdjacentHighlights()
     {
         WorldMapPlayerView player = WorldMapPlayerSystem.Instance.PlayerView;
         if (player == null) return;
-        HexMove.HighlightMoveCellsInRange(player.HexCoordX, player.HexCoordZ, 1);
+
+        var coords = HexGrid.GetCoordsInRange(player.HexCoordX, player.HexCoordZ, 1);
+        foreach (var (x, z) in coords)
+        {
+            HexCell cell = HexGrid.GetCell(x, z);
+            if (cell != null) cell.SetMoveHighlight(true);
+        }
     }
 
     private void ClearAllHighlights()
     {
-        HexMove.ClearMoveHighlights();
+        foreach (var cell in HexGrid.AllCells)
+        {
+            cell.SetMoveHighlight(false);
+        }
     }
 
     // HexRayCast 点击大地图格时调用
