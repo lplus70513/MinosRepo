@@ -261,9 +261,21 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -1916899210259106318, guid: a3dd25590fb5d124bab4239880595e13, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: a3dd25590fb5d124bab4239880595e13, type: 3}
       propertyPath: m_Name
       value: "\u7A7A\u767D"
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a3dd25590fb5d124bab4239880595e13, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a3dd25590fb5d124bab4239880595e13, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 5430627807877089604, guid: a3dd25590fb5d124bab4239880595e13, type: 3}
       propertyPath: m_LocalPosition.x
