@@ -3,78 +3,143 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+public enum PileType
+{
+    DrawPile,
+    DiscardPile,
+    ExhaustPile,
+    FullDeck
+}
+
 public class DeckViewer : MonoBehaviour
 {
-    [Header("UI Ãæ°åÒýÓÃ")]
-    public GameObject viewerPanel; // Õû¸ö²é¿´Ãæ°åµÄ GameObject
+    [Header("Panel")]
+    [SerializeField] private GameObject viewerPanel;
+    [SerializeField] private Button closeButton;
 
-    [Header("ÎÄ±¾ÏÔÊ¾ÒýÓÃ")]
-    public TextMeshProUGUI drawPileText;   // ³éÅÆ¶ÑÊýÁ¿ÎÄ±¾
-    public TextMeshProUGUI discardPileText; // ÆúÅÆ¶ÑÊýÁ¿ÎÄ±¾
-    public TextMeshProUGUI handText;       // ÊÖÅÆÊýÁ¿ÎÄ±¾
+    [Header("Tabs")]
+    [SerializeField] private Button drawPileTab;
+    [SerializeField] private Button discardPileTab;
+    [SerializeField] private Button exhaustPileTab;
+    [SerializeField] private Button fullDeckTab;
 
-    // ¿ÉÒÔÔÚÕâÀïÌí¼Ó¸ü¸´ÔÓµÄ UI£¬±ÈÈç¿¨ÅÆÁÐ±íµÄ Content ¸¸ÎïÌå
-    // public Transform cardListContent; 
+    [Header("List")]
+    [SerializeField] private Transform contentParent;
+    [SerializeField] private GameObject cardListEntryPrefab;
+
+    [Header("Info")]
+    [SerializeField] private TextMeshProUGUI countText;
+
+    private PileType currentPile = PileType.DrawPile;
+    private Dictionary<PileType, Button> tabButtons;
 
     private void Start()
     {
-        // ³õÊ¼×´Ì¬Òþ²ØÃæ°å
         if (viewerPanel != null) viewerPanel.SetActive(false);
+
+        tabButtons = new Dictionary<PileType, Button>
+        {
+            { PileType.DrawPile, drawPileTab },
+            { PileType.DiscardPile, discardPileTab },
+            { PileType.ExhaustPile, exhaustPileTab },
+            { PileType.FullDeck, fullDeckTab }
+        };
+
+        if (drawPileTab != null) drawPileTab.onClick.AddListener(() => SwitchTab(PileType.DrawPile));
+        if (discardPileTab != null) discardPileTab.onClick.AddListener(() => SwitchTab(PileType.DiscardPile));
+        if (exhaustPileTab != null) exhaustPileTab.onClick.AddListener(() => SwitchTab(PileType.ExhaustPile));
+        if (fullDeckTab != null) fullDeckTab.onClick.AddListener(() => SwitchTab(PileType.FullDeck));
+        if (closeButton != null) closeButton.onClick.AddListener(CloseViewer);
     }
 
-    // °ó¶¨µ½°´Å¥£º´ò¿ª²é¿´Æ÷
     public void OpenViewer()
     {
         if (CardSystem.Instance == null) return;
 
-        UpdateData();
+        Time.timeScale = 0f;
+        SwitchTab(currentPile);
         if (viewerPanel != null) viewerPanel.SetActive(true);
-
-        // ¿ÉÑ¡£ºÔÝÍ£ÓÎÏ·Ê±¼ä
-        // Time.timeScale = 0; 
     }
 
-    // °ó¶¨µ½°´Å¥£º¹Ø±Õ²é¿´Æ÷
     public void CloseViewer()
     {
+        Time.timeScale = 1f;
         if (viewerPanel != null) viewerPanel.SetActive(false);
-
-        // ¿ÉÑ¡£º»Ö¸´ÓÎÏ·Ê±¼ä
-        // Time.timeScale = 1;
     }
 
-    // ¸üÐÂ UI Êý¾Ý
-    private void UpdateData()
+    private void SwitchTab(PileType type)
+    {
+        currentPile = type;
+        UpdateView(type);
+        HighlightTab(type);
+    }
+
+    private void UpdateView(PileType type)
     {
         if (CardSystem.Instance == null) return;
 
-        // »ñÈ¡Êý¾Ý¸±±¾
-        var drawPile = CardSystem.Instance.GetDrawPileCopy();
-        var discardPile = CardSystem.Instance.GetDiscardPileCopy();
-        var hand = CardSystem.Instance.GetHandCopy();
+        foreach (Transform child in contentParent)
+        {
+            Destroy(child.gameObject);
+        }
 
-        // ¸üÐÂÎÄ±¾
-        if (drawPileText != null) drawPileText.text = $"³éÅÆ¶Ñ: {drawPile.Count} ÕÅ";
-        if (discardPileText != null) discardPileText.text = $"ÆúÅÆ¶Ñ: {discardPile.Count} ÕÅ";
-        if (handText != null) handText.text = $"ÊÖÅÆ: {hand.Count} ÕÅ";
+        List<Card> snapshot = GetSnapshot(type);
 
-        // [½ø½×] Èç¹ûÄãÏëÏÔÊ¾¾ßÌåµÄ¿¨ÅÆÁÐ±í£º
-        // DisplayCardList(drawPile); 
+        if (type == PileType.DrawPile)
+        {
+            Shuffle(snapshot);
+        }
+
+        foreach (var card in snapshot)
+        {
+            GameObject entry = Instantiate(cardListEntryPrefab, contentParent);
+            entry.GetComponent<CardListEntry>().SetUp(card);
+        }
+
+        if (countText != null)
+        {
+            string label = type switch
+            {
+                PileType.DrawPile => "æŠ½ç‰Œå †",
+                PileType.DiscardPile => "å¼ƒç‰Œå †",
+                PileType.ExhaustPile => "æ¶ˆè€—å †",
+                PileType.FullDeck => "å®Œæ•´ç‰Œç»„",
+                _ => ""
+            };
+            countText.text = $"{label}: {snapshot.Count} å¼ ";
+        }
     }
 
-    // [½ø½×] ÏÔÊ¾¾ßÌå¿¨ÅÆÁÐ±íµÄÊ¾ÀýÂß¼­
-    /*
-    private void DisplayCardList(List<Card> cards)
+    private List<Card> GetSnapshot(PileType type)
     {
-        // 1. Çå¿Õ¾ÉµÄ UI ÔªËØ
-        // foreach (Transform child in cardListContent) Destroy(child.gameObject);
-
-        // 2. ±éÀúÊý¾ÝÉú³ÉÐÂ UI
-        // foreach (var card in cards)
-        // {
-        //     GameObject newCardUI = Instantiate(cardPrefab, cardListContent);
-        //     newCardUI.GetComponent<CardView>().Setup(card.Data); // ¼ÙÉèÄãÓÐÔ¤ÖÆÌåºÍ Setup ·½·¨
-        // }
+        return type switch
+        {
+            PileType.DrawPile => CardSystem.Instance.GetDrawPileCopy(),
+            PileType.DiscardPile => CardSystem.Instance.GetDiscardPileCopy(),
+            PileType.ExhaustPile => CardSystem.Instance.GetExhaustPileCopy(),
+            PileType.FullDeck => CardSystem.Instance.GetFullDeckCopy(),
+            _ => new List<Card>()
+        };
     }
-    */
+
+    private void HighlightTab(PileType active)
+    {
+        foreach (var kvp in tabButtons)
+        {
+            if (kvp.Value != null)
+                kvp.Value.interactable = (kvp.Key != active);
+        }
+    }
+
+    private void Shuffle(List<Card> list)
+    {
+        System.Random rng = new System.Random();
+        int n = list.Count;
+        while (n > 1)
+        {
+            n--;
+            int k = rng.Next(n + 1);
+            (list[k], list[n]) = (list[n], list[k]);
+        }
+    }
 }

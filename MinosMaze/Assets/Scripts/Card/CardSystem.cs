@@ -9,20 +9,30 @@ public class CardSystem : Singleton<CardSystem>
     [SerializeField] private Transform drawPilePoint;
     [SerializeField] private Transform discardPilePoint;
 
-    // [����] ��ȡ�ƶ����ݵĹ�������
-    // ���ظ����Ա����ڲ����ݲ����ⲿ�޸�
     public List<Card> GetDrawPileCopy() => new List<Card>(drawPile);
     public List<Card> GetDiscardPileCopy() => new List<Card>(discardPile);
     public List<Card> GetHandCopy() => new List<Card>(hand);
+    public List<Card> GetExhaustPileCopy() => new List<Card>(exhaustPile);
 
-    // [����] ��ȡ������ʼ���� (�����Ҫ�鿴���׿��鹹��)
-    // �������� SetUp ʱ�����˳�ʼ���ݣ���������Ա��������������
-    // ������ṩһ����ȡ��ǰ���п��������ĸ�������
-    public int GetTotalCardCount() => drawPile.Count + discardPile.Count + hand.Count;
+    public List<Card> GetFullDeckCopy()
+    {
+        List<Card> full = new(drawPile.Count + discardPile.Count + exhaustPile.Count + hand.Count);
+        full.AddRange(drawPile);
+        full.AddRange(discardPile);
+        full.AddRange(exhaustPile);
+        full.AddRange(hand);
+        full.Sort((a, b) => string.Compare(a.Name, b.Name));
+        return full;
+    }
+
+    public void ExhaustCard(Card card) => exhaustPile.Add(card);
+
+    public int GetTotalCardCount() => drawPile.Count + discardPile.Count + hand.Count + exhaustPile.Count;
 
     private readonly List<Card> drawPile = new();
     private readonly List<Card> discardPile = new();
     private readonly List<Card> hand = new();
+    private readonly List<Card> exhaustPile = new();
 
     void OnEnable()
     {

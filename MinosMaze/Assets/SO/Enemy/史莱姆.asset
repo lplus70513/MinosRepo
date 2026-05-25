@@ -16,29 +16,18 @@ MonoBehaviour:
   <DisplayName>k__BackingField: "\u53F2\u83B1\u59C6"
   <HealthRange>k__BackingField:
     <Min>k__BackingField: 11
-    <Max>k__BackingField: 11
-  <AttackPower>k__BackingField: 4
+    <Max>k__BackingField: 14
+  <AttackPower>k__BackingField: 0
   <Type>k__BackingField: 0
   <ActionPool>k__BackingField:
-  - <ActionName>k__BackingField: 
-    <BaseDamage>k__BackingField: 0
-    <HitCount>k__BackingField: 0
-    <StatusEffects>k__BackingField: []
-    <Weight>k__BackingField: 0
-    <Tag>k__BackingField: 
-    <CooldownTurns>k__BackingField: 0
-  - <ActionName>k__BackingField: 
-    <BaseDamage>k__BackingField: 0
-    <HitCount>k__BackingField: 0
-    <StatusEffects>k__BackingField: []
-    <Weight>k__BackingField: 0
-    <Tag>k__BackingField: 
-    <CooldownTurns>k__BackingField: 0
-  - <ActionName>k__BackingField: 
-    <BaseDamage>k__BackingField: 0
-    <HitCount>k__BackingField: 0
-    <StatusEffects>k__BackingField: []
-    <Weight>k__BackingField: 0
+  - <ActionName>k__BackingField: "\u653B\u51FB"
+    <BaseDamage>k__BackingField: 10
+    <HitCount>k__BackingField: 1
+    <StatusEffects>k__BackingField:
+    - <EffectType>k__BackingField: 0
+      <StackCount>k__BackingField: 0
+      <Target>k__BackingField: 0
+    <Weight>k__BackingField: 1
     <Tag>k__BackingField: 
     <CooldownTurns>k__BackingField: 0
   <ActionsPerTurn>k__BackingField: 2
