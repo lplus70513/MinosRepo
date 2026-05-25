@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using DG.Tweening;
 
@@ -45,22 +46,69 @@ public class EnemySystem : Singleton<EnemySystem>
 
     private IEnumerator EnemyTurnPerformer(EnemyTurnGA enemyTurnGA)
     {
-        foreach(var enemy in enemyBoardView.EnemyViews)
+        foreach (var enemy in enemyBoardView.EnemyViews)
         {
-            switch (enemy.EnemyType)
-            {
-                case EnemyType.Normal:
-                    QueueNormalAttack(enemy, enemyTurnGA);
-                    break;
-            }
+            enemy.DecrementCooldowns();
+            SelectAndQueueActions(enemy, enemyTurnGA);
         }
         yield return null;
+    }
+
+    private void SelectAndQueueActions(EnemyView enemy, EnemyTurnGA ga)
+    {
+        HeroView hero = HeroSystem.Instance.HeroView;
+        int dist = HexGrid.HexDistance(enemy.HexCoordX, enemy.HexCoordZ, hero.HexCoordX, hero.HexCoordZ);
+
+        var actionPool = enemy.SourceData.ActionPool;
+        if (actionPool == null || actionPool.Count == 0)
+        {
+            if (dist <= 1)
+            {
+                ga.PerformReactions.Add(new AttackHeroGA(enemy));
+            }
+            return;
+        }
+
+        var available = actionPool.Where(a => !enemy.IsOnCooldown(a.Tag)).ToList();
+        var selected = WeightedSelectWithoutReplacement(available, enemy.SourceData.ActionsPerTurn);
+
+        foreach (var action in selected)
+        {
+            ga.PerformReactions.Add(new AttackHeroGA(enemy, action));
+        }
+    }
+
+    private List<EnemyAction> WeightedSelectWithoutReplacement(List<EnemyAction> pool, int count)
+    {
+        var result = new List<EnemyAction>();
+        var remaining = new List<EnemyAction>(pool);
+
+        for (int i = 0; i < count && remaining.Count > 0; i++)
+        {
+            int totalWeight = remaining.Sum(a => a.Weight);
+            if (totalWeight <= 0) break;
+
+            int roll = Random.Range(0, totalWeight);
+            int cumulative = 0;
+            for (int j = 0; j < remaining.Count; j++)
+            {
+                cumulative += remaining[j].Weight;
+                if (roll < cumulative)
+                {
+                    result.Add(remaining[j]);
+                    remaining.RemoveAt(j);
+                    break;
+                }
+            }
+        }
+
+        return result;
     }
 
     private void EnemyTurnPreReaction(EnemyTurnGA enemyTurnGA)
     {
         HashSet<(int, int)> reservedCells = new();
-        foreach(var enemy in enemyBoardView.EnemyViews)
+        foreach (var enemy in enemyBoardView.EnemyViews)
         {
             switch (enemy.EnemyType)
             {
@@ -91,16 +139,6 @@ public class EnemySystem : Singleton<EnemySystem>
         }
     }
 
-    private void QueueNormalAttack(EnemyView enemy, EnemyTurnGA ga)
-    {
-        HeroView hero = HeroSystem.Instance.HeroView;
-        int dist = HexGrid.HexDistance(enemy.HexCoordX, enemy.HexCoordZ, hero.HexCoordX, hero.HexCoordZ);
-        if (dist <= 1)
-        {
-            ga.PerformReactions.Add(new AttackHeroGA(enemy));
-        }
-    }
-
     private IEnumerator AttackHeroPerformer(AttackHeroGA attackHeroGA)
     {
         EnemyView attacker = attackHeroGA.Attacker;
@@ -119,9 +157,30 @@ public class EnemySystem : Singleton<EnemySystem>
         Tween tween = attacker.transform.DOMove(targetPos, 0.15f);
         yield return tween.WaitForCompletion();
         attacker.transform.DOMove(startPos, 0.25f);
-        // Deal Damage
-        DealDamageGA dealDamageGA = new(attacker.AttackPower, new() { heroView }, attackHeroGA.Caster);
-        ActionSystem.Instance.AddReaction(dealDamageGA);
+
+        EnemyAction action = attackHeroGA.Action;
+        int damage = action != null ? action.BaseDamage : attacker.AttackPower;
+        int hitCount = action != null ? action.HitCount : 1;
+
+        for (int i = 0; i < hitCount; i++)
+        {
+            DealDamageGA dealDamageGA = new(damage, new() { heroView }, attackHeroGA.Caster);
+            ActionSystem.Instance.AddReaction(dealDamageGA);
+        }
+
+        if (action?.StatusEffects != null)
+        {
+            foreach (var se in action.StatusEffects)
+            {
+                CombatantView target = se.Target == TargetType.Self ? attacker : heroView;
+                target.AddStatusEffect(se.EffectType, se.StackCount);
+            }
+        }
+
+        if (action != null && !string.IsNullOrEmpty(action.Tag) && action.CooldownTurns > 0)
+        {
+            attacker.SetCooldown(action.Tag, action.CooldownTurns);
+        }
     }
 
     private IEnumerator KillEnemyPerformer(KillEnemyGA killEnemyGA)
