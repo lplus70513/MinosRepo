@@ -1,14 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 
 public class EnemyView : CombatantView
 {
-    [SerializeField] private TMP_Text attackText;
-
-    public int AttackPower { get; set; }
-
     public string DisplayName { get; private set; }
 
     public EnemyType EnemyType { get; private set; }
@@ -24,8 +19,6 @@ public class EnemyView : CombatantView
         SourceData = enemyData;
         DisplayName = enemyData.DisplayName;
         EnemyType = enemyData.Type;
-        AttackPower = enemyData.AttackPower;
-        UpdateAttackText();
         int actualHealth = enemyData.HealthRange.RandomValue;
         SetupBase(actualHealth, enemyData.Image);
     }
@@ -51,10 +44,5 @@ public class EnemyView : CombatantView
     {
         if (string.IsNullOrEmpty(tag)) return false;
         return ActionCooldowns.ContainsKey(tag);
-    }
-
-    private void UpdateAttackText()
-    {
-        attackText.text = "ATK: " + AttackPower;
     }
 }

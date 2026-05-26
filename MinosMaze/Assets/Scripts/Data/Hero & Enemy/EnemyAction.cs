@@ -1,6 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum EnemyActionType
+{
+    Attack,
+    Move,
+}
+
 public enum TargetType
 {
     Hero,
@@ -18,9 +24,11 @@ public class StatusEffectInfliction
 [System.Serializable]
 public class EnemyAction
 {
+    [field: SerializeField] public EnemyActionType ActionType { get; private set; } = EnemyActionType.Attack;
     [field: SerializeField] public string ActionName { get; private set; }
     [field: SerializeField] public int BaseDamage { get; private set; }
     [field: SerializeField] public int HitCount { get; private set; } = 1;
+    [field: SerializeField] public int MoveRange { get; private set; } = 1;
     [field: SerializeField] public List<StatusEffectInfliction> StatusEffects { get; private set; }
     [field: SerializeField] public int Weight { get; private set; } = 1;
     [field: SerializeField] public string Tag { get; private set; }

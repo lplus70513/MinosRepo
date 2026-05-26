@@ -46,36 +46,38 @@ public class EnemySystem : Singleton<EnemySystem>
 
     private IEnumerator EnemyTurnPerformer(EnemyTurnGA enemyTurnGA)
     {
-        foreach (var enemy in enemyBoardView.EnemyViews)
-        {
-            enemy.DecrementCooldowns();
-            SelectAndQueueActions(enemy, enemyTurnGA);
-        }
         yield return null;
     }
 
-    private void SelectAndQueueActions(EnemyView enemy, EnemyTurnGA ga)
+    private void EnemyTurnPreReaction(EnemyTurnGA enemyTurnGA)
     {
-        HeroView hero = HeroSystem.Instance.HeroView;
-        int dist = HexGrid.HexDistance(enemy.HexCoordX, enemy.HexCoordZ, hero.HexCoordX, hero.HexCoordZ);
+        HashSet<(int, int)> reservedCells = new();
+        foreach (var enemy in enemyBoardView.EnemyViews)
+        {
+            enemy.DecrementCooldowns();
+            var selectedActions = SelectActions(enemy);
+            foreach (var action in selectedActions)
+            {
+                if (action.ActionType == EnemyActionType.Move)
+                {
+                    QueueMoveAction(enemy, action, enemyTurnGA, reservedCells);
+                }
+                else
+                {
+                    enemyTurnGA.PerformReactions.Add(new AttackHeroGA(enemy, action));
+                }
+            }
+        }
+    }
 
+    private List<EnemyAction> SelectActions(EnemyView enemy)
+    {
         var actionPool = enemy.SourceData.ActionPool;
         if (actionPool == null || actionPool.Count == 0)
-        {
-            if (dist <= 1)
-            {
-                ga.PerformReactions.Add(new AttackHeroGA(enemy));
-            }
-            return;
-        }
+            return new List<EnemyAction>();
 
         var available = actionPool.Where(a => !enemy.IsOnCooldown(a.Tag)).ToList();
-        var selected = WeightedSelectWithoutReplacement(available, enemy.SourceData.ActionsPerTurn);
-
-        foreach (var action in selected)
-        {
-            ga.PerformReactions.Add(new AttackHeroGA(enemy, action));
-        }
+        return WeightedSelectWithoutReplacement(available, enemy.SourceData.ActionsPerTurn);
     }
 
     private List<EnemyAction> WeightedSelectWithoutReplacement(List<EnemyAction> pool, int count)
@@ -105,21 +107,7 @@ public class EnemySystem : Singleton<EnemySystem>
         return result;
     }
 
-    private void EnemyTurnPreReaction(EnemyTurnGA enemyTurnGA)
-    {
-        HashSet<(int, int)> reservedCells = new();
-        foreach (var enemy in enemyBoardView.EnemyViews)
-        {
-            switch (enemy.EnemyType)
-            {
-                case EnemyType.Normal:
-                    QueueNormalMove(enemy, enemyTurnGA, reservedCells);
-                    break;
-            }
-        }
-    }
-
-    private void QueueNormalMove(EnemyView enemy, EnemyTurnGA ga, HashSet<(int, int)> reservedCells)
+    private void QueueMoveAction(EnemyView enemy, EnemyAction action, EnemyTurnGA ga, HashSet<(int, int)> reservedCells)
     {
         HeroView hero = HeroSystem.Instance.HeroView;
         int dist = HexGrid.HexDistance(enemy.HexCoordX, enemy.HexCoordZ, hero.HexCoordX, hero.HexCoordZ);
@@ -130,7 +118,8 @@ public class EnemySystem : Singleton<EnemySystem>
         var path = HexPathfinder.FindPath(enemy.HexCoordX, enemy.HexCoordZ, hero.HexCoordX, hero.HexCoordZ, enemy, extraExcluded);
         if (path != null && path.Count >= 2)
         {
-            var (x, z) = path[1];
+            int stepIndex = Mathf.Min(action.MoveRange, path.Count - 1);
+            var (x, z) = path[stepIndex];
             if (!reservedCells.Contains((x, z)))
             {
                 reservedCells.Add((x, z));
@@ -159,8 +148,8 @@ public class EnemySystem : Singleton<EnemySystem>
         attacker.transform.DOMove(startPos, 0.25f);
 
         EnemyAction action = attackHeroGA.Action;
-        int damage = action != null ? action.BaseDamage : attacker.AttackPower;
-        int hitCount = action != null ? action.HitCount : 1;
+        int damage = action.BaseDamage;
+        int hitCount = action.HitCount;
 
         for (int i = 0; i < hitCount; i++)
         {
@@ -168,7 +157,7 @@ public class EnemySystem : Singleton<EnemySystem>
             ActionSystem.Instance.AddReaction(dealDamageGA);
         }
 
-        if (action?.StatusEffects != null)
+        if (action.StatusEffects != null)
         {
             foreach (var se in action.StatusEffects)
             {
@@ -177,7 +166,7 @@ public class EnemySystem : Singleton<EnemySystem>
             }
         }
 
-        if (action != null && !string.IsNullOrEmpty(action.Tag) && action.CooldownTurns > 0)
+        if (!string.IsNullOrEmpty(action.Tag) && action.CooldownTurns > 0)
         {
             attacker.SetCooldown(action.Tag, action.CooldownTurns);
         }
