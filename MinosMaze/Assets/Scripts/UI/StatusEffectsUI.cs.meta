@@ -3,7 +3,20 @@ guid: f7fbeb66fe213ee49bc555f0c45030f5
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - statusEffectUIPrefab: {instanceID: 0}
+  - armorSprite: {fileID: 21300000, guid: 6d3b37536db1f434e8fbe1d8bec6c12f, type: 3}
+  - bleedSprite: {fileID: 21300000, guid: 6700dff425b6a1340b3b9c2d26de10dd, type: 3}
+  - strengthSprite: {fileID: 21300000, guid: 53b58f1c7d75a0644a583801120e0aac, type: 3}
+  - weaknessSprite: {fileID: 21300000, guid: 6700dff425b6a1340b3b9c2d26de10dd, type: 3}
+  - vulnerableSprite: {instanceID: 0}
+  - fortifySprite: {instanceID: 0}
+  - fragileSprite: {instanceID: 0}
+  - agileSprite: {instanceID: 0}
+  - slowSprite: {instanceID: 0}
+  - chainLightningSprite: {instanceID: 0}
+  - rootSprite: {instanceID: 0}
+  - stunSprite: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

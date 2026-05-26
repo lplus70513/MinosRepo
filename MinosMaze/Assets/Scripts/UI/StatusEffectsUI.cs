@@ -6,7 +6,10 @@ public class StatusEffectsUI : MonoBehaviour
 {
     [SerializeField] private StatusEffectUI statusEffectUIPrefab;
 
-    [SerializeField] private Sprite armorSprite, burnSprite;
+    [SerializeField] private Sprite armorSprite, bleedSprite;
+    [SerializeField] private Sprite strengthSprite, weaknessSprite, vulnerableSprite;
+    [SerializeField] private Sprite fortifySprite, fragileSprite, agileSprite, slowSprite;
+    [SerializeField] private Sprite chainLightningSprite, rootSprite, stunSprite;
 
     private Dictionary<StatusEffectType, StatusEffectUI> statusEffectUIs = new();
 
@@ -16,7 +19,7 @@ public class StatusEffectsUI : MonoBehaviour
         {
             if (statusEffectUIs.ContainsKey(statusEffectType))
             {
-                // ÐÞ¸´ 1£ºÀàÐÍÓ¦¸ÃÊÇ StatusEffectUI
+                // ï¿½Þ¸ï¿½ 1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ StatusEffectUI
                 StatusEffectUI statusEffectUI = statusEffectUIs[statusEffectType];
                 statusEffectUIs.Remove(statusEffectType);
                 Destroy(statusEffectUI.gameObject);
@@ -26,7 +29,7 @@ public class StatusEffectsUI : MonoBehaviour
         {
             if (!statusEffectUIs.ContainsKey(statusEffectType))
             {
-                // ÐÞ¸´ 2£ºÀàÐÍÓ¦¸ÃÊÇ StatusEffectUI
+                // ï¿½Þ¸ï¿½ 2ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ StatusEffectUI
                 StatusEffectUI statusEffectUI = Instantiate(statusEffectUIPrefab, transform);
                 statusEffectUIs.Add(statusEffectType, statusEffectUI);
             }
@@ -39,9 +42,18 @@ public class StatusEffectsUI : MonoBehaviour
     {
         return statusEffectType switch
         {
-            // ÐÞ¸´ 3£ºÊ¹ÓÃÃ¶¾ÙÀàÐÍÃû StatusEffectType ¶ø²»ÊÇ±äÁ¿Ãû
             StatusEffectType.ARMOR => armorSprite,
-            StatusEffectType.BURN => burnSprite,
+            StatusEffectType.BLEED => bleedSprite,
+            StatusEffectType.STRENGTH => strengthSprite,
+            StatusEffectType.WEAKNESS => weaknessSprite,
+            StatusEffectType.VULNERABLE => vulnerableSprite,
+            StatusEffectType.FORTIFY => fortifySprite,
+            StatusEffectType.FRAGILE => fragileSprite,
+            StatusEffectType.AGILE => agileSprite,
+            StatusEffectType.SLOW => slowSprite,
+            StatusEffectType.CHAIN_LIGHTNING => chainLightningSprite,
+            StatusEffectType.ROOT => rootSprite,
+            StatusEffectType.STUN => stunSprite,
             _ => null,
         };
     }

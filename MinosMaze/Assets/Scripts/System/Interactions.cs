@@ -9,6 +9,10 @@ public class Interactions : Singleton<Interactions>
     public bool PlayerCanInteract()
     {
         if (IsViewingDeck) return false;
+
+        var hero = HeroSystem.Instance?.HeroView;
+        if (hero != null && hero.HasStatusEffect(StatusEffectType.STUN)) return false;
+
         if (!ActionSystem.Instance.IsPerforming) return true;
         else return false;
     }

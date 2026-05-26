@@ -8,6 +8,7 @@ using UnityEngine;
 public class ActionSystem : Singleton<ActionSystem>
 {
     private List<GameAction> reactions = null;
+    private bool cancelFlow = false;
 
     public bool IsPerforming { get; private set; } = false;
 
@@ -15,19 +16,20 @@ public class ActionSystem : Singleton<ActionSystem>
     private static Dictionary<Type, List<Action<GameAction>>> postSubs = new();
     private static Dictionary<Type, Func<GameAction,IEnumerator>> performers = new();
 
-    // Performִ�к���
+    // Perform执行核心
     public void Perform(GameAction action, System.Action OnPerformFinished = null)
     {
-        // ��ֹ�ظ����룬����������ִ�еĶ�����������ִ���¶���
+        // 防止重复进入，如果当前有正在执行的动作，忽略新动作
         if (IsPerforming) return;
 
-        // ��ʼִ�е�ǰ��������ֹ��������ִ��
+        // 开始执行当前动作，阻止其他动作执行
+        cancelFlow = false;
         IsPerforming = true;
 
-        // ������������Flow�����붯��
+        // 开始启动Flow处理该动作
         StartCoroutine(Flow(action, () =>
         {
-            // ���ִ��
+            // 完结执行
             IsPerforming =  false;
             OnPerformFinished?.Invoke(); 
         }));
@@ -38,15 +40,28 @@ public class ActionSystem : Singleton<ActionSystem>
         reactions?.Add(gameAction);
     }
 
+    public void CancelCurrentFlow()
+    {
+        cancelFlow = true;
+    }
+
     private IEnumerator Flow(GameAction action, Action OnFlowFinished = null)
     {
+        if (cancelFlow)
+        {
+            OnFlowFinished?.Invoke();
+            yield break;
+        }
+
         reactions = action.PreReactions;
         PerformSubscribers(action, preSubs);
         yield return PerformReactions();
+        if (cancelFlow) { OnFlowFinished?.Invoke(); yield break; }
 
         reactions = action.PerformReactions;
         yield return PerformPerformer(action);
         yield return PerformReactions();
+        if (cancelFlow) { OnFlowFinished?.Invoke(); yield break; }
 
         reactions = action.PostReactions;
         PerformSubscribers(action, postSubs);
@@ -57,6 +72,8 @@ public class ActionSystem : Singleton<ActionSystem>
 
     private IEnumerator PerformPerformer(GameAction action)
     {
+        if (cancelFlow) yield break;
+
         Type type = action.GetType();
         if (performers.ContainsKey(type))
         {
@@ -66,11 +83,14 @@ public class ActionSystem : Singleton<ActionSystem>
 
     private void PerformSubscribers(GameAction action, Dictionary<Type, List<Action<GameAction>>> subs)
     {
+        if (cancelFlow) return;
+
         Type type = action.GetType();
         if (subs.ContainsKey(type))
         {
             foreach (var sub in subs[type])
             {
+                if (cancelFlow) return;
                 sub(action);
             }
         }
@@ -80,6 +100,7 @@ public class ActionSystem : Singleton<ActionSystem>
     {
         foreach (var reaction in reactions)
         {
+            if (cancelFlow) yield break;
             yield return Flow(reaction);
         }
     }

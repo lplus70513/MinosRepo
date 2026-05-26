@@ -154,21 +154,45 @@ public class CombatantView : MonoBehaviour
         OnHealthChanged?.Invoke(this, CurrentHealth);
     }
 
+    private static bool IsNonStackable(StatusEffectType type)
+    {
+        return type == StatusEffectType.WEAKNESS
+            || type == StatusEffectType.VULNERABLE
+            || type == StatusEffectType.FRAGILE
+            || type == StatusEffectType.SLOW
+            || type == StatusEffectType.CHAIN_LIGHTNING
+            || type == StatusEffectType.ROOT
+            || type == StatusEffectType.STUN;
+    }
+
     public void AddStatusEffect(StatusEffectType type, int stackCount)
     {
+        if (stackCount <= 0) return;
+
+        if (IsNonStackable(type) && HasStatusEffect(type))
+            return;
+
+        int effectiveStacks = stackCount;
+
+        if (type == StatusEffectType.ARMOR)
+        {
+            effectiveStacks += GetStatusEffectStacks(StatusEffectType.FORTIFY);
+            if (HasStatusEffect(StatusEffectType.FRAGILE))
+                effectiveStacks = Mathf.FloorToInt(effectiveStacks * 0.5f);
+        }
+
         if (statusEffects.ContainsKey(type))
         {
-            statusEffects[type] += stackCount;
+            statusEffects[type] += effectiveStacks;
         }
         else
         {
-            statusEffects.Add(type, stackCount);
+            statusEffects.Add(type, effectiveStacks);
         }
-        // ���÷���
         statusEffectsUI.UpdateStatusEffectUI(type, GetStatusEffectStacks(type));
     }
 
-    private void RemoveStatusEffect(StatusEffectType type, int stackCount)
+    public void RemoveStatusEffect(StatusEffectType type, int stackCount)
     {
         if (statusEffects.ContainsKey(type))
         {
@@ -179,14 +203,37 @@ public class CombatantView : MonoBehaviour
             }
         }
 
-        // �޸ĵ� 2: �޸�ƴд���� GetStstusEffectStakes -> GetStatusEffectStacks
         statusEffectsUI.UpdateStatusEffectUI(type, GetStatusEffectStacks(type));
+    }
+
+    public bool HasStatusEffect(StatusEffectType type)
+    {
+        return GetStatusEffectStacks(type) > 0;
     }
 
     public int GetStatusEffectStacks(StatusEffectType type)
     {
         if (statusEffects.ContainsKey(type)) return statusEffects[type];
         else return 0;
+    }
+
+    public void DecayTurnEndEffects()
+    {
+        StatusEffectType[] decayTypes = {
+            StatusEffectType.BLEED,
+            StatusEffectType.WEAKNESS,
+            StatusEffectType.VULNERABLE,
+            StatusEffectType.FRAGILE,
+            StatusEffectType.SLOW,
+            StatusEffectType.ROOT,
+            StatusEffectType.STUN
+        };
+
+        foreach (var type in decayTypes)
+        {
+            if (HasStatusEffect(type))
+                RemoveStatusEffect(type, 1);
+        }
     }
 
     void LateUpdate()

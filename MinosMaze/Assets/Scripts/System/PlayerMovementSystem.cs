@@ -21,8 +21,26 @@ public class PlayerMovementSystem : Singleton<PlayerMovementSystem>
         RemainingMovementPoints = 1;
     }
 
+    private bool IsHeroRootedOrStunned()
+    {
+        var hero = HeroSystem.Instance?.HeroView;
+        if (hero == null) return false;
+        return hero.HasStatusEffect(StatusEffectType.ROOT)
+            || hero.HasStatusEffect(StatusEffectType.STUN);
+    }
+
     void Update()
     {
+        if (IsHeroRootedOrStunned())
+        {
+            if (highlightsVisible)
+            {
+                HexMove.ClearMoveHighlights();
+                highlightsVisible = false;
+            }
+            return;
+        }
+
         bool shouldShow = ShouldShowMoveHighlights();
         if (shouldShow != highlightsVisible)
         {
@@ -54,6 +72,7 @@ public class PlayerMovementSystem : Singleton<PlayerMovementSystem>
         if (Interactions.Instance.PlayerIsDragging) return;
         if (Interactions.Instance.PlayerIsTargeting) return;
         if (RemainingMovementPoints <= 0) return;
+        if (IsHeroRootedOrStunned()) return;
 
         HeroView hero = HeroSystem.Instance.HeroView;
         if (hero == null) return;

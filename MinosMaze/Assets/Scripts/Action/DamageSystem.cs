@@ -20,29 +20,41 @@ public class DamageSystem : MonoBehaviour
     {
         foreach (var target in dealDamageGA.Targets)
         {
-            // 1. 先造成伤害
-            target.Damage(dealDamageGA.Amount);
-
-            // 2. 只有当特效预设体不为空时，才生成它
-            if (damageVFX != null)
-            {
-                Instantiate(damageVFX, target.transform.position, Quaternion.identity);
-            }
-            // 3. 如果 damageVFX 为空，代码会直接跳过上面的 Instantiate，继续向下执行
+            int modifiedDamage = CalculateModifiedDamage(dealDamageGA.Amount, dealDamageGA.Caster, target);
+            target.Damage(modifiedDamage);
+            SpawnDamageVFX(target);
             yield return new WaitForSeconds(0.15f);
-
-            if(target.CurrentHealth == 0)
+            if (target.CurrentHealth == 0 && target is EnemyView)
             {
-                if(target is EnemyView enemyView)
-                {
-                    KillEnemyGA killEnemyGA = new(enemyView);
-                    ActionSystem.Instance.AddReaction(killEnemyGA);
-                }
-                else
-                {
-
-                }
+                KillEnemyGA killEnemyGA = new((EnemyView)target);
+                ActionSystem.Instance.AddReaction(killEnemyGA);
             }
+        }
+    }
+
+    private int CalculateModifiedDamage(int baseDamage, CombatantView caster, CombatantView target)
+    {
+        float damage = baseDamage;
+
+        if (caster != null)
+        {
+            damage += caster.GetStatusEffectStacks(StatusEffectType.STRENGTH);
+            if (caster.HasStatusEffect(StatusEffectType.WEAKNESS))
+                damage *= 0.5f;
+        }
+
+        if (target != null && target.HasStatusEffect(StatusEffectType.VULNERABLE))
+            damage *= 1.5f;
+
+        return Mathf.FloorToInt(damage);
+    }
+
+    private void SpawnDamageVFX(CombatantView target)
+    {
+        if (damageVFX != null)
+        {
+            Vector3 pos = new Vector3(target.transform.position.x, target.transform.position.y + 1, target.transform.position.z);
+            GameObject vfxInstance = Instantiate(damageVFX, pos, Quaternion.identity);
         }
     }
 }

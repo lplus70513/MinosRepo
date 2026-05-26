@@ -38,6 +38,16 @@ public class CostSystem : Singleton<CostSystem>
     private IEnumerator RefillCostPerformer(RefillCostGA action)
     {
         currentCost = MAX_COST;
+
+        var hero = HeroSystem.Instance?.HeroView;
+        if (hero != null)
+        {
+            currentCost += hero.GetStatusEffectStacks(StatusEffectType.AGILE);
+            if (hero.HasStatusEffect(StatusEffectType.SLOW))
+                currentCost -= 1;
+        }
+
+        if (currentCost < 0) currentCost = 0;
         costUI.UpdateCostText(currentCost);
         yield return null;
     }

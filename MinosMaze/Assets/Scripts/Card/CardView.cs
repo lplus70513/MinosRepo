@@ -186,6 +186,27 @@ public class CardView : MonoBehaviour
             return;
         }
 
+        var hero = HeroSystem.Instance?.HeroView;
+        if (hero != null)
+        {
+            if (hero.HasStatusEffect(StatusEffectType.STUN))
+            {
+                CancelDrag();
+                return;
+            }
+
+            if (hero.HasStatusEffect(StatusEffectType.ROOT))
+            {
+                bool isAttackCard = Card.ManualTargetEffect is DealDamageEffect
+                    || (Card.OtherEffects != null && Card.OtherEffects.Exists(e => e.Effect is DealDamageEffect));
+                if (!isAttackCard)
+                {
+                    CancelDrag();
+                    return;
+                }
+            }
+        }
+
         bool inPlayArea = IsMouseInPlayArea();
 
         if (Card.ManualTargetEffect != null)
