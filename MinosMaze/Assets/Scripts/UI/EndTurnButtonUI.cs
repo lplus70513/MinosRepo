@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class EndTurnButtonUI : MonoBehaviour
 {
-    // ½áÊøµ±Ç°»ØºÏButton£¬°´ÏÂºó½øÈëµÐÈË»ØºÏ
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç°ï¿½Øºï¿½Buttonï¿½ï¿½ï¿½ï¿½ï¿½Âºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë»Øºï¿½
     public void OnClick()
     {
+        if (!Interactions.Instance.PlayerCanInteract()) return;
+
         EnemyTurnGA enemyTurnGA = new();
         ActionSystem.Instance.Perform(enemyTurnGA);
     }

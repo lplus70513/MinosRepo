@@ -45,6 +45,8 @@ public class CameraController : MonoBehaviour
 
     private void HandleZoom()
     {
+        if (Interactions.Instance != null && Interactions.Instance.IsViewingDeck) return;
+
         float scroll = Input.GetAxis("Mouse ScrollWheel");
         if (Mathf.Approximately(scroll, 0f))
             return;
