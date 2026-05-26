@@ -1,0 +1,9 @@
+namespace UI.PopupText
+{
+    public enum PopupTextType
+    {
+        Damage,
+        CriticalDamage,
+        Heal,
+    }
+}

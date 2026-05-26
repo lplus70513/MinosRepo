@@ -6,6 +6,7 @@ using TMPro;
 using DG.Tweening;
 using Spine;
 using Spine.Unity;
+using UI.PopupText;
 
 public class CombatantView : MonoBehaviour
 {
@@ -134,7 +135,7 @@ public class CombatantView : MonoBehaviour
         if (remainingDamage > 0)
         {
             CurrentHealth -= remainingDamage;
-            DamageTextManager.Instance.ShowDamage(transform.position, remainingDamage);
+            PopupTextManager.Instance.ShowDamageText(transform, remainingDamage, PopupTextType.Damage);
             if (CurrentHealth < 0)
             {
                 CurrentHealth = 0;
