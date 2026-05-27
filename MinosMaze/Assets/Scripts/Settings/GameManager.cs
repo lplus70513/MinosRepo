@@ -182,6 +182,30 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(worldMapSceneName, LoadSceneMode.Additive);
     }
 
+    // 战斗失败时返回主菜单
+    public void ReturnToMainMenu()
+    {
+        StartCoroutine(ReturnToMainMenuRoutine());
+    }
+
+    private IEnumerator ReturnToMainMenuRoutine()
+    {
+        if (!string.IsNullOrEmpty(currentEncounterScene))
+        {
+            AsyncOperation unload = SceneManager.UnloadSceneAsync(currentEncounterScene);
+            if (unload != null)
+                yield return unload;
+        }
+        if (SceneManager.GetSceneByName(worldMapSceneName).isLoaded)
+        {
+            AsyncOperation unload = SceneManager.UnloadSceneAsync(worldMapSceneName);
+            if (unload != null)
+                yield return unload;
+        }
+        if (!SceneManager.GetSceneByName("MainMenu").isLoaded)
+            SceneManager.LoadScene("MainMenu", LoadSceneMode.Additive);
+    }
+
     // GameOver：移动点耗尽且未到 BOSS 格（暂留空）
     public void OnGameOver()
     {

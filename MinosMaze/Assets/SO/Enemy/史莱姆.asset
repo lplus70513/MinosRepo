@@ -37,16 +37,4 @@ MonoBehaviour:
     <Weight>k__BackingField: 1
     <Tag>k__BackingField: '"Move"'
     <CooldownTurns>k__BackingField: 0
-  - <ActionType>k__BackingField: 0
-    <ActionName>k__BackingField: "\u865A\u5F31"
-    <BaseDamage>k__BackingField: 0
-    <HitCount>k__BackingField: 1
-    <MoveRange>k__BackingField: 0
-    <StatusEffects>k__BackingField:
-    - <EffectType>k__BackingField: 3
-      <StackCount>k__BackingField: 1
-      <Target>k__BackingField: 0
-    <Weight>k__BackingField: 1
-    <Tag>k__BackingField: '"Debuff"'
-    <CooldownTurns>k__BackingField: 1
   <ActionsPerTurn>k__BackingField: 2
