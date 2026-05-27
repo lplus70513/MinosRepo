@@ -11,4 +11,5 @@ public class WorldMapState
     public int maxHealth;
     public int currentHealth;
     public List<Vector2Int> clearedCells = new();
+    public List<CardData> currentDeck = new();
 }

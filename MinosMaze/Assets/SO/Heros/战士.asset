@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: "\u6218\u58EB"
   m_EditorClassIdentifier: 
   <Image>k__BackingField: {fileID: 21300000, guid: 5bc6733dbf780de4ab29f09c79fd0eb7, type: 3}
-  <Health>k__BackingField: 70
+  <Health>k__BackingField: 50
   <Deck>k__BackingField:
   - {fileID: 11400000, guid: 247bce01a77cce349b8bc3ae8e7dcf7c, type: 2}
   - {fileID: 11400000, guid: 247bce01a77cce349b8bc3ae8e7dcf7c, type: 2}
@@ -24,4 +24,3 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 119ffbeee521f444a81662ca91edfb5a, type: 2}
   - {fileID: 11400000, guid: 119ffbeee521f444a81662ca91edfb5a, type: 2}
   - {fileID: 11400000, guid: 119ffbeee521f444a81662ca91edfb5a, type: 2}
-  - {fileID: 11400000, guid: 4897b82cec99d614794b119d6dba6767, type: 2}

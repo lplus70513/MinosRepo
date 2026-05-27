@@ -20,7 +20,7 @@ TagManager:
   - MapLayer
   - Combatant
   - PopupText
-  - 
+  - DeckCheck
   - 
   - 
   - 
@@ -43,4 +43,10 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: New Layer 2
+    uniqueID: 2808904067
+    locked: 0
+  - name: UI
+    uniqueID: 587091469
     locked: 0

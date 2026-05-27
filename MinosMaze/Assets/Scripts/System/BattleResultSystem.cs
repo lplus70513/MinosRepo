@@ -83,7 +83,15 @@ public class BattleResultSystem : Singleton<BattleResultSystem>
         Debug.Log("[BattleResultSystem] 战斗胜利！所有敌人已消灭。");
         if (winPanel == null) FindPanelsIfNull();
         if (winPanel != null)
+        {
             winPanel.SetActive(true);
+            var controller = winPanel.GetComponent<WinPanelController>();
+            if (controller != null)
+            {
+                BattleReward reward = RewardSystem.Instance.GenerateReward();
+                controller.Initialize(reward);
+            }
+        }
         yield return null;
     }
 

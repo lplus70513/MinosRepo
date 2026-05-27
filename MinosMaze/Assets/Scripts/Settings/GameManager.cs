@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -124,6 +125,9 @@ public class GameManager : MonoBehaviour
         {
             WorldMapState.maxHealth = heroData.Health;
             WorldMapState.currentHealth = heroData.Health;
+            WorldMapState.currentDeck = heroData.Deck != null
+                ? new List<CardData>(heroData.Deck)
+                : new List<CardData>();
         }
         if (SceneManager.GetSceneByName("MainMenu").isLoaded)
             SceneManager.UnloadSceneAsync("MainMenu");

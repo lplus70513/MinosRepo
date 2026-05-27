@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ad5d1bf41f8e324790069baf4333ed1, type: 3}
+  m_Name: Reward Config
+  m_EditorClassIdentifier: 
+  lootCardPool:
+  - {fileID: 11400000, guid: 100e4f906de479a42a3c7ce8d89493f5, type: 2}
+  - {fileID: 11400000, guid: 119ffbeee521f444a81662ca91edfb5a, type: 2}
+  - {fileID: 11400000, guid: 247bce01a77cce349b8bc3ae8e7dcf7c, type: 2}
+  - {fileID: 11400000, guid: 4897b82cec99d614794b119d6dba6767, type: 2}
+  normalGoldWeights:
+  - amount: 8
+    weight: 0.1
+  - amount: 9
+    weight: 0.2
+  - amount: 10
+    weight: 0.4
+  - amount: 11
+    weight: 0.2
+  - amount: 12
+    weight: 0.1
+  eliteGoldWeights:
+  - amount: 21
+    weight: 0.06
+  - amount: 22
+    weight: 0.08
+  - amount: 23
+    weight: 0.1
+  - amount: 24
+    weight: 0.12
+  - amount: 25
+    weight: 0.14
+  - amount: 26
+    weight: 0.14
+  - amount: 27
+    weight: 0.12
+  - amount: 28
+    weight: 0.1
+  - amount: 29
+    weight: 0.08
+  - amount: 30
+    weight: 0.06
+  stringDropRate: 0.2

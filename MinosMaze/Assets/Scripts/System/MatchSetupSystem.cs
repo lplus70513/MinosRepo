@@ -9,6 +9,9 @@ public class MatchSetupSystem : MonoBehaviour
     [SerializeField] private PerkData perkData;
     [SerializeField] private List<EnemyData> enemyDatas;
 
+    [Header("奖励配置")]
+    [SerializeField] private RewardConfig rewardConfig;
+
     [Header("UI")]
     [SerializeField] private HealthBarPanel healthBarPanel;
 
@@ -21,6 +24,9 @@ public class MatchSetupSystem : MonoBehaviour
         _ = MoveSystem.Instance;
         _ = PlayerMovementSystem.Instance;
         _ = BattleResultSystem.Instance;
+        _ = RewardSystem.Instance;
+        if (rewardConfig != null)
+            RewardSystem.Instance.SetConfig(rewardConfig);
         HeroSystem.Instance.Setup(heroData, heroSpawnCoord);
         // 如果大地图携带了生命值，覆盖当前生命值
         var gm = GameManager.Instance;
@@ -31,7 +37,15 @@ public class MatchSetupSystem : MonoBehaviour
         EnemySystem.Instance.Setup(enemyDatas, enemySpawnCoords);
         if (healthBarPanel != null)
             healthBarPanel.SetupBattle(HeroSystem.Instance.HeroView, EnemySystem.Instance.Enemies);
-        CardSystem.Instance.SetUp(heroData.Deck);
+        List<CardData> deck;
+        if (gm != null && gm.WorldMapState != null && gm.WorldMapState.currentDeck != null && gm.WorldMapState.currentDeck.Count > 0)
+            deck = gm.WorldMapState.currentDeck;
+        else if (heroData != null && heroData.Deck != null)
+            deck = heroData.Deck;
+        else
+            deck = new List<CardData>();
+
+        CardSystem.Instance.SetUp(deck);
         PerkSystem.Instance.AddPerk(new Perk(perkData));
         DrawCardsGA drawCardsGA = new(5);
         ActionSystem.Instance.Perform(drawCardsGA);
