@@ -50,7 +50,8 @@ public class StatusEffectSystem : MonoBehaviour
             int bleedStacks = combatant.GetStatusEffectStacks(StatusEffectType.BLEED);
             if (bleedStacks > 0)
             {
-                combatant.Damage(bleedStacks);
+                DealDamageGA bleedGA = new(bleedStacks, new List<CombatantView> { combatant }, null);
+                ActionSystem.Instance.AddReaction(bleedGA);
             }
 
             combatant.DecayTurnEndEffects();

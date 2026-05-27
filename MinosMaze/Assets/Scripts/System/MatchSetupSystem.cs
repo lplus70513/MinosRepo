@@ -20,6 +20,7 @@ public class MatchSetupSystem : MonoBehaviour
     {
         _ = MoveSystem.Instance;
         _ = PlayerMovementSystem.Instance;
+        _ = BattleResultSystem.Instance;
         HeroSystem.Instance.Setup(heroData, heroSpawnCoord);
         // 如果大地图携带了生命值，覆盖当前生命值
         var gm = GameManager.Instance;
