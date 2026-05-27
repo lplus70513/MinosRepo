@@ -84,6 +84,7 @@ public class PlayerMovementSystem : Singleton<PlayerMovementSystem>
 
         RemainingMovementPoints--;
         MoveGA moveGA = new(hero, hexX, hexZ);
+        Debug.Log($"[PlayerMovement] 执行 MoveGA: 目标 ({hexX},{hexZ})");
         ActionSystem.Instance.Perform(moveGA);
     }
 

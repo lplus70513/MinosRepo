@@ -111,7 +111,7 @@ public class GameManager : MonoBehaviour
 
     public void GameStart()
     {
-        SceneManager.LoadScene("Scene2");
+        NewGame();
     }
 
     // ========== 大地图场景管理 ==========
