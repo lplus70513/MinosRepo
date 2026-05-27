@@ -64,6 +64,8 @@ public class ActionSystem : Singleton<ActionSystem>
         if (cancelFlow) { OnFlowFinished?.Invoke(); yield break; }
 
         reactions = action.PostReactions;
+        int postSubCount = postSubs.ContainsKey(action.GetType()) ? postSubs[action.GetType()].Count : 0;
+        Debug.Log($"[ActionSystem] POST phase for {action.GetType().Name}, subs count = {postSubCount}");
         PerformSubscribers(action, postSubs);
         yield return PerformReactions();
 

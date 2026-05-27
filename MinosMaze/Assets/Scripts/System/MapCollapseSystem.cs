@@ -1,58 +1,56 @@
 using UnityEngine;
 
-// 地图塌陷系统：当英雄向中心移动时，最外圈六角格自动关闭。
-// 始终保留英雄所在环外一圈的可见范围，超出部分 SetActive(false)。
-public class MapCollapseSystem : Singleton<MapCollapseSystem>
+// 地图塌陷系统：当玩家向中心移动时，最外圈六角格自动关闭。
+// 始终保留玩家所在环外一圈的可见范围，超出部分 SetActive(false)。
+// 被动调用模式：由 WorldMapMovementSystem 在玩家移动后调用 OnPlayerMoved。
+public static class MapCollapseSystem
 {
-    // 当前地图可见的最大环数（距离中心的六边形步数）
-    private int currentMaxRing;
+    private static int currentMaxRing;
+    private static bool inited;
 
-    void Start()
+    // 玩家移动后调用，传入新坐标
+    public static void OnPlayerMoved(int x, int z)
     {
-        // 根据已有六角格计算地图的最大环数作为初始可见范围
+        EnsureInit();
+
+        int playerRing = HexGrid.HexDistance(0, 0, x, z);
+
+        Debug.Log($"[MapCollapse] 玩家移动至 ({x},{z}) | playerRing={playerRing} | currentMaxRing={currentMaxRing} | 条件(playerRing < maxRing-1)={playerRing < currentMaxRing - 1}");
+
+        while (playerRing < currentMaxRing - 1)
+        {
+            Debug.Log($"[MapCollapse] 塌陷环 {currentMaxRing}");
+            CollapseRing(currentMaxRing);
+            currentMaxRing--;
+        }
+    }
+
+    // 首次调用时计算地图初始最大环数（延迟到 HexGrid.Awake 之后）
+    static void EnsureInit()
+    {
+        if (inited) return;
         currentMaxRing = 0;
         foreach (var cell in HexGrid.AllCells)
         {
             int dist = HexGrid.HexDistance(0, 0, cell.hexCoordX, cell.hexCoordZ);
             if (dist > currentMaxRing) currentMaxRing = dist;
         }
-    }
-
-    void OnEnable()
-    {
-        ActionSystem.SubscribeReaction<MoveGA>(OnMovePost, ReactionTiming.POST);
-    }
-
-    void OnDisable()
-    {
-        ActionSystem.UnsubscribeReaction<MoveGA>(OnMovePost, ReactionTiming.POST);
-    }
-
-    // 英雄移动完成后检查是否需要塌陷外圈
-    void OnMovePost(MoveGA ga)
-    {
-        HeroView hero = HeroSystem.Instance.HeroView;
-        if (ga.Mover != hero) return;
-
-        int playerRing = HexGrid.HexDistance(0, 0, ga.ToX, ga.ToZ);
-
-        // 英雄向内移动时，持续收缩直到剩余一圈可见边界
-        while (playerRing < currentMaxRing - 1)
-        {
-            CollapseRing(currentMaxRing);
-            currentMaxRing--;
-        }
+        inited = true;
+        Debug.Log($"[MapCollapse] EnsureInit: currentMaxRing={currentMaxRing}");
     }
 
     // 将指定环上的所有六角格 SetActive(false)
-    void CollapseRing(int ring)
+    static void CollapseRing(int ring)
     {
+        int count = 0;
         foreach (var cell in HexGrid.AllCells)
         {
             if (HexGrid.HexDistance(0, 0, cell.hexCoordX, cell.hexCoordZ) == ring)
             {
                 cell.gameObject.SetActive(false);
+                count++;
             }
         }
+        Debug.Log($"[MapCollapse] 环 {ring} 塌陷完成，共关闭 {count} 个格子");
     }
 }
