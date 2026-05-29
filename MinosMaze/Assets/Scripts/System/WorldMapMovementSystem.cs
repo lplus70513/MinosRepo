@@ -114,6 +114,12 @@ public class WorldMapMovementSystem : Singleton<WorldMapMovementSystem>
         if (targetCell == null) return;
         if (!targetCell.IsWorldMapCell) return;
 
+        // 禁止走回已走过的格子
+        Vector2Int targetCoord = new(hexX, hexZ);
+        GameManager gm = GameManager.Instance;
+        if (gm != null && gm.WorldMapState.clearedCells.Contains(targetCoord))
+            return;
+
         StartCoroutine(MoveToCell(player, hexX, hexZ, targetCell.cellType));
     }
 
@@ -122,6 +128,15 @@ public class WorldMapMovementSystem : Singleton<WorldMapMovementSystem>
         isMoving = true;
         ClearAllHighlights();
         highlightsVisible = false;
+
+        // 离开当前格时标记为已走过
+        GameManager gm = GameManager.Instance;
+        if (gm != null)
+        {
+            Vector2Int currentCoord = new(player.HexCoordX, player.HexCoordZ);
+            if (!gm.WorldMapState.clearedCells.Contains(currentCoord))
+                gm.WorldMapState.clearedCells.Add(currentCoord);
+        }
 
         MovePoints--;
         Vector3 targetPos = HexGrid.GetStandingPoint(hexX, hexZ);

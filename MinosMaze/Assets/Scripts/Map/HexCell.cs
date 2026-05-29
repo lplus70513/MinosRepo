@@ -16,6 +16,8 @@ public enum MapCellType
     WorldMap_Birth      = 103,  // 大地图出生格（起点）
     WorldMap_Boss       = 104,  // 大地图BOSS格（本层终点）
     WorldMap_Statue     = 105,  // 大地图雕像格（事件/补给，暂留空）
+    WorldMap_Chest      = 106,  // 大地图宝箱格
+    WorldMap_Mystery    = 107,  // 大地图问号格
 }
 
 /// <summary>
