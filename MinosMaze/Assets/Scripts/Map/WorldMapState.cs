@@ -12,4 +12,5 @@ public class WorldMapState
     public int currentHealth;
     public List<Vector2Int> clearedCells = new();
     public List<CardData> currentDeck = new();
+    public bool isNewGame = true;
 }

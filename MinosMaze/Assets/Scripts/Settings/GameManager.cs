@@ -121,6 +121,8 @@ public class GameManager : MonoBehaviour
     public void NewGame()
     {
         WorldMapState = new WorldMapState();
+        WorldMapState.playerPosX = -999;
+        WorldMapState.playerPosZ = -999;
         if (heroData != null)
         {
             WorldMapState.maxHealth = heroData.Health;
@@ -142,12 +144,14 @@ public class GameManager : MonoBehaviour
         WorldMapState.remainingMovePoints = movePoints;
         WorldMapState.currentHealth = currentHealth;
         WorldMapState.maxHealth = maxHealth;
+        WorldMapState.isNewGame = false;
     }
 
     // 战斗结束时保存玩家生命值（由战斗场景退出按钮调用）
     public void SaveBattleResult(int currentHealth)
     {
         WorldMapState.currentHealth = currentHealth;
+        WorldMapState.isNewGame = false;
     }
 
     // 进入遭遇子场景：保存状态，卸载大地图，加载子场景

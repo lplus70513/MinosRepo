@@ -140,15 +140,19 @@ public class WorldMapGrid : HexGrid
         if (gm != null)
         {
             var state = gm.WorldMapState;
-            if (state != null && HexGrid.ContainsCell(state.playerPosX, state.playerPosZ))
+            if (state != null && !state.isNewGame && HexGrid.ContainsCell(state.playerPosX, state.playerPosZ))
             {
                 posX = state.playerPosX;
                 posZ = state.playerPosZ;
             }
-            if (state != null && state.maxHealth > 0)
+            if (state != null)
             {
-                maxHp = state.maxHealth;
-                curHp = state.currentHealth;
+                state.isNewGame = false;
+                if (state.maxHealth > 0)
+                {
+                    maxHp = state.maxHealth;
+                    curHp = state.currentHealth;
+                }
             }
         }
 
