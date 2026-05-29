@@ -76,7 +76,7 @@ public class WinPanelController : MonoBehaviour
                 _cardProcessed = true;
                 if (cardButton != null) cardButton.interactable = false;
             },
-            onSkipped: () => { _cardProcessed = true; if (cardButton != null) cardButton.interactable = false; });
+            onSkipped: () => { });
     }
 
     private void OnStringClick()

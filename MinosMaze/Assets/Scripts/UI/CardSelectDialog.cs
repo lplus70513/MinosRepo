@@ -15,7 +15,11 @@ public class CardSelectDialog : MonoBehaviour
         {
             if (i < choices.Count)
             {
-                cardEntries[i].Setup(choices[i], onSelected);
+                cardEntries[i].Setup(choices[i], (card) =>
+                {
+                    onSelected?.Invoke(card);
+                    gameObject.SetActive(false);
+                });
                 cardEntries[i].gameObject.SetActive(true);
             }
             else

@@ -86,13 +86,19 @@ public class CardSystem : Singleton<CardSystem>
     {
         hand.Remove(playCardGA.Card);
         CardView cardView = handView.RemoveCard(playCardGA.Card);
-        yield return DiscardCard(cardView);
+
+        // 启动卡牌出牌+弃置动画协程（与英雄攻击并发）
+        Coroutine cardDiscardCoroutine = null;
+        if (cardView != null && cardView.gameObject != null)
+        {
+            cardDiscardCoroutine = StartCoroutine(PlayCardDiscardSequence(cardView));
+        }
 
         // ���ķ��� 
         SpendCostGA spendCostGA = new(playCardGA.Card.Cost);
         ActionSystem.Instance.AddReaction(spendCostGA);
 
-        // ����Ƿ�ѡ�����ֶ�Ŀ��
+        // 如果是手选目标攻击牌，立即开始英雄攻击动画
         if(playCardGA.Card.ManualTargetEffect != null)
         {
             HeroView hero = HeroSystem.Instance.HeroView;
@@ -115,7 +121,22 @@ public class CardSystem : Singleton<CardSystem>
             PerformEffectGA performEffectGA = new(effectWrapper.Effect, targets);
             ActionSystem.Instance.AddReaction(performEffectGA);
         }
-        // �������ƶ�
+
+        // 等待卡牌弃置动画完成
+        if (cardDiscardCoroutine != null)
+        {
+            yield return cardDiscardCoroutine;
+        }
+    }
+
+    private IEnumerator PlayCardDiscardSequence(CardView cardView)
+    {
+        Transform t = cardView.transform;
+        t.DOKill();
+        Tween scaleTween = t.DOScale(Vector3.one * 0.9f, 0.15f).SetEase(Ease.OutQuad);
+        yield return scaleTween.WaitForCompletion();
+        yield return new WaitForSeconds(0.2f);
+        yield return DiscardCard(cardView);
     }
 
     private IEnumerator DiscardAllCardsPerformer(DiscardAllCardsGA discardAllCardsGA)
