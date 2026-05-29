@@ -1759,11 +1759,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e42267d0d7836fc42adc9a9e0fdaf669, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 25
+  moveSpeed: 40
   zoomSpeed: 30
   enableClamp: 1
-  xClamp: {x: -25, y: 25}
-  zClamp: {x: -35, y: 8.5}
+  xClamp: {x: -50, y: 50}
+  zClamp: {x: -60, y: 30}
   yClamp: {x: 15, y: 60}
 --- !u!1 &664487244
 GameObject:
@@ -2529,7 +2529,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26ac802650f33bc49a4054fc0e45e0a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapRadius: 3
+  mapRadius: 6
   hexPrefab: {fileID: 6889876140403060102, guid: 06d301673ac088447bb3352ea2be5edd, type: 3}
 --- !u!4 &1062687834
 Transform:
