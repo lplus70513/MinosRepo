@@ -145,7 +145,7 @@ public class WorldMapMovementSystem : Singleton<WorldMapMovementSystem>
 
         player.HexCoordX = hexX;
         player.HexCoordZ = hexZ;
-        MapCollapseSystem.OnPlayerMoved(hexX, hexZ);
+        yield return MapCollapseSystem.OnPlayerMoved(hexX, hexZ);
 
         // 根据抵达格类型处理场景跳转
         string sceneName = GetSceneForCellType(cellType);

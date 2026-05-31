@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 // 地图格类型枚举（数值区间区分范畴：0-99 战斗格，100+ 大地图格）
 public enum MapCellType
@@ -74,5 +75,14 @@ public class HexCell : MonoBehaviour
     {
         if (moveHighlightIndicator != null)
             moveHighlightIndicator.SetActive(active);
+    }
+
+    // 塌陷动画：下坠 + 缩小 → 禁用
+    public void PlayCollapseAnimation(float duration, float fallDistance)
+    {
+        Sequence seq = DOTween.Sequence();
+        seq.Join(transform.DOMoveY(transform.position.y - fallDistance, duration));
+        seq.Join(transform.DOScale(Vector3.zero, duration));
+        seq.OnComplete(() => gameObject.SetActive(false));
     }
 }
