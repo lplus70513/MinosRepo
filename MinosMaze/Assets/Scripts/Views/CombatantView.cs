@@ -111,7 +111,8 @@ public class CombatantView : MonoBehaviour
 
     private void UpdateHealthText()
     {
-        healthText.text = "HP: " + CurrentHealth;
+        if (healthText != null)
+            healthText.text = CurrentHealth + "/" + MaxHealth;
     }
 
     public void Damage(int damageAmount)

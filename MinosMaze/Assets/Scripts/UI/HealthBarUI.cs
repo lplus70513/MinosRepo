@@ -1,11 +1,13 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using DG.Tweening;
 
 public class HealthBarUI : MonoBehaviour
 {
     [SerializeField] private Image fillImage;
     [SerializeField] private Image bufferImage;
+    [SerializeField] private TMP_Text healthValueText;
     [SerializeField] private float bufferDuration = 0.5f;
 
     private int maxHealth;
@@ -26,6 +28,8 @@ public class HealthBarUI : MonoBehaviour
 
         fillImage.fillAmount = fill;
         bufferImage.fillAmount = fill;
+
+        UpdateHealthValueText(currentHp);
     }
 
     public void SetHealth(int newHealth)
@@ -35,6 +39,14 @@ public class HealthBarUI : MonoBehaviour
 
         bufferTween?.Kill();
         bufferTween = bufferImage.DOFillAmount(targetFill, bufferDuration);
+
+        UpdateHealthValueText(newHealth);
+    }
+
+    private void UpdateHealthValueText(int currentHp)
+    {
+        if (healthValueText != null)
+            healthValueText.text = currentHp + "/" + maxHealth;
     }
 
     private void OnDestroy()
