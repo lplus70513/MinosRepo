@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class HeroSystem : Singleton<HeroSystem>
 {
@@ -15,6 +16,7 @@ public class HeroSystem : Singleton<HeroSystem>
         }
         Vector3 pos = HexGrid.GetStandingPoint(spawnCoord.x, spawnCoord.y);
         HeroView = Instantiate(heroViewPrefab, pos, Quaternion.identity);
+        SceneManager.MoveGameObjectToScene(HeroView.gameObject, gameObject.scene);
         HeroView.Setup(heroData, spawnCoord.x, spawnCoord.y);
     }
 }

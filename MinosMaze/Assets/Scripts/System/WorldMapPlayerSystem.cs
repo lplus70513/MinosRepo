@@ -13,4 +13,9 @@ public class WorldMapPlayerSystem : Singleton<WorldMapPlayerSystem>
         PlayerView = Instantiate(playerPrefab, pos, Quaternion.identity);
         PlayerView.Setup(coord.x, coord.y, maxHealth, currentHealth);
     }
+
+    void OnDestroy()
+    {
+        PlayerView = null;
+    }
 }

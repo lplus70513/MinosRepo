@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EnemyViewCreator : Singleton<EnemyViewCreator>
 {
@@ -14,6 +15,7 @@ public class EnemyViewCreator : Singleton<EnemyViewCreator>
             return null;
         }
         EnemyView enemyView = Instantiate(enemyViewPrefab, position, rotation);
+        SceneManager.MoveGameObjectToScene(enemyView.gameObject, gameObject.scene);
         enemyView.Setup(enemyData, hexX, hexZ);
         return enemyView;
     }

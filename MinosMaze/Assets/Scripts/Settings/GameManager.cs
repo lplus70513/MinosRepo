@@ -170,6 +170,8 @@ public class GameManager : MonoBehaviour
         if (unload != null)
             yield return unload;
         SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
+        yield return null;
+        SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneName));
     }
 
     // 退出遭遇子场景：标记当前格为已清除，卸载子场景，重新加载大地图
@@ -191,6 +193,8 @@ public class GameManager : MonoBehaviour
                 yield return unload;
         }
         SceneManager.LoadScene(worldMapSceneName, LoadSceneMode.Additive);
+        yield return null;
+        SceneManager.SetActiveScene(SceneManager.GetSceneByName(worldMapSceneName));
     }
 
     // 战斗失败时返回主菜单
