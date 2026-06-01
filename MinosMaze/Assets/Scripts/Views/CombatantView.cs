@@ -31,6 +31,8 @@ public class CombatantView : MonoBehaviour
     private static Camera camera3D;
     private static Material alwaysVisibleMaterial;
 
+    public static EnemyView HoveredEnemy { get; set; }
+
     void Awake()
     {
         if (camera3D == null)
@@ -53,6 +55,23 @@ public class CombatantView : MonoBehaviour
         {
             spriteRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
             spriteRenderer.receiveShadows = true;
+        }
+
+        BoxCollider col = GetComponent<BoxCollider>();
+        if (col == null)
+        {
+            col = gameObject.AddComponent<BoxCollider>();
+            col.isTrigger = true;
+            col.size = new Vector3(2f, 3f, 1f);
+            col.center = new Vector3(0f, 1.5f, 0f);
+        }
+    }
+
+    void OnDestroy()
+    {
+        if (HoveredEnemy == this)
+        {
+            HoveredEnemy = null;
         }
     }
 

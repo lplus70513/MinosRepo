@@ -5,6 +5,8 @@ public class PlayerMovementSystem : Singleton<PlayerMovementSystem>
     public int RemainingMovementPoints { get; private set; } = 1;
 
     private bool highlightsVisible;
+    private bool showingEnemyRange;
+    private EnemyView lastShownEnemy;
 
     void OnEnable()
     {
@@ -31,6 +33,21 @@ public class PlayerMovementSystem : Singleton<PlayerMovementSystem>
 
     void Update()
     {
+        UpdateHoveredEnemy();
+
+        if (ShouldShowEnemyRange())
+        {
+            ShowEnemyRange();
+            return;
+        }
+
+        if (showingEnemyRange)
+        {
+            ClearEnemyRange();
+            showingEnemyRange = false;
+            highlightsVisible = false;
+        }
+
         if (IsHeroRootedOrStunned())
         {
             if (highlightsVisible)
@@ -55,6 +72,91 @@ public class PlayerMovementSystem : Singleton<PlayerMovementSystem>
             }
             highlightsVisible = shouldShow;
         }
+    }
+
+    private Camera GetCamera3D()
+    {
+        var camObj = GameObject.FindGameObjectWithTag("3D Camera");
+        if (camObj != null) return camObj.GetComponent<Camera>();
+        return null;
+    }
+
+    private void UpdateHoveredEnemy()
+    {
+        Camera cam = GetCamera3D();
+        if (cam == null)
+        {
+            CombatantView.HoveredEnemy = null;
+            return;
+        }
+
+        var enemies = EnemySystem.Instance.Enemies;
+        Vector2 mouseScreen = Input.mousePosition;
+        EnemyView best = null;
+        float bestDist = 100f;
+
+        foreach (var enemy in enemies)
+        {
+            if (enemy == null) continue;
+            Vector3 screenPos = cam.WorldToScreenPoint(enemy.transform.position);
+            Vector2 enemyScreen = new(screenPos.x, screenPos.y);
+            float dist = Vector2.Distance(mouseScreen, enemyScreen);
+            if (dist < bestDist)
+            {
+                bestDist = dist;
+                best = enemy;
+            }
+        }
+
+        CombatantView.HoveredEnemy = bestDist < 100f ? best : null;
+    }
+
+    private bool ShouldShowEnemyRange()
+    {
+        var hovered = CombatantView.HoveredEnemy;
+        if (hovered == null) return false;
+        if (Interactions.Instance.PlayerIsDragging) return false;
+        if (Interactions.Instance.PlayerIsTargeting) return false;
+        return true;
+    }
+
+    private void ShowEnemyRange()
+    {
+        EnemyView enemy = CombatantView.HoveredEnemy;
+        if (enemy == lastShownEnemy) return;
+
+        HexMove.ClearMoveHighlights();
+        HexGrid.ClearAllHighlights();
+        highlightsVisible = false;
+
+        int maxMove = enemy.GetMaxMoveRange();
+        var reachable = HexMove.GetReachableCells(enemy.HexCoordX, enemy.HexCoordZ, maxMove, enemy);
+
+        if (maxMove > 0)
+        {
+            foreach (var (x, z) in reachable)
+            {
+                HexCell cell = HexGrid.GetCell(x, z);
+                if (cell != null) cell.SetMoveHighlight(true);
+            }
+        }
+
+        var attackCells = HexMove.GetAttackRangeFromCells(reachable, 1);
+        foreach (var (x, z) in attackCells)
+        {
+            HexCell cell = HexGrid.GetCell(x, z);
+            if (cell != null) cell.SetHighlight(true);
+        }
+
+        showingEnemyRange = true;
+        lastShownEnemy = enemy;
+    }
+
+    private void ClearEnemyRange()
+    {
+        HexMove.ClearMoveHighlights();
+        HexGrid.ClearAllHighlights();
+        lastShownEnemy = null;
     }
 
     private bool ShouldShowMoveHighlights()

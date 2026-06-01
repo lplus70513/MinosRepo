@@ -45,4 +45,21 @@ public class EnemyView : CombatantView
         if (string.IsNullOrEmpty(tag)) return false;
         return ActionCooldowns.ContainsKey(tag);
     }
+
+    public int GetMaxMoveRange()
+    {
+        if (SourceData == null || SourceData.ActionPool == null)
+            return 0;
+
+        int maxMove = 0;
+        foreach (var action in SourceData.ActionPool)
+        {
+            if (action.ActionType == EnemyActionType.Move && !IsOnCooldown(action.Tag))
+            {
+                if (action.MoveRange > maxMove)
+                    maxMove = action.MoveRange;
+            }
+        }
+        return maxMove;
+    }
 }

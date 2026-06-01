@@ -57,4 +57,49 @@ public static class HexMove
             cell.SetMoveHighlight(false);
         }
     }
+
+    // BFS 泛洪填充：计算从起点出发，maxSteps 步内可达的所有格子（排除被占据的格子）
+    public static HashSet<(int x, int z)> GetReachableCells(int startX, int startZ, int maxSteps, CombatantView exclude = null)
+    {
+        HashSet<(int, int)> reachable = new() { (startX, startZ) };
+
+        if (maxSteps <= 0) return reachable;
+
+        Queue<(int x, int z, int dist)> queue = new();
+        queue.Enqueue((startX, startZ, 0));
+
+        while (queue.Count > 0)
+        {
+            var (x, z, dist) = queue.Dequeue();
+            if (dist >= maxSteps) continue;
+
+            var neighbors = GetWalkableNeighbors(x, z, exclude);
+            foreach (var (nx, nz) in neighbors)
+            {
+                if (!reachable.Contains((nx, nz)))
+                {
+                    reachable.Add((nx, nz));
+                    queue.Enqueue((nx, nz, dist + 1));
+                }
+            }
+        }
+
+        return reachable;
+    }
+
+    // 计算从可达格子集合出发，attackRange 步内的攻击范围（排除已在可达集合中的格子）
+    public static HashSet<(int x, int z)> GetAttackRangeFromCells(HashSet<(int, int)> reachableCells, int attackRange = 1)
+    {
+        HashSet<(int, int)> result = new();
+        foreach (var (x, z) in reachableCells)
+        {
+            var cellsInRange = HexGrid.GetCoordsInRange(x, z, attackRange);
+            foreach (var cell in cellsInRange)
+            {
+                if (!reachableCells.Contains(cell))
+                    result.Add(cell);
+            }
+        }
+        return result;
+    }
 }
