@@ -3907,6 +3907,7 @@ MonoBehaviour:
   - {x: 1, y: 0}
   - {x: -1, y: 2}
   - {x: 1, y: 1}
+  combatPool: {fileID: 0}
 --- !u!114 &1599919349 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1485521105205643388, guid: 1ab11ea9a16fc764dbd9b8be06c46475, type: 3}

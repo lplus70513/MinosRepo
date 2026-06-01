@@ -8,6 +8,11 @@ public class HeroSystem : Singleton<HeroSystem>
 
     public void Setup(HeroData heroData, Vector2Int spawnCoord)
     {
+        if (heroViewPrefab == null)
+        {
+            Debug.LogError("[HeroSystem] heroViewPrefab 未设置，请在战斗场景中配置 HeroSystem 的引用");
+            return;
+        }
         Vector3 pos = HexGrid.GetStandingPoint(spawnCoord.x, spawnCoord.y);
         HeroView = Instantiate(heroViewPrefab, pos, Quaternion.identity);
         HeroView.Setup(heroData, spawnCoord.x, spawnCoord.y);

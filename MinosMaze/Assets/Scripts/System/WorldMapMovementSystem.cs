@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
@@ -13,7 +14,7 @@ public struct SceneMapping
 // 大地图移动系统：移动点数管理、格子间移动、场景跳转、GameOver 判定
 public class WorldMapMovementSystem : Singleton<WorldMapMovementSystem>
 {
-    [Header("场景跳转配置（暂留空）")]
+    [Header("场景跳转配置")]
     [SerializeField] private SceneMapping[] sceneMap;
 
     [Header("移动配置")]
@@ -70,7 +71,7 @@ public class WorldMapMovementSystem : Singleton<WorldMapMovementSystem>
         if (isMoving) return false;
         if (MovePoints <= 0) return false;
         if (Interactions.Instance == null) return true;
-        if (!Interactions.Instance.PlayerCanInteract()) return false;
+        if (Interactions.Instance.IsViewingDeck) return false;
         if (Interactions.Instance.PlayerIsDragging) return false;
         if (Interactions.Instance.PlayerIsTargeting) return false;
         return true;
@@ -153,7 +154,9 @@ public class WorldMapMovementSystem : Singleton<WorldMapMovementSystem>
         {
             // 保存状态后跳转
             SaveStateToGameManager();
-            GameManager.Instance.EnterEncounter(sceneName);
+            SetPendingEncounter(cellType);
+            if (GameManager.Instance != null)
+                GameManager.Instance.EnterEncounter(sceneName);
             yield break;
         }
 
@@ -177,6 +180,16 @@ public class WorldMapMovementSystem : Singleton<WorldMapMovementSystem>
                 return entry.sceneName;
         }
         return null;
+    }
+
+    // 根据格子类型设置待加载的遭遇标识到 GameManager
+    private void SetPendingEncounter(MapCellType cellType)
+    {
+        GameManager gm = GameManager.Instance;
+        if (gm == null) return;
+
+        int floor = gm.WorldMapState?.floorLevel ?? 1;
+        gm.PendingEncounter = new EncounterConfig { cellType = cellType, floorLevel = floor };
     }
 
     // 将当前状态保存到 GameManager（用于跨场景恢复）

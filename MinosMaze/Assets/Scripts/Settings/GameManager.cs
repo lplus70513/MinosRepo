@@ -31,6 +31,9 @@ public class GameManager : MonoBehaviour
     // 大地图可序列化状态，跨场景保存/恢复
     public WorldMapState WorldMapState = new();
 
+    // 当前待加载的遭遇标识（cellType + floor），由 WorldMapMovementSystem 写入
+    public EncounterConfig PendingEncounter { get; set; }
+
     // 当前加载的遭遇子场景名
     private string currentEncounterScene;
 
