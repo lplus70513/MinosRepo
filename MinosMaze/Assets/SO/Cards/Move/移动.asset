@@ -20,9 +20,20 @@ MonoBehaviour:
   <AttackRange>k__BackingField: 1
   <ManualTargetEffect>k__BackingField:
     rid: -2
-  <OtherEffects>k__BackingField: []
+  <OtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1965764092279914496
+    <Effect>k__BackingField:
+      rid: 1965764092279914497
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+    - rid: 1965764092279914496
+      type: {class: NoTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764092279914497
+      type: {class: AddMovePointsEffect, ns: , asm: Assembly-CSharp}
+      data:
+        movePointAmount: 1
