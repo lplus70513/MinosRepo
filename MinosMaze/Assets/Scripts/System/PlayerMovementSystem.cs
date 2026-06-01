@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerMovementSystem : Singleton<PlayerMovementSystem>
@@ -11,11 +12,13 @@ public class PlayerMovementSystem : Singleton<PlayerMovementSystem>
     void OnEnable()
     {
         ActionSystem.SubscribeReaction<EnemyTurnGA>(OnEnemyTurnPost, ReactionTiming.POST);
+        ActionSystem.AttachPerformer<AddMovePointsGA>(AddMovePointsPerformer);
     }
 
     void OnDisable()
     {
         ActionSystem.UnsubscribeReaction<EnemyTurnGA>(OnEnemyTurnPost, ReactionTiming.POST);
+        ActionSystem.DetachPerformer<AddMovePointsGA>();
     }
 
     void Start()
@@ -188,6 +191,13 @@ public class PlayerMovementSystem : Singleton<PlayerMovementSystem>
         MoveGA moveGA = new(hero, hexX, hexZ);
         Debug.Log($"[PlayerMovement] 执行 MoveGA: 目标 ({hexX},{hexZ})");
         ActionSystem.Instance.Perform(moveGA);
+    }
+
+    private IEnumerator AddMovePointsPerformer(AddMovePointsGA ga)
+    {
+        RemainingMovementPoints += ga.Amount;
+        Debug.Log($"[PlayerMovement] 增加移动点 +{ga.Amount}，剩余移动点: {RemainingMovementPoints}");
+        yield return null;
     }
 
     private void OnEnemyTurnPost(EnemyTurnGA ga)
