@@ -37,9 +37,10 @@ public class WorldMapMovementSystem : Singleton<WorldMapMovementSystem>
             return;
         }
 
-        // 禁用战斗地图的移动系统，避免双高亮冲突
-        if (PlayerMovementSystem.Instance != null)
-            PlayerMovementSystem.Instance.enabled = false;
+        // 禁用战斗地图的移动系统，避免双高亮冲突（用 Find 避免自动创建）
+        var playerMoveSys = FindObjectOfType<PlayerMovementSystem>();
+        if (playerMoveSys != null)
+            playerMoveSys.enabled = false;
 
         // 恢复存档或使用初始值
         GameManager gm = GameManager.Instance;
