@@ -31,6 +31,8 @@ public class Card
 
     public bool CanHitFlying => data.CanHitFlying;
 
+    public bool IsAttackCard => data.IsAttackCard;
+
     public Card(CardData cardData)
     {
         data = cardData;

@@ -22,6 +22,10 @@ public class CombatantView : MonoBehaviour
     public int MaxHealth { get; private set; }
     public int CurrentHealth { get; private set; }
 
+    public int LastUnblockedDamage { get; private set; }
+
+    public bool PersistArmor { get; set; } = false;
+
     public event Action<CombatantView, int> OnHealthChanged;
 
     private Dictionary<StatusEffectType, int> statusEffects = new();
@@ -136,6 +140,8 @@ public class CombatantView : MonoBehaviour
 
     public void Damage(int damageAmount)
     {
+        LastUnblockedDamage = 0;
+
         if (HasStatusEffect(StatusEffectType.BLOCK))
         {
             RemoveStatusEffect(StatusEffectType.BLOCK, 1);
@@ -157,6 +163,8 @@ public class CombatantView : MonoBehaviour
                 remainingDamage -= currentArmor;
             }
         }
+
+        LastUnblockedDamage = remainingDamage;
 
         if (remainingDamage > 0)
         {
@@ -280,6 +288,19 @@ public class CombatantView : MonoBehaviour
         {
             if (HasStatusEffect(type))
                 RemoveStatusEffect(type, 1);
+        }
+    }
+
+    public void ClearArmorOnTurnEnd()
+    {
+        if (!PersistArmor)
+        {
+            int armorStacks = GetStatusEffectStacks(StatusEffectType.ARMOR);
+            if (armorStacks > 0)
+            {
+                RemoveStatusEffect(StatusEffectType.ARMOR, armorStacks);
+                Debug.Log($"[CombatantView] {name} 回合结束清空护甲 {armorStacks} 层");
+            }
         }
     }
 

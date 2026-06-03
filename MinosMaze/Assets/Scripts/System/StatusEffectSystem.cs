@@ -72,6 +72,7 @@ public class StatusEffectSystem : MonoBehaviour
             }
 
             combatant.DecayTurnEndEffects();
+            combatant.ClearArmorOnTurnEnd();
         }
     }
 

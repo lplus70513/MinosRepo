@@ -29,4 +29,6 @@ public class CardData : ScriptableObject
     [field: SerializeField] public bool IsRetain { get; private set; } = false;
 
     [field: SerializeField] public bool CanHitFlying { get; private set; } = false;
+
+    [field: SerializeField] public bool IsAttackCard { get; private set; } = false;
 }

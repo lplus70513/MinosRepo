@@ -16,4 +16,6 @@ public class PerkData : ScriptableObject
     [field: SerializeField] public bool UseAutoTarget { get; private set; } = true;
 
     [field: SerializeField] public bool UseActionAsTarget { get; private set; } = false;
+
+    [field: SerializeField] public bool PersistArmor { get; private set; } = false;
 }

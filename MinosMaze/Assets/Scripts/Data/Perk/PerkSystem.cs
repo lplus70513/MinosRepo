@@ -8,6 +8,18 @@ public class PerkSystem : Singleton<PerkSystem>
 
     private readonly List<Perk> perks = new();
 
+    void OnEnable()
+    {
+        ActionSystem.AttachPerformer<AddPerkGA>(AddPerkPerformer);
+        ActionSystem.AttachPerformer<MultiGA>(MultiPerformer);
+    }
+
+    void OnDisable()
+    {
+        ActionSystem.DetachPerformer<AddPerkGA>();
+        ActionSystem.DetachPerformer<MultiGA>();
+    }
+
     public void AddPerk(Perk perk)
     {
         perks.Add(perk);
@@ -20,5 +32,30 @@ public class PerkSystem : Singleton<PerkSystem>
         perks.Remove(perk);
         perksUI.RemovePerkUI(perk);
         perk.OnRemove();
+    }
+
+    private IEnumerator AddPerkPerformer(AddPerkGA ga)
+    {
+        if (ga.PerkData == null)
+        {
+            Debug.LogWarning("[PerkSystem] AddPerkGA 的 PerkData 为空");
+            yield break;
+        }
+        Perk perk = new(ga.PerkData);
+        AddPerk(perk);
+        Debug.Log($"[PerkSystem] 添加 Perk: {ga.PerkData.name}");
+        yield return null;
+    }
+
+    private IEnumerator MultiPerformer(MultiGA ga)
+    {
+        foreach (var wrapper in ga.Effects)
+        {
+            List<CombatantView> targets = wrapper.TargetMode?.GetTargets() ?? ga.Targets;
+            GameAction effectAction = wrapper.Effect.GetGameAction(targets, ga.Caster);
+            if (effectAction != null)
+                ActionSystem.Instance.AddReaction(effectAction);
+            yield return null;
+        }
     }
 }

@@ -35,9 +35,16 @@ public class CardSystem : Singleton<CardSystem>
     private readonly List<Card> exhaustPile = new();
 
     private int bonusDrawNextTurn = 0;
+    private int freePlayRemaining = 0;
     private SelectCardFromHandGA pendingSelectGA;
 
+    public int FreePlayRemaining => freePlayRemaining;
     public bool IsSelectingCardFromHand => pendingSelectGA != null;
+
+    public void ConsumeFreePlay()
+    {
+        if (freePlayRemaining > 0) freePlayRemaining--;
+    }
 
     void OnEnable()
     {
@@ -48,6 +55,8 @@ public class CardSystem : Singleton<CardSystem>
         ActionSystem.AttachPerformer<AddCardToHandGA>(AddCardToHandPerformer);
         ActionSystem.AttachPerformer<ReturnToDrawPileGA>(ReturnToDrawPilePerformer);
         ActionSystem.AttachPerformer<SelectCardFromHandGA>(SelectCardFromHandPerformer);
+        ActionSystem.AttachPerformer<FreePlayGA>(FreePlayPerformer);
+        ActionSystem.AttachPerformer<RandomPlayFromHandGA>(RandomPlayFromHandPerformer);
         ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPreReaction, ReactionTiming.PRE);
         ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
     }
@@ -61,6 +70,8 @@ public class CardSystem : Singleton<CardSystem>
         ActionSystem.DetachPerformer<AddCardToHandGA>();
         ActionSystem.DetachPerformer<ReturnToDrawPileGA>();
         ActionSystem.DetachPerformer<SelectCardFromHandGA>();
+        ActionSystem.DetachPerformer<FreePlayGA>();
+        ActionSystem.DetachPerformer<RandomPlayFromHandGA>();
         ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnemyTurnPreReaction, ReactionTiming.PRE);
         ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
     }
@@ -254,6 +265,67 @@ public class CardSystem : Singleton<CardSystem>
         pendingSelectGA.SelectedCard = card;
     }
 
+    private IEnumerator FreePlayPerformer(FreePlayGA ga)
+    {
+        freePlayRemaining += ga.Amount;
+        Debug.Log($"[CardSystem] 免费出牌次数 +{ga.Amount}，剩余: {freePlayRemaining}");
+        yield return null;
+    }
+
+    private IEnumerator RandomPlayFromHandPerformer(RandomPlayFromHandGA ga)
+    {
+        var nonTargeted = new List<Card>();
+        var targeted = new List<Card>();
+        var enemies = EnemySystem.Instance?.Enemies;
+
+        foreach (var card in hand)
+        {
+            if (card.ManualTargetEffect != null)
+                targeted.Add(card);
+            else
+                nonTargeted.Add(card);
+        }
+
+        int played = 0;
+        for (int pass = 0; pass < 2 && played < ga.Amount; pass++)
+        {
+            var pool = pass == 0 ? nonTargeted : targeted;
+            while (pool.Count > 0 && played < ga.Amount)
+            {
+                int idx = Random.Range(0, pool.Count);
+                Card card = pool[idx];
+                pool.RemoveAt(idx);
+
+                EnemyView manualTarget = null;
+                if (card.ManualTargetEffect != null && enemies != null && enemies.Count > 0)
+                {
+                    var hero = HeroSystem.Instance.HeroView;
+                    var valid = new List<EnemyView>();
+                    foreach (var e in enemies)
+                    {
+                        if (e == null) continue;
+                        if (card.HasAttackRange && HexGrid.HexDistance(hero.HexCoordX, hero.HexCoordZ, e.HexCoordX, e.HexCoordZ) > card.AttackRange)
+                            continue;
+                        if (!card.CanHitFlying && e.EnemyType == EnemyType.Flying)
+                            continue;
+                        valid.Add(e);
+                    }
+                    if (valid.Count > 0)
+                        manualTarget = valid[Random.Range(0, valid.Count)];
+                    else
+                        continue;
+                }
+
+                PlayCardGA playGA = manualTarget != null ? new(card, manualTarget) : new(card);
+                ActionSystem.Instance.AddReaction(playGA);
+                played++;
+                Debug.Log($"[CardSystem] 随机自动打出: {card.Name}");
+                yield return null;
+            }
+        }
+        Debug.Log($"[CardSystem] 随机自动打出完成，共 {played} 张");
+    }
+
     // Reactions
 
     private void EnemyTurnPreReaction(EnemyTurnGA enemyTurnGA)
@@ -274,28 +346,19 @@ public class CardSystem : Singleton<CardSystem>
 
     private IEnumerator DrawCard()
     {
-        // 1. ���ƶѳ�һ���ƣ�ʹ�����ṩ�� ListExtensions.Draw ������
         Card drawnCard = drawPile.Draw();
 
-        // 2. ����ƶ�Ϊ�գ�Draw �����᷵�� null����ʱ��Ӧ����
         if (drawnCard == null)
         {
             Debug.LogWarning("��ͼ�ӿ��ƶѳ��ƣ�");
-            yield break; // �˳�Э��
+            yield break;
         }
 
-        // 3. ���鵽���Ƽ��������߼��б�
         hand.Add(drawnCard);
 
-        // 4. ���� HandView ���������ӿ��Ƶ��Ӿ�����
-        //    ���뿨��ģ�ͺͳ�ʼ����λ��/��ת
         CardView cardView = handView.AddCard(drawnCard, drawPilePoint.position, drawPilePoint.rotation);
 
-        // 5. �����Ҫ�ȴ��Ӿ�Ч����ɣ����翨�Ʒ������ƵĶ������������ڴ˴� yield
-        //    ��Ŀǰ HandView.AddCard ��ͬ���ģ��������ﲻ��Ҫ����� yield��
-        //    ��� HandView.AddCard ������Э�̣����綯��������Ӧд�ɣ�
-        //    if(cardView != null) yield return StartCoroutine(handView.PlayDrawAnimation(cardView)); 
-        //    ���������Ǽ������Ǽ�ʱ��ɵġ�
+        ActionSystem.Instance.AddReaction(new SingleDrawGA(drawnCard));
     }
 
     private void RefillDeck()

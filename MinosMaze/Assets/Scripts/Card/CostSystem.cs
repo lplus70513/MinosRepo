@@ -30,9 +30,18 @@ public class CostSystem : Singleton<CostSystem>
 
     private IEnumerator SpendCostPerformer(SpendCostGA action)
     {
-        currentCost -= action.Amount;
-        costUI.UpdateCostText(currentCost);
-        yield return null;
+        if (CardSystem.Instance.FreePlayRemaining > 0)
+        {
+            CardSystem.Instance.ConsumeFreePlay();
+            Debug.Log($"[CostSystem] 免费出牌，跳过消耗 {action.Amount} 点行动力");
+            yield return null;
+        }
+        else
+        {
+            currentCost -= action.Amount;
+            costUI.UpdateCostText(currentCost);
+            yield return null;
+        }
     }
 
     private IEnumerator RefillCostPerformer(RefillCostGA action)

@@ -21,11 +21,31 @@ public class Perk
     public void OnAdd()
     {
         condition.SubscribeCondition(Reaction);
+        SetupPassive();
     }
 
     public void OnRemove()
     {
         condition.UnsubscribeCondition(Reaction);
+        RemovePassive();
+    }
+
+    private void SetupPassive()
+    {
+        if (data.PersistArmor)
+        {
+            var hero = HeroSystem.Instance?.HeroView;
+            if (hero != null) hero.PersistArmor = true;
+        }
+    }
+
+    private void RemovePassive()
+    {
+        if (data.PersistArmor)
+        {
+            var hero = HeroSystem.Instance?.HeroView;
+            if (hero != null) hero.PersistArmor = false;
+        }
     }
 
     private void Reaction(GameAction gameAction)

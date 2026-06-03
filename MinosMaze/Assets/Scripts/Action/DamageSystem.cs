@@ -20,10 +20,12 @@ public class DamageSystem : MonoBehaviour
 
     private IEnumerator DealDamagePerformer(DealDamageGA dealDamageGA)
     {
+        int totalUnblocked = 0;
         foreach (var target in dealDamageGA.Targets)
         {
             int modifiedDamage = CalculateModifiedDamage(dealDamageGA.Amount, dealDamageGA.Caster, target);
             target.Damage(modifiedDamage);
+            totalUnblocked += target.LastUnblockedDamage;
             SpawnDamageVFX(target);
             yield return new WaitForSeconds(0.15f);
             if (target.CurrentHealth == 0 && target is EnemyView)
@@ -32,6 +34,7 @@ public class DamageSystem : MonoBehaviour
                 ActionSystem.Instance.AddReaction(killEnemyGA);
             }
         }
+        dealDamageGA.UnblockedAmount = totalUnblocked;
     }
 
     private IEnumerator DealArmorDamagePerformer(DealArmorDamageGA ga)

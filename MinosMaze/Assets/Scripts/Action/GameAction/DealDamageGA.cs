@@ -10,6 +10,8 @@ public class DealDamageGA : GameAction, IHaveCaster
 
     public CombatantView Caster { get; private set; }
 
+    public int UnblockedAmount { get; set; }
+
     public DealDamageGA(int amount, List<CombatantView> targets, CombatantView caster)
     {
         Amount = amount;
