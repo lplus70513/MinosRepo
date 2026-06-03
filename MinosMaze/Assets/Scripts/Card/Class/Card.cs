@@ -23,6 +23,14 @@ public class Card
 
     public int Cost { get; private set; }
 
+    public bool IsInnate => data.IsInnate;
+
+    public bool IsExhaust => data.IsExhaust;
+
+    public bool IsRetain => data.IsRetain;
+
+    public bool CanHitFlying => data.CanHitFlying;
+
     public Card(CardData cardData)
     {
         data = cardData;

@@ -107,6 +107,12 @@ public class CardView : MonoBehaviour
     {
         if (!Interactions.Instance.PlayerCanInteract()) return;
 
+        if (CardSystem.Instance.IsSelectingCardFromHand)
+        {
+            CardSystem.Instance.OnHandCardSelected(Card);
+            return;
+        }
+
         if (targetingCard != null && targetingCard != this)
             targetingCard.CancelTargeting();
 
@@ -361,6 +367,11 @@ public class CardView : MonoBehaviour
         }
 
         EnemyView target = ManualTargetSystem.Instance.EndTargeting();
+
+        if (target != null && !Card.CanHitFlying && target.EnemyType == EnemyType.Flying)
+        {
+            target = null;
+        }
 
         bool hasCost = CostSystem.Instance.HasEnoughCost(Card.Cost);
 

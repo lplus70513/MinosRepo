@@ -11,5 +11,6 @@ public enum StatusEffectType
     SLOW,
     CHAIN_LIGHTNING,
     ROOT,
-    STUN
+    STUN,
+    BLOCK
 }

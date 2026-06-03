@@ -136,6 +136,12 @@ public class CombatantView : MonoBehaviour
 
     public void Damage(int damageAmount)
     {
+        if (HasStatusEffect(StatusEffectType.BLOCK))
+        {
+            RemoveStatusEffect(StatusEffectType.BLOCK, 1);
+            return;
+        }
+
         int remainingDamage = damageAmount;
         int currentArmor = GetStatusEffectStacks(StatusEffectType.ARMOR);
         if (currentArmor > 0)
@@ -183,12 +189,19 @@ public class CombatantView : MonoBehaviour
             || type == StatusEffectType.SLOW
             || type == StatusEffectType.CHAIN_LIGHTNING
             || type == StatusEffectType.ROOT
-            || type == StatusEffectType.STUN;
+            || type == StatusEffectType.STUN
+            || type == StatusEffectType.BLOCK;
     }
 
     public void AddStatusEffect(StatusEffectType type, int stackCount)
     {
-        if (stackCount <= 0) return;
+        if (stackCount == 0) return;
+
+        if (stackCount < 0)
+        {
+            RemoveStatusEffect(type, -stackCount);
+            return;
+        }
 
         if (IsNonStackable(type) && HasStatusEffect(type))
             return;
@@ -225,6 +238,19 @@ public class CombatantView : MonoBehaviour
         }
 
         statusEffectsUI.UpdateStatusEffectUI(type, GetStatusEffectStacks(type));
+    }
+
+    public void SetStatusEffectStacks(StatusEffectType type, int stackCount)
+    {
+        if (stackCount <= 0)
+        {
+            statusEffects.Remove(type);
+        }
+        else
+        {
+            statusEffects[type] = stackCount;
+        }
+        statusEffectsUI.UpdateStatusEffectUI(type, stackCount);
     }
 
     public bool HasStatusEffect(StatusEffectType type)

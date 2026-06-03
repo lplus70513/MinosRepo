@@ -21,4 +21,12 @@ public class CardData : ScriptableObject
     [field: SerializeReference, SR] public Effect ManualTargetEffect { get; private set; } = null;
 
     [field: SerializeField] public List<AutoTargetEffect> OtherEffects { get; private set; }
+
+    [field: SerializeField] public bool IsInnate { get; private set; } = false;
+
+    [field: SerializeField] public bool IsExhaust { get; private set; } = false;
+
+    [field: SerializeField] public bool IsRetain { get; private set; } = false;
+
+    [field: SerializeField] public bool CanHitFlying { get; private set; } = false;
 }

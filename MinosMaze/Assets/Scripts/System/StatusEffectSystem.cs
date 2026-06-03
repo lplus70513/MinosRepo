@@ -7,6 +7,7 @@ public class StatusEffectSystem : MonoBehaviour
     private void OnEnable()
     {
         ActionSystem.AttachPerformer<AddStatusEffectGA>(AddStatusEffectPerformer);
+        ActionSystem.AttachPerformer<DoubleStatusGA>(DoubleStatusPerformer);
         ActionSystem.SubscribeReaction<EnemyTurnGA>(OnEnemyTurnPost, ReactionTiming.POST);
         ActionSystem.SubscribeReaction<DealDamageGA>(OnDealDamagePost, ReactionTiming.POST);
     }
@@ -14,6 +15,7 @@ public class StatusEffectSystem : MonoBehaviour
     private void OnDisable()
     {
         ActionSystem.DetachPerformer<AddStatusEffectGA>();
+        ActionSystem.DetachPerformer<DoubleStatusGA>();
         ActionSystem.UnsubscribeReaction<EnemyTurnGA>(OnEnemyTurnPost, ReactionTiming.POST);
         ActionSystem.UnsubscribeReaction<DealDamageGA>(OnDealDamagePost, ReactionTiming.POST);
     }
@@ -30,6 +32,21 @@ public class StatusEffectSystem : MonoBehaviour
                 ActionSystem.Instance.CancelCurrentFlow();
             }
 
+            yield return null;
+        }
+    }
+
+    private IEnumerator DoubleStatusPerformer(DoubleStatusGA doubleStatusGA)
+    {
+        foreach (var target in doubleStatusGA.Targets)
+        {
+            int currentStacks = target.GetStatusEffectStacks(doubleStatusGA.StatusEffectType);
+            if (currentStacks > 0)
+            {
+                int doubled = currentStacks * 2;
+                target.SetStatusEffectStacks(doubleStatusGA.StatusEffectType, doubled);
+                Debug.Log($"[StatusEffectSystem] {target.name} 的 {doubleStatusGA.StatusEffectType} 翻倍: {currentStacks} → {doubled}");
+            }
             yield return null;
         }
     }

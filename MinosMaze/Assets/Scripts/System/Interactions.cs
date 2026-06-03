@@ -10,6 +10,8 @@ public class Interactions : Singleton<Interactions>
     {
         if (IsViewingDeck) return false;
 
+        if (CardSystem.Instance.IsSelectingCardFromHand) return true;
+
         var hero = HeroSystem.Instance?.HeroView;
         if (hero != null && hero.HasStatusEffect(StatusEffectType.STUN)) return false;
 

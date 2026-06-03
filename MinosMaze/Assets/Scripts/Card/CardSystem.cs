@@ -34,11 +34,20 @@ public class CardSystem : Singleton<CardSystem>
     private readonly List<Card> hand = new();
     private readonly List<Card> exhaustPile = new();
 
+    private int bonusDrawNextTurn = 0;
+    private SelectCardFromHandGA pendingSelectGA;
+
+    public bool IsSelectingCardFromHand => pendingSelectGA != null;
+
     void OnEnable()
     {
         ActionSystem.AttachPerformer<DrawCardsGA>(DrawCardsPerformer);
         ActionSystem.AttachPerformer<DiscardAllCardsGA>(DiscardAllCardsPerformer);
         ActionSystem.AttachPerformer<PlayCardGA>(PlayCardPerformer);
+        ActionSystem.AttachPerformer<BonusDrawGA>(BonusDrawPerformer);
+        ActionSystem.AttachPerformer<AddCardToHandGA>(AddCardToHandPerformer);
+        ActionSystem.AttachPerformer<ReturnToDrawPileGA>(ReturnToDrawPilePerformer);
+        ActionSystem.AttachPerformer<SelectCardFromHandGA>(SelectCardFromHandPerformer);
         ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPreReaction, ReactionTiming.PRE);
         ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
     }
@@ -48,6 +57,10 @@ public class CardSystem : Singleton<CardSystem>
         ActionSystem.DetachPerformer<DrawCardsGA>();
         ActionSystem.DetachPerformer<DiscardAllCardsGA>();
         ActionSystem.DetachPerformer<PlayCardGA>();
+        ActionSystem.DetachPerformer<BonusDrawGA>();
+        ActionSystem.DetachPerformer<AddCardToHandGA>();
+        ActionSystem.DetachPerformer<ReturnToDrawPileGA>();
+        ActionSystem.DetachPerformer<SelectCardFromHandGA>();
         ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnemyTurnPreReaction, ReactionTiming.PRE);
         ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
     }
@@ -61,6 +74,16 @@ public class CardSystem : Singleton<CardSystem>
             Card card = new(cardData);
             drawPile.Add(card);
         }
+
+        var innateCards = drawPile.FindAll(c => c.IsInnate);
+        foreach (var card in innateCards)
+        {
+            drawPile.Remove(card);
+            hand.Add(card);
+            handView.AddCard(card, drawPilePoint.position, drawPilePoint.rotation);
+        }
+        if (innateCards.Count > 0)
+            Debug.Log($"[CardSystem] 固有牌 {innateCards.Count} 张直接加入手牌");
     }
 
     private IEnumerator DrawCardsPerformer(DrawCardsGA drawCardsGA)
@@ -113,6 +136,8 @@ public class CardSystem : Singleton<CardSystem>
         foreach (var effectWrapper  in playCardGA.Card.OtherEffects)
         {
             List<CombatantView> targets = effectWrapper.TargetMode.GetTargets();
+            if (targets != null && !playCardGA.Card.CanHitFlying)
+                targets = targets.FindAll(t => !(t is EnemyView ev && ev.EnemyType == EnemyType.Flying));
             if (playCardGA.Card.HasAttackRange && targets != null)
             {
                 HeroView hero = HeroSystem.Instance.HeroView;
@@ -136,36 +161,98 @@ public class CardSystem : Singleton<CardSystem>
         Tween scaleTween = t.DOScale(Vector3.one * 0.9f, 0.15f).SetEase(Ease.OutQuad);
         yield return scaleTween.WaitForCompletion();
         yield return new WaitForSeconds(0.2f);
-        yield return DiscardCard(cardView);
+        if (cardView.Card.IsExhaust)
+            yield return ExhaustCardSequence(cardView);
+        else
+            yield return DiscardCard(cardView);
     }
 
     private IEnumerator DiscardAllCardsPerformer(DiscardAllCardsGA discardAllCardsGA)
     {
-        // ע�⣺����ʱ�޸ļ��ϻᱨ�������鴴���������������
-        // ������� handView.RemoveCard �ᰲȫ�ش� handCards ���Ƴ���Ӧ�
-        // ����� handView �������Ӿ����߼���������� hand��
-        // Ϊ��ȫ������������ռ�����Ҫ�����Ŀ��ƣ������δ�����
         List<Card> cardsToDiscard = new List<Card>(hand);
+
         foreach (var card in cardsToDiscard)
         {
-            // ���߼��������Ƴ�
-            hand.Remove(card);
+            if (card.IsRetain) continue;
 
-            // ���Ӿ��������Ƴ�����ȡ��ͼ
+            hand.Remove(card);
             CardView cardView = handView.RemoveCard(card);
             if (cardView != null)
             {
-                // �������Ƶ��Ӿ�Ч��
                 yield return DiscardCard(cardView);
-
-                // �������ƶ������ƶ��߼��б�
-                // discardPile.Add(card);
             }
         }
-        // ���ȷ���߼������б������
-        // hand.Clear(); // ��Ϊ�����Ѿ���ѭ����ʼǰ������ˣ��������ע�͵�
     }
 
+
+    private IEnumerator BonusDrawPerformer(BonusDrawGA ga)
+    {
+        bonusDrawNextTurn += ga.Amount;
+        Debug.Log($"[CardSystem] 下回合额外抽牌 +{ga.Amount}，累计: {bonusDrawNextTurn}");
+        yield return null;
+    }
+
+    private IEnumerator AddCardToHandPerformer(AddCardToHandGA ga)
+    {
+        if (ga.CardData == null)
+        {
+            Debug.LogWarning("[CardSystem] AddCardToHand 引用的 CardData 为空");
+            yield break;
+        }
+        Card card = new(ga.CardData);
+        hand.Add(card);
+        CardView cardView = handView.AddCard(card, drawPilePoint.position, drawPilePoint.rotation);
+        Debug.Log($"[CardSystem] 将 {card.Name} 加入手牌");
+        yield return null;
+    }
+
+    private IEnumerator ReturnToDrawPilePerformer(ReturnToDrawPileGA ga)
+    {
+        if (ga.Card == null)
+        {
+            Debug.LogWarning("[CardSystem] ReturnToDrawPile 的卡牌为空");
+            yield break;
+        }
+        hand.Remove(ga.Card);
+        handView.RemoveCard(ga.Card);
+        drawPile.Add(ga.Card);
+        Debug.Log($"[CardSystem] 将 {ga.Card.Name} 放回抽牌堆");
+        yield return null;
+    }
+
+    private IEnumerator SelectCardFromHandPerformer(SelectCardFromHandGA ga)
+    {
+        if (hand.Count == 0)
+        {
+            Debug.LogWarning("[CardSystem] 手牌为空，无法选择");
+            yield break;
+        }
+
+        pendingSelectGA = ga;
+        Debug.Log($"[CardSystem] 等待玩家从手牌中选择一张牌 (共 {hand.Count} 张)");
+
+        while (ga.SelectedCard == null && pendingSelectGA == ga)
+            yield return null;
+
+        pendingSelectGA = null;
+
+        if (ga.SelectedCard == null) yield break;
+
+        if (ga.OnSelectAction is ReturnToDrawPileGA)
+        {
+            ReturnToDrawPileGA returnGA = new(ga.SelectedCard);
+            ActionSystem.Instance.AddReaction(returnGA);
+        }
+    }
+
+    public void OnHandCardSelected(Card card)
+    {
+        if (pendingSelectGA == null) return;
+        if (!hand.Contains(card)) return;
+
+        Debug.Log($"[CardSystem] 玩家选择了 {card.Name}");
+        pendingSelectGA.SelectedCard = card;
+    }
 
     // Reactions
 
@@ -177,7 +264,9 @@ public class CardSystem : Singleton<CardSystem>
 
     private void EnemyTurnPostReaction(EnemyTurnGA enemyTurnGA)
     {
-        DrawCardsGA drawCardsGA = new(5);
+        int drawAmount = 5 + bonusDrawNextTurn;
+        bonusDrawNextTurn = 0;
+        DrawCardsGA drawCardsGA = new(drawAmount);
         ActionSystem.Instance.AddReaction(drawCardsGA);
     }
 
@@ -226,17 +315,29 @@ public class CardSystem : Singleton<CardSystem>
 
         Transform t = cardView.transform;
 
-        // �ؼ����� Kill �����������еĶ����������������
         t.DOKill();
 
-        // ִ�ж���
         t.DOScale(Vector3.zero, 0.15f);
         Tween moveTween = t.DOMove(discardPilePoint.position, 0.15f);
 
-        // �ȴ�������ɣ���ȫ��
         yield return moveTween.WaitForCompletion();
 
-        // ȷ������������������
+        Destroy(cardView.gameObject);
+    }
+
+    private IEnumerator ExhaustCardSequence(CardView cardView)
+    {
+        exhaustPile.Add(cardView.Card);
+        Debug.Log($"[CardSystem] {cardView.Card.Name} 被消耗");
+
+        if (cardView == null || cardView.gameObject == null)
+            yield break;
+
+        Transform t = cardView.transform;
+        t.DOKill();
+        t.DOScale(Vector3.zero, 0.15f);
+        Tween moveTween = t.DOMove(drawPilePoint.position, 0.15f);
+        yield return moveTween.WaitForCompletion();
         Destroy(cardView.gameObject);
     }
 }
