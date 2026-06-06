@@ -161,7 +161,9 @@ public class CardSystem : Singleton<CardSystem>
         // 执行卡牌效果
         foreach (var effectWrapper  in playCardGA.Card.OtherEffects)
         {
-            List<CombatantView> targets = effectWrapper.TargetMode.GetTargets();
+            List<CombatantView> targets = effectWrapper.TargetMode is ManualTargetTM
+                ? ResolveManualTargets(playCardGA)
+                : effectWrapper.TargetMode.GetTargets();
             if (targets != null && !playCardGA.Card.CanHitFlying)
                 targets = targets.FindAll(t => !(t is EnemyView ev && ev.EnemyType == EnemyType.Flying));
             if (playCardGA.Card.HasAttackRange && targets != null)

@@ -16,6 +16,8 @@ MonoBehaviour:
   <Cost>k__BackingField: 1
   <Image>k__BackingField: {fileID: 1709695921, guid: 1ed825c84a4d3aa438bfa70d107b81fb, type: 3}
   <Background>k__BackingField: {fileID: 1370473001, guid: 7e9643d6638fe744ca4f76a79d6457f3, type: 3}
+  <HasAttackRange>k__BackingField: 0
+  <AttackRange>k__BackingField: 1
   <ManualTargetEffect>k__BackingField:
     rid: -2
   <OtherEffects>k__BackingField:
@@ -23,11 +25,74 @@ MonoBehaviour:
       rid: 5015277525357035520
     <Effect>k__BackingField:
       rid: 5015277525357035521
+  <IsInnate>k__BackingField: 0
+  <IsExhaust>k__BackingField: 0
+  <IsRetain>k__BackingField: 0
+  <CanHitFlying>k__BackingField: 0
+  <IsAttackCard>k__BackingField: 0
+  <AttackRangePattern>k__BackingField:
+    rid: -2
+  <BaseGrade>k__BackingField:
+    <Name>k__BackingField: "\u9632\u5FA1"
+    <Description>k__BackingField: "\u83B7\u5F973\u70B9\u683C\u6321"
+    <Cost>k__BackingField: 1
+    <HasAttackRange>k__BackingField: 0
+    <AttackRange>k__BackingField: 1
+    <ManualTargetEffect>k__BackingField:
+      rid: -2
+    <OtherEffects>k__BackingField:
+    - <TargetMode>k__BackingField:
+        rid: 1965764210852102153
+      <Effect>k__BackingField:
+        rid: 1965764210852102154
+    <IsInnate>k__BackingField: 0
+    <IsExhaust>k__BackingField: 0
+    <IsRetain>k__BackingField: 0
+    <CanHitFlying>k__BackingField: 0
+    <IsAttackCard>k__BackingField: 0
+    <AttackRangePattern>k__BackingField:
+      rid: -2
+  <UpgradeGrade>k__BackingField:
+    <Name>k__BackingField: "\u9632\u5FA1+"
+    <Description>k__BackingField: "\u83B7\u5F975\u70B9\u683C\u6321"
+    <Cost>k__BackingField: 1
+    <HasAttackRange>k__BackingField: 0
+    <AttackRange>k__BackingField: 1
+    <ManualTargetEffect>k__BackingField:
+      rid: -2
+    <OtherEffects>k__BackingField:
+    - <TargetMode>k__BackingField:
+        rid: 1965764210852102155
+      <Effect>k__BackingField:
+        rid: 1965764210852102156
+    <IsInnate>k__BackingField: 0
+    <IsExhaust>k__BackingField: 0
+    <IsRetain>k__BackingField: 0
+    <CanHitFlying>k__BackingField: 0
+    <IsAttackCard>k__BackingField: 0
+    <AttackRangePattern>k__BackingField:
+      rid: -2
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+    - rid: 1965764210852102153
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764210852102154
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        statusEffectType: 0
+        stackCount: 3
+    - rid: 1965764210852102155
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764210852102156
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        statusEffectType: 0
+        stackCount: 5
     - rid: 5015277525357035520
       type: {class: HeroTM, ns: , asm: Assembly-CSharp}
       data: 

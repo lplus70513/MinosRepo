@@ -39,29 +39,37 @@ MonoBehaviour:
     <HasAttackRange>k__BackingField: 1
     <AttackRange>k__BackingField: 1
     <ManualTargetEffect>k__BackingField:
-      rid: -2
-    <OtherEffects>k__BackingField: []
+      rid: 1965764210852102161
+    <OtherEffects>k__BackingField:
+    - <TargetMode>k__BackingField:
+        rid: 1965764210852102158
+      <Effect>k__BackingField:
+        rid: 1965764210852102159
     <IsInnate>k__BackingField: 0
     <IsExhaust>k__BackingField: 0
     <IsRetain>k__BackingField: 0
     <CanHitFlying>k__BackingField: 0
-    <IsAttackCard>k__BackingField: 0
+    <IsAttackCard>k__BackingField: 1
     <AttackRangePattern>k__BackingField:
       rid: -2
   <UpgradeGrade>k__BackingField:
-    <Name>k__BackingField: 
-    <Description>k__BackingField: 
-    <Cost>k__BackingField: 0
-    <HasAttackRange>k__BackingField: 0
+    <Name>k__BackingField: "\u6A2A\u626B+"
+    <Description>k__BackingField: "\u5BF9\u654C\u4EBA\u9020\u6210 10\u70B9\u4F24\u5BB3\uFF0C\u7ED9\u4E88\u654C\u4EBA2\u5C42\u6613\u4F24"
+    <Cost>k__BackingField: 2
+    <HasAttackRange>k__BackingField: 1
     <AttackRange>k__BackingField: 1
     <ManualTargetEffect>k__BackingField:
-      rid: -2
-    <OtherEffects>k__BackingField: []
+      rid: 1965764210852102163
+    <OtherEffects>k__BackingField:
+    - <TargetMode>k__BackingField:
+        rid: 1965764210852102164
+      <Effect>k__BackingField:
+        rid: 1965764210852102165
     <IsInnate>k__BackingField: 0
     <IsExhaust>k__BackingField: 0
     <IsRetain>k__BackingField: 0
     <CanHitFlying>k__BackingField: 0
-    <IsAttackCard>k__BackingField: 0
+    <IsAttackCard>k__BackingField: 1
     <AttackRangePattern>k__BackingField:
       rid: -2
   references:
@@ -73,6 +81,30 @@ MonoBehaviour:
       type: {class: ManualTargetTM, ns: , asm: Assembly-CSharp}
       data: 
     - rid: 1965764210852102149
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        statusEffectType: 4
+        stackCount: 2
+    - rid: 1965764210852102158
+      type: {class: ManualTargetTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764210852102159
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        statusEffectType: 4
+        stackCount: 2
+    - rid: 1965764210852102161
+      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 7
+    - rid: 1965764210852102163
+      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 10
+    - rid: 1965764210852102164
+      type: {class: ManualTargetTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764210852102165
       type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
       data:
         statusEffectType: 4
