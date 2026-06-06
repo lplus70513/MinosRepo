@@ -32,6 +32,8 @@ public class CardData : ScriptableObject
 
     [field: SerializeField] public bool IsAttackCard { get; private set; } = false;
 
+    [field: SerializeReference, SR] public HexRangePattern AttackRangePattern { get; private set; }
+
     [field: SerializeField] public CardGradeData BaseGrade { get; private set; }
 
     [field: SerializeField] public CardGradeData UpgradeGrade { get; private set; }

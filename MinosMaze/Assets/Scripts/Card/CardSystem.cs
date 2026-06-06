@@ -95,6 +95,7 @@ public class CardSystem : Singleton<CardSystem>
     {
         foreach (var entry in deckData)
         {
+            if (entry == null || entry.CardData == null) continue;
             Card card = new(entry.CardData, entry.IsUpgraded);
             drawPile.Add(card);
         }
@@ -152,7 +153,8 @@ public class CardSystem : Singleton<CardSystem>
             hero.SetFacing(playCardGA.ManualTarget.HexCoordX, playCardGA.ManualTarget.HexCoordZ);
             yield return hero.PlayAttackAnimation();
 
-            PerformEffectGA performEffectGA = new(playCardGA.Card.ManualTargetEffect, new() { playCardGA.ManualTarget });
+            List<CombatantView> targets = ResolveManualTargets(playCardGA);
+            PerformEffectGA performEffectGA = new(playCardGA.Card.ManualTargetEffect, targets);
             ActionSystem.Instance.AddReaction(performEffectGA);
         }
 
@@ -358,13 +360,43 @@ public class CardSystem : Singleton<CardSystem>
 
     // Helpers
 
+    private List<CombatantView> ResolveManualTargets(PlayCardGA playCardGA)
+    {
+        var pattern = playCardGA.Card.AttackRangePattern;
+        var manualTarget = playCardGA.ManualTarget;
+
+        if (pattern == null)
+            return new List<CombatantView> { manualTarget };
+
+        var hero = HeroSystem.Instance.HeroView;
+        var origin = new Vector2Int(hero.HexCoordX, hero.HexCoordZ);
+        var targetCoord = new Vector2Int(manualTarget.HexCoordX, manualTarget.HexCoordZ);
+        var affectedCells = pattern.GetAffectedCells(origin, targetCoord);
+
+        var targets = new List<CombatantView>();
+        var added = new HashSet<EnemyView>();
+        var enemySystem = EnemySystem.Instance;
+
+        foreach (var cell in affectedCells)
+        {
+            var enemy = enemySystem.GetEnemyAt(cell.x, cell.y);
+            if (enemy == null || added.Contains(enemy)) continue;
+            if (enemy != manualTarget && !playCardGA.Card.CanHitFlying && enemy.EnemyType == EnemyType.Flying)
+                continue;
+            added.Add(enemy);
+            targets.Add(enemy);
+        }
+
+        return targets;
+    }
+
     private IEnumerator DrawCard()
     {
         Card drawnCard = drawPile.Draw();
 
         if (drawnCard == null)
         {
-            Debug.LogWarning("��ͼ�ӿ��ƶѳ��ƣ�");
+            Debug.LogWarning("bug");
             yield break;
         }
 

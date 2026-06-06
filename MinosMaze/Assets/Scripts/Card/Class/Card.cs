@@ -41,6 +41,8 @@ public class Card
 
     public bool IsAttackCard => Grade != null ? Grade.IsAttackCard : data.IsAttackCard;
 
+    public HexRangePattern AttackRangePattern => Grade?.AttackRangePattern ?? data.AttackRangePattern;
+
     public Card(CardData cardData, bool isUpgraded = false)
     {
         data = cardData;

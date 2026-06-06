@@ -10,6 +10,11 @@ public class EnemySystem : Singleton<EnemySystem>
 
     public List<EnemyView> Enemies => enemyBoardView.EnemyViews;
 
+    public EnemyView GetEnemyAt(int x, int z)
+    {
+        return Enemies.Find(e => e.HexCoordX == x && e.HexCoordZ == z);
+    }
+
     void OnEnable()
     {
         ActionSystem.AttachPerformer<EnemyTurnGA>(EnemyTurnPerformer);

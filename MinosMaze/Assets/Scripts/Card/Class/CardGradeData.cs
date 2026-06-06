@@ -28,4 +28,6 @@ public class CardGradeData
     [field: SerializeField] public bool CanHitFlying { get; private set; } = false;
 
     [field: SerializeField] public bool IsAttackCard { get; private set; } = false;
+
+    [field: SerializeReference, SR] public HexRangePattern AttackRangePattern { get; private set; }
 }

@@ -27,13 +27,3 @@ MonoBehaviour:
     - {x: -2, y: 0}
     heroSpawnCoord: {x: -4, y: 4}
     rewardConfig: {fileID: 11400000, guid: d9898f0919b265243b6544774bee7dda, type: 2}
-  - configName: slime test
-    weight: 100
-    minFloor: 1
-    maxFloor: 2
-    enemyDatas:
-    - {fileID: 11400000, guid: b2a5924665279d649ad12ca3d745fd17, type: 2}
-    enemySpawnCoords:
-    - {x: 1, y: 3}
-    heroSpawnCoord: {x: -4, y: 4}
-    rewardConfig: {fileID: 11400000, guid: d9898f0919b265243b6544774bee7dda, type: 2}

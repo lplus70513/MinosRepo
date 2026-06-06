@@ -26,6 +26,8 @@ MonoBehaviour:
   <IsRetain>k__BackingField: 0
   <CanHitFlying>k__BackingField: 0
   <IsAttackCard>k__BackingField: 1
+  <AttackRangePattern>k__BackingField:
+    rid: 1965764210852102151
   <BaseGrade>k__BackingField:
     <Name>k__BackingField: "\u6233\u523A"
     <Description>k__BackingField: "\u5BF9\u654C\u4EBA\u9020\u62104\u70B9\u4F24\u5BB3"
@@ -40,6 +42,8 @@ MonoBehaviour:
     <IsRetain>k__BackingField: 0
     <CanHitFlying>k__BackingField: 0
     <IsAttackCard>k__BackingField: 1
+    <AttackRangePattern>k__BackingField:
+      rid: 1965764210852102150
   <UpgradeGrade>k__BackingField:
     <Name>k__BackingField: "\u6233\u523A+"
     <Description>k__BackingField: "\u5BF9\u654C\u4EBA\u9020\u62106\u70B9\u4F24\u5BB3"
@@ -54,6 +58,8 @@ MonoBehaviour:
     <IsRetain>k__BackingField: 0
     <CanHitFlying>k__BackingField: 0
     <IsAttackCard>k__BackingField: 1
+    <AttackRangePattern>k__BackingField:
+      rid: 1965764210852102152
   references:
     version: 2
     RefIds:
@@ -65,6 +71,15 @@ MonoBehaviour:
       type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
       data:
         damageAmount: 6
+    - rid: 1965764210852102150
+      type: {class: SingleCellRange, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764210852102151
+      type: {class: SingleCellRange, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764210852102152
+      type: {class: SingleCellRange, ns: , asm: Assembly-CSharp}
+      data: 
     - rid: 5015277394648891392
       type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
       data:

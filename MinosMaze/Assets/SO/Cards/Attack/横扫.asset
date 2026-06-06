@@ -30,10 +30,12 @@ MonoBehaviour:
   <IsRetain>k__BackingField: 0
   <CanHitFlying>k__BackingField: 0
   <IsAttackCard>k__BackingField: 1
+  <AttackRangePattern>k__BackingField:
+    rid: -2
   <BaseGrade>k__BackingField:
-    <Name>k__BackingField: "\u6A2A\u626B+"
+    <Name>k__BackingField: "\u6A2A\u626B"
     <Description>k__BackingField: "\u5BF9\u654C\u4EBA\u9020\u6210 7 \u70B9\u4F24\u5BB3\uFF0C\u7ED9\u4E88\u654C\u4EBA2\u5C42\u6613\u4F24"
-    <Cost>k__BackingField: 0
+    <Cost>k__BackingField: 2
     <HasAttackRange>k__BackingField: 1
     <AttackRange>k__BackingField: 1
     <ManualTargetEffect>k__BackingField:
@@ -44,6 +46,8 @@ MonoBehaviour:
     <IsRetain>k__BackingField: 0
     <CanHitFlying>k__BackingField: 0
     <IsAttackCard>k__BackingField: 0
+    <AttackRangePattern>k__BackingField:
+      rid: -2
   <UpgradeGrade>k__BackingField:
     <Name>k__BackingField: 
     <Description>k__BackingField: 
@@ -58,6 +62,8 @@ MonoBehaviour:
     <IsRetain>k__BackingField: 0
     <CanHitFlying>k__BackingField: 0
     <IsAttackCard>k__BackingField: 0
+    <AttackRangePattern>k__BackingField:
+      rid: -2
   references:
     version: 2
     RefIds:

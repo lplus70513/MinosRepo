@@ -33,12 +33,31 @@ public class MatchSetupSystem : MonoBehaviour
 
         CombatConfig combat = PickWeightedRandom(gm?.PendingEncounter);
 
-        List<EnemyData> enemies = (combat?.enemyDatas != null && combat.enemyDatas.Count > 0)
-            ? combat.enemyDatas : enemyDatas;
-        List<Vector2Int> spawns = (combat?.enemySpawnCoords != null && combat.enemySpawnCoords.Count > 0)
-            ? combat.enemySpawnCoords : enemySpawnCoords;
-        Vector2Int heroCoord = (combat != null) ? combat.heroSpawnCoord : heroSpawnCoord;
-        RewardConfig reward = combat?.rewardConfig ?? rewardConfig;
+        List<EnemyData> enemies;
+        List<Vector2Int> spawns;
+        Vector2Int heroCoord;
+        RewardConfig reward;
+
+        if (combat != null)
+        {
+            enemies = combat.enemyDatas;
+            spawns = combat.enemySpawnCoords;
+            heroCoord = combat.heroSpawnCoord;
+            reward = combat.rewardConfig ?? rewardConfig;
+        }
+        else
+        {
+            enemies = enemyDatas;
+            spawns = enemySpawnCoords;
+            heroCoord = heroSpawnCoord;
+            reward = rewardConfig;
+        }
+
+        if (enemies == null || enemies.Count == 0)
+        {
+            Debug.LogError("[MatchSetupSystem] 敌人列表为空，无法初始化战斗。请配置 CombatPool 或在 Inspector 中填写 enemyDatas。");
+            return;
+        }
 
         if (reward != null)
             RewardSystem.Instance.SetConfig(reward);
@@ -55,7 +74,7 @@ public class MatchSetupSystem : MonoBehaviour
         if (gm != null && gm.WorldMapState != null && gm.WorldMapState.currentDeck != null && gm.WorldMapState.currentDeck.Count > 0)
             deck = gm.WorldMapState.currentDeck;
         else if (heroData != null && heroData.Deck != null)
-            deck = heroData.Deck.ConvertAll(cd => new DeckCardEntry(cd, false));
+            deck = heroData.Deck.FindAll(cd => cd != null).ConvertAll(cd => new DeckCardEntry(cd, false));
         else
             deck = new List<DeckCardEntry>();
 
@@ -68,20 +87,31 @@ public class MatchSetupSystem : MonoBehaviour
 
     private CombatConfig PickWeightedRandom(EncounterConfig pending)
     {
-        if (pending == null || combatPool == null || combatPool.configs == null || combatPool.configs.Count == 0)
+        if (combatPool == null || combatPool.configs == null || combatPool.configs.Count == 0)
             return null;
 
-        int floor = pending.floorLevel;
         List<CombatConfig> candidates = new();
         int totalWeight = 0;
-        foreach (var cfg in combatPool.configs)
+
+        if (pending != null)
         {
-            if (cfg == null) continue;
-            if (cfg.minFloor <= floor && floor <= cfg.maxFloor && cfg.weight > 0)
+            int floor = pending.floorLevel;
+            foreach (var cfg in combatPool.configs)
             {
-                candidates.Add(cfg);
-                totalWeight += cfg.weight;
+                if (cfg == null) continue;
+                if (cfg.minFloor <= floor && floor <= cfg.maxFloor && cfg.weight > 0)
+                {
+                    candidates.Add(cfg);
+                    totalWeight += cfg.weight;
+                }
             }
+        }
+
+        if (candidates.Count == 0)
+        {
+            candidates = combatPool.configs.FindAll(c => c != null && c.weight > 0);
+            foreach (var cfg in candidates)
+                totalWeight += cfg.weight;
         }
 
         if (candidates.Count == 0 || totalWeight <= 0)
