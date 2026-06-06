@@ -14,6 +14,8 @@ public class ActionSystem : Singleton<ActionSystem>
 
     private static Dictionary<Type, List<Action<GameAction>>> preSubs = new();
     private static Dictionary<Type, List<Action<GameAction>>> postSubs = new();
+    private static Dictionary<Type, Dictionary<Delegate, Action<GameAction>>> preWrappers = new();
+    private static Dictionary<Type, Dictionary<Delegate, Action<GameAction>>> postWrappers = new();
     private static Dictionary<Type, Func<GameAction,IEnumerator>> performers = new();
 
     // Perform执行核心
@@ -126,25 +128,41 @@ public class ActionSystem : Singleton<ActionSystem>
     public static void SubscribeReaction<T>(Action<T> reaction, ReactionTiming timing) where T : GameAction
     {
         Dictionary<Type, List<Action<GameAction>>> subs = timing == ReactionTiming.PRE ? preSubs : postSubs;
+        Dictionary<Type, Dictionary<Delegate, Action<GameAction>>> wrapperMaps = timing == ReactionTiming.PRE ? preWrappers : postWrappers;
+        Type type = typeof(T);
+
+        if (!wrapperMaps.ContainsKey(type))
+            wrapperMaps[type] = new();
+        if (wrapperMaps[type].ContainsKey(reaction))
+            return;
+
         void wrappedReaction(GameAction action) => reaction((T)action);
-        if (subs.ContainsKey(typeof(T)))
+        wrapperMaps[type][reaction] = wrappedReaction;
+
+        if (subs.ContainsKey(type))
         {
-            subs[typeof(T)].Add(wrappedReaction);
+            subs[type].Add(wrappedReaction);
         }
         else
         {
-            subs.Add(typeof(T), new());
-            subs[typeof(T)].Add(wrappedReaction);
+            subs.Add(type, new());
+            subs[type].Add(wrappedReaction);
         }
     }
 
     public static void UnsubscribeReaction<T>(Action<T> reaction, ReactionTiming timing) where T : GameAction
     {
         Dictionary<Type, List<Action<GameAction>>> subs = timing == ReactionTiming.PRE ? preSubs : postSubs;
-        if (subs.ContainsKey(typeof(T)))
-        {
-            void wrappedReaction(GameAction action) => reaction((T)action);
-            subs[typeof(T)].Remove(wrappedReaction);
-        }
+        Dictionary<Type, Dictionary<Delegate, Action<GameAction>>> wrapperMaps = timing == ReactionTiming.PRE ? preWrappers : postWrappers;
+        Type type = typeof(T);
+
+        if (!wrapperMaps.TryGetValue(type, out var map))
+            return;
+        if (!map.TryGetValue(reaction, out var wrapper))
+            return;
+
+        map.Remove(reaction);
+        if (subs.TryGetValue(type, out var list))
+            list.Remove(wrapper);
     }
 }

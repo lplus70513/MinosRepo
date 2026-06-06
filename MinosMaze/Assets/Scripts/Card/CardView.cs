@@ -311,6 +311,7 @@ public class CardView : MonoBehaviour
             {
                 hoverOtherCardTimer = 0f;
             }
+
             return;
         }
 
@@ -380,9 +381,7 @@ public class CardView : MonoBehaviour
             HeroView hero = HeroSystem.Instance.HeroView;
             int dist = HexGrid.HexDistance(hero.HexCoordX, hero.HexCoordZ, target.HexCoordX, target.HexCoordZ);
             if (dist > Card.AttackRange)
-            {
                 target = null;
-            }
         }
 
         if (target != null && hasCost)

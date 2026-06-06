@@ -1150,6 +1150,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 915344182}
     m_Modifications:
     - target: {fileID: 196111571079420546, guid: 80f34151d5ab7324c913d32a916a48d1, type: 3}
+      propertyPath: heroData
+      value: 
+      objectReference: {fileID: 11400000, guid: 10994a7c60da5e740aba04ce877de85c, type: 2}
+    - target: {fileID: 196111571079420546, guid: 80f34151d5ab7324c913d32a916a48d1, type: 3}
       propertyPath: SettingsPanel
       value: 
       objectReference: {fileID: 1780803398}
@@ -1157,6 +1161,82 @@ PrefabInstance:
       propertyPath: settingsPanel
       value: 
       objectReference: {fileID: 1780803398}
+    - target: {fileID: 196111571079420546, guid: 80f34151d5ab7324c913d32a916a48d1, type: 3}
+      propertyPath: WorldMapState.isNewGame
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 196111571079420546, guid: 80f34151d5ab7324c913d32a916a48d1, type: 3}
+      propertyPath: WorldMapState.maxHealth
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 196111571079420546, guid: 80f34151d5ab7324c913d32a916a48d1, type: 3}
+      propertyPath: WorldMapState.playerPosX
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 196111571079420546, guid: 80f34151d5ab7324c913d32a916a48d1, type: 3}
+      propertyPath: WorldMapState.playerPosZ
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 196111571079420546, guid: 80f34151d5ab7324c913d32a916a48d1, type: 3}
+      propertyPath: WorldMapState.currentHealth
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 196111571079420546, guid: 80f34151d5ab7324c913d32a916a48d1, type: 3}
+      propertyPath: WorldMapState.remainingMovePoints
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 196111571079420546, guid: 80f34151d5ab7324c913d32a916a48d1, type: 3}
+      propertyPath: WorldMapState.currentDeck.Array.size
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 196111571079420546, guid: 80f34151d5ab7324c913d32a916a48d1, type: 3}
+      propertyPath: WorldMapState.clearedCells.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 196111571079420546, guid: 80f34151d5ab7324c913d32a916a48d1, type: 3}
+      propertyPath: WorldMapState.currentDeck.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 247bce01a77cce349b8bc3ae8e7dcf7c, type: 2}
+    - target: {fileID: 196111571079420546, guid: 80f34151d5ab7324c913d32a916a48d1, type: 3}
+      propertyPath: WorldMapState.currentDeck.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 247bce01a77cce349b8bc3ae8e7dcf7c, type: 2}
+    - target: {fileID: 196111571079420546, guid: 80f34151d5ab7324c913d32a916a48d1, type: 3}
+      propertyPath: WorldMapState.currentDeck.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 247bce01a77cce349b8bc3ae8e7dcf7c, type: 2}
+    - target: {fileID: 196111571079420546, guid: 80f34151d5ab7324c913d32a916a48d1, type: 3}
+      propertyPath: WorldMapState.currentDeck.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: 247bce01a77cce349b8bc3ae8e7dcf7c, type: 2}
+    - target: {fileID: 196111571079420546, guid: 80f34151d5ab7324c913d32a916a48d1, type: 3}
+      propertyPath: WorldMapState.currentDeck.Array.data[4]
+      value: 
+      objectReference: {fileID: 11400000, guid: 119ffbeee521f444a81662ca91edfb5a, type: 2}
+    - target: {fileID: 196111571079420546, guid: 80f34151d5ab7324c913d32a916a48d1, type: 3}
+      propertyPath: WorldMapState.currentDeck.Array.data[5]
+      value: 
+      objectReference: {fileID: 11400000, guid: 119ffbeee521f444a81662ca91edfb5a, type: 2}
+    - target: {fileID: 196111571079420546, guid: 80f34151d5ab7324c913d32a916a48d1, type: 3}
+      propertyPath: WorldMapState.currentDeck.Array.data[6]
+      value: 
+      objectReference: {fileID: 11400000, guid: 119ffbeee521f444a81662ca91edfb5a, type: 2}
+    - target: {fileID: 196111571079420546, guid: 80f34151d5ab7324c913d32a916a48d1, type: 3}
+      propertyPath: WorldMapState.currentDeck.Array.data[7]
+      value: 
+      objectReference: {fileID: 11400000, guid: 119ffbeee521f444a81662ca91edfb5a, type: 2}
+    - target: {fileID: 196111571079420546, guid: 80f34151d5ab7324c913d32a916a48d1, type: 3}
+      propertyPath: WorldMapState.currentDeck.Array.data[8]
+      value: 
+      objectReference: {fileID: 11400000, guid: 4897b82cec99d614794b119d6dba6767, type: 2}
+    - target: {fileID: 196111571079420546, guid: 80f34151d5ab7324c913d32a916a48d1, type: 3}
+      propertyPath: WorldMapState.currentDeck.Array.data[9]
+      value: 
+      objectReference: {fileID: 11400000, guid: 711effcc07d52aa4295bfa7ac87dd894, type: 2}
+    - target: {fileID: 196111571079420546, guid: 80f34151d5ab7324c913d32a916a48d1, type: 3}
+      propertyPath: WorldMapState.clearedCells.Array.data[0].x
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4252755158429557492, guid: 80f34151d5ab7324c913d32a916a48d1, type: 3}
       propertyPath: m_Name
       value: GameManager

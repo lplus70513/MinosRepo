@@ -3896,10 +3896,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   heroData: {fileID: 11400000, guid: 10994a7c60da5e740aba04ce877de85c, type: 2}
   perkData: {fileID: 11400000, guid: b9f88f460a8aeef458def85e25a80c0d, type: 2}
-  enemyDatas:
-  - {fileID: 11400000, guid: b2a5924665279d649ad12ca3d745fd17, type: 2}
-  - {fileID: 11400000, guid: b2a5924665279d649ad12ca3d745fd17, type: 2}
-  - {fileID: 11400000, guid: b2a5924665279d649ad12ca3d745fd17, type: 2}
+  enemyDatas: []
   rewardConfig: {fileID: 11400000, guid: d9898f0919b265243b6544774bee7dda, type: 2}
   healthBarPanel: {fileID: 1912773962}
   heroSpawnCoord: {x: 0, y: -2}
@@ -3907,7 +3904,7 @@ MonoBehaviour:
   - {x: 1, y: 0}
   - {x: -1, y: 2}
   - {x: 1, y: 1}
-  combatPool: {fileID: 0}
+  combatPool: {fileID: 11400000, guid: 043613f2178c74c479a73ba97e539ff9, type: 2}
 --- !u!114 &1599919349 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1485521105205643388, guid: 1ab11ea9a16fc764dbd9b8be06c46475, type: 3}

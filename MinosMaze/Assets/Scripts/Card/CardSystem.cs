@@ -37,6 +37,7 @@ public class CardSystem : Singleton<CardSystem>
     private int bonusDrawNextTurn = 0;
     private int freePlayRemaining = 0;
     private SelectCardFromHandGA pendingSelectGA;
+    private bool subscriptionsActive = false;
 
     public int FreePlayRemaining => freePlayRemaining;
     public bool IsSelectingCardFromHand => pendingSelectGA != null;
@@ -48,6 +49,14 @@ public class CardSystem : Singleton<CardSystem>
 
     void OnEnable()
     {
+        if (subscriptionsActive)
+        {
+            Debug.LogWarning("[CardSystem] OnEnable 被重复调用但订阅已激活，跳过重复注册");
+            return;
+        }
+        subscriptionsActive = true;
+        Debug.Log("[CardSystem] OnEnable — 注册所有 Performer 和 SubscribeReaction");
+
         ActionSystem.AttachPerformer<DrawCardsGA>(DrawCardsPerformer);
         ActionSystem.AttachPerformer<DiscardAllCardsGA>(DiscardAllCardsPerformer);
         ActionSystem.AttachPerformer<PlayCardGA>(PlayCardPerformer);
@@ -63,6 +72,10 @@ public class CardSystem : Singleton<CardSystem>
 
     void OnDisable()
     {
+        if (!subscriptionsActive) return;
+        subscriptionsActive = false;
+        Debug.Log("[CardSystem] OnDisable — 解除所有 Performer 和 SubscribeReaction");
+
         ActionSystem.DetachPerformer<DrawCardsGA>();
         ActionSystem.DetachPerformer<DiscardAllCardsGA>();
         ActionSystem.DetachPerformer<PlayCardGA>();
@@ -143,7 +156,7 @@ public class CardSystem : Singleton<CardSystem>
             ActionSystem.Instance.AddReaction(performEffectGA);
         }
 
-        // ִ�п���Ч��
+        // 执行卡牌效果
         foreach (var effectWrapper  in playCardGA.Card.OtherEffects)
         {
             List<CombatantView> targets = effectWrapper.TargetMode.GetTargets();
@@ -337,6 +350,7 @@ public class CardSystem : Singleton<CardSystem>
     private void EnemyTurnPostReaction(EnemyTurnGA enemyTurnGA)
     {
         int drawAmount = 5 + bonusDrawNextTurn;
+        Debug.Log($"[CardSystem] EnemyTurnPostReaction 触发 — bonusDraw={bonusDrawNextTurn}, 将抽 {drawAmount} 张");
         bonusDrawNextTurn = 0;
         DrawCardsGA drawCardsGA = new(drawAmount);
         ActionSystem.Instance.AddReaction(drawCardsGA);
