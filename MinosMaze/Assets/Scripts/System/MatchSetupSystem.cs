@@ -51,13 +51,13 @@ public class MatchSetupSystem : MonoBehaviour
         EnemySystem.Instance.Setup(enemies, spawns);
         if (healthBarPanel != null)
             healthBarPanel.SetupBattle(HeroSystem.Instance.HeroView, EnemySystem.Instance.Enemies);
-        List<CardData> deck;
+        List<DeckCardEntry> deck;
         if (gm != null && gm.WorldMapState != null && gm.WorldMapState.currentDeck != null && gm.WorldMapState.currentDeck.Count > 0)
             deck = gm.WorldMapState.currentDeck;
         else if (heroData != null && heroData.Deck != null)
-            deck = heroData.Deck;
+            deck = heroData.Deck.ConvertAll(cd => new DeckCardEntry(cd, false));
         else
-            deck = new List<CardData>();
+            deck = new List<DeckCardEntry>();
 
         CardSystem.Instance.SetUp(deck);
         PerkSystem.Instance.AddPerk(new Perk(perkData));

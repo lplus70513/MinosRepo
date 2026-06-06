@@ -91,11 +91,11 @@ public class CardSystem : Singleton<CardSystem>
 
     // publics
 
-    public void SetUp(List<CardData> deckData)
+    public void SetUp(List<DeckCardEntry> deckData)
     {
-        foreach (var cardData in deckData)
+        foreach (var entry in deckData)
         {
-            Card card = new(cardData);
+            Card card = new(entry.CardData, entry.IsUpgraded);
             drawPile.Add(card);
         }
 

@@ -2,17 +2,14 @@ using SerializeReferenceEditor;
 using UnityEngine;
 using System.Collections.Generic;
 
-[CreateAssetMenu(menuName = "Data/Card")]
-
-public class CardData : ScriptableObject
+[System.Serializable]
+public class CardGradeData
 {
+    [field: SerializeField] public string Name { get; private set; }
+
     [field: SerializeField] public string Description { get; private set; }
 
     [field: SerializeField] public int Cost { get; private set; }
-
-    [field: SerializeField] public Sprite Image { get; private set; }
-
-    [field: SerializeField] public Sprite Background { get; private set; }
 
     [field: SerializeField] public bool HasAttackRange { get; private set; } = false;
 
@@ -31,8 +28,4 @@ public class CardData : ScriptableObject
     [field: SerializeField] public bool CanHitFlying { get; private set; } = false;
 
     [field: SerializeField] public bool IsAttackCard { get; private set; } = false;
-
-    [field: SerializeField] public CardGradeData BaseGrade { get; private set; }
-
-    [field: SerializeField] public CardGradeData UpgradeGrade { get; private set; }
 }

@@ -131,8 +131,8 @@ public class GameManager : MonoBehaviour
             WorldMapState.maxHealth = heroData.Health;
             WorldMapState.currentHealth = heroData.Health;
             WorldMapState.currentDeck = heroData.Deck != null
-                ? new List<CardData>(heroData.Deck)
-                : new List<CardData>();
+                ? heroData.Deck.ConvertAll(cd => new DeckCardEntry(cd, false))
+                : new List<DeckCardEntry>();
         }
         if (SceneManager.GetSceneByName("MainMenu").isLoaded)
             SceneManager.UnloadSceneAsync("MainMenu");

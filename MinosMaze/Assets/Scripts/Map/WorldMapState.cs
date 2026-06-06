@@ -11,7 +11,7 @@ public class WorldMapState
     public int maxHealth;
     public int currentHealth;
     public List<Vector2Int> clearedCells = new();
-    public List<CardData> currentDeck = new();
+    public List<DeckCardEntry> currentDeck = new();
     public bool isNewGame = true;
     public int floorLevel = 1;
 }

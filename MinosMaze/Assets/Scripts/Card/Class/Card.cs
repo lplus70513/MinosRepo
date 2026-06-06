@@ -5,37 +5,54 @@ public class Card
 {
     private readonly CardData data;
 
-    public string Name => data.name;
+    public bool IsUpgraded { get; private set; }
 
-    public string Description => data.Description;
+    private CardGradeData Grade => IsUpgraded ? data.UpgradeGrade : data.BaseGrade;
+
+    public string Name => Grade != null && !string.IsNullOrEmpty(Grade.Name)
+        ? Grade.Name
+        : data.name;
+
+    public string Description => Grade != null && !string.IsNullOrEmpty(Grade.Description)
+        ? Grade.Description
+        : data.Description;
 
     public Sprite Image => data.Image;
 
     public Sprite Background => data.Background;
 
-    public bool HasAttackRange => data.HasAttackRange;
+    public bool HasAttackRange => Grade != null ? Grade.HasAttackRange : data.HasAttackRange;
 
-    public int AttackRange => data.AttackRange;
+    public int AttackRange => Grade != null ? Grade.AttackRange : data.AttackRange;
 
-    public Effect ManualTargetEffect => data.ManualTargetEffect;
+    public Effect ManualTargetEffect => Grade != null ? Grade.ManualTargetEffect : data.ManualTargetEffect;
 
-    public List<AutoTargetEffect> OtherEffects => data.OtherEffects;
+    public List<AutoTargetEffect> OtherEffects => Grade != null ? Grade.OtherEffects : data.OtherEffects;
 
     public int Cost { get; private set; }
 
-    public bool IsInnate => data.IsInnate;
+    public bool IsInnate => Grade != null ? Grade.IsInnate : data.IsInnate;
 
-    public bool IsExhaust => data.IsExhaust;
+    public bool IsExhaust => Grade != null ? Grade.IsExhaust : data.IsExhaust;
 
-    public bool IsRetain => data.IsRetain;
+    public bool IsRetain => Grade != null ? Grade.IsRetain : data.IsRetain;
 
-    public bool CanHitFlying => data.CanHitFlying;
+    public bool CanHitFlying => Grade != null ? Grade.CanHitFlying : data.CanHitFlying;
 
-    public bool IsAttackCard => data.IsAttackCard;
+    public bool IsAttackCard => Grade != null ? Grade.IsAttackCard : data.IsAttackCard;
 
-    public Card(CardData cardData)
+    public Card(CardData cardData, bool isUpgraded = false)
     {
         data = cardData;
-        Cost = cardData.Cost;
+        IsUpgraded = isUpgraded;
+        Cost = Grade?.Cost ?? cardData.Cost;
+    }
+
+    public void Upgrade()
+    {
+        if (IsUpgraded) return;
+        IsUpgraded = true;
+        if (data.UpgradeGrade != null)
+            Cost = data.UpgradeGrade.Cost;
     }
 }

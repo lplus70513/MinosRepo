@@ -73,7 +73,7 @@ public class WinPanelController : MonoBehaviour
             onSelected: (card) =>
             {
                 if (GameManager.Instance != null)
-                    GameManager.Instance.WorldMapState.currentDeck.Add(card);
+                    GameManager.Instance.WorldMapState.currentDeck.Add(new DeckCardEntry(card, false));
                 else
                     Debug.LogWarning("[WinPanel] GameManager.Instance 为 null，卡牌未加入牌组。请确保通过 Manager 场景启动游戏。");
                 _cardProcessed = true;

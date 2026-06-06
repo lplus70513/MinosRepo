@@ -26,10 +26,46 @@ MonoBehaviour:
   <IsRetain>k__BackingField: 0
   <CanHitFlying>k__BackingField: 0
   <IsAttackCard>k__BackingField: 1
+  <BaseGrade>k__BackingField:
+    <Name>k__BackingField: "\u6233\u523A"
+    <Description>k__BackingField: "\u5BF9\u654C\u4EBA\u9020\u62104\u70B9\u4F24\u5BB3"
+    <Cost>k__BackingField: 1
+    <HasAttackRange>k__BackingField: 1
+    <AttackRange>k__BackingField: 1
+    <ManualTargetEffect>k__BackingField:
+      rid: 1965764210852102144
+    <OtherEffects>k__BackingField: []
+    <IsInnate>k__BackingField: 0
+    <IsExhaust>k__BackingField: 0
+    <IsRetain>k__BackingField: 0
+    <CanHitFlying>k__BackingField: 0
+    <IsAttackCard>k__BackingField: 1
+  <UpgradeGrade>k__BackingField:
+    <Name>k__BackingField: "\u6233\u523A+"
+    <Description>k__BackingField: "\u5BF9\u654C\u4EBA\u9020\u62106\u70B9\u4F24\u5BB3"
+    <Cost>k__BackingField: 1
+    <HasAttackRange>k__BackingField: 1
+    <AttackRange>k__BackingField: 1
+    <ManualTargetEffect>k__BackingField:
+      rid: 1965764210852102145
+    <OtherEffects>k__BackingField: []
+    <IsInnate>k__BackingField: 0
+    <IsExhaust>k__BackingField: 0
+    <IsRetain>k__BackingField: 0
+    <CanHitFlying>k__BackingField: 0
+    <IsAttackCard>k__BackingField: 1
   references:
     version: 2
     RefIds:
+    - rid: 1965764210852102144
+      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 4
+    - rid: 1965764210852102145
+      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 6
     - rid: 5015277394648891392
       type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
       data:
-        damageAmount: 100
+        damageAmount: 4
