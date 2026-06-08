@@ -17,6 +17,7 @@ public class EnemySystem : Singleton<EnemySystem>
 
     void OnEnable()
     {
+        Debug.Log($"[EnemySystem] OnEnable — 注册 AttachPerformer/SubscribeReaction, scene={gameObject.scene.name}");
         ActionSystem.AttachPerformer<EnemyTurnGA>(EnemyTurnPerformer);
         ActionSystem.AttachPerformer<AttackHeroGA>(AttackHeroPerformer);
         ActionSystem.AttachPerformer<KillEnemyGA>(KillEnemyPerformer);
@@ -25,6 +26,7 @@ public class EnemySystem : Singleton<EnemySystem>
 
     void OnDisable()
     {
+        Debug.Log($"[EnemySystem] OnDisable — 注销 AttachPerformer/SubscribeReaction, scene={gameObject.scene.name}");
         ActionSystem.DetachPerformer<EnemyTurnGA>();
         ActionSystem.DetachPerformer<AttackHeroGA>();
         ActionSystem.DetachPerformer<KillEnemyGA>();

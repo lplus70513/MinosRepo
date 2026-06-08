@@ -24,14 +24,18 @@ public class MatchSetupSystem : MonoBehaviour
 
     private void Start()
     {
+        Debug.Log($"[MatchSetupSystem] === Start 开始 === scene={gameObject.scene.name}");
+
         _ = MoveSystem.Instance;
         _ = PlayerMovementSystem.Instance;
         _ = BattleResultSystem.Instance;
         _ = RewardSystem.Instance;
 
         var gm = GameManager.Instance;
+        Debug.Log($"[MatchSetupSystem] GameManager={(gm != null ? "OK" : "NULL")}, PendingEncounter={(gm?.PendingEncounter != null ? $"cellType={gm.PendingEncounter.cellType} floor={gm.PendingEncounter.floorLevel}" : "NULL")}");
 
         CombatConfig combat = PickWeightedRandom(gm?.PendingEncounter);
+        Debug.Log($"[MatchSetupSystem] combatPool={(combatPool != null ? combatPool.name : "NULL")}, combat={(combat != null ? combat.configName : "NULL (使用 fallback)")}");
 
         List<EnemyData> enemies;
         List<Vector2Int> spawns;
@@ -52,6 +56,7 @@ public class MatchSetupSystem : MonoBehaviour
             heroCoord = heroSpawnCoord;
             reward = rewardConfig;
         }
+        Debug.Log($"[MatchSetupSystem] enemies count={enemies?.Count ?? 0}, spawns count={spawns?.Count ?? 0}, heroCoord={heroCoord}");
 
         if (enemies == null || enemies.Count == 0)
         {
@@ -62,12 +67,17 @@ public class MatchSetupSystem : MonoBehaviour
         if (reward != null)
             RewardSystem.Instance.SetConfig(reward);
 
+        Debug.Log($"[MatchSetupSystem] 调用 HeroSystem.Setup, heroData={(heroData != null ? heroData.name : "NULL")}, coord={heroCoord}");
         HeroSystem.Instance.Setup(heroData, heroCoord);
+        Debug.Log($"[MatchSetupSystem] HeroSystem.Setup 完成, HeroView={(HeroSystem.Instance.HeroView != null ? "存在" : "NULL")}");
+
         if (gm != null && gm.WorldMapState != null && gm.WorldMapState.maxHealth > 0)
         {
             HeroSystem.Instance.HeroView.SetCurrentHealth(gm.WorldMapState.currentHealth);
         }
+        Debug.Log($"[MatchSetupSystem] 调用 EnemySystem.Setup, enemies count={enemies?.Count ?? 0}");
         EnemySystem.Instance.Setup(enemies, spawns);
+        Debug.Log($"[MatchSetupSystem] EnemySystem.Setup 完成, Enemies={(EnemySystem.Instance.Enemies != null ? EnemySystem.Instance.Enemies.Count : 0)}");
         if (healthBarPanel != null)
             healthBarPanel.SetupBattle(HeroSystem.Instance.HeroView, EnemySystem.Instance.Enemies);
         List<DeckCardEntry> deck;
@@ -80,9 +90,12 @@ public class MatchSetupSystem : MonoBehaviour
 
         CardSystem.Instance.SetUp(deck);
         PerkSystem.Instance.AddPerk(new Perk(perkData));
+        Debug.Log($"[MatchSetupSystem] CardSystem.SetUp 完成, PerkSystem.AddPerk 完成");
 
         DrawCardsGA drawCardsGA = new(5);
         ActionSystem.Instance.Perform(drawCardsGA);
+        Debug.Log($"[MatchSetupSystem] DrawCardsGA 已提交, ActionSystem.IsPerforming={ActionSystem.Instance.IsPerforming}");
+        Debug.Log($"[MatchSetupSystem] === Start 结束 ===");
     }
 
     private CombatConfig PickWeightedRandom(EncounterConfig pending)

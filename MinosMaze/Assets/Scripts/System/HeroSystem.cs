@@ -9,6 +9,7 @@ public class HeroSystem : Singleton<HeroSystem>
 
     public void Setup(HeroData heroData, Vector2Int spawnCoord)
     {
+        Debug.Log($"[HeroSystem] Setup called, heroViewPrefab={(heroViewPrefab != null ? heroViewPrefab.name : "NULL")}, spawnCoord={spawnCoord}, scene={gameObject.scene.name}");
         if (heroViewPrefab == null)
         {
             Debug.LogError("[HeroSystem] heroViewPrefab 未设置，请在战斗场景中配置 HeroSystem 的引用");

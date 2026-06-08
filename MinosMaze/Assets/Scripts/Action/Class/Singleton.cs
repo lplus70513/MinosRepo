@@ -10,10 +10,10 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
         {
             if (_instance == null)
             {
-                // ³¢ÊÔÔÚ³¡¾°ÖĞ²éÕÒÊÇ·ñÒÑ´æÔÚ¸Ãµ¥Àı
+                // ï¿½ï¿½ï¿½ï¿½ï¿½Ú³ï¿½ï¿½ï¿½ï¿½Ğ²ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½Ñ´ï¿½ï¿½Ú¸Ãµï¿½ï¿½ï¿½
                 _instance = FindObjectOfType<T>();
 
-                // Èç¹û³¡¾°ÖĞÒ²Ã»ÓĞ£¬Ôò´´½¨Ò»¸öĞÂµÄ GameObject ²¢¹ÒÔØ½Å±¾
+                // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò²Ã»ï¿½Ğ£ï¿½ï¿½ò´´½ï¿½Ò»ï¿½ï¿½ï¿½Âµï¿½ GameObject ï¿½ï¿½ï¿½ï¿½ï¿½Ø½Å±ï¿½
                 if (_instance == null)
                 {
                     GameObject singletonObject = new GameObject();
@@ -29,16 +29,23 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     {
         if (_instance == null)
         {
-            // Èç¹û»¹Ã»ÓĞÊµÀı£¬¾Í½«µ±Ç°¶ÔÏóÉèÎªÊµÀı
             _instance = this as T;
-            // Èç¹ûÏ£Íûµ¥ÀıÔÚ³¡¾°ÇĞ»»Ê±²»±»Ïú»Ù£¬¿ÉÒÔÈ¡ÏûÏÂÃæÕâĞĞµÄ×¢ÊÍ
-            // DontDestroyOnLoad(gameObject);
+            Debug.Log($"[Singleton] {typeof(T).Name} å®ä¾‹æ¥ç®¡: '{gameObject.name}', scene={gameObject.scene.name}");
         }
         else if (_instance != this)
         {
-            // Èç¹ûÒÑ´æÔÚÁíÒ»¸öÊµÀı£¬ÔòÏú»Ùµ±Ç°Õâ¸öÖØ¸´µÄÊµÀı
-            Debug.LogWarning($"[Singleton] ¼ì²âµ½ÖØ¸´ÊµÀı£¬Ïú»Ù: '{gameObject.name}'¡£");
-            Destroy(gameObject);
+            Debug.LogWarning($"[Singleton] {typeof(T).Name} æ£€æµ‹åˆ°é‡å¤å®ä¾‹ï¼Œé”€æ¯æ—§å®ä¾‹ '{_instance.gameObject.name}' (scene={_instance.gameObject.scene.name})ï¼Œæ–°å®ä¾‹ '{gameObject.name}' (scene={gameObject.scene.name}) æ¥ç®¡");
+            Destroy(_instance.gameObject);
+            _instance = this as T;
+        }
+    }
+
+    protected virtual void OnDestroy()
+    {
+        if (_instance == this as T)
+        {
+            Debug.Log($"[Singleton] {typeof(T).Name} å®ä¾‹é”€æ¯ï¼Œ_instance ç½® null, scene={gameObject.scene.name}");
+            _instance = null;
         }
     }
 }
