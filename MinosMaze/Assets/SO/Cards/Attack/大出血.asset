@@ -14,13 +14,99 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Description>k__BackingField: "\u5BF9\u654C\u4EBA\u9020\u62107\u70B9\u4F24\u5BB3\uFF0C\u4F7F\u654C\u4EBA\u8EAB\u4E0A\u7684\u6D41\u8840\u6548\u679C\u7FFB\u500D\u3002\u6D88\u8017\u3002"
   <Cost>k__BackingField: 1
-  <Image>k__BackingField: {fileID: 0}
-  <Background>k__BackingField: {fileID: 0}
+  <Image>k__BackingField: {fileID: 775603959, guid: 394d2fe82ccd87f41b6163a042ebd5f9, type: 3}
+  <Background>k__BackingField: {fileID: 2004051598, guid: c6dd1d8aa674a1342a0e69187a61a93b, type: 3}
+  <HasAttackRange>k__BackingField: 1
+  <AttackRange>k__BackingField: 1
   <ManualTargetEffect>k__BackingField:
+    rid: 1965764257158791171
+  <OtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1965764257158791173
+    <Effect>k__BackingField:
+      rid: 1965764257158791175
+  <IsInnate>k__BackingField: 0
+  <IsExhaust>k__BackingField: 1
+  <IsRetain>k__BackingField: 0
+  <CanHitFlying>k__BackingField: 0
+  <IsAttackCard>k__BackingField: 1
+  <AttackRangePattern>k__BackingField:
     rid: -2
-  <OtherEffects>k__BackingField: []
+  <BaseGrade>k__BackingField:
+    <Name>k__BackingField: "\u5927\u51FA\u8840"
+    <Description>k__BackingField: "\u5BF9\u654C\u4EBA\u9020\u62107\u70B9\u4F24\u5BB3\uFF0C\u4F7F\u654C\u4EBA\u8EAB\u4E0A\u7684\u6D41\u8840\u6548\u679C\u7FFB\u500D\u3002\u6D88\u8017\u3002"
+    <Cost>k__BackingField: 1
+    <HasAttackRange>k__BackingField: 1
+    <AttackRange>k__BackingField: 1
+    <ManualTargetEffect>k__BackingField:
+      rid: 1965764257158791172
+    <OtherEffects>k__BackingField:
+    - <TargetMode>k__BackingField:
+        rid: 1965764257158791176
+      <Effect>k__BackingField:
+        rid: 1965764257158791177
+    <IsInnate>k__BackingField: 0
+    <IsExhaust>k__BackingField: 1
+    <IsRetain>k__BackingField: 0
+    <CanHitFlying>k__BackingField: 0
+    <IsAttackCard>k__BackingField: 1
+    <AttackRangePattern>k__BackingField:
+      rid: -2
+  <UpgradeGrade>k__BackingField:
+    <Name>k__BackingField: "\u5927\u51FA\u8840+"
+    <Description>k__BackingField: "\u5BF9\u654C\u4EBA\u9020\u62107\u70B9\u4F24\u5BB3\uFF0C\u4F7F\u654C\u4EBA\u8EAB\u4E0A\u7684\u6D41\u8840\u6548\u679C\u7FFB\u500D\u3002\u6D88\u8017\u3002"
+    <Cost>k__BackingField: 0
+    <HasAttackRange>k__BackingField: 0
+    <AttackRange>k__BackingField: 1
+    <ManualTargetEffect>k__BackingField:
+      rid: 1965764257158791178
+    <OtherEffects>k__BackingField:
+    - <TargetMode>k__BackingField:
+        rid: 1965764257158791179
+      <Effect>k__BackingField:
+        rid: 1965764257158791180
+    <IsInnate>k__BackingField: 0
+    <IsExhaust>k__BackingField: 1
+    <IsRetain>k__BackingField: 0
+    <CanHitFlying>k__BackingField: 0
+    <IsAttackCard>k__BackingField: 1
+    <AttackRangePattern>k__BackingField:
+      rid: -2
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+    - rid: 1965764257158791171
+      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 7
+    - rid: 1965764257158791172
+      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 7
+    - rid: 1965764257158791173
+      type: {class: ManualTargetTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764257158791175
+      type: {class: DoubleStatusEffect, ns: , asm: Assembly-CSharp}
+      data:
+        statusEffectType: 1
+    - rid: 1965764257158791176
+      type: {class: ManualTargetTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764257158791177
+      type: {class: DoubleStatusEffect, ns: , asm: Assembly-CSharp}
+      data:
+        statusEffectType: 1
+    - rid: 1965764257158791178
+      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 7
+    - rid: 1965764257158791179
+      type: {class: ManualTargetTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764257158791180
+      type: {class: DoubleStatusEffect, ns: , asm: Assembly-CSharp}
+      data:
+        statusEffectType: 1

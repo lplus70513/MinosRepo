@@ -13,10 +13,13 @@ MonoBehaviour:
   m_Name: Reward Config
   m_EditorClassIdentifier: 
   lootCardPool:
-  - {fileID: 11400000, guid: 100e4f906de479a42a3c7ce8d89493f5, type: 2}
+  - {fileID: 11400000, guid: 711effcc07d52aa4295bfa7ac87dd894, type: 2}
   - {fileID: 11400000, guid: 119ffbeee521f444a81662ca91edfb5a, type: 2}
   - {fileID: 11400000, guid: 247bce01a77cce349b8bc3ae8e7dcf7c, type: 2}
   - {fileID: 11400000, guid: 4897b82cec99d614794b119d6dba6767, type: 2}
+  - {fileID: 11400000, guid: c3849a41c88b9654cb179bd3e38e0cbc, type: 2}
+  - {fileID: 11400000, guid: 5563e1b010f5b9842a6fd8fd1336a3c2, type: 2}
+  - {fileID: 11400000, guid: 4fb66e5271fc3634685ea2b5dd46fde7, type: 2}
   normalGoldWeights:
   - amount: 8
     weight: 0.1
