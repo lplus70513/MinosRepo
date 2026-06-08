@@ -14,13 +14,84 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Description>k__BackingField: "\u5BF9\u654C\u4EBA\u9020\u6210\u5F53\u524D\u683C\u6321\u503C\u7684\u4F24\u5BB3"
   <Cost>k__BackingField: 1
-  <Image>k__BackingField: {fileID: 0}
-  <Background>k__BackingField: {fileID: 0}
+  <Image>k__BackingField: {fileID: 775603959, guid: 394d2fe82ccd87f41b6163a042ebd5f9, type: 3}
+  <Background>k__BackingField: {fileID: 2004051598, guid: c6dd1d8aa674a1342a0e69187a61a93b, type: 3}
+  <HasAttackRange>k__BackingField: 1
+  <AttackRange>k__BackingField: 1
   <ManualTargetEffect>k__BackingField:
     rid: -2
-  <OtherEffects>k__BackingField: []
+  <OtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1965764257158791192
+    <Effect>k__BackingField:
+      rid: 1965764257158791193
+  <IsInnate>k__BackingField: 0
+  <IsExhaust>k__BackingField: 0
+  <IsRetain>k__BackingField: 0
+  <CanHitFlying>k__BackingField: 0
+  <IsAttackCard>k__BackingField: 1
+  <AttackRangePattern>k__BackingField:
+    rid: -2
+  <BaseGrade>k__BackingField:
+    <Name>k__BackingField: "\u76FE\u51FB"
+    <Description>k__BackingField: "\u5BF9\u654C\u4EBA\u9020\u6210\u5F53\u524D\u683C\u6321\u503C\u7684\u4F24\u5BB3"
+    <Cost>k__BackingField: 1
+    <HasAttackRange>k__BackingField: 1
+    <AttackRange>k__BackingField: 1
+    <ManualTargetEffect>k__BackingField:
+      rid: -2
+    <OtherEffects>k__BackingField:
+    - <TargetMode>k__BackingField:
+        rid: 1965764257158791194
+      <Effect>k__BackingField:
+        rid: 1965764257158791195
+    <IsInnate>k__BackingField: 0
+    <IsExhaust>k__BackingField: 0
+    <IsRetain>k__BackingField: 0
+    <CanHitFlying>k__BackingField: 0
+    <IsAttackCard>k__BackingField: 1
+    <AttackRangePattern>k__BackingField:
+      rid: -2
+  <UpgradeGrade>k__BackingField:
+    <Name>k__BackingField: "\u76FE\u51FB+"
+    <Description>k__BackingField: "\u5BF9\u654C\u4EBA\u9020\u6210\u5F53\u524D\u683C\u6321\u503C\u7684\u4F24\u5BB3"
+    <Cost>k__BackingField: 0
+    <HasAttackRange>k__BackingField: 1
+    <AttackRange>k__BackingField: 1
+    <ManualTargetEffect>k__BackingField:
+      rid: -2
+    <OtherEffects>k__BackingField:
+    - <TargetMode>k__BackingField:
+        rid: 1965764257158791196
+      <Effect>k__BackingField:
+        rid: 1965764257158791197
+    <IsInnate>k__BackingField: 0
+    <IsExhaust>k__BackingField: 0
+    <IsRetain>k__BackingField: 0
+    <CanHitFlying>k__BackingField: 0
+    <IsAttackCard>k__BackingField: 1
+    <AttackRangePattern>k__BackingField:
+      rid: -2
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+    - rid: 1965764257158791192
+      type: {class: ManualTargetTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764257158791193
+      type: {class: DealArmorDamageEffect, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764257158791194
+      type: {class: ManualTargetTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764257158791195
+      type: {class: DealArmorDamageEffect, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764257158791196
+      type: {class: ManualTargetTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764257158791197
+      type: {class: DealArmorDamageEffect, ns: , asm: Assembly-CSharp}
+      data: 

@@ -16,11 +16,15 @@ MonoBehaviour:
   <Cost>k__BackingField: 1
   <Image>k__BackingField: {fileID: 775603959, guid: 394d2fe82ccd87f41b6163a042ebd5f9, type: 3}
   <Background>k__BackingField: {fileID: 2004051598, guid: c6dd1d8aa674a1342a0e69187a61a93b, type: 3}
-  <HasAttackRange>k__BackingField: 0
+  <HasAttackRange>k__BackingField: 1
   <AttackRange>k__BackingField: 1
   <ManualTargetEffect>k__BackingField:
     rid: -2
-  <OtherEffects>k__BackingField: []
+  <OtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1965764257158791207
+    <Effect>k__BackingField:
+      rid: 1965764257158791208
   <IsInnate>k__BackingField: 0
   <IsExhaust>k__BackingField: 0
   <IsRetain>k__BackingField: 0
@@ -36,12 +40,16 @@ MonoBehaviour:
     <AttackRange>k__BackingField: 1
     <ManualTargetEffect>k__BackingField:
       rid: -2
-    <OtherEffects>k__BackingField: []
+    <OtherEffects>k__BackingField:
+    - <TargetMode>k__BackingField:
+        rid: 1965764257158791211
+      <Effect>k__BackingField:
+        rid: 1965764257158791212
     <IsInnate>k__BackingField: 0
     <IsExhaust>k__BackingField: 0
     <IsRetain>k__BackingField: 0
     <CanHitFlying>k__BackingField: 0
-    <IsAttackCard>k__BackingField: 0
+    <IsAttackCard>k__BackingField: 1
     <AttackRangePattern>k__BackingField:
       rid: -2
   <UpgradeGrade>k__BackingField:
@@ -52,12 +60,16 @@ MonoBehaviour:
     <AttackRange>k__BackingField: 1
     <ManualTargetEffect>k__BackingField:
       rid: -2
-    <OtherEffects>k__BackingField: []
+    <OtherEffects>k__BackingField:
+    - <TargetMode>k__BackingField:
+        rid: 1965764257158791213
+      <Effect>k__BackingField:
+        rid: 1965764257158791214
     <IsInnate>k__BackingField: 0
     <IsExhaust>k__BackingField: 0
     <IsRetain>k__BackingField: 0
     <CanHitFlying>k__BackingField: 0
-    <IsAttackCard>k__BackingField: 0
+    <IsAttackCard>k__BackingField: 1
     <AttackRangePattern>k__BackingField:
       rid: -2
   references:
@@ -65,3 +77,27 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+    - rid: 1965764257158791207
+      type: {class: AllEnemiesTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764257158791208
+      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 3
+        hitCount: 2
+    - rid: 1965764257158791211
+      type: {class: AllEnemiesTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764257158791212
+      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 3
+        hitCount: 2
+    - rid: 1965764257158791213
+      type: {class: AllEnemiesTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764257158791214
+      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 3
+        hitCount: 3

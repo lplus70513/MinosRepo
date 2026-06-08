@@ -67,7 +67,7 @@ public class StatusEffectSystem : MonoBehaviour
             int bleedStacks = combatant.GetStatusEffectStacks(StatusEffectType.BLEED);
             if (bleedStacks > 0)
             {
-                DealDamageGA bleedGA = new(bleedStacks, new List<CombatantView> { combatant }, null);
+                DealDamageGA bleedGA = new(bleedStacks, 1, new List<CombatantView> { combatant }, null);
                 ActionSystem.Instance.AddReaction(bleedGA);
             }
 
@@ -113,7 +113,7 @@ public class StatusEffectSystem : MonoBehaviour
 
         foreach (var target in chainTargets)
         {
-            DealDamageGA chainGA = new(4, new List<CombatantView> { target }, null);
+            DealDamageGA chainGA = new(4, 1, new List<CombatantView> { target }, null);
             ActionSystem.Instance.AddReaction(chainGA);
         }
     }

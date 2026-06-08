@@ -12,15 +12,110 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02002abe5e65cfb4184b51fd307203e9, type: 3}
   m_Name: "\u6218\u795E\u4E4B\u6012"
   m_EditorClassIdentifier: 
-  <Description>k__BackingField: "\u9020\u62103\u70B9\u4F24\u5BB32\u6B21\uFF0C\u672C\u573A\u6E38\u620F\u6B64\u724C\u4F24\u5BB3\u52A01\u3002"
+  <Description>k__BackingField: "\u9020\u6210 4 \u70B9\u4F24\u5BB3 2 \u6B21\u3002\u83B7\u5F97
+    1 \u70B9\u529B\u91CF\u3002"
   <Cost>k__BackingField: 1
-  <Image>k__BackingField: {fileID: 0}
-  <Background>k__BackingField: {fileID: 0}
+  <Image>k__BackingField: {fileID: 775603959, guid: 394d2fe82ccd87f41b6163a042ebd5f9, type: 3}
+  <Background>k__BackingField: {fileID: 2004051598, guid: c6dd1d8aa674a1342a0e69187a61a93b, type: 3}
+  <HasAttackRange>k__BackingField: 1
+  <AttackRange>k__BackingField: 1
   <ManualTargetEffect>k__BackingField:
+    rid: 1965764257158791215
+  <OtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1965764257158791216
+    <Effect>k__BackingField:
+      rid: 1965764257158791217
+  <IsInnate>k__BackingField: 0
+  <IsExhaust>k__BackingField: 0
+  <IsRetain>k__BackingField: 0
+  <CanHitFlying>k__BackingField: 0
+  <IsAttackCard>k__BackingField: 1
+  <AttackRangePattern>k__BackingField:
     rid: -2
-  <OtherEffects>k__BackingField: []
+  <BaseGrade>k__BackingField:
+    <Name>k__BackingField: "\u6218\u795E\u4E4B\u6012"
+    <Description>k__BackingField: "\u9020\u6210 4 \u70B9\u4F24\u5BB3 2 \u6B21\u3002\u83B7\u5F97
+      1 \u70B9\u529B\u91CF\u3002"
+    <Cost>k__BackingField: 1
+    <HasAttackRange>k__BackingField: 1
+    <AttackRange>k__BackingField: 1
+    <ManualTargetEffect>k__BackingField:
+      rid: 1965764257158791218
+    <OtherEffects>k__BackingField:
+    - <TargetMode>k__BackingField:
+        rid: 1965764257158791219
+      <Effect>k__BackingField:
+        rid: 1965764257158791220
+    <IsInnate>k__BackingField: 0
+    <IsExhaust>k__BackingField: 0
+    <IsRetain>k__BackingField: 0
+    <CanHitFlying>k__BackingField: 0
+    <IsAttackCard>k__BackingField: 1
+    <AttackRangePattern>k__BackingField:
+      rid: -2
+  <UpgradeGrade>k__BackingField:
+    <Name>k__BackingField: "\u6218\u795E\u4E4B\u6012"
+    <Description>k__BackingField: "\u9020\u6210 5 \u70B9\u4F24\u5BB3 2 \u6B21\u3002\u83B7\u5F97
+      2 \u70B9\u529B\u91CF\u3002"
+    <Cost>k__BackingField: 1
+    <HasAttackRange>k__BackingField: 1
+    <AttackRange>k__BackingField: 1
+    <ManualTargetEffect>k__BackingField:
+      rid: 1965764257158791222
+    <OtherEffects>k__BackingField:
+    - <TargetMode>k__BackingField:
+        rid: 1965764257158791223
+      <Effect>k__BackingField:
+        rid: 1965764257158791224
+    <IsInnate>k__BackingField: 0
+    <IsExhaust>k__BackingField: 0
+    <IsRetain>k__BackingField: 0
+    <CanHitFlying>k__BackingField: 0
+    <IsAttackCard>k__BackingField: 1
+    <AttackRangePattern>k__BackingField:
+      rid: -2
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+    - rid: 1965764257158791215
+      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 4
+        hitCount: 2
+    - rid: 1965764257158791216
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764257158791217
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        statusEffectType: 2
+        stackCount: 1
+    - rid: 1965764257158791218
+      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 4
+        hitCount: 2
+    - rid: 1965764257158791219
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764257158791220
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        statusEffectType: 2
+        stackCount: 1
+    - rid: 1965764257158791222
+      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 5
+        hitCount: 2
+    - rid: 1965764257158791223
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764257158791224
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        statusEffectType: 2
+        stackCount: 2
