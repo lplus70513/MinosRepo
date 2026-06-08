@@ -231,7 +231,8 @@ public class CombatantView : MonoBehaviour
         {
             statusEffects.Add(type, effectiveStacks);
         }
-        statusEffectsUI.UpdateStatusEffectUI(type, GetStatusEffectStacks(type));
+        if (statusEffectsUI != null)
+            statusEffectsUI.UpdateStatusEffectUI(type, GetStatusEffectStacks(type));
     }
 
     public void RemoveStatusEffect(StatusEffectType type, int stackCount)
@@ -245,7 +246,8 @@ public class CombatantView : MonoBehaviour
             }
         }
 
-        statusEffectsUI.UpdateStatusEffectUI(type, GetStatusEffectStacks(type));
+        if (statusEffectsUI != null)
+            statusEffectsUI.UpdateStatusEffectUI(type, GetStatusEffectStacks(type));
     }
 
     public void SetStatusEffectStacks(StatusEffectType type, int stackCount)
@@ -258,7 +260,8 @@ public class CombatantView : MonoBehaviour
         {
             statusEffects[type] = stackCount;
         }
-        statusEffectsUI.UpdateStatusEffectUI(type, stackCount);
+        if (statusEffectsUI != null)
+            statusEffectsUI.UpdateStatusEffectUI(type, stackCount);
     }
 
     public bool HasStatusEffect(StatusEffectType type)
