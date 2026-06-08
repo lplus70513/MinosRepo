@@ -50,6 +50,7 @@ public class Perk
 
     private void Reaction(GameAction gameAction)
     {
+        if (condition == null || effect == null) return;
         if(condition.SubConditionIsMet(gameAction))
         {
             IHaveCaster haveCaster = gameAction as IHaveCaster;

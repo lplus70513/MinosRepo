@@ -16,6 +16,10 @@ public class PerkSystem : Singleton<PerkSystem>
 
     void OnDisable()
     {
+        Debug.Log($"[PerkSystem] OnDisable — 清理 {perks.Count} 个 Perk 订阅, scene={gameObject.scene.name}");
+        foreach (var perk in perks)
+            perk.OnRemove();
+        perks.Clear();
         ActionSystem.DetachPerformer<AddPerkGA>();
         ActionSystem.DetachPerformer<MultiGA>();
     }

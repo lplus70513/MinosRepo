@@ -67,7 +67,9 @@ public class ActionSystem : Singleton<ActionSystem>
 
         reactions = action.PostReactions;
         int postSubCount = postSubs.ContainsKey(action.GetType()) ? postSubs[action.GetType()].Count : 0;
-        Debug.Log($"[ActionSystem] POST phase for {action.GetType().Name}, subs count = {postSubCount}");
+        int preSubCount = preSubs.ContainsKey(action.GetType()) ? preSubs[action.GetType()].Count : 0;
+        bool hasPerformer = performers.ContainsKey(action.GetType());
+        Debug.Log($"[ActionSystem] Flow: {action.GetType().Name} | PRE subs={preSubCount} | PERF={hasPerformer} | POST subs={postSubCount}");
         PerformSubscribers(action, postSubs);
         yield return PerformReactions();
 

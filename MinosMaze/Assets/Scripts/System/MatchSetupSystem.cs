@@ -28,6 +28,7 @@ public class MatchSetupSystem : MonoBehaviour
 
         _ = MoveSystem.Instance;
         _ = PlayerMovementSystem.Instance;
+        PlayerMovementSystem.Instance.ResetForBattle();
         _ = BattleResultSystem.Instance;
         _ = RewardSystem.Instance;
 
