@@ -52,6 +52,13 @@ public class WorldMapMovementSystem : Singleton<WorldMapMovementSystem>
         {
             MovePoints = wmg.InitialMovePoints;
         }
+
+        // 为大地图牌库检视初始化 CardSystem（读取持久化牌组）
+        if (gm != null && gm.WorldMapState != null && gm.WorldMapState.currentDeck != null && gm.WorldMapState.currentDeck.Count > 0)
+        {
+            CardSystem.Instance.SetUp(gm.WorldMapState.currentDeck);
+            Debug.Log($"[WorldMapMovementSystem] CardSystem 已从 WorldMapState 初始化，牌组 {gm.WorldMapState.currentDeck.Count} 张");
+        }
     }
 
     void Update()

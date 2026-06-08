@@ -8,11 +8,13 @@ public class CardViewHoverSystem : Singleton<CardViewHoverSystem>
 
     void Awake()
     {
-        hoverCollider = cardViewHover.GetComponent<Collider>();
+        if (cardViewHover != null)
+            hoverCollider = cardViewHover.GetComponent<Collider>();
     }
 
     public void Show(Card card, Vector3 position)
     {
+        if (cardViewHover == null) return;
         cardViewHover.gameObject.SetActive(true);
         cardViewHover.SetUp(card);
         cardViewHover.transform.position = position;
@@ -21,6 +23,7 @@ public class CardViewHoverSystem : Singleton<CardViewHoverSystem>
 
     public void Hide()
     {
+        if (cardViewHover == null) return;
         if (hoverCollider != null) hoverCollider.enabled = true;
         cardViewHover.gameObject.SetActive(false);
     }

@@ -270,7 +270,7 @@ public class DeckViewer : MonoBehaviour
         {
             cardContainerSortingGroup.sortingOrder = cardSortingOrder;
             Debug.Log($"[DeckViewer] cardContainer SortingGroup => {cardSortingOrder}");
-        }
+        }   
 
         CardView[] allCardViews = FindObjectsByType<CardView>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         foreach (CardView cv in allCardViews)
