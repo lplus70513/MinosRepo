@@ -25,6 +25,13 @@ public class MoveSystem : Singleton<MoveSystem>
     {
         CombatantView mover = moveGA.Mover;
 
+        HexCell targetCell = HexGrid.GetCell(moveGA.ToX, moveGA.ToZ);
+        if (targetCell == null || !targetCell.IsWalkable)
+        {
+            Debug.LogWarning($"[MoveSystem] {mover.name} 目标格 ({moveGA.ToX}, {moveGA.ToZ}) 不可行走，跳过移动");
+            yield break;
+        }
+
         if (HexMove.IsCellOccupied(moveGA.ToX, moveGA.ToZ, mover))
         {
             Debug.LogWarning($"[MoveSystem] {mover.name} 目标格 ({moveGA.ToX}, {moveGA.ToZ}) 已被占据，跳过移动");
@@ -87,6 +94,8 @@ public class MoveSystem : Singleton<MoveSystem>
             int nz = mover.HexCoordZ + dz;
             if (!HexGrid.ContainsCell(nx, nz)) continue;
             if (HexMove.IsCellOccupied(nx, nz)) continue;
+            HexCell cell = HexGrid.GetCell(nx, nz);
+            if (cell == null || !cell.IsWalkable) continue;
 
             int minEnemyDist = int.MaxValue;
             foreach (var enemy in enemies)
@@ -142,7 +151,11 @@ public class MoveSystem : Singleton<MoveSystem>
             int nx = px + dx;
             int nz = pz + dz;
             if (HexGrid.ContainsCell(nx, nz) && !HexMove.IsCellOccupied(nx, nz))
-                return (nx, nz);
+            {
+                HexCell cell = HexGrid.GetCell(nx, nz);
+                if (cell != null && cell.IsWalkable)
+                    return (nx, nz);
+            }
         }
 
         return null;

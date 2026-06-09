@@ -31,7 +31,7 @@ public static class HexMove
         {
             int nx = x + dx;
             int nz = z + dz;
-            if (HexGrid.ContainsCell(nx, nz) && !IsCellOccupied(nx, nz, exclude))
+            if (HexGrid.ContainsCell(nx, nz) && HexGrid.GetCell(nx, nz).IsWalkable && !IsCellOccupied(nx, nz, exclude))
                 neighbors.Add((nx, nz));
         }
         return neighbors;
@@ -43,9 +43,9 @@ public static class HexMove
         var coords = HexGrid.GetCoordsInRange(centerX, centerZ, range);
         foreach (var (x, z) in coords)
         {
-            if (IsCellOccupied(x, z)) continue;
             HexCell cell = HexGrid.GetCell(x, z);
-            if (cell != null) cell.SetMoveHighlight(true);
+            if (cell == null || !cell.IsWalkable || IsCellOccupied(x, z)) continue;
+            cell.SetMoveHighlight(true);
         }
     }
 

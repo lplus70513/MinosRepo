@@ -197,6 +197,9 @@ public class PlayerMovementSystem : Singleton<PlayerMovementSystem>
         int dist = HexGrid.HexDistance(hero.HexCoordX, hero.HexCoordZ, hexX, hexZ);
         if (dist != 1) return;
 
+        HexCell targetCell = HexGrid.GetCell(hexX, hexZ);
+        if (targetCell == null || !targetCell.IsWalkable) return;
+
         if (HexMove.IsCellOccupied(hexX, hexZ)) return;
 
         RemainingMovementPoints--;

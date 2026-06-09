@@ -9,6 +9,7 @@ public enum MapCellType
     // 战斗格 (0-99)
     Battle_Empty    = 0,    // 战斗空白格
     Battle_Trap     = 1,    // 战斗陷阱格
+    Battle_Wall     = 2,    // 战斗墙格（阻挡移动）
 
     // 大地图格 (100+)
     WorldMap_Empty      = 100,  // 大地图空白格（可通行，无事件，仅消耗移动点）
@@ -40,6 +41,9 @@ public class HexCell : MonoBehaviour
 
     // 是否属于大地图范畴（100+）
     public bool IsWorldMapCell => (int)cellType >= 100;
+
+    // 格子是否可行走（墙格不可通行）
+    public bool IsWalkable => cellType != MapCellType.Battle_Wall;
 
     // 该格子上的单位站立位置 Transform（通常为子物体，标记角色应站的位置）
     public Transform standingPoint;

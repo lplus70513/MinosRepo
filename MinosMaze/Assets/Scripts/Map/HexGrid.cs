@@ -1,6 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// 特殊格配置条目：坐标 + 类型
+[System.Serializable]
+public struct SpecialCellConfig
+{
+    public Vector2Int coord;
+    public MapCellType cellType;
+}
+
 // 六边形地图生成与管理器。
 // 负责在 Awake 时根据 mapRadius 生成六角格地图，
 // 并提供坐标查询、距离计算、范围获取、邻居获取、高亮显示等静态工具方法。
@@ -12,14 +20,55 @@ public class HexGrid : MonoBehaviour
     // 六角格预制体，需挂载 HexCell 组件
     public GameObject hexPrefab;
 
+    // 特殊格配置：在 Inspector 中指定 (坐标, 类型)，其余格默认为 Battle_Empty
+    [SerializeField] private List<SpecialCellConfig> specialCellsConfig;
+
+    // 各类型的特殊格所用预制体（墙格等）——找不到映射时 fallback 到 hexPrefab
+    [SerializeField] private CellPrefabMapping[] cellPrefabMap;
+
     // 轴向坐标 (x, z) → HexCell 的映射字典，全局静态以便跨类访问
     // protected 使得 WorldMapGrid 子类可写入同一字典
     protected static Dictionary<(int x, int z), HexCell> cellDict = new();
 
+    // 特殊格坐标 → 类型 的快速查找表
+    private Dictionary<(int, int), MapCellType> specialCellLookup = new();
+
+    // 类型 → 预制体 的快速查找表
+    private Dictionary<MapCellType, GameObject> prefabLookup = new();
+
     protected virtual void Awake()
     {
         cellDict.Clear();
+        BuildPrefabLookup();
+        BuildSpecialCellLookup();
         CreateHexagonMap();
+    }
+
+    // 构建类型 → 预制体的快速查找表
+    private void BuildPrefabLookup()
+    {
+        prefabLookup.Clear();
+        if (cellPrefabMap != null)
+        {
+            foreach (var entry in cellPrefabMap)
+            {
+                if (entry.prefab != null)
+                    prefabLookup[entry.cellType] = entry.prefab;
+            }
+        }
+    }
+
+    // 构建特殊格坐标 → 类型的快速查找表
+    private void BuildSpecialCellLookup()
+    {
+        specialCellLookup.Clear();
+        if (specialCellsConfig != null)
+        {
+            foreach (var entry in specialCellsConfig)
+            {
+                specialCellLookup[(entry.coord.x, entry.coord.y)] = entry.cellType;
+            }
+        }
     }
 
     // 生成六边形区域地图：以 (0,0) 为中心，逐 Z 层、逐 X 列生成六角格。
@@ -54,6 +103,11 @@ public class HexGrid : MonoBehaviour
     // 获取指定坐标处应使用的格子预制体（子类可覆写以支持多 prefab）
     protected virtual GameObject GetPrefabForCell(int x, int z)
     {
+        if (specialCellLookup.TryGetValue((x, z), out MapCellType cellType))
+        {
+            if (prefabLookup.TryGetValue(cellType, out GameObject prefab))
+                return prefab;
+        }
         return hexPrefab;
     }
 
@@ -69,6 +123,8 @@ public class HexGrid : MonoBehaviour
         GameObject hexCellObject = Instantiate(prefab, position, Quaternion.Euler(0, 90, 0), transform);
         HexCell hexCell = hexCellObject.GetComponent<HexCell>();
         hexCell.SetCoord(x, z);
+        if (specialCellLookup.TryGetValue((x, z), out MapCellType cellType))
+            hexCell.cellType = cellType;
         cellDict[(x, z)] = hexCell;
     }
 

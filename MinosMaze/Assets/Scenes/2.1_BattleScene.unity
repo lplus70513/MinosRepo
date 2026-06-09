@@ -2535,6 +2535,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapRadius: 6
   hexPrefab: {fileID: 6889876140403060102, guid: 06d301673ac088447bb3352ea2be5edd, type: 3}
+  specialCellsConfig:
+  - coord: {x: 2, y: 3}
+    cellType: 2
+  cellPrefabMap:
+  - cellType: 2
+    prefab: {fileID: 9134691016699468140, guid: b0d8041f81cfd364cbb37920384adeaa, type: 3}
 --- !u!4 &1062687834
 Transform:
   m_ObjectHideFlags: 0
