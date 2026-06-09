@@ -2269,7 +2269,7 @@ GameObject:
   - component: {fileID: 947260735}
   m_Layer: 5
   m_Name: "\u6218\u6597\u573A\u666FCanvas"
-  m_TagString: Untagged
+  m_TagString: NoFade
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

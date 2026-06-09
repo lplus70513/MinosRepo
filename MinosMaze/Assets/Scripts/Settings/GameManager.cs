@@ -28,6 +28,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] private string worldMapSceneName = "2.0_WorldMap";
     [SerializeField] private HeroData heroData;
 
+    [Header("场景切换渐变")]
+    [SerializeField] private float fadeOutDuration = 0.3f;
+    [SerializeField] private float fadeInDuration = 0.3f;
+    [SerializeField] private float blackScreenDuration = 0.8f;
+    [SerializeField] private int overlaySortingOrder = 100;
+    [SerializeField] private string dontCoverTag = "NoFade";
+
     // 大地图可序列化状态，跨场景保存/恢复
     public WorldMapState WorldMapState = new();
 
@@ -50,8 +57,14 @@ public class GameManager : MonoBehaviour
         _instance = this;
         DontDestroyOnLoad(gameObject);
 
-        // 3. �������˵�
-        // ���飺��һ���жϣ���ֹ�ظ�����
+        if (SceneTransitionSystem.Instance == null)
+        {
+            GameObject stsGo = new GameObject("SceneTransitionSystem");
+            DontDestroyOnLoad(stsGo);
+            stsGo.AddComponent<SceneTransitionSystem>();
+        }
+        SceneTransitionSystem.Instance.SetConfig(fadeOutDuration, fadeInDuration, blackScreenDuration, overlaySortingOrder, dontCoverTag);
+
         if (SceneManager.GetSceneByName("1_Mainmenu").isLoaded == false)
         {
             SceneManager.LoadScene("1_Mainmenu", LoadSceneMode.Additive);
@@ -123,6 +136,13 @@ public class GameManager : MonoBehaviour
 
     public void NewGame()
     {
+        SceneTransitionSystem.Instance.StartCoroutine(NewGameRoutine());
+    }
+
+    private IEnumerator NewGameRoutine()
+    {
+        yield return SceneTransitionSystem.Instance.FadeOut();
+
         WorldMapState = new WorldMapState();
         WorldMapState.playerPosX = -999;
         WorldMapState.playerPosZ = -999;
@@ -137,6 +157,10 @@ public class GameManager : MonoBehaviour
         if (SceneManager.GetSceneByName("1_MainMenu").isLoaded)
             SceneManager.UnloadSceneAsync("1_MainMenu");
         SceneManager.LoadScene(worldMapSceneName, LoadSceneMode.Additive);
+        yield return null;
+
+        yield return SceneTransitionSystem.Instance.BlackScreenWait();
+        yield return SceneTransitionSystem.Instance.FadeIn();
     }
 
     // 保存大地图状态（由 WorldMapMovementSystem 在场景跳转前调用）
@@ -162,17 +186,22 @@ public class GameManager : MonoBehaviour
     public void EnterEncounter(string sceneName)
     {
         currentEncounterScene = sceneName;
-        StartCoroutine(EnterEncounterRoutine(sceneName));
+        SceneTransitionSystem.Instance.StartCoroutine(EnterEncounterRoutine(sceneName));
     }
 
     private IEnumerator EnterEncounterRoutine(string sceneName)
     {
+        yield return SceneTransitionSystem.Instance.FadeOut();
+
         AsyncOperation unload = SceneManager.UnloadSceneAsync(worldMapSceneName);
         if (unload != null)
             yield return unload;
         SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
         yield return null;
         SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneName));
+
+        yield return SceneTransitionSystem.Instance.BlackScreenWait();
+        yield return SceneTransitionSystem.Instance.FadeIn();
     }
 
     // 退出遭遇子场景：标记当前格为已清除，卸载子场景，重新加载大地图
@@ -182,11 +211,13 @@ public class GameManager : MonoBehaviour
         if (!WorldMapState.clearedCells.Contains(cell))
             WorldMapState.clearedCells.Add(cell);
 
-        StartCoroutine(ExitEncounterRoutine());
+        SceneTransitionSystem.Instance.StartCoroutine(ExitEncounterRoutine());
     }
 
     private IEnumerator ExitEncounterRoutine()
     {
+        yield return SceneTransitionSystem.Instance.FadeOut();
+
         if (!string.IsNullOrEmpty(currentEncounterScene))
         {
             AsyncOperation unload = SceneManager.UnloadSceneAsync(currentEncounterScene);
@@ -196,16 +227,21 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(worldMapSceneName, LoadSceneMode.Additive);
         yield return null;
         SceneManager.SetActiveScene(SceneManager.GetSceneByName(worldMapSceneName));
+
+        yield return SceneTransitionSystem.Instance.BlackScreenWait();
+        yield return SceneTransitionSystem.Instance.FadeIn();
     }
 
     // 战斗失败时返回主菜单
     public void ReturnToMainMenu()
     {
-        StartCoroutine(ReturnToMainMenuRoutine());
+        SceneTransitionSystem.Instance.StartCoroutine(ReturnToMainMenuRoutine());
     }
 
     private IEnumerator ReturnToMainMenuRoutine()
     {
+        yield return SceneTransitionSystem.Instance.FadeOut();
+
         if (!string.IsNullOrEmpty(currentEncounterScene))
         {
             AsyncOperation unload = SceneManager.UnloadSceneAsync(currentEncounterScene);
@@ -220,6 +256,9 @@ public class GameManager : MonoBehaviour
         }
         if (!SceneManager.GetSceneByName("1_Mainmenu").isLoaded)
             SceneManager.LoadScene("1_Mainmenu", LoadSceneMode.Additive);
+
+        yield return SceneTransitionSystem.Instance.BlackScreenWait();
+        yield return SceneTransitionSystem.Instance.FadeIn();
     }
 
     // GameOver：移动点耗尽且未到 BOSS 格（暂留空）

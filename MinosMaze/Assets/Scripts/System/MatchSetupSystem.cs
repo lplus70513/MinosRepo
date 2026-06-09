@@ -24,7 +24,12 @@ public class MatchSetupSystem : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log($"[MatchSetupSystem] === Start 开始 === scene={gameObject.scene.name}");
+        StartCoroutine(DelayedSetup());
+    }
+
+    private IEnumerator DelayedSetup()
+    {
+        Debug.Log($"[MatchSetupSystem] === 初始化开始 === scene={gameObject.scene.name}");
 
         _ = MoveSystem.Instance;
         _ = PlayerMovementSystem.Instance;
@@ -63,7 +68,7 @@ public class MatchSetupSystem : MonoBehaviour
         if (enemies == null || enemies.Count == 0)
         {
             Debug.LogError("[MatchSetupSystem] 敌人列表为空，无法初始化战斗。请配置 CombatPool 或在 Inspector 中填写 enemyDatas。");
-            return;
+            yield break;
         }
 
         if (reward != null)
@@ -103,8 +108,12 @@ public class MatchSetupSystem : MonoBehaviour
 
         CardSystem.Instance.SetUp(deck);
         PerkSystem.Instance.AddPerk(new Perk(perkData));
-        Debug.Log($"[MatchSetupSystem] CardSystem.SetUp 完成, PerkSystem.AddPerk 完成");
+        Debug.Log($"[MatchSetupSystem] 场景初始化完成, 等待淡入结束再抽牌");
 
+        if (SceneTransitionSystem.Instance != null)
+            yield return new WaitUntil(() => !SceneTransitionSystem.Instance.IsTransitioning);
+
+        Debug.Log($"[MatchSetupSystem] === 抽牌 === scene={gameObject.scene.name}");
         DrawCardsGA drawCardsGA = new(5);
         ActionSystem.Instance.Perform(drawCardsGA);
         Debug.Log($"[MatchSetupSystem] DrawCardsGA 已提交, ActionSystem.IsPerforming={ActionSystem.Instance.IsPerforming}");
