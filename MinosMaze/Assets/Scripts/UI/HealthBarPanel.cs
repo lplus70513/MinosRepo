@@ -92,4 +92,9 @@ public class HealthBarPanel : MonoBehaviour
     {
         ClearAll();
     }
+
+    public void SetupWorldMap(int maxHp, int curHp)
+    {
+        playerBar.Initialize(maxHp, curHp);
+    }
 }

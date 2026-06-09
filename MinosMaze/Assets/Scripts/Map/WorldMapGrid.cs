@@ -25,6 +25,7 @@ public class WorldMapGrid : HexGrid
     [SerializeField] private Vector2Int birthCoord = new(2, 0);
     [SerializeField] private int initialMovePoints = 10;
     [SerializeField] private int playerMaxHealth = 100;
+    [SerializeField] private HealthBarPanel healthBarPanel;
 
     [Header("格子类型-Prefab映射")]
     [SerializeField] private CellPrefabMapping[] cellPrefabMap;
@@ -161,5 +162,8 @@ public class WorldMapGrid : HexGrid
             Vector2Int spawnCoord = new(posX, posZ);
             WorldMapPlayerSystem.Instance.Setup(spawnCoord, maxHp, curHp);
         }
+
+        if (healthBarPanel != null)
+            healthBarPanel.SetupWorldMap(maxHp, curHp);
     }
 }

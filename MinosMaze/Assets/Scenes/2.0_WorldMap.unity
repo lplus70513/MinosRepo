@@ -1441,6 +1441,7 @@ MonoBehaviour:
   birthCoord: {x: 0, y: 5}
   initialMovePoints: 9
   playerMaxHealth: 100
+  healthBarPanel: {fileID: 971180784}
   cellPrefabMap:
   - cellType: 101
     prefab: {fileID: 7607615994834614152, guid: 1e93d16e0ee4049488965ed41b6fc6b7, type: 3}
