@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
     public GameObject SettingsPanel;
 
     [Header("大地图配置")]
-    [SerializeField] private string worldMapSceneName = "WorldMap";
+    [SerializeField] private string worldMapSceneName = "2.0_WorldMap";
     [SerializeField] private HeroData heroData;
 
     // 大地图可序列化状态，跨场景保存/恢复
@@ -52,9 +52,9 @@ public class GameManager : MonoBehaviour
 
         // 3. �������˵�
         // ���飺��һ���жϣ���ֹ�ظ�����
-        if (SceneManager.GetSceneByName("MainMenu").isLoaded == false)
+        if (SceneManager.GetSceneByName("1_Mainmenu").isLoaded == false)
         {
-            SceneManager.LoadScene("MainMenu", LoadSceneMode.Additive);
+            SceneManager.LoadScene("1_Mainmenu", LoadSceneMode.Additive);
         }
 
         if (SettingsPanel == null)
@@ -134,8 +134,8 @@ public class GameManager : MonoBehaviour
                 ? heroData.Deck.FindAll(cd => cd != null).ConvertAll(cd => new DeckCardEntry(cd, false))
                 : new List<DeckCardEntry>();
         }
-        if (SceneManager.GetSceneByName("MainMenu").isLoaded)
-            SceneManager.UnloadSceneAsync("MainMenu");
+        if (SceneManager.GetSceneByName("1_MainMenu").isLoaded)
+            SceneManager.UnloadSceneAsync("1_MainMenu");
         SceneManager.LoadScene(worldMapSceneName, LoadSceneMode.Additive);
     }
 
@@ -151,9 +151,10 @@ public class GameManager : MonoBehaviour
     }
 
     // 战斗结束时保存玩家生命值（由战斗场景退出按钮调用）
-    public void SaveBattleResult(int currentHealth)
+    public void SaveBattleResult(int currentHealth, int maxHealth)
     {
         WorldMapState.currentHealth = currentHealth;
+        WorldMapState.maxHealth = maxHealth;
         WorldMapState.isNewGame = false;
     }
 
@@ -217,8 +218,8 @@ public class GameManager : MonoBehaviour
             if (unload != null)
                 yield return unload;
         }
-        if (!SceneManager.GetSceneByName("MainMenu").isLoaded)
-            SceneManager.LoadScene("MainMenu", LoadSceneMode.Additive);
+        if (!SceneManager.GetSceneByName("1_Mainmenu").isLoaded)
+            SceneManager.LoadScene("1_Mainmenu", LoadSceneMode.Additive);
     }
 
     // GameOver：移动点耗尽且未到 BOSS 格（暂留空）

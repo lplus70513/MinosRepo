@@ -57,4 +57,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71d8fefe1708e104590a621144a7b108, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  settingsPanel: {fileID: 0}
+  SettingsPanel: {fileID: 0}
+  worldMapSceneName: 2.0_WorldMap
+  heroData: {fileID: 0}
+  WorldMapState:
+    playerPosX: 0
+    playerPosZ: 0
+    remainingMovePoints: 0
+    maxHealth: 0
+    currentHealth: 0
+    clearedCells: []
+    currentDeck: []
+    isNewGame: 1
+    floorLevel: 1

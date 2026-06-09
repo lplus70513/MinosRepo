@@ -96,7 +96,7 @@ public class WinPanelController : MonoBehaviour
         Debug.Log("[WinPanel] 退出战斗");
         var hero = HeroSystem.Instance?.HeroView;
         if (hero != null)
-            GameManager.Instance.SaveBattleResult(hero.CurrentHealth);
+            GameManager.Instance.SaveBattleResult(hero.CurrentHealth, hero.MaxHealth);
         GameManager.Instance.ExitEncounter();
     }
 }

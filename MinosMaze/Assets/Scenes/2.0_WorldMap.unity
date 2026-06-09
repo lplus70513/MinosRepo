@@ -789,7 +789,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sceneMap:
   - cellType: 101
-    sceneName: MVPTestScene
+    sceneName: 2.1_BattleScene
   moveDuration: 0.2
 --- !u!4 &606988349
 Transform:

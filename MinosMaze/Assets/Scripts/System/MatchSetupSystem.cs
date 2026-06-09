@@ -77,6 +77,10 @@ public class MatchSetupSystem : MonoBehaviour
         {
             HeroSystem.Instance.HeroView.SetCurrentHealth(gm.WorldMapState.currentHealth);
         }
+        if (gm != null && gm.WorldMapState != null)
+        {
+            gm.WorldMapState.maxHealth = HeroSystem.Instance.HeroView.MaxHealth;
+        }
         Debug.Log($"[MatchSetupSystem] 调用 EnemySystem.Setup, enemies count={enemies?.Count ?? 0}");
         EnemySystem.Instance.Setup(enemies, spawns);
         Debug.Log($"[MatchSetupSystem] EnemySystem.Setup 完成, Enemies={(EnemySystem.Instance.Enemies != null ? EnemySystem.Instance.Enemies.Count : 0)}");
