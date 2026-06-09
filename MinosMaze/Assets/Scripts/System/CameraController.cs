@@ -65,4 +65,17 @@ public class CameraController : MonoBehaviour
         pos.z = Mathf.Clamp(pos.z, zClamp.x, zClamp.y);
         return pos;
     }
+
+    public void CenterOn(Vector3 worldPosition)
+    {
+        Vector3 forward = transform.forward;
+        float camY = transform.position.y;
+
+        float t = -camY / forward.y;
+        float targetX = worldPosition.x - t * forward.x;
+        float targetZ = worldPosition.z - t * forward.z;
+
+        Vector3 targetPos = new Vector3(targetX, camY, targetZ);
+        transform.position = ClampPosition(targetPos);
+    }
 }

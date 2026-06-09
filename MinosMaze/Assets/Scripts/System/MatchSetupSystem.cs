@@ -73,6 +73,13 @@ public class MatchSetupSystem : MonoBehaviour
         HeroSystem.Instance.Setup(heroData, heroCoord);
         Debug.Log($"[MatchSetupSystem] HeroSystem.Setup 完成, HeroView={(HeroSystem.Instance.HeroView != null ? "存在" : "NULL")}");
 
+        var camCtrl = FindObjectOfType<CameraController>();
+        if (camCtrl != null && HeroSystem.Instance.HeroView != null)
+        {
+            camCtrl.CenterOn(HeroSystem.Instance.HeroView.transform.position);
+            Debug.Log($"[MatchSetupSystem] 摄像机已居中到英雄位置 {HeroSystem.Instance.HeroView.transform.position}");
+        }
+
         if (gm != null && gm.WorldMapState != null && gm.WorldMapState.maxHealth > 0)
         {
             HeroSystem.Instance.HeroView.SetCurrentHealth(gm.WorldMapState.currentHealth);
