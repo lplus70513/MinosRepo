@@ -6,7 +6,7 @@ namespace UI.PopupText
     public class PopupTextAssetData : ScriptableObject
     {
         public Color fontColor; // �����л�
-        [Range(4, 7)] public float fontSize; // ���� 4 ���ʲ��и���
+        [Range(4, 20)] public float fontSize;
 
         /// <summary>
         /// ������С: 8֡, 0.13s
@@ -19,14 +19,13 @@ namespace UI.PopupText
         public AnimationCurve alphaCurve; // �����л�
         public Sprite icon; // �����л�
 
+        public float parabolaHeight = 3f;
+        public float parabolaHorizontalDistance = 2f;
+        public float motionDuration = 0.66f;
+
         public float EndTime
         {
-            get
-            {
-                float scaleEnd = scaleCurve != null && scaleCurve.keys.Length > 0 ? scaleCurve.keys[^1].time : 0f;
-                float horizEnd = horizontalCurve != null && horizontalCurve.keys.Length > 0 ? horizontalCurve.keys[^1].time : 0f;
-                return scaleEnd + horizEnd;
-            }
+            get { return motionDuration; }
         }
 
         public float EvaluateScale(float time)

@@ -82,7 +82,7 @@ namespace UI.PopupText
                 (Random.Range(0, 1f) > 0.5f ? 1 : -1) :
                 (hitVelocity.x >= 0 ? 1 : -1);
 
-            var textData = new PopupTextData(actorTransform.position, damageValue.ToString(), textAsset, toRight);
+            var textData = new PopupTextData(actorTransform.position + Vector3.up * 5f, damageValue.ToString(), textAsset, toRight);
             textData.SetDamageValue(damageValue);
 
             var text = pool.Count > 0 ? pool.Dequeue() : CreatePooled();
@@ -105,7 +105,7 @@ namespace UI.PopupText
                 return;
             }
 
-            var textData = new PopupTextData(actorTransform.position, content, textAsset, toRight: 0);
+            var textData = new PopupTextData(actorTransform.position + Vector3.up * 5f, content, textAsset, toRight: 0);
             var text = pool.Count > 0 ? pool.Dequeue() : CreatePooled();
             text.Show(textData, OnTextComplete);
         }

@@ -54,35 +54,47 @@ namespace UI.PopupText
 
             gameObject.SetActive(true);
             textDisplay.text = data.Text;
-            textDisplay.color = assetData.fontColor;
-            textDisplay.fontSize = assetData.fontSize;
+            textDisplay.color = Color.white;
+            textDisplay.fontSize = 12;
 
+            FaceCamera();
             PlayAnimation();
+        }
+
+        private void FaceCamera()
+        {
+            if (camera3D == null)
+            {
+                var camObj = GameObject.FindGameObjectWithTag("3D Camera");
+                if (camObj != null) camera3D = camObj.GetComponent<Camera>();
+            }
+            if (camera3D != null)
+                transform.rotation = camera3D.transform.rotation;
         }
 
         private void PlayAnimation()
         {
             tween?.Kill();
 
-            float endTime = assetData.EndTime;
+            float duration = assetData.motionDuration;
             float elapsed = 0;
 
             tween = DOTween.To(() => elapsed, t =>
             {
                 elapsed = t;
 
-                float scale = assetData.EvaluateScale(t);
-                float vert = assetData.EvaluateVertical(t);
-                float horiz = assetData.EvaluateHorizontal(t) * toRight;
-                float alpha = assetData.EvaluateAlpha(t);
+                float nt = duration > 0 ? t / duration : 1f;
 
-                transform.localScale = Vector3.one * scale;
+                float vert = assetData.parabolaHeight * nt * (1f - nt) * 4f;
+                float horiz = assetData.parabolaHorizontalDistance * nt * toRight;
+
+                transform.localScale = Vector3.one;
                 transform.position = startWorldPos + new Vector3(horiz, vert, 0);
 
                 Color c = textDisplay.color;
-                c.a = alpha;
+                c.a = 1f - nt;
                 textDisplay.color = c;
-            }, endTime, endTime).SetEase(Ease.Linear)
+            }, duration, duration).SetEase(Ease.Linear)
             .OnComplete(() =>
             {
                 onComplete?.Invoke(this);
@@ -91,8 +103,7 @@ namespace UI.PopupText
 
         void LateUpdate()
         {
-            if (camera3D != null)
-                transform.rotation = camera3D.transform.rotation;
+            FaceCamera();
         }
 
         void OnDestroy()
