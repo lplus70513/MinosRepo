@@ -12,15 +12,104 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02002abe5e65cfb4184b51fd307203e9, type: 3}
   m_Name: "\u98DE\u8EAB\u8E22"
   m_EditorClassIdentifier: 
-  <Description>k__BackingField: "\u5BF9\u654C\u4EBA\u9020\u62104\u4F24\u5BB3\uFF0C\u653B\u51FB\u540E\u540E\u9000\u4E00\u683C"
+  <Description>k__BackingField: "\u5BF9\u654C\u4EBA\u9020\u6210 4 \u4F24\u5BB3\uFF0C\u653B\u51FB\u540E\u540E\u9000
+    1 \u683C"
   <Cost>k__BackingField: 1
-  <Image>k__BackingField: {fileID: 0}
-  <Background>k__BackingField: {fileID: 0}
+  <Image>k__BackingField: {fileID: 775603959, guid: 394d2fe82ccd87f41b6163a042ebd5f9, type: 3}
+  <Background>k__BackingField: {fileID: 2004051598, guid: c6dd1d8aa674a1342a0e69187a61a93b, type: 3}
+  <HasAttackRange>k__BackingField: 1
+  <AttackRange>k__BackingField: 1
   <ManualTargetEffect>k__BackingField:
+    rid: 1965764257158791235
+  <OtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1965764257158791236
+    <Effect>k__BackingField:
+      rid: 1965764257158791237
+  <IsInnate>k__BackingField: 0
+  <IsExhaust>k__BackingField: 0
+  <IsRetain>k__BackingField: 0
+  <CanHitFlying>k__BackingField: 0
+  <IsAttackCard>k__BackingField: 1
+  <AttackRangePattern>k__BackingField:
     rid: -2
-  <OtherEffects>k__BackingField: []
+  <BaseGrade>k__BackingField:
+    <Name>k__BackingField: "\u98DE\u8EAB\u8E22"
+    <Description>k__BackingField: "\u5BF9\u654C\u4EBA\u9020\u6210 4 \u4F24\u5BB3\uFF0C\u653B\u51FB\u540E\u540E\u9000
+      1 \u683C"
+    <Cost>k__BackingField: 1
+    <HasAttackRange>k__BackingField: 1
+    <AttackRange>k__BackingField: 1
+    <ManualTargetEffect>k__BackingField:
+      rid: 1965764257158791238
+    <OtherEffects>k__BackingField:
+    - <TargetMode>k__BackingField:
+        rid: 1965764257158791239
+      <Effect>k__BackingField:
+        rid: 1965764257158791240
+    <IsInnate>k__BackingField: 0
+    <IsExhaust>k__BackingField: 0
+    <IsRetain>k__BackingField: 0
+    <CanHitFlying>k__BackingField: 0
+    <IsAttackCard>k__BackingField: 1
+    <AttackRangePattern>k__BackingField:
+      rid: -2
+  <UpgradeGrade>k__BackingField:
+    <Name>k__BackingField: "\u98DE\u8EAB\u8E22+"
+    <Description>k__BackingField: "\u5BF9\u654C\u4EBA\u9020\u6210 4 \u4F24\u5BB3\uFF0C\u653B\u51FB\u540E\u540E\u9000
+      1 \u683C"
+    <Cost>k__BackingField: 0
+    <HasAttackRange>k__BackingField: 1
+    <AttackRange>k__BackingField: 1
+    <ManualTargetEffect>k__BackingField:
+      rid: 1965764257158791241
+    <OtherEffects>k__BackingField:
+    - <TargetMode>k__BackingField:
+        rid: 1965764257158791242
+      <Effect>k__BackingField:
+        rid: 1965764257158791243
+    <IsInnate>k__BackingField: 0
+    <IsExhaust>k__BackingField: 0
+    <IsRetain>k__BackingField: 0
+    <CanHitFlying>k__BackingField: 0
+    <IsAttackCard>k__BackingField: 1
+    <AttackRangePattern>k__BackingField:
+      rid: -2
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+    - rid: 1965764257158791235
+      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 4
+        hitCount: 1
+    - rid: 1965764257158791236
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764257158791237
+      type: {class: StepBackEffect, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764257158791238
+      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 4
+        hitCount: 1
+    - rid: 1965764257158791239
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764257158791240
+      type: {class: StepBackEffect, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764257158791241
+      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 4
+        hitCount: 1
+    - rid: 1965764257158791242
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764257158791243
+      type: {class: StepBackEffect, ns: , asm: Assembly-CSharp}
+      data: 

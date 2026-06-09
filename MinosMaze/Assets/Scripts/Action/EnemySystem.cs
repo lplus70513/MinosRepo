@@ -160,7 +160,7 @@ public class EnemySystem : Singleton<EnemySystem>
 
         for (int i = 0; i < hitCount; i++)
         {
-            DealDamageGA dealDamageGA = new(damage, new() { heroView }, attackHeroGA.Caster);
+            DealDamageGA dealDamageGA = new(damage, 1, new() { heroView }, attackHeroGA.Caster);
             ActionSystem.Instance.AddReaction(dealDamageGA);
         }
 

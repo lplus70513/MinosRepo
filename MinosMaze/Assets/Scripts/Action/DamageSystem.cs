@@ -23,16 +23,19 @@ public class DamageSystem : MonoBehaviour
         int totalUnblocked = 0;
         foreach (var target in dealDamageGA.Targets)
         {
-            int modifiedDamage = CalculateModifiedDamage(dealDamageGA.Amount, dealDamageGA.Caster, target);
-            target.Damage(modifiedDamage);
-            totalUnblocked += target.LastUnblockedDamage;
-            SpawnDamageVFX(target);
-            yield return new WaitForSeconds(0.15f);
-            if (target.CurrentHealth == 0 && target is EnemyView)
+            for (int h = 0; h < dealDamageGA.HitCount; h++)
             {
-                Debug.Log($"[DamageSystem] 创建 KillEnemyGA, 目标: {target.name}");
-                KillEnemyGA killEnemyGA = new((EnemyView)target);
-                ActionSystem.Instance.AddReaction(killEnemyGA);
+                int modifiedDamage = CalculateModifiedDamage(dealDamageGA.Amount, dealDamageGA.Caster, target);
+                target.Damage(modifiedDamage);
+                totalUnblocked += target.LastUnblockedDamage;
+                SpawnDamageVFX(target);
+                yield return new WaitForSeconds(0.1f);
+                if (target.CurrentHealth == 0 && target is EnemyView)
+                {
+                    KillEnemyGA killEnemyGA = new((EnemyView)target);
+                    ActionSystem.Instance.AddReaction(killEnemyGA);
+                    break;
+                }
             }
         }
         dealDamageGA.UnblockedAmount = totalUnblocked;
@@ -49,7 +52,7 @@ public class DamageSystem : MonoBehaviour
                 continue;
             }
             int modifiedDamage = CalculateModifiedDamage(armorStacks, ga.Caster, target);
-            DealDamageGA innerGA = new(modifiedDamage, new List<CombatantView> { target }, ga.Caster);
+            DealDamageGA innerGA = new(modifiedDamage, 1, new List<CombatantView> { target }, ga.Caster);
             ActionSystem.Instance.AddReaction(innerGA);
             Debug.Log($"[DamageSystem] {target.name} 护甲 {armorStacks} → 伤害 {modifiedDamage}");
             yield return null;
