@@ -17,6 +17,11 @@ public class BattleResultSystem : Singleton<BattleResultSystem>
         ActionSystem.AttachPerformer<BattleLoseGA>(BattleLosePerformer);
     }
 
+    public void ResetForBattle()
+    {
+        _battleEnded = false;
+    }
+
     void OnDisable()
     {
         ActionSystem.UnsubscribeReaction<KillEnemyGA>(OnKillEnemyPost, ReactionTiming.POST);
@@ -62,8 +67,9 @@ public class BattleResultSystem : Singleton<BattleResultSystem>
 
     private void OnKillEnemyPost(KillEnemyGA killEnemyGA)
     {
-        if (_battleEnded) return;
         var enemies = EnemySystem.Instance?.Enemies;
+        Debug.Log($"[BattleResult] OnKillEnemyPost, 剩余敌人: {enemies?.Count ?? -1}, _battleEnded={_battleEnded}");
+        if (_battleEnded) return;
         if (enemies == null || enemies.Count > 0) return;
         _battleEnded = true;
         ActionSystem.Instance.AddReaction(new BattleWinGA());

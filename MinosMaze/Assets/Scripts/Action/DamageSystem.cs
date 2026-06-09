@@ -30,6 +30,7 @@ public class DamageSystem : MonoBehaviour
             yield return new WaitForSeconds(0.15f);
             if (target.CurrentHealth == 0 && target is EnemyView)
             {
+                Debug.Log($"[DamageSystem] 创建 KillEnemyGA, 目标: {target.name}");
                 KillEnemyGA killEnemyGA = new((EnemyView)target);
                 ActionSystem.Instance.AddReaction(killEnemyGA);
             }

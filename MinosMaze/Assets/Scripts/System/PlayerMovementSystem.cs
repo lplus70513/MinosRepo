@@ -13,34 +13,23 @@ public class PlayerMovementSystem : Singleton<PlayerMovementSystem>
     {
         ActionSystem.SubscribeReaction<EnemyTurnGA>(OnEnemyTurnPost, ReactionTiming.POST);
         ActionSystem.AttachPerformer<AddMovePointsGA>(AddMovePointsPerformer);
-        Debug.Log($"[PlayerMovement] OnEnable — 注册 EnemyTurnGA POST + AddMovePointsGA, scene={gameObject.scene.name}, go={gameObject.name}");
     }
 
     void OnDisable()
     {
         ActionSystem.UnsubscribeReaction<EnemyTurnGA>(OnEnemyTurnPost, ReactionTiming.POST);
         ActionSystem.DetachPerformer<AddMovePointsGA>();
-        Debug.Log($"[PlayerMovement] OnDisable — 注销 EnemyTurnGA POST + AddMovePointsGA, scene={gameObject.scene.name}, go={gameObject.name}");
     }
 
     void Start()
     {
         RemainingMovementPoints = 1;
-        Debug.Log($"[PlayerMovement] Start — RemainingMovementPoints=1, scene={gameObject.scene.name}, go={gameObject.name}");
     }
 
     public void ResetForBattle()
     {
         RemainingMovementPoints = 1;
-        if (!enabled)
-        {
-            enabled = true;
-            Debug.Log($"[PlayerMovement] ResetForBattle — 重新启用, RemainingMovementPoints=1, scene={gameObject.scene.name}, go={gameObject.name}");
-        }
-        else
-        {
-            Debug.Log($"[PlayerMovement] ResetForBattle — RemainingMovementPoints=1, scene={gameObject.scene.name}, go={gameObject.name}");
-        }
+        if (!enabled) enabled = true;
     }
 
     private bool IsHeroRootedOrStunned()
@@ -199,11 +188,7 @@ public class PlayerMovementSystem : Singleton<PlayerMovementSystem>
         if (!Interactions.Instance.PlayerCanInteract()) return;
         if (Interactions.Instance.PlayerIsDragging) return;
         if (Interactions.Instance.PlayerIsTargeting) return;
-        if (RemainingMovementPoints <= 0)
-        {
-            Debug.Log($"[PlayerMovement] HandleClick 被拒绝: RemainingMovementPoints={RemainingMovementPoints}, scene={gameObject.scene.name}, go={gameObject.name}");
-            return;
-        }
+        if (RemainingMovementPoints <= 0) return;
         if (IsHeroRootedOrStunned()) return;
 
         HeroView hero = HeroSystem.Instance.HeroView;
@@ -216,20 +201,17 @@ public class PlayerMovementSystem : Singleton<PlayerMovementSystem>
 
         RemainingMovementPoints--;
         MoveGA moveGA = new(hero, hexX, hexZ);
-        Debug.Log($"[PlayerMovement] 执行 MoveGA: 目标 ({hexX},{hexZ})");
         ActionSystem.Instance.Perform(moveGA);
     }
 
     private IEnumerator AddMovePointsPerformer(AddMovePointsGA ga)
     {
         RemainingMovementPoints += ga.Amount;
-        Debug.Log($"[PlayerMovement] AddMovePointsPerformer 触发, +{ga.Amount}, 剩余移动点: {RemainingMovementPoints}, scene={gameObject.scene.name}");
         yield return null;
     }
 
     private void OnEnemyTurnPost(EnemyTurnGA ga)
     {
         RemainingMovementPoints = 1;
-        Debug.Log($"[PlayerMovement] OnEnemyTurnPost 触发, RemainingMovementPoints 重置为 1, scene={gameObject.scene.name}");
     }
 }

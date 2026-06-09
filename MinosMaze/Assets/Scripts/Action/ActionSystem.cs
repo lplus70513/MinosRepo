@@ -66,10 +66,6 @@ public class ActionSystem : Singleton<ActionSystem>
         if (cancelFlow) { OnFlowFinished?.Invoke(); yield break; }
 
         reactions = action.PostReactions;
-        int postSubCount = postSubs.ContainsKey(action.GetType()) ? postSubs[action.GetType()].Count : 0;
-        int preSubCount = preSubs.ContainsKey(action.GetType()) ? preSubs[action.GetType()].Count : 0;
-        bool hasPerformer = performers.ContainsKey(action.GetType());
-        Debug.Log($"[ActionSystem] Flow: {action.GetType().Name} | PRE subs={preSubCount} | PERF={hasPerformer} | POST subs={postSubCount}");
         PerformSubscribers(action, postSubs);
         yield return PerformReactions();
 

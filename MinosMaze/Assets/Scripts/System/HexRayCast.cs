@@ -65,8 +65,6 @@ public class HexRayCast : MonoBehaviour
 
             hexStandingPoint = cell.standingPoint;
 
-            Debug.Log($"点击了六角格，坐标为: X={x}, Z={z}");
-
             HexCoordX = x;
 
             HexCoordZ = z;

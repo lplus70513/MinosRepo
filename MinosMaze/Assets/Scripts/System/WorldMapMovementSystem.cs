@@ -52,7 +52,6 @@ public class WorldMapMovementSystem : Singleton<WorldMapMovementSystem>
         if (gm != null && gm.WorldMapState != null && gm.WorldMapState.currentDeck != null && gm.WorldMapState.currentDeck.Count > 0)
         {
             CardSystem.Instance.SetUp(gm.WorldMapState.currentDeck);
-            Debug.Log($"[WorldMapMovementSystem] CardSystem 已从 WorldMapState 初始化，牌组 {gm.WorldMapState.currentDeck.Count} 张");
         }
     }
 
