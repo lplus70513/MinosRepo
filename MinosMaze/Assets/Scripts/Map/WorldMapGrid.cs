@@ -48,6 +48,7 @@ public class WorldMapGrid : HexGrid
         base.Awake(); // 生成格子，过程中会调用 GetPrefabForCell / CreateHexCell
         PositionPlayer();
         DisableClearedCells();
+        MapCollapseSystem.Reset();
     }
 
     // 场景恢复时直接禁用已走过的格子（不播放动画），跳过玩家当前站立的格子
