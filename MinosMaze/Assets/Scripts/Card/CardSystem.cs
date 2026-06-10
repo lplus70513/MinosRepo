@@ -146,6 +146,12 @@ public class CardSystem : Singleton<CardSystem>
         SpendCostGA spendCostGA = new(playCardGA.Card.Cost);
         ActionSystem.Instance.AddReaction(spendCostGA);
 
+        if (playCardGA.Card.ActionPointCost > 0)
+        {
+            SpendActionPointsGA spendAPGA = new(playCardGA.Card.ActionPointCost);
+            ActionSystem.Instance.AddReaction(spendAPGA);
+        }
+
         // 如果是手选目标攻击牌，立即开始英雄攻击动画
         if(playCardGA.Card.ManualTargetEffect != null)
         {

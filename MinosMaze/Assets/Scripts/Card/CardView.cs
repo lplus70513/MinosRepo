@@ -230,7 +230,8 @@ public class CardView : MonoBehaviour
 
         if (inPlayArea)
         {
-            bool hasCost = CostSystem.Instance.HasEnoughCost(Card.Cost);
+            bool hasCost = CostSystem.Instance.HasEnoughCost(Card.Cost)
+                && ActionPointSystem.Instance.HasEnoughActionPoints(Card.ActionPointCost);
             if (hasCost)
             {
                 CleanupDragOnSuccess();

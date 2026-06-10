@@ -12,17 +12,92 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02002abe5e65cfb4184b51fd307203e9, type: 3}
   m_Name: "\u51C6\u5907"
   m_EditorClassIdentifier: 
-  <Description>k__BackingField: "\u62BD\u4E24\u5F20\u724C"
+  <Description>k__BackingField: "\u4E0B\u56DE\u5408\u989D\u5916\u62BD2\u5F20\u724C\u3002"
   <Cost>k__BackingField: 1
-  <Image>k__BackingField: {fileID: -1562414915, guid: 8b53220f14bb4604c8466583a33faaa2, type: 3}
+  <ActionPointCost>k__BackingField: 0
+  <Image>k__BackingField: {fileID: 1709695921, guid: 1ed825c84a4d3aa438bfa70d107b81fb, type: 3}
   <Background>k__BackingField: {fileID: 1370473001, guid: 7e9643d6638fe744ca4f76a79d6457f3, type: 3}
+  <HasAttackRange>k__BackingField: 0
+  <AttackRange>k__BackingField: 1
   <ManualTargetEffect>k__BackingField:
-    rid: 5015277388307890180
-  <OtherEffects>k__BackingField: []
+    rid: -2
+  <OtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1965764299068538884
+    <Effect>k__BackingField:
+      rid: 1965764299068538885
+  <IsInnate>k__BackingField: 0
+  <IsExhaust>k__BackingField: 0
+  <IsRetain>k__BackingField: 0
+  <CanHitFlying>k__BackingField: 0
+  <IsAttackCard>k__BackingField: 0
+  <AttackRangePattern>k__BackingField:
+    rid: -2
+  <BaseGrade>k__BackingField:
+    <Name>k__BackingField: "\u51C6\u5907"
+    <Description>k__BackingField: "\u4E0B\u56DE\u5408\u989D\u5916\u62BD2\u5F20\u724C\u3002"
+    <Cost>k__BackingField: 1
+    <ActionPointCost>k__BackingField: 0
+    <HasAttackRange>k__BackingField: 0
+    <AttackRange>k__BackingField: 1
+    <ManualTargetEffect>k__BackingField:
+      rid: -2
+    <OtherEffects>k__BackingField:
+    - <TargetMode>k__BackingField:
+        rid: 1965764299068538886
+      <Effect>k__BackingField:
+        rid: 1965764299068538887
+    <IsInnate>k__BackingField: 0
+    <IsExhaust>k__BackingField: 0
+    <IsRetain>k__BackingField: 0
+    <CanHitFlying>k__BackingField: 0
+    <IsAttackCard>k__BackingField: 0
+    <AttackRangePattern>k__BackingField:
+      rid: -2
+  <UpgradeGrade>k__BackingField:
+    <Name>k__BackingField: "\u51C6\u5907+"
+    <Description>k__BackingField: "\u4E0B\u56DE\u5408\u989D\u5916\u62BD3\u5F20\u724C\u3002"
+    <Cost>k__BackingField: 1
+    <ActionPointCost>k__BackingField: 0
+    <HasAttackRange>k__BackingField: 0
+    <AttackRange>k__BackingField: 1
+    <ManualTargetEffect>k__BackingField:
+      rid: -2
+    <OtherEffects>k__BackingField:
+    - <TargetMode>k__BackingField:
+        rid: 1965764299068538888
+      <Effect>k__BackingField:
+        rid: 1965764299068538889
+    <IsInnate>k__BackingField: 0
+    <IsExhaust>k__BackingField: 0
+    <IsRetain>k__BackingField: 0
+    <CanHitFlying>k__BackingField: 0
+    <IsAttackCard>k__BackingField: 0
+    <AttackRangePattern>k__BackingField:
+      rid: -2
   references:
     version: 2
     RefIds:
-    - rid: 5015277388307890180
-      type: {class: DrawCardEffects, ns: , asm: Assembly-CSharp}
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 1965764299068538884
+      type: {class: NoTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764299068538885
+      type: {class: BonusDrawEffect, ns: , asm: Assembly-CSharp}
       data:
         drawAmount: 2
+    - rid: 1965764299068538886
+      type: {class: NoTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764299068538887
+      type: {class: BonusDrawEffect, ns: , asm: Assembly-CSharp}
+      data:
+        drawAmount: 2
+    - rid: 1965764299068538888
+      type: {class: NoTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764299068538889
+      type: {class: BonusDrawEffect, ns: , asm: Assembly-CSharp}
+      data:
+        drawAmount: 3
