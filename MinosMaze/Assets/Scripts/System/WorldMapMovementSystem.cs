@@ -132,13 +132,17 @@ public class WorldMapMovementSystem : Singleton<WorldMapMovementSystem>
         ClearAllHighlights();
         highlightsVisible = false;
 
-        // 离开当前格时标记为已走过
+        // 离开当前格时标记为已走过并播放塌陷动画
         GameManager gm = GameManager.Instance;
         if (gm != null)
         {
             Vector2Int currentCoord = new(player.HexCoordX, player.HexCoordZ);
             if (!gm.WorldMapState.clearedCells.Contains(currentCoord))
                 gm.WorldMapState.clearedCells.Add(currentCoord);
+
+            HexCell leavingCell = HexGrid.GetCell(player.HexCoordX, player.HexCoordZ);
+            if (leavingCell != null)
+                leavingCell.PlayCollapseAnimation(0.5f, 3f);
         }
 
         MovePoints--;

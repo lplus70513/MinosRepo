@@ -84,6 +84,7 @@ public class HexCell : MonoBehaviour
     // 塌陷动画：下坠 + 缩小 → 禁用
     public void PlayCollapseAnimation(float duration, float fallDistance)
     {
+        if (!gameObject.activeSelf) return;
         Sequence seq = DOTween.Sequence();
         seq.Join(transform.DOMoveY(transform.position.y - fallDistance, duration));
         seq.Join(transform.DOScale(Vector3.zero, duration));

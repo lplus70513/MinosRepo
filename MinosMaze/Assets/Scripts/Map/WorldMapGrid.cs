@@ -47,6 +47,24 @@ public class WorldMapGrid : HexGrid
         BuildCellTypeLayout();
         base.Awake(); // 生成格子，过程中会调用 GetPrefabForCell / CreateHexCell
         PositionPlayer();
+        DisableClearedCells();
+    }
+
+    // 场景恢复时直接禁用已走过的格子（不播放动画），跳过玩家当前站立的格子
+    private void DisableClearedCells()
+    {
+        GameManager gm = GameManager.Instance;
+        if (gm == null || gm.WorldMapState == null) return;
+
+        Vector2Int playerPos = new(gm.WorldMapState.playerPosX, gm.WorldMapState.playerPosZ);
+
+        foreach (var coord in gm.WorldMapState.clearedCells)
+        {
+            if (coord == playerPos) continue;
+            HexCell cell = HexGrid.GetCell(coord.x, coord.y);
+            if (cell != null)
+                cell.gameObject.SetActive(false);
+        }
     }
 
     // 构建 prefab 类型查找表
