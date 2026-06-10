@@ -35,7 +35,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int overlaySortingOrder = 100;
     [SerializeField] private string dontCoverTag = "NoFade";
 
-    // 大地图可序列化状态，跨场景保存/恢复
+    // 大地图状态，跨场景保存/恢复（NonSerialized 防止 Unity 将运行时数据烘焙到场景文件）
+    [System.NonSerialized]
     public WorldMapState WorldMapState = new();
 
     // 当前待加载的遭遇标识（cellType + floor），由 WorldMapMovementSystem 写入
@@ -56,6 +57,8 @@ public class GameManager : MonoBehaviour
         // 2. ��ֵ���־û�
         _instance = this;
         DontDestroyOnLoad(gameObject);
+
+        WorldMapState = new WorldMapState();
 
         if (SceneTransitionSystem.Instance == null)
         {

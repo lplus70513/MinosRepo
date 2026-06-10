@@ -56,6 +56,12 @@ public class WorldMapGrid : HexGrid
         GameManager gm = GameManager.Instance;
         if (gm == null || gm.WorldMapState == null) return;
 
+        if (gm.WorldMapState.isNewGame)
+        {
+            gm.WorldMapState.clearedCells.Clear();
+            return;
+        }
+
         Vector2Int playerPos = new(gm.WorldMapState.playerPosX, gm.WorldMapState.playerPosZ);
 
         foreach (var coord in gm.WorldMapState.clearedCells)
