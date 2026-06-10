@@ -199,24 +199,27 @@ public class EnemySystem : Singleton<EnemySystem>
     private void EnemyTurnPostReaction(EnemyTurnGA enemyTurnGA)
     {
         ComputeAndStoreNextTurnIntents();
+        foreach (var enemy in enemyBoardView.EnemyViews)
+            enemy.TransitionIntents(enemy.currentIntents);
     }
 
     public void ComputeAndStoreNextTurnIntents()
     {
+        Debug.Log($"[EnemySystem] ComputeAndStoreNextTurnIntents, 敌人数量={enemyBoardView.EnemyViews.Count}");
         foreach (var enemy in enemyBoardView.EnemyViews)
         {
             enemy.DecrementCooldowns();
             var actions = SelectActions(enemy);
             enemy.selectedActions = actions;
 
-            var intents = actions.ConvertAll(a => new EnemyIntentData
+            Debug.Log($"[EnemySystem] {enemy.name} 选中 {actions.Count} 个动作: {string.Join(", ", actions.ConvertAll(a => a.ActionType.ToString()))}");
+
+            enemy.currentIntents = actions.ConvertAll(a => new EnemyIntentData
             {
                 IntentType = a.ActionType,
                 HitCount = a.HitCount,
                 ValuePerHit = a.BaseDamage,
             });
-
-            enemy.TransitionIntents(intents);
         }
     }
 

@@ -39,7 +39,13 @@ public class EnemyView : CombatantView
     {
         currentIntents = intents;
         if (intentView != null)
+        {
             intentView.TransitionTo(intents);
+        }
+        else
+        {
+            Debug.LogWarning($"[EnemyView] {name} intentView 未绑定，无法显示意图！");
+        }
     }
 
     public void HideIntents()

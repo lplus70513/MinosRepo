@@ -1,25 +1,59 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
 
-public class EnemyIntentUI : MonoBehaviour
+public class EnemyIntentUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private Image iconImage;
-    [SerializeField] private TMP_Text valueText;
+    [SerializeField] private GameObject tooltipPanel;
+    [SerializeField] private TMP_Text tooltipText;
+
+    private EnemyIntentData intentData;
+
+    private void Awake()
+    {
+        if (tooltipPanel != null)
+            tooltipPanel.SetActive(false);
+    }
 
     public void SetData(EnemyIntentData data, Sprite icon)
     {
+        intentData = data;
         iconImage.sprite = icon;
+    }
 
-        bool showValue = data.IntentType == EnemyActionType.Attack || data.IntentType == EnemyActionType.Defense;
-        if (showValue && data.HitCount > 0)
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (tooltipPanel != null && intentData != null)
         {
-            valueText.gameObject.SetActive(true);
-            valueText.text = data.HitCount + "×" + data.ValuePerHit;
+            tooltipText.text = BuildTooltipText(intentData);
+            tooltipPanel.SetActive(true);
         }
-        else
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (tooltipPanel != null)
+            tooltipPanel.SetActive(false);
+    }
+
+    private string BuildTooltipText(EnemyIntentData data)
+    {
+        switch (data.IntentType)
         {
-            valueText.gameObject.SetActive(false);
+            case EnemyActionType.Attack:
+                return "攻击 " + data.HitCount + "×" + data.ValuePerHit;
+            case EnemyActionType.Defense:
+                return "防御 " + data.HitCount + "×" + data.ValuePerHit;
+            case EnemyActionType.Move:
+                return "移动";
+            case EnemyActionType.Buff:
+                return "增益";
+            case EnemyActionType.Debuff:
+                return "减益";
+            default:
+                return "";
         }
     }
 }

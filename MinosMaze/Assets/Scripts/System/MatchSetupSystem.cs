@@ -115,6 +115,8 @@ public class MatchSetupSystem : MonoBehaviour
 
         Debug.Log($"[MatchSetupSystem] === 计算首轮敌人意图并抽牌 === scene={gameObject.scene.name}");
         EnemySystem.Instance.ComputeAndStoreNextTurnIntents();
+        foreach (var enemy in EnemySystem.Instance.Enemies)
+            enemy.ShowIntents();
 
         Debug.Log($"[MatchSetupSystem] === 抽牌 === scene={gameObject.scene.name}");
         DrawCardsGA drawCardsGA = new(5);
