@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class EnemyView : CombatantView
 {
+    [SerializeField] private EnemyIntentView intentView;
+
     public string DisplayName { get; private set; }
 
     public EnemyType EnemyType { get; private set; }
@@ -11,6 +13,10 @@ public class EnemyView : CombatantView
     public EnemyData SourceData { get; private set; }
 
     public Dictionary<string, int> ActionCooldowns { get; private set; } = new();
+
+    public List<EnemyAction> selectedActions = new();
+
+    public List<EnemyIntentData> currentIntents = new();
 
     public void Setup(EnemyData enemyData, int hexX, int hexZ)
     {
@@ -21,6 +27,25 @@ public class EnemyView : CombatantView
         EnemyType = enemyData.Type;
         int actualHealth = enemyData.HealthRange.RandomValue;
         SetupBase(actualHealth, enemyData.Image);
+    }
+
+    public void ShowIntents()
+    {
+        if (intentView != null && currentIntents.Count > 0)
+            intentView.Show(currentIntents);
+    }
+
+    public void TransitionIntents(List<EnemyIntentData> intents)
+    {
+        currentIntents = intents;
+        if (intentView != null)
+            intentView.TransitionTo(intents);
+    }
+
+    public void HideIntents()
+    {
+        if (intentView != null)
+            intentView.Hide();
     }
 
     public void DecrementCooldowns()

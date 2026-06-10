@@ -5,6 +5,9 @@ public enum EnemyActionType
 {
     Attack,
     Move,
+    Defense,
+    Buff,
+    Debuff,
 }
 
 public enum TargetType

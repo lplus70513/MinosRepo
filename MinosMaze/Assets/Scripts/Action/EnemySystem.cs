@@ -22,6 +22,7 @@ public class EnemySystem : Singleton<EnemySystem>
         ActionSystem.AttachPerformer<AttackHeroGA>(AttackHeroPerformer);
         ActionSystem.AttachPerformer<KillEnemyGA>(KillEnemyPerformer);
         ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPreReaction, ReactionTiming.PRE);
+        ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
     }
 
     void OnDisable()
@@ -31,6 +32,7 @@ public class EnemySystem : Singleton<EnemySystem>
         ActionSystem.DetachPerformer<AttackHeroGA>();
         ActionSystem.DetachPerformer<KillEnemyGA>();
         ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnemyTurnPreReaction, ReactionTiming.PRE);
+        ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
     }
 
     public void Setup(List<EnemyData> enemyDatas, List<Vector2Int> spawnCoords)
@@ -61,9 +63,15 @@ public class EnemySystem : Singleton<EnemySystem>
         HashSet<(int, int)> reservedCells = new();
         foreach (var enemy in enemyBoardView.EnemyViews)
         {
-            enemy.DecrementCooldowns();
-            var selectedActions = SelectActions(enemy);
-            foreach (var action in selectedActions)
+            var actions = enemy.selectedActions;
+            if (actions == null || actions.Count == 0)
+            {
+                enemy.DecrementCooldowns();
+                actions = SelectActions(enemy);
+            }
+            enemy.selectedActions = new();
+
+            foreach (var action in actions)
             {
                 if (action.ActionType == EnemyActionType.Move)
                 {
@@ -139,29 +147,32 @@ public class EnemySystem : Singleton<EnemySystem>
     {
         EnemyView attacker = attackHeroGA.Attacker;
         HeroView heroView = HeroSystem.Instance.HeroView;
-
-        int dist = HexGrid.HexDistance(attacker.HexCoordX, attacker.HexCoordZ, heroView.HexCoordX, heroView.HexCoordZ);
-        if (dist > 1)
-        {
-            Debug.LogWarning($"[EnemySystem] {attacker.name} 攻击距离不足 (距离={dist})，跳过攻击");
-            yield break;
-        }
-
-        Vector3 direction = (heroView.transform.position - attacker.transform.position).normalized;
-        Vector3 startPos = attacker.transform.position;
-        Vector3 targetPos = startPos + direction * 1f;
-        Tween tween = attacker.transform.DOMove(targetPos, 0.15f);
-        yield return tween.WaitForCompletion();
-        attacker.transform.DOMove(startPos, 0.25f);
-
         EnemyAction action = attackHeroGA.Action;
-        int damage = action.BaseDamage;
-        int hitCount = action.HitCount;
 
-        for (int i = 0; i < hitCount; i++)
+        if (action.ActionType == EnemyActionType.Attack)
         {
-            DealDamageGA dealDamageGA = new(damage, 1, new() { heroView }, attackHeroGA.Caster);
-            ActionSystem.Instance.AddReaction(dealDamageGA);
+            int dist = HexGrid.HexDistance(attacker.HexCoordX, attacker.HexCoordZ, heroView.HexCoordX, heroView.HexCoordZ);
+            if (dist > 1)
+            {
+                Debug.LogWarning($"[EnemySystem] {attacker.name} 攻击距离不足 (距离={dist})，跳过攻击");
+                yield break;
+            }
+
+            Vector3 direction = (heroView.transform.position - attacker.transform.position).normalized;
+            Vector3 startPos = attacker.transform.position;
+            Vector3 targetPos = startPos + direction * 1f;
+            Tween tween = attacker.transform.DOMove(targetPos, 0.15f);
+            yield return tween.WaitForCompletion();
+            attacker.transform.DOMove(startPos, 0.25f);
+
+            int damage = action.BaseDamage;
+            int hitCount = action.HitCount;
+
+            for (int i = 0; i < hitCount; i++)
+            {
+                DealDamageGA dealDamageGA = new(damage, 1, new() { heroView }, attackHeroGA.Caster);
+                ActionSystem.Instance.AddReaction(dealDamageGA);
+            }
         }
 
         if (action.StatusEffects != null)
@@ -181,7 +192,32 @@ public class EnemySystem : Singleton<EnemySystem>
 
     private IEnumerator KillEnemyPerformer(KillEnemyGA killEnemyGA)
     {
+        killEnemyGA.EnemyView.HideIntents();
         yield return enemyBoardView.RemoveEnemy(killEnemyGA.EnemyView);
+    }
+
+    private void EnemyTurnPostReaction(EnemyTurnGA enemyTurnGA)
+    {
+        ComputeAndStoreNextTurnIntents();
+    }
+
+    public void ComputeAndStoreNextTurnIntents()
+    {
+        foreach (var enemy in enemyBoardView.EnemyViews)
+        {
+            enemy.DecrementCooldowns();
+            var actions = SelectActions(enemy);
+            enemy.selectedActions = actions;
+
+            var intents = actions.ConvertAll(a => new EnemyIntentData
+            {
+                IntentType = a.ActionType,
+                HitCount = a.HitCount,
+                ValuePerHit = a.BaseDamage,
+            });
+
+            enemy.TransitionIntents(intents);
+        }
     }
 
 }

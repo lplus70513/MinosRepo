@@ -113,6 +113,9 @@ public class MatchSetupSystem : MonoBehaviour
         if (SceneTransitionSystem.Instance != null)
             yield return new WaitUntil(() => !SceneTransitionSystem.Instance.IsTransitioning);
 
+        Debug.Log($"[MatchSetupSystem] === 计算首轮敌人意图并抽牌 === scene={gameObject.scene.name}");
+        EnemySystem.Instance.ComputeAndStoreNextTurnIntents();
+
         Debug.Log($"[MatchSetupSystem] === 抽牌 === scene={gameObject.scene.name}");
         DrawCardsGA drawCardsGA = new(5);
         ActionSystem.Instance.Perform(drawCardsGA);
