@@ -792,6 +792,8 @@ MonoBehaviour:
     sceneName: 2.1_BattleScene
   - cellType: 100
     sceneName: 2.2_RestSite
+  - cellType: 106
+    sceneName: 2.4_Treasure
   moveDuration: 0.2
 --- !u!4 &606988349
 Transform:
@@ -1310,22 +1312,26 @@ MonoBehaviour:
   cellPrefabMap:
   - cellType: 101
     prefab: {fileID: 7607615994834614152, guid: 1e93d16e0ee4049488965ed41b6fc6b7, type: 3}
+  - cellType: 106
+    prefab: {fileID: 3646822269367452885, guid: 4db4fb77f7c75074c950b21fd1e3acd1, type: 3}
   birthCoord: {x: 0, y: 5}
   initialMovePoints: 9
   playerMaxHealth: 100
   healthBarPanel: {fileID: 971180784}
-  cellPrefabMap:
+  worldCellPrefabMap:
   - cellType: 101
     prefab: {fileID: 7607615994834614152, guid: 1e93d16e0ee4049488965ed41b6fc6b7, type: 3}
+  - cellType: 106
+    prefab: {fileID: 3646822269367452885, guid: 4db4fb77f7c75074c950b21fd1e3acd1, type: 3}
   randomPool:
   - cellType: 101
-    weight: 40
+    weight: 50
   - cellType: 100
     weight: 20
-  - cellType: 102
-    weight: 20
+  - cellType: 106
+    weight: 15
   - cellType: 105
-    weight: 20
+    weight: 15
 --- !u!4 &1124998874
 Transform:
   m_ObjectHideFlags: 0
@@ -2109,6 +2115,8 @@ MonoBehaviour:
   overlaySortingOrder: 30000
   scrollSpeed: 3
   blockedButtons: []
+  previewCardScale: 1
+  upgradeHighlightColor: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &1784081787
 GameObject:
   m_ObjectHideFlags: 0

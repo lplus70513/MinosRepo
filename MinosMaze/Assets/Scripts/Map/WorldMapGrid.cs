@@ -28,7 +28,7 @@ public class WorldMapGrid : HexGrid
     [SerializeField] private HealthBarPanel healthBarPanel;
 
     [Header("格子类型-Prefab映射")]
-    [SerializeField] private CellPrefabMapping[] cellPrefabMap;
+    [SerializeField] private CellPrefabMapping[] worldCellPrefabMap;
 
     [Header("随机类型池（权重分配，暂留空）")]
     [SerializeField] private RandomCellTypeEntry[] randomPool;
@@ -78,9 +78,9 @@ public class WorldMapGrid : HexGrid
     private void BuildPrefabLookup()
     {
         prefabLookup.Clear();
-        if (cellPrefabMap != null)
+        if (worldCellPrefabMap != null)
         {
-            foreach (var entry in cellPrefabMap)
+            foreach (var entry in worldCellPrefabMap)
             {
                 if (entry.prefab != null)
                     prefabLookup[entry.cellType] = entry.prefab;
