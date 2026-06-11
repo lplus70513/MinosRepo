@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
 using DG.Tweening;
@@ -12,6 +14,9 @@ public class CardView : MonoBehaviour
     [SerializeField] private LayerMask dropLayer;
     [SerializeField] private SpriteRenderer image;
     [SerializeField] private SpriteRenderer background;
+
+    [Header("升级高亮")]
+    [SerializeField] private Color upgradeHighlightColor = Color.green;
 
     [Header("动画参数")]
     [SerializeField] private float hoverScale = 1.2f;
@@ -38,6 +43,11 @@ public class CardView : MonoBehaviour
 
     private bool isHovered;
     private bool wasInPlayArea;
+
+    private Color defaultNameColor;
+    private Color defaultDescColor;
+    private Color defaultCostColor;
+    private bool colorsInitialized;
     private bool isTransitioning;
     private Vector3 wrapperOrigLocalPos;
     private Vector3 wrapperOrigLocalScale;
@@ -84,18 +94,68 @@ public class CardView : MonoBehaviour
         CostText.text = card.Cost.ToString();
         image.sprite = card.Image;
         background.sprite = card.Background;
+
+        if (!colorsInitialized)
+        {
+            if (Name != null) defaultNameColor = Name.color;
+            if (Description != null) defaultDescColor = Description.color;
+            if (CostText != null) defaultCostColor = CostText.color;
+            colorsInitialized = true;
+        }
+
+        ResetTextColors();
+        if (card.IsUpgraded && card.CardData != null)
+            ApplyUpgradeHighlight(card);
     }
 
-    public void SetTextColors(Color? nameColor = null, Color? descColor = null, Color? costColor = null)
+    private void ResetTextColors()
     {
-        if (nameColor.HasValue && Name != null) Name.color = nameColor.Value;
-        if (descColor.HasValue && Description != null) Description.color = descColor.Value;
-        if (costColor.HasValue && CostText != null) CostText.color = costColor.Value;
+        if (Name != null) Name.color = defaultNameColor;
+        if (Description != null) Description.color = defaultDescColor;
+        if (CostText != null) CostText.color = defaultCostColor;
     }
 
-    public void OverrideDescriptionText(string text)
+    private void ApplyUpgradeHighlight(Card card)
     {
-        if (Description != null) Description.text = text;
+        Card baseCard = new Card(card.CardData, isUpgraded: false);
+
+        if (card.Name != baseCard.Name && Name != null)
+            Name.color = upgradeHighlightColor;
+        if (card.Cost != baseCard.Cost && CostText != null)
+            CostText.color = upgradeHighlightColor;
+        if (card.Description != baseCard.Description && Description != null)
+            Description.text = HighlightChangedNumbers(baseCard.Description, card.Description);
+    }
+
+    private string HighlightChangedNumbers(string baseText, string upgradedText)
+    {
+        string hexColor = ColorUtility.ToHtmlStringRGB(upgradeHighlightColor);
+        var baseMatches = Regex.Matches(baseText, @"\d+");
+        var upgradeMatches = Regex.Matches(upgradedText, @"\d+");
+
+        if (upgradeMatches.Count == 0)
+            return $"<color=#{hexColor}>{upgradedText}</color>";
+
+        var baseNums = new List<string>();
+        foreach (Match m in baseMatches)
+            baseNums.Add(m.Value);
+
+        string result = upgradedText;
+        for (int i = upgradeMatches.Count - 1; i >= 0; i--)
+        {
+            Match m = upgradeMatches[i];
+            string upgradeNum = m.Value;
+            string baseNum = i < baseNums.Count ? baseNums[i] : "";
+            if (upgradeNum != baseNum)
+            {
+                string colored = $"<color=#{hexColor}>{upgradeNum}</color>";
+                result = result.Remove(m.Index, m.Length).Insert(m.Index, colored);
+            }
+        }
+
+        if (result == upgradedText)
+            return $"<color=#{hexColor}>{upgradedText}</color>";
+        return result;
     }
 
     // ==================== Hover ====================

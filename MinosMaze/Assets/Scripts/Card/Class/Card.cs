@@ -5,6 +5,7 @@ public class Card
 {
     private readonly CardData data;
 
+    public CardData CardData => data;
     public bool IsUpgraded { get; private set; }
 
     private CardGradeData Grade => IsUpgraded ? data.UpgradeGrade : data.BaseGrade;

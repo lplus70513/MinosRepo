@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Rendering;
@@ -50,7 +49,6 @@ public class DeckViewer : MonoBehaviour
 
     [Header("Selection Mode")]
     [SerializeField] private float previewCardScale = 1.0f;
-    [SerializeField] private Color upgradeHighlightColor = Color.green;
 
     private PileType currentPile = PileType.DrawPile;
     private Dictionary<PileType, Button> tabButtons;
@@ -542,24 +540,7 @@ public class DeckViewer : MonoBehaviour
 
         CardView cardView = cardObj.GetComponent<CardView>();
         if (cardView != null)
-        {
             cardView.SetUp(previewCard);
-
-            if (isUpgradePreview)
-            {
-                Card baseCard = new Card(entry.CardData, isUpgraded: false);
-
-                Color? nameColor = previewCard.Name != baseCard.Name ? upgradeHighlightColor : (Color?)null;
-                Color? costColor = previewCard.Cost != baseCard.Cost ? upgradeHighlightColor : (Color?)null;
-                cardView.SetTextColors(nameColor: nameColor, costColor: costColor);
-
-                if (previewCard.Description != baseCard.Description)
-                {
-                    string highlighted = HighlightChangedNumbers(baseCard.Description, previewCard.Description);
-                    cardView.OverrideDescriptionText(highlighted);
-                }
-            }
-        }
 
         foreach (Collider col in cardObj.GetComponentsInChildren<Collider>(true))
             col.enabled = false;
@@ -611,39 +592,6 @@ public class DeckViewer : MonoBehaviour
         if (cardContainer != null) cardContainer.gameObject.SetActive(false);
     }
 
-    private string HighlightChangedNumbers(string baseText, string upgradedText)
-    {
-        var baseMatches = Regex.Matches(baseText, @"\d+");
-        var upgradeMatches = Regex.Matches(upgradedText, @"\d+");
-
-        string hexColor = ColorUtility.ToHtmlStringRGB(upgradeHighlightColor);
-
-        if (upgradeMatches.Count == 0)
-            return $"<color=#{hexColor}>{upgradedText}</color>";
-
-        var baseNums = new List<string>();
-        foreach (Match m in baseMatches)
-            baseNums.Add(m.Value);
-
-        string result = upgradedText;
-        for (int i = upgradeMatches.Count - 1; i >= 0; i--)
-        {
-            Match m = upgradeMatches[i];
-            string upgradeNum = m.Value;
-            string baseNum = i < baseNums.Count ? baseNums[i] : "";
-
-            if (upgradeNum != baseNum)
-            {
-                string colored = $"<color=#{hexColor}>{upgradeNum}</color>";
-                result = result.Remove(m.Index, m.Length).Insert(m.Index, colored);
-            }
-        }
-
-        if (result == upgradedText)
-            return $"<color=#{hexColor}>{upgradedText}</color>";
-
-        return result;
-    }
 }
 
 public class CardGridClickHandler : MonoBehaviour
