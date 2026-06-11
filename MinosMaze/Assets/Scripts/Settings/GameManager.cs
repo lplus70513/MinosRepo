@@ -59,6 +59,14 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         WorldMapState = new WorldMapState();
+        if (heroData != null)
+        {
+            WorldMapState.maxHealth = heroData.Health;
+            WorldMapState.currentHealth = heroData.Health;
+            WorldMapState.currentDeck = heroData.Deck != null
+                ? heroData.Deck.FindAll(cd => cd != null).ConvertAll(cd => new DeckCardEntry(cd, false))
+                : new List<DeckCardEntry>();
+        }
 
         if (SceneTransitionSystem.Instance == null)
         {
