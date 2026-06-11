@@ -1166,7 +1166,7 @@ MonoBehaviour:
   extinguishedBackground: {fileID: 1828565980}
   deckViewer: {fileID: 1515610955}
   healPercent: 0.3
-  exitDelay: 1
+  exitDelay: 2
 --- !u!1 &904799013
 GameObject:
   m_ObjectHideFlags: 0

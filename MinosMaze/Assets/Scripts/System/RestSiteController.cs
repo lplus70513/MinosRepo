@@ -21,6 +21,10 @@ public class RestSiteController : MonoBehaviour
 
     void Start()
     {
+        GameManager gm = GameManager.Instance;
+        if (gm != null && gm.WorldMapState != null && gm.WorldMapState.currentDeck != null)
+            CardSystem.Instance.SetUp(gm.WorldMapState.currentDeck);
+
         healButton.onClick.AddListener(OnHeal);
         discardButton.onClick.AddListener(OnDiscard);
         upgradeButton.onClick.AddListener(OnUpgrade);

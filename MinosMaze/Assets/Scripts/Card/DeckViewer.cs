@@ -528,7 +528,10 @@ public class DeckViewer : MonoBehaviour
             ? new Card(entry.CardData, isUpgraded: true)
             : new Card(entry.CardData, entry.IsUpgraded);
 
-        Vector3 centerPos = Vector3.zero;
+        Vector3 worldCenter = new Vector3(
+            Camera.main.transform.position.x,
+            Camera.main.transform.position.y, 0f);
+        Vector3 centerPos = cardContainer.InverseTransformPoint(worldCenter);
         Vector3 previewScale = Vector3.one * previewCardScale;
 
         GameObject cardObj = Instantiate(cardPrefab, cardContainer);
