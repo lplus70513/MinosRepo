@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -46,6 +47,9 @@ public class DeckViewer : MonoBehaviour
     [Header("Blocked Buttons (打开面板时禁用)")]
     [SerializeField] private List<Button> blockedButtons;
 
+    [Header("Selection Mode")]
+    [SerializeField] private float previewCardScale = 1.0f;
+
     private PileType currentPile = PileType.DrawPile;
     private Dictionary<PileType, Button> tabButtons;
     private float scrollOffset;
@@ -56,6 +60,14 @@ public class DeckViewer : MonoBehaviour
     private Sprite overlaySprite;
     private SortingGroup cardContainerSortingGroup;
     private readonly Dictionary<CardView, int> handSortingOrderBackup = new();
+
+    private bool isSelectionMode;
+    private bool isPreviewState;
+    private bool isUpgradePreview;
+    private DeckCardEntry previewedEntry;
+    private List<DeckCardEntry> selectionEntries;
+    private Action<DeckCardEntry> selectionCallback;
+    private Action cancelCallback;
 
     private void Start()
     {
@@ -155,7 +167,18 @@ public class DeckViewer : MonoBehaviour
 
     public void CloseViewer()
     {
-        Debug.Log("[DeckViewer] 关闭检视面板");
+        if (isSelectionMode)
+        {
+            if (isPreviewState)
+            {
+                ShowSelectionGrid();
+                return;
+            }
+            var cb = cancelCallback;
+            CloseSelectionMode();
+            cb?.Invoke();
+            return;
+        }
 
         if (Interactions.Instance != null) Interactions.Instance.IsViewingDeck = false;
 
@@ -398,5 +421,186 @@ public class DeckViewer : MonoBehaviour
             int k = rng.Next(n + 1);
             (list[k], list[n]) = (list[n], list[k]);
         }
+    }
+
+    // ========== 选择模式 ==========
+
+    public void OpenForSelection(List<DeckCardEntry> entries, Action<DeckCardEntry> onSelected, Action onCancelled, bool upgradePreview = false)
+    {
+        isSelectionMode = true;
+        isPreviewState = false;
+        isUpgradePreview = upgradePreview;
+        previewedEntry = null;
+        selectionEntries = entries;
+        selectionCallback = onSelected;
+        cancelCallback = onCancelled;
+
+        previousTimeScale = Time.timeScale;
+        Time.timeScale = 0f;
+
+        CreateOverlay();
+        SetSortingGroups();
+        if (panelBackgroundImage != null) panelBackgroundImage.enabled = false;
+        if (viewerPanel != null) viewerPanel.SetActive(true);
+        if (cardContainer != null) cardContainer.gameObject.SetActive(true);
+
+        ShowSelectionGrid();
+    }
+
+    private void ShowSelectionGrid()
+    {
+        isPreviewState = false;
+        previewedEntry = null;
+
+        foreach (Transform child in cardContainer)
+        {
+            Destroy(child.gameObject);
+        }
+
+        if (selectionEntries == null || selectionEntries.Count == 0)
+        {
+            maxScrollOffset = 0f;
+            return;
+        }
+
+        int totalRows = Mathf.CeilToInt((float)selectionEntries.Count / columns);
+        maxScrollOffset = Mathf.Max(0, (totalRows - 1) * spacing.y);
+        scrollOffset = 0f;
+        cardContainer.localPosition = cardContainerBasePos;
+
+        Vector3 cardScaleVec = Vector3.one * cardScale;
+
+        for (int i = 0; i < selectionEntries.Count; i++)
+        {
+            int col = i % columns;
+            int row = i / columns;
+            Vector3 pos = new Vector3(col * spacing.x, -row * spacing.y, 0f);
+            DeckCardEntry entry = selectionEntries[i];
+            Card card = new Card(entry.CardData, entry.IsUpgraded);
+            BuildSelectionCardEntry(entry, card, pos, cardScaleVec);
+        }
+    }
+
+    private void BuildSelectionCardEntry(DeckCardEntry entry, Card card, Vector3 localPos, Vector3 scale)
+    {
+        GameObject cardObj = Instantiate(cardPrefab, cardContainer);
+        cardObj.transform.localPosition = localPos;
+        cardObj.transform.localScale = scale;
+
+        CardView cardView = cardObj.GetComponent<CardView>();
+        if (cardView != null)
+            cardView.SetUp(card);
+
+        foreach (Collider col in cardObj.GetComponentsInChildren<Collider>(true))
+            col.enabled = false;
+
+        GameObject hitbox = new GameObject("Hitbox");
+        hitbox.transform.SetParent(cardObj.transform, false);
+        hitbox.transform.localPosition = Vector3.zero;
+        hitbox.transform.localScale = Vector3.one;
+        hitbox.layer = cardObj.layer;
+
+        BoxCollider boxCol = hitbox.AddComponent<BoxCollider>();
+        boxCol.size = new Vector3(hitboxWidth, hitboxHeight, 1f);
+
+        CardGridHoverTrigger hoverTrigger = hitbox.AddComponent<CardGridHoverTrigger>();
+        hoverTrigger.Init(card);
+
+        CardGridClickHandler clickHandler = hitbox.AddComponent<CardGridClickHandler>();
+        DeckCardEntry capturedEntry = entry;
+        clickHandler.Init(() => EnterPreview(capturedEntry));
+    }
+
+    private void EnterPreview(DeckCardEntry entry)
+    {
+        isPreviewState = true;
+        previewedEntry = entry;
+
+        if (CardViewHoverSystem.Instance != null)
+            CardViewHoverSystem.Instance.Hide();
+
+        foreach (Transform child in cardContainer)
+        {
+            Destroy(child.gameObject);
+        }
+
+        Card previewCard = isUpgradePreview
+            ? new Card(entry.CardData, isUpgraded: true)
+            : new Card(entry.CardData, entry.IsUpgraded);
+
+        Vector3 centerPos = Vector3.zero;
+        Vector3 previewScale = Vector3.one * previewCardScale;
+
+        GameObject cardObj = Instantiate(cardPrefab, cardContainer);
+        cardObj.transform.localPosition = centerPos;
+        cardObj.transform.localScale = previewScale;
+
+        CardView cardView = cardObj.GetComponent<CardView>();
+        if (cardView != null)
+            cardView.SetUp(previewCard);
+
+        foreach (Collider col in cardObj.GetComponentsInChildren<Collider>(true))
+            col.enabled = false;
+
+        GameObject hitbox = new GameObject("Hitbox");
+        hitbox.transform.SetParent(cardObj.transform, false);
+        hitbox.transform.localPosition = Vector3.zero;
+        hitbox.transform.localScale = Vector3.one;
+        hitbox.layer = cardObj.layer;
+
+        BoxCollider boxCol = hitbox.AddComponent<BoxCollider>();
+        boxCol.size = new Vector3(hitboxWidth, hitboxHeight, 1f);
+
+        CardGridClickHandler clickHandler = hitbox.AddComponent<CardGridClickHandler>();
+        clickHandler.Init(ConfirmSelection);
+
+        scrollOffset = 0f;
+        maxScrollOffset = 0f;
+        cardContainer.localPosition = cardContainerBasePos;
+    }
+
+    private void ConfirmSelection()
+    {
+        var cb = selectionCallback;
+        var entry = previewedEntry;
+        CloseSelectionMode();
+        cb?.Invoke(entry);
+    }
+
+    private void CloseSelectionMode()
+    {
+        isSelectionMode = false;
+        isPreviewState = false;
+        isUpgradePreview = false;
+        previewedEntry = null;
+        selectionEntries = null;
+        selectionCallback = null;
+        cancelCallback = null;
+
+        if (CardViewHoverSystem.Instance != null)
+            CardViewHoverSystem.Instance.Hide();
+
+        DestroyOverlay();
+        RestoreSortingGroups();
+        if (panelBackgroundImage != null) panelBackgroundImage.enabled = true;
+
+        Time.timeScale = previousTimeScale;
+        if (viewerPanel != null) viewerPanel.SetActive(false);
+        if (cardContainer != null) cardContainer.gameObject.SetActive(false);
+    }
+}
+
+public class CardGridClickHandler : MonoBehaviour
+{
+    private Action onClick;
+
+    public void Init(Action callback)
+    {
+        onClick = callback;
+    }
+
+    void OnMouseDown()
+    {
+        onClick?.Invoke();
     }
 }

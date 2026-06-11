@@ -11,7 +11,7 @@ public class RestSiteController : MonoBehaviour
     [SerializeField] private Button upgradeButton;
     [SerializeField] private GameObject burningBackground;
     [SerializeField] private GameObject extinguishedBackground;
-    [SerializeField] private CardSelectDialog cardSelectDialog;
+    [SerializeField] private DeckViewer deckViewer;
 
     [Header("配置")]
     [SerializeField, Range(0f, 1f)] private float healPercent = 0.3f;
@@ -63,19 +63,18 @@ public class RestSiteController : MonoBehaviour
     {
         if (optionChosen) return;
         optionChosen = true;
+        HideButtons();
 
         GameManager gm = GameManager.Instance;
         var deck = gm.WorldMapState.currentDeck;
-        List<CardData> cards = deck.ConvertAll(e => e.CardData);
 
-        cardSelectDialog.Show(cards, (selectedCard) =>
+        deckViewer.OpenForSelection(deck, (entry) =>
         {
-            DeckCardEntry entry = deck.Find(e => e.CardData == selectedCard);
-            if (entry != null)
-                deck.Remove(entry);
+            deck.Remove(entry);
             OnOptionComplete();
         }, () =>
         {
+            ShowButtons();
             optionChosen = false;
         });
     }
@@ -84,23 +83,21 @@ public class RestSiteController : MonoBehaviour
     {
         if (optionChosen) return;
         optionChosen = true;
+        HideButtons();
 
         GameManager gm = GameManager.Instance;
         var deck = gm.WorldMapState.currentDeck;
-        List<CardData> upgradeable = deck
-            .FindAll(e => !e.IsUpgraded && e.CardData != null && e.CardData.UpgradeGrade != null)
-            .ConvertAll(e => e.CardData);
+        var upgradeable = deck.FindAll(e => !e.IsUpgraded && e.CardData != null && e.CardData.UpgradeGrade != null);
 
-        cardSelectDialog.Show(upgradeable, (selectedCard) =>
+        deckViewer.OpenForSelection(upgradeable, (entry) =>
         {
-            DeckCardEntry entry = deck.Find(e => e.CardData == selectedCard && !e.IsUpgraded);
-            if (entry != null)
-                entry.IsUpgraded = true;
+            entry.IsUpgraded = true;
             OnOptionComplete();
         }, () =>
         {
+            ShowButtons();
             optionChosen = false;
-        });
+        }, upgradePreview: true);
     }
 
     private void OnOptionComplete()
@@ -108,10 +105,7 @@ public class RestSiteController : MonoBehaviour
         if (burningBackground != null) burningBackground.SetActive(false);
         if (extinguishedBackground != null) extinguishedBackground.SetActive(true);
 
-        healButton.interactable = false;
-        discardButton.interactable = false;
-        upgradeButton.interactable = false;
-
+        HideButtons();
         StartCoroutine(DelayedExit());
     }
 
@@ -119,5 +113,19 @@ public class RestSiteController : MonoBehaviour
     {
         yield return new WaitForSeconds(exitDelay);
         GameManager.Instance.ExitEncounter();
+    }
+
+    private void HideButtons()
+    {
+        healButton.gameObject.SetActive(false);
+        discardButton.gameObject.SetActive(false);
+        upgradeButton.gameObject.SetActive(false);
+    }
+
+    private void ShowButtons()
+    {
+        healButton.gameObject.SetActive(true);
+        discardButton.gameObject.SetActive(true);
+        upgradeButton.gameObject.SetActive(true);
     }
 }

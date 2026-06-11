@@ -1164,7 +1164,7 @@ MonoBehaviour:
   upgradeButton: {fileID: 1558828930}
   burningBackground: {fileID: 181428779}
   extinguishedBackground: {fileID: 1828565980}
-  cardSelectDialog: {fileID: 0}
+  deckViewer: {fileID: 1515610955}
   healPercent: 0.3
   exitDelay: 1
 --- !u!1 &904799013
@@ -2157,6 +2157,7 @@ MonoBehaviour:
   overlaySortingOrder: 30000
   scrollSpeed: 3
   blockedButtons: []
+  previewCardScale: 1.3
 --- !u!224 &1527024347 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1797462677429482960, guid: cdf1a124c604cb6409f61a2e88e87abf, type: 3}
