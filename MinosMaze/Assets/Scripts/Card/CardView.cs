@@ -86,6 +86,18 @@ public class CardView : MonoBehaviour
         background.sprite = card.Background;
     }
 
+    public void SetTextColors(Color? nameColor = null, Color? descColor = null, Color? costColor = null)
+    {
+        if (nameColor.HasValue && Name != null) Name.color = nameColor.Value;
+        if (descColor.HasValue && Description != null) Description.color = descColor.Value;
+        if (costColor.HasValue && CostText != null) CostText.color = costColor.Value;
+    }
+
+    public void OverrideDescriptionText(string text)
+    {
+        if (Description != null) Description.text = text;
+    }
+
     // ==================== Hover ====================
 
     void OnMouseEnter()
