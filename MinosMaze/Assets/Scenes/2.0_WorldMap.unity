@@ -790,6 +790,8 @@ MonoBehaviour:
   sceneMap:
   - cellType: 101
     sceneName: 2.1_BattleScene
+  - cellType: 100
+    sceneName: 2.2_RestSite
   moveDuration: 0.2
 --- !u!4 &606988349
 Transform:
