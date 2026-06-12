@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02002abe5e65cfb4184b51fd307203e9, type: 3}
   m_Name: "\u79FB\u52A8"
   m_EditorClassIdentifier: 
-  <Description>k__BackingField: "\u79FB\u52A81\u683C"
+  <Description>k__BackingField: "\u79FB\u52A81\u683C\u3002"
   <Cost>k__BackingField: 1
+  <ActionPointCost>k__BackingField: 0
   <Image>k__BackingField: {fileID: -228228384, guid: f70d656120515094f9a8b0d1e4368d75, type: 3}
   <Background>k__BackingField: {fileID: -1142916696, guid: f13830e054ef05845ab1dc2fc80e5f1a, type: 3}
   <HasAttackRange>k__BackingField: 0
@@ -36,6 +37,7 @@ MonoBehaviour:
     <Name>k__BackingField: "\u79FB\u52A8"
     <Description>k__BackingField: "\u79FB\u52A81\u683C"
     <Cost>k__BackingField: 1
+    <ActionPointCost>k__BackingField: 0
     <HasAttackRange>k__BackingField: 0
     <AttackRange>k__BackingField: 1
     <ManualTargetEffect>k__BackingField:
@@ -56,6 +58,7 @@ MonoBehaviour:
     <Name>k__BackingField: "\u79FB\u52A8+"
     <Description>k__BackingField: "\u79FB\u52A81\u683C"
     <Cost>k__BackingField: 0
+    <ActionPointCost>k__BackingField: 0
     <HasAttackRange>k__BackingField: 0
     <AttackRange>k__BackingField: 1
     <ManualTargetEffect>k__BackingField:

@@ -14,13 +14,69 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Description>k__BackingField: "\u73A9\u5BB6\u7684\u683C\u6321\u503C\u83B7\u5F97\u4FDD\u7559\uFF0C\u4E0D\u4F1A\u5728\u6BCF\u56DE\u5408\u5F00\u59CB\u65F6\u6E05\u96F6\u3002"
   <Cost>k__BackingField: 3
+  <ActionPointCost>k__BackingField: 0
   <Image>k__BackingField: {fileID: 0}
   <Background>k__BackingField: {fileID: 0}
+  <HasAttackRange>k__BackingField: 0
+  <AttackRange>k__BackingField: 1
   <ManualTargetEffect>k__BackingField:
+    rid: 1965764339896156163
+  <OtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: -2
+    <Effect>k__BackingField:
+      rid: 1965764339896156162
+  <IsInnate>k__BackingField: 0
+  <IsExhaust>k__BackingField: 0
+  <IsRetain>k__BackingField: 0
+  <CanHitFlying>k__BackingField: 0
+  <IsAttackCard>k__BackingField: 0
+  <AttackRangePattern>k__BackingField:
     rid: -2
-  <OtherEffects>k__BackingField: []
+  <BaseGrade>k__BackingField:
+    <Name>k__BackingField: 
+    <Description>k__BackingField: 
+    <Cost>k__BackingField: 0
+    <ActionPointCost>k__BackingField: 0
+    <HasAttackRange>k__BackingField: 0
+    <AttackRange>k__BackingField: 1
+    <ManualTargetEffect>k__BackingField:
+      rid: -2
+    <OtherEffects>k__BackingField: []
+    <IsInnate>k__BackingField: 0
+    <IsExhaust>k__BackingField: 0
+    <IsRetain>k__BackingField: 0
+    <CanHitFlying>k__BackingField: 0
+    <IsAttackCard>k__BackingField: 0
+    <AttackRangePattern>k__BackingField:
+      rid: -2
+  <UpgradeGrade>k__BackingField:
+    <Name>k__BackingField: 
+    <Description>k__BackingField: 
+    <Cost>k__BackingField: 0
+    <ActionPointCost>k__BackingField: 0
+    <HasAttackRange>k__BackingField: 0
+    <AttackRange>k__BackingField: 1
+    <ManualTargetEffect>k__BackingField:
+      rid: -2
+    <OtherEffects>k__BackingField: []
+    <IsInnate>k__BackingField: 0
+    <IsExhaust>k__BackingField: 0
+    <IsRetain>k__BackingField: 0
+    <CanHitFlying>k__BackingField: 0
+    <IsAttackCard>k__BackingField: 0
+    <AttackRangePattern>k__BackingField:
+      rid: -2
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+    - rid: 1965764339896156162
+      type: {class: AddPerkEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <PerkData>k__BackingField: {fileID: 0}
+    - rid: 1965764339896156163
+      type: {class: AddPerkEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <PerkData>k__BackingField: {fileID: 0}

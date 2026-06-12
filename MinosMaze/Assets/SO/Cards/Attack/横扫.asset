@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02002abe5e65cfb4184b51fd307203e9, type: 3}
   m_Name: "\u6A2A\u626B"
   m_EditorClassIdentifier: 
-  <Description>k__BackingField: "\u5BF9\u654C\u4EBA\u9020\u6210 7 \u70B9\u4F24\u5BB3\uFF0C\u7ED9\u4E88\u654C\u4EBA2\u5C42\u6613\u4F24"
+  <Description>k__BackingField: "\u5BF9\u654C\u4EBA\u9020\u62107\u70B9\u4F24\u5BB3\uFF0C\u7ED9\u4E88\u654C\u4EBA2\u5C42\u6613\u4F24\u3002"
   <Cost>k__BackingField: 2
+  <ActionPointCost>k__BackingField: 0
   <Image>k__BackingField: {fileID: 65924260, guid: 213b2572c3f436c4bb86d27dbdfb23a6, type: 3}
   <Background>k__BackingField: {fileID: 2004051598, guid: c6dd1d8aa674a1342a0e69187a61a93b, type: 3}
   <HasAttackRange>k__BackingField: 1
@@ -36,6 +37,7 @@ MonoBehaviour:
     <Name>k__BackingField: "\u6A2A\u626B"
     <Description>k__BackingField: "\u5BF9\u654C\u4EBA\u9020\u6210 7 \u70B9\u4F24\u5BB3\uFF0C\u7ED9\u4E88\u654C\u4EBA2\u5C42\u6613\u4F24"
     <Cost>k__BackingField: 2
+    <ActionPointCost>k__BackingField: 0
     <HasAttackRange>k__BackingField: 1
     <AttackRange>k__BackingField: 1
     <ManualTargetEffect>k__BackingField:
@@ -56,6 +58,7 @@ MonoBehaviour:
     <Name>k__BackingField: "\u6A2A\u626B+"
     <Description>k__BackingField: "\u5BF9\u654C\u4EBA\u9020\u6210 10\u70B9\u4F24\u5BB3\uFF0C\u7ED9\u4E88\u654C\u4EBA2\u5C42\u6613\u4F24"
     <Cost>k__BackingField: 2
+    <ActionPointCost>k__BackingField: 0
     <HasAttackRange>k__BackingField: 1
     <AttackRange>k__BackingField: 1
     <ManualTargetEffect>k__BackingField:
@@ -97,10 +100,12 @@ MonoBehaviour:
       type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
       data:
         damageAmount: 7
+        hitCount: 1
     - rid: 1965764210852102163
       type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
       data:
         damageAmount: 10
+        hitCount: 1
     - rid: 1965764210852102164
       type: {class: ManualTargetTM, ns: , asm: Assembly-CSharp}
       data: 
@@ -113,3 +118,4 @@ MonoBehaviour:
       type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
       data:
         damageAmount: 7
+        hitCount: 1
