@@ -11,8 +11,6 @@ public class CardGradeData
 
     [field: SerializeField] public int Cost { get; private set; }
 
-    [field: SerializeField] public int ActionPointCost { get; private set; }
-
     [field: SerializeField] public bool HasAttackRange { get; private set; } = false;
 
     [field: SerializeField] public int AttackRange { get; private set; } = 1;

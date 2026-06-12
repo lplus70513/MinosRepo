@@ -13,6 +13,7 @@ public class CostSystem : Singleton<CostSystem>
     {
         ActionSystem.AttachPerformer<SpendCostGA>(SpendCostPerformer);
         ActionSystem.AttachPerformer<RefillCostGA>(RefillCostPerformer);
+        ActionSystem.AttachPerformer<GainCostGA>(GainCostPerformer);
         ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
     }
 
@@ -20,6 +21,7 @@ public class CostSystem : Singleton<CostSystem>
     {
         ActionSystem.DetachPerformer<SpendCostGA>();
         ActionSystem.DetachPerformer<RefillCostGA>();
+        ActionSystem.DetachPerformer<GainCostGA>();
         ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
     }
 
@@ -65,5 +67,13 @@ public class CostSystem : Singleton<CostSystem>
     {
         RefillCostGA refillCostGA = new();
         ActionSystem.Instance.AddReaction(refillCostGA);
+    }
+
+    private IEnumerator GainCostPerformer(GainCostGA action)
+    {
+        currentCost += action.Amount;
+        costUI.UpdateCostText(currentCost);
+        Debug.Log($"[CostSystem] 获得行动力 +{action.Amount}，当前: {currentCost}");
+        yield return null;
     }
 }

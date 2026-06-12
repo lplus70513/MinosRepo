@@ -10,8 +10,6 @@ public class CardData : ScriptableObject
 
     [field: SerializeField] public int Cost { get; private set; }
 
-    [field: SerializeField] public int ActionPointCost { get; private set; } = 0;
-
     [field: SerializeField] public Sprite Image { get; private set; }
 
     [field: SerializeField] public Sprite Background { get; private set; }

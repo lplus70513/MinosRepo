@@ -34,7 +34,7 @@ MonoBehaviour:
     rid: -2
   <BaseGrade>k__BackingField:
     <Name>k__BackingField: "\u522E\u524A"
-    <Description>k__BackingField: "\u9020\u62101\u70B9\u4F24\u5BB3\uFF0C\u7ED9\u4E88\u654C\u4EBA3\u5C42\u865A\u5F31\u3002"
+    <Description>k__BackingField: "\u9020\u62101\u70B9\u4F24\u5BB3\uFF0C\u7ED9\u4E88\u654C\u4EBA2\u5C42\u865A\u5F31\u3002"
     <Cost>k__BackingField: 1
     <HasAttackRange>k__BackingField: 1
     <AttackRange>k__BackingField: 1
@@ -81,6 +81,7 @@ MonoBehaviour:
       type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
       data:
         damageAmount: 1
+        hitCount: 1
     - rid: 1965764257158791182
       type: {class: ManualTargetTM, ns: , asm: Assembly-CSharp}
       data: 
@@ -93,6 +94,7 @@ MonoBehaviour:
       type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
       data:
         damageAmount: 1
+        hitCount: 1
     - rid: 1965764257158791185
       type: {class: ManualTargetTM, ns: , asm: Assembly-CSharp}
       data: 
@@ -105,6 +107,7 @@ MonoBehaviour:
       type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
       data:
         damageAmount: 2
+        hitCount: 1
     - rid: 1965764257158791188
       type: {class: ManualTargetTM, ns: , asm: Assembly-CSharp}
       data: 

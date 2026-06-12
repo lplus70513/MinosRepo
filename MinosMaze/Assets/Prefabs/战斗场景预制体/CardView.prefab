@@ -373,7 +373,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -0.33}
+  m_AnchoredPosition: {x: 0, y: -0.34}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &6384826925994595038
@@ -566,11 +566,11 @@ MonoBehaviour:
     m_Bits: 64
   image: {fileID: 310138319197517699}
   background: {fileID: 1604305387359374185}
+  upgradeHighlightColor: {r: 0.24614452, g: 0.6830188, b: 0.24614452, a: 1}
   hoverScale: 1.3
   hoverYOffset: 1.5
   hoverZOffset: -0.5
   animDuration: 0.25
-  sortingOrderBoost: 100
   handView: {fileID: 0}
   handIndex: 0
 --- !u!65 &3094705833287484296
@@ -699,7 +699,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -6922619108207798505, guid: 71a97420206a4c4418ccc167b44ffb01, type: 2}
+  - {fileID: -3804666174479032065, guid: ec74140e2d5844c4c9fcebc8f34480ab, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -743,8 +743,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u5361\u724C\u6587\u672C\u63CF\u8FF0"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 71a97420206a4c4418ccc167b44ffb01, type: 2}
-  m_sharedMaterial: {fileID: -6922619108207798505, guid: 71a97420206a4c4418ccc167b44ffb01, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: ec74140e2d5844c4c9fcebc8f34480ab, type: 2}
+  m_sharedMaterial: {fileID: -3804666174479032065, guid: ec74140e2d5844c4c9fcebc8f34480ab, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -774,7 +774,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 1
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535

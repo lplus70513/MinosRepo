@@ -32,8 +32,6 @@ public class Card
 
     public int Cost { get; private set; }
 
-    public int ActionPointCost { get; private set; }
-
     public bool IsInnate => Grade != null ? Grade.IsInnate : data.IsInnate;
 
     public bool IsExhaust => Grade != null ? Grade.IsExhaust : data.IsExhaust;
@@ -51,7 +49,6 @@ public class Card
         data = cardData;
         IsUpgraded = isUpgraded;
         Cost = Grade?.Cost ?? cardData.Cost;
-        ActionPointCost = Grade?.ActionPointCost ?? cardData.ActionPointCost;
     }
 
     public void Upgrade()
@@ -59,9 +56,6 @@ public class Card
         if (IsUpgraded) return;
         IsUpgraded = true;
         if (data.UpgradeGrade != null)
-        {
             Cost = data.UpgradeGrade.Cost;
-            ActionPointCost = data.UpgradeGrade.ActionPointCost;
-        }
     }
 }
