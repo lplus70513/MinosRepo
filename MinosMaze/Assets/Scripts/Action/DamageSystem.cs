@@ -73,6 +73,9 @@ public class DamageSystem : MonoBehaviour
         if (target != null && target.HasStatusEffect(StatusEffectType.VULNERABLE))
             damage *= 1.5f;
 
+        if (target != null && target.HasStatusEffect(StatusEffectType.FLYING))
+            damage *= 0.5f;
+
         return Mathf.FloorToInt(damage);
     }
 

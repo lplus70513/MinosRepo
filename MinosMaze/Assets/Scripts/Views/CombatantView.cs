@@ -198,7 +198,7 @@ public class CombatantView : MonoBehaviour
             || type == StatusEffectType.CHAIN_LIGHTNING
             || type == StatusEffectType.ROOT
             || type == StatusEffectType.STUN
-            || type == StatusEffectType.BLOCK;
+            || type == StatusEffectType.FLYING;
     }
 
     public void AddStatusEffect(StatusEffectType type, int stackCount)

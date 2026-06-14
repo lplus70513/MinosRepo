@@ -23,6 +23,7 @@ public class EnemySystem : Singleton<EnemySystem>
         ActionSystem.AttachPerformer<KillEnemyGA>(KillEnemyPerformer);
         ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPreReaction, ReactionTiming.PRE);
         ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
+        ActionSystem.SubscribeReaction<DealDamageGA>(OnEnemyDealDamage, ReactionTiming.POST);
     }
 
     void OnDisable()
@@ -33,6 +34,7 @@ public class EnemySystem : Singleton<EnemySystem>
         ActionSystem.DetachPerformer<KillEnemyGA>();
         ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnemyTurnPreReaction, ReactionTiming.PRE);
         ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
+        ActionSystem.UnsubscribeReaction<DealDamageGA>(OnEnemyDealDamage, ReactionTiming.POST);
     }
 
     public void Setup(List<EnemyData> enemyDatas, List<Vector2Int> spawnCoords)
@@ -63,6 +65,27 @@ public class EnemySystem : Singleton<EnemySystem>
         HashSet<(int, int)> reservedCells = new();
         foreach (var enemy in enemyBoardView.EnemyViews)
         {
+            enemy.TurnCount++;
+
+            // 复活检查
+            if (enemy.CurrentHealth <= 0 && enemy.WillRevive)
+            {
+                enemy.SetCurrentHealth(enemy.SourceData.ReviveHealth);
+                enemy.HasRevived = true;
+                enemy.WillRevive = false;
+            }
+
+            if (enemy.CurrentHealth <= 0) continue;
+
+            // 回合开始自动效果
+            if (enemy.SourceData != null && enemy.SourceData.StartOfTurnActions != null && enemy.SourceData.StartOfTurnActions.Count > 0)
+            {
+                foreach (var action in enemy.SourceData.StartOfTurnActions)
+                {
+                    enemyTurnGA.PerformReactions.Add(new AttackHeroGA(enemy, action));
+                }
+            }
+
             var actions = enemy.selectedActions;
             if (actions == null || actions.Count == 0)
             {
@@ -87,12 +110,53 @@ public class EnemySystem : Singleton<EnemySystem>
 
     private List<EnemyAction> SelectActions(EnemyView enemy)
     {
+        if (enemy.SourceData.UseModeSelection)
+            return SelectMode(enemy);
+
         var actionPool = enemy.SourceData.ActionPool;
         if (actionPool == null || actionPool.Count == 0)
             return new List<EnemyAction>();
 
-        var available = actionPool.Where(a => !enemy.IsOnCooldown(a.Tag)).ToList();
+        var available = actionPool
+            .Where(a => !enemy.IsOnCooldown(a))
+            .Where(a => enemy.TurnCount >= a.MinTurnToUse)
+            .ToList();
+
         return WeightedSelectWithoutReplacement(available, enemy.SourceData.ActionsPerTurn);
+    }
+
+    private List<EnemyAction> SelectMode(EnemyView enemy)
+    {
+        var modes = enemy.SourceData.Modes;
+        if (modes == null || modes.Count == 0)
+            return new List<EnemyAction>();
+
+        var availableModes = modes
+            .Where(m => !enemy.IsOnCooldown(m))
+            .Where(m => enemy.TurnCount >= m.MinTurnToUse)
+            .ToList();
+
+        if (availableModes.Count == 0) return new List<EnemyAction>();
+
+        int totalWeight = availableModes.Sum(m => m.Weight);
+        int roll = Random.Range(0, totalWeight);
+        int cumulative = 0;
+        EnemyMode selected = null;
+        foreach (var mode in availableModes)
+        {
+            cumulative += mode.Weight;
+            if (roll < cumulative)
+            {
+                selected = mode;
+                break;
+            }
+        }
+
+        if (selected == null) return new List<EnemyAction>();
+
+        enemy.SetModeCooldown(selected);
+
+        return new List<EnemyAction>(selected.Actions);
     }
 
     private List<EnemyAction> WeightedSelectWithoutReplacement(List<EnemyAction> pool, int count)
@@ -107,16 +171,23 @@ public class EnemySystem : Singleton<EnemySystem>
 
             int roll = Random.Range(0, totalWeight);
             int cumulative = 0;
+            EnemyAction selected = null;
             for (int j = 0; j < remaining.Count; j++)
             {
                 cumulative += remaining[j].Weight;
                 if (roll < cumulative)
                 {
-                    result.Add(remaining[j]);
-                    remaining.RemoveAt(j);
+                    selected = remaining[j];
                     break;
                 }
             }
+
+            if (selected == null) break;
+
+            result.Add(selected);
+            remaining.Remove(selected);
+
+            if (selected.IsExclusive) break;
         }
 
         return result;
@@ -179,19 +250,51 @@ public class EnemySystem : Singleton<EnemySystem>
         {
             foreach (var se in action.StatusEffects)
             {
-                CombatantView target = se.Target == TargetType.Self ? attacker : heroView;
-                target.AddStatusEffect(se.EffectType, se.StackCount);
+                if (se.Target == TargetType.AllOtherEnemies)
+                {
+                    foreach (var otherEnemy in EnemySystem.Instance.Enemies)
+                    {
+                        if (otherEnemy != null && otherEnemy != attacker && otherEnemy.CurrentHealth > 0)
+                            ApplyStatusEffectWithReplace(otherEnemy, se);
+                    }
+                }
+                else
+                {
+                    CombatantView target = se.Target == TargetType.Self ? attacker : heroView;
+                    ApplyStatusEffectWithReplace(target, se);
+                }
             }
         }
 
-        if (!string.IsNullOrEmpty(action.Tag) && action.CooldownTurns > 0)
+        if (action.CooldownTurns > 0)
         {
-            attacker.SetCooldown(action.Tag, action.CooldownTurns);
+            attacker.SetCooldown(action);
         }
+    }
+
+    private static void ApplyStatusEffectWithReplace(CombatantView target, StatusEffectInfliction se)
+    {
+        if (target == null) return;
+        if (se.ReplaceExisting)
+        {
+            int existing = target.GetStatusEffectStacks(se.EffectType);
+            if (existing > 0)
+                target.RemoveStatusEffect(se.EffectType, existing);
+        }
+        target.AddStatusEffect(se.EffectType, se.StackCount);
     }
 
     private IEnumerator KillEnemyPerformer(KillEnemyGA killEnemyGA)
     {
+        var enemy = killEnemyGA.EnemyView;
+
+        if (enemy.SourceData != null && enemy.SourceData.CanRevive && !enemy.HasRevived)
+        {
+            enemy.HideIntents();
+            enemy.WillRevive = true;
+            yield break;
+        }
+
         killEnemyGA.EnemyView.HideIntents();
         yield return enemyBoardView.RemoveEnemy(killEnemyGA.EnemyView);
     }
@@ -200,7 +303,10 @@ public class EnemySystem : Singleton<EnemySystem>
     {
         ComputeAndStoreNextTurnIntents();
         foreach (var enemy in enemyBoardView.EnemyViews)
+        {
+            if (enemy.CurrentHealth <= 0) continue;
             enemy.TransitionIntents(enemy.currentIntents);
+        }
     }
 
     public void ComputeAndStoreNextTurnIntents()
@@ -208,6 +314,8 @@ public class EnemySystem : Singleton<EnemySystem>
         Debug.Log($"[EnemySystem] ComputeAndStoreNextTurnIntents, 敌人数量={enemyBoardView.EnemyViews.Count}");
         foreach (var enemy in enemyBoardView.EnemyViews)
         {
+            if (enemy.CurrentHealth <= 0) continue;
+
             enemy.DecrementCooldowns();
             var actions = SelectActions(enemy);
             enemy.selectedActions = actions;
@@ -223,4 +331,18 @@ public class EnemySystem : Singleton<EnemySystem>
         }
     }
 
+    private void OnEnemyDealDamage(DealDamageGA dealDamageGA)
+    {
+        if (dealDamageGA.UnblockedAmount <= 0) return;
+        if (dealDamageGA.Caster is not EnemyView attacker) return;
+        if (attacker.SourceData == null || attacker.SourceData.OnDealDamageEffects == null || attacker.SourceData.OnDealDamageEffects.Count == 0) return;
+
+        bool hitHero = dealDamageGA.Targets.Any(t => t is HeroView);
+        if (!hitHero) return;
+
+        foreach (var se in attacker.SourceData.OnDealDamageEffects)
+        {
+            ApplyStatusEffectWithReplace(attacker, se);
+        }
+    }
 }

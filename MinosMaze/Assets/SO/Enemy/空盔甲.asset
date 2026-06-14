@@ -10,50 +10,55 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dfb69654e4d485b4d94d0b07ecccb27a, type: 3}
-  m_Name: "\u53F2\u83B1\u59C6"
+  m_Name: "\u7A7A\u76D4\u7532"
   m_EditorClassIdentifier: 
-  <Image>k__BackingField: {fileID: -1879758174, guid: 652938cc25f2a0e41a73e290c93758ec, type: 3}
-  <DisplayName>k__BackingField: "\u53F2\u83B1\u59C6"
+  <Image>k__BackingField: {fileID: 0}
+  <DisplayName>k__BackingField: "\u7A7A\u76D4\u7532"
   <HealthRange>k__BackingField:
-    <Min>k__BackingField: 11
-    <Max>k__BackingField: 14
+    <Min>k__BackingField: 37
+    <Max>k__BackingField: 37
   <Type>k__BackingField: 0
   <ActionPool>k__BackingField:
   - <ActionType>k__BackingField: 0
     <ActionName>k__BackingField: "\u653B\u51FB"
-    <BaseDamage>k__BackingField: 3
+    <BaseDamage>k__BackingField: 5
     <HitCount>k__BackingField: 1
     <MoveRange>k__BackingField: 0
     <StatusEffects>k__BackingField: []
     <Weight>k__BackingField: 1
     <Tag>k__BackingField: 
     <CooldownTurns>k__BackingField: 0
-  - <ActionType>k__BackingField: 1
-    <ActionName>k__BackingField: "\u79FB\u52A8"
+  <ActionsPerTurn>k__BackingField: 1
+  <UseModeSelection>k__BackingField: 0
+  <Modes>k__BackingField: []
+  <StartOfTurnActions>k__BackingField:
+  - <ActionType>k__BackingField: 2
+    <ActionName>k__BackingField: "\u4E0A\u62A4\u7532"
     <BaseDamage>k__BackingField: 0
-    <HitCount>k__BackingField: 0
-    <MoveRange>k__BackingField: 1
-    <StatusEffects>k__BackingField: []
+    <HitCount>k__BackingField: 1
+    <MoveRange>k__BackingField: 0
+    <StatusEffects>k__BackingField:
+    - <EffectType>k__BackingField: 0
+      <StackCount>k__BackingField: 6
+      <Target>k__BackingField: 1
+      <ReplaceExisting>k__BackingField: 1
     <Weight>k__BackingField: 1
     <Tag>k__BackingField: 
     <CooldownTurns>k__BackingField: 0
-  - <ActionType>k__BackingField: 4
-    <ActionName>k__BackingField: "\u8106\u5F31"
+  - <ActionType>k__BackingField: 2
+    <ActionName>k__BackingField: "\u4E0A\u683C\u6321"
     <BaseDamage>k__BackingField: 0
     <HitCount>k__BackingField: 1
-    <MoveRange>k__BackingField: 1
+    <MoveRange>k__BackingField: 0
     <StatusEffects>k__BackingField:
-    - <EffectType>k__BackingField: 4
-      <StackCount>k__BackingField: 1
-      <Target>k__BackingField: 0
+    - <EffectType>k__BackingField: 12
+      <StackCount>k__BackingField: 3
+      <Target>k__BackingField: 2
+      <ReplaceExisting>k__BackingField: 1
     <Weight>k__BackingField: 1
-    <Tag>k__BackingField: "\u8106\u5F31"
-    <CooldownTurns>k__BackingField: 1
-  <ActionsPerTurn>k__BackingField: 2
-  <UseModeSelection>k__BackingField: 0
-  <Modes>k__BackingField: []
-  <StartOfTurnActions>k__BackingField: []
+    <Tag>k__BackingField: 
+    <CooldownTurns>k__BackingField: 0
   <CanRevive>k__BackingField: 0
   <ReviveHealth>k__BackingField: 4
-  <PersistArmor>k__BackingField: 0
+  <PersistArmor>k__BackingField: 1
   <OnDealDamageEffects>k__BackingField: []

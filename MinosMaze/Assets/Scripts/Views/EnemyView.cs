@@ -18,6 +18,12 @@ public class EnemyView : CombatantView
 
     public List<EnemyIntentData> currentIntents = new();
 
+    public int TurnCount { get; set; }
+
+    public bool HasRevived { get; set; }
+
+    public bool WillRevive { get; set; }
+
     public void Setup(EnemyData enemyData, int hexX, int hexZ)
     {
         HexCoordX = hexX;
@@ -25,6 +31,7 @@ public class EnemyView : CombatantView
         SourceData = enemyData;
         DisplayName = enemyData.DisplayName;
         EnemyType = enemyData.Type;
+        PersistArmor = enemyData.PersistArmor;
         int actualHealth = enemyData.HealthRange.RandomValue;
         SetupBase(actualHealth, enemyData.Image);
     }
@@ -65,16 +72,43 @@ public class EnemyView : CombatantView
         }
     }
 
-    public void SetCooldown(string tag, int turns)
+    public void SetCooldown(EnemyAction action)
     {
-        if (string.IsNullOrEmpty(tag) || turns <= 0) return;
-        ActionCooldowns[tag] = turns;
+        if (action == null || action.CooldownTurns <= 0) return;
+        string key = GetCooldownKeyForAction(action);
+        if (string.IsNullOrEmpty(key)) return;
+        ActionCooldowns[key] = action.CooldownTurns;
     }
 
-    public bool IsOnCooldown(string tag)
+    public void SetModeCooldown(EnemyMode mode)
     {
-        if (string.IsNullOrEmpty(tag)) return false;
-        return ActionCooldowns.ContainsKey(tag);
+        if (mode == null || mode.CooldownTurns <= 0) return;
+        string key = !string.IsNullOrEmpty(mode.CooldownTag) ? mode.CooldownTag : mode.ModeName;
+        if (string.IsNullOrEmpty(key)) return;
+        ActionCooldowns[key] = mode.CooldownTurns;
+    }
+
+    public bool IsOnCooldown(EnemyAction action)
+    {
+        if (action == null) return false;
+        string key = GetCooldownKeyForAction(action);
+        if (string.IsNullOrEmpty(key)) return false;
+        return ActionCooldowns.ContainsKey(key);
+    }
+
+    public bool IsOnCooldown(EnemyMode mode)
+    {
+        if (mode == null) return false;
+        string key = !string.IsNullOrEmpty(mode.CooldownTag) ? mode.CooldownTag : mode.ModeName;
+        if (string.IsNullOrEmpty(key)) return false;
+        return ActionCooldowns.ContainsKey(key);
+    }
+
+    private static string GetCooldownKeyForAction(EnemyAction action)
+    {
+        if (!string.IsNullOrEmpty(action.Tag)) return action.Tag;
+        if (action.CooldownTurns > 0) return action.ActionName ?? action.GetHashCode().ToString();
+        return null;
     }
 
     public int GetMaxMoveRange()
@@ -85,7 +119,7 @@ public class EnemyView : CombatantView
         int maxMove = 0;
         foreach (var action in SourceData.ActionPool)
         {
-            if (action.ActionType == EnemyActionType.Move && !IsOnCooldown(action.Tag))
+            if (action.ActionType == EnemyActionType.Move && !IsOnCooldown(action))
             {
                 if (action.MoveRange > maxMove)
                     maxMove = action.MoveRange;

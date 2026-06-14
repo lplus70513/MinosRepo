@@ -12,5 +12,6 @@ public enum StatusEffectType
     CHAIN_LIGHTNING,
     ROOT,
     STUN,
-    BLOCK
+    BLOCK,
+    FLYING
 }

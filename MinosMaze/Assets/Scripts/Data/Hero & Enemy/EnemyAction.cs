@@ -14,6 +14,7 @@ public enum TargetType
 {
     Hero,
     Self,
+    AllOtherEnemies,
 }
 
 [System.Serializable]
@@ -22,6 +23,7 @@ public class StatusEffectInfliction
     [field: SerializeField] public StatusEffectType EffectType { get; private set; }
     [field: SerializeField] public int StackCount { get; private set; } = 1;
     [field: SerializeField] public TargetType Target { get; private set; } = TargetType.Hero;
+    [field: SerializeField] public bool ReplaceExisting { get; private set; }
 }
 
 [System.Serializable]
@@ -36,4 +38,6 @@ public class EnemyAction
     [field: SerializeField] public int Weight { get; private set; } = 1;
     [field: SerializeField] public string Tag { get; private set; }
     [field: SerializeField] public int CooldownTurns { get; private set; }
+    [field: SerializeField] public bool IsExclusive { get; private set; }
+    [field: SerializeField] public int MinTurnToUse { get; private set; }
 }
