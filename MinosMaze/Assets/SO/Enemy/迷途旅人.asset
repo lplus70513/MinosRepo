@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfb69654e4d485b4d94d0b07ecccb27a, type: 3}
   m_Name: "\u8FF7\u9014\u65C5\u4EBA"
   m_EditorClassIdentifier: 
-  <Image>k__BackingField: {fileID: 0}
+  <Image>k__BackingField: {fileID: -1489148115, guid: 7785c52cdb894af4cb9e69c45102b300, type: 3}
   <DisplayName>k__BackingField: "\u8FF7\u9014\u65C5\u4EBA"
   <HealthRange>k__BackingField:
     <Min>k__BackingField: 48
@@ -33,6 +33,8 @@ MonoBehaviour:
       <Weight>k__BackingField: 1
       <Tag>k__BackingField: 
       <CooldownTurns>k__BackingField: 0
+      <IsExclusive>k__BackingField: 0
+      <MinTurnToUse>k__BackingField: 0
     - <ActionType>k__BackingField: 1
       <ActionName>k__BackingField: "\u79FB\u52A8"
       <BaseDamage>k__BackingField: 0
@@ -42,6 +44,8 @@ MonoBehaviour:
       <Weight>k__BackingField: 1
       <Tag>k__BackingField: 
       <CooldownTurns>k__BackingField: 0
+      <IsExclusive>k__BackingField: 0
+      <MinTurnToUse>k__BackingField: 0
     <Weight>k__BackingField: 1
     <CooldownTag>k__BackingField: 
     <CooldownTurns>k__BackingField: 0
@@ -57,6 +61,8 @@ MonoBehaviour:
       <Weight>k__BackingField: 1
       <Tag>k__BackingField: 
       <CooldownTurns>k__BackingField: 0
+      <IsExclusive>k__BackingField: 0
+      <MinTurnToUse>k__BackingField: 0
     - <ActionType>k__BackingField: 4
       <ActionName>k__BackingField: "\u865A\u5F31"
       <BaseDamage>k__BackingField: 0
@@ -66,9 +72,12 @@ MonoBehaviour:
       - <EffectType>k__BackingField: 3
         <StackCount>k__BackingField: 2
         <Target>k__BackingField: 0
+        <ReplaceExisting>k__BackingField: 0
       <Weight>k__BackingField: 1
       <Tag>k__BackingField: 
       <CooldownTurns>k__BackingField: 0
+      <IsExclusive>k__BackingField: 0
+      <MinTurnToUse>k__BackingField: 0
     - <ActionType>k__BackingField: 1
       <ActionName>k__BackingField: "\u79FB\u52A8"
       <BaseDamage>k__BackingField: 0
@@ -78,6 +87,8 @@ MonoBehaviour:
       <Weight>k__BackingField: 1
       <Tag>k__BackingField: 
       <CooldownTurns>k__BackingField: 0
+      <IsExclusive>k__BackingField: 0
+      <MinTurnToUse>k__BackingField: 0
     <Weight>k__BackingField: 1
     <CooldownTag>k__BackingField: 
     <CooldownTurns>k__BackingField: 0
@@ -93,6 +104,8 @@ MonoBehaviour:
       <Weight>k__BackingField: 1
       <Tag>k__BackingField: 
       <CooldownTurns>k__BackingField: 0
+      <IsExclusive>k__BackingField: 0
+      <MinTurnToUse>k__BackingField: 0
     <Weight>k__BackingField: 1
     <CooldownTag>k__BackingField: 
     <CooldownTurns>k__BackingField: 0
@@ -108,9 +121,12 @@ MonoBehaviour:
       - <EffectType>k__BackingField: 2
         <StackCount>k__BackingField: 1
         <Target>k__BackingField: 1
+        <ReplaceExisting>k__BackingField: 0
       <Weight>k__BackingField: 1
       <Tag>k__BackingField: 
       <CooldownTurns>k__BackingField: 0
+      <IsExclusive>k__BackingField: 0
+      <MinTurnToUse>k__BackingField: 0
     <Weight>k__BackingField: 1
     <CooldownTag>k__BackingField: "\u53E0\u529B\u91CF"
     <CooldownTurns>k__BackingField: 3
