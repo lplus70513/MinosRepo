@@ -61,7 +61,13 @@ public class WinPanelController : MonoBehaviour
         if (_goldProcessed) return;
         if (goldDialog == null) return;
         goldDialog.Show(_reward.GoldAmount,
-            onCollected: () => { _goldProcessed = true; if (goldButton != null) goldButton.interactable = false; },
+            onCollected: () =>
+            {
+                if (GameManager.Instance != null)
+                    GameManager.Instance.WorldMapState.gold += _reward.GoldAmount;
+                _goldProcessed = true;
+                if (goldButton != null) goldButton.interactable = false;
+            },
             onSkipped: () => { _goldProcessed = true; if (goldButton != null) goldButton.interactable = false; });
     }
 
@@ -87,7 +93,13 @@ public class WinPanelController : MonoBehaviour
         if (_stringProcessed) return;
         if (stringDialog == null) return;
         stringDialog.Show(
-            onCollected: () => { _stringProcessed = true; if (stringButton != null) stringButton.interactable = false; },
+            onCollected: () =>
+            {
+                if (GameManager.Instance != null)
+                    GameManager.Instance.WorldMapState.stringCount += 1;
+                _stringProcessed = true;
+                if (stringButton != null) stringButton.interactable = false;
+            },
             onSkipped: () => { _stringProcessed = true; if (stringButton != null) stringButton.interactable = false; });
     }
 

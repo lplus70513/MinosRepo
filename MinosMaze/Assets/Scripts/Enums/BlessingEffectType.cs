@@ -1,0 +1,21 @@
+public enum BlessingEffectType
+{
+    GainStrengthOnBattleStart,
+    GainBlockPerTurn,
+    DamageAllEnemiesOnBattleStart,
+    GainStrengthLoseFortify,
+    GainString,
+    GainMovePointPerTurn,
+    GainActionPointPerTurn,
+    GainLightningChain,
+    DeleteAndGiveCards,
+    GainFortifyOnBattleStart,
+    TransformCard,
+    GainGold,
+    GainRandomCard,
+    DeleteCard,
+    UpgradeCards,
+    Resurrection,
+    HealPercent,
+    IncreaseMaxHealth,
+}
