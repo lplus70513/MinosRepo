@@ -44,14 +44,13 @@ public class MatchSetupSystem : MonoBehaviour
         CombatConfig combat = PickWeightedRandom(gm?.PendingEncounter);
         Debug.Log($"[MatchSetupSystem] combatPool={(combatPool != null ? combatPool.name : "NULL")}, combat={(combat != null ? combat.configName : "NULL (使用 fallback)")}");
 
-        BattleMapDataSO mapData = combat?.mapData;
-        if (mapData != null)
+        if (combat != null && combat.useCustomMap)
         {
             var hexGrid = FindObjectOfType<HexGrid>();
             if (hexGrid != null)
             {
-                hexGrid.RebuildFromData(mapData);
-                Debug.Log($"[MatchSetupSystem] 已根据 SO 重建地图: {mapData.name}");
+                hexGrid.RebuildFromConfig(combat.mapRadius, combat.specialCells);
+                Debug.Log($"[MatchSetupSystem] 已根据 CombatConfig 重建地图: radius={combat.mapRadius}, specialCells={combat.specialCells?.Count ?? 0}");
             }
             else
             {

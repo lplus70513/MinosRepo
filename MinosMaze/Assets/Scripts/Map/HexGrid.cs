@@ -202,15 +202,9 @@ public class HexGrid : MonoBehaviour
         }
     }
 
-    // 根据 BattleMapDataSO 重建地图：销毁现有格子，用 SO 数据重新生成
-    public void RebuildFromData(BattleMapDataSO data)
+    // 根据外部配置重建地图：销毁现有格子，用指定的半径和特殊格列表重新生成
+    public void RebuildFromConfig(int radius, List<SpecialCellConfig> specialCells)
     {
-        if (data == null)
-        {
-            Debug.LogWarning("[HexGrid] RebuildFromData: data 为空，跳过重建");
-            return;
-        }
-
         foreach (var cell in cellDict.Values)
         {
             if (cell != null)
@@ -218,19 +212,19 @@ public class HexGrid : MonoBehaviour
         }
         cellDict.Clear();
 
-        mapRadius = data.MapRadius;
+        mapRadius = radius;
 
         specialCellLookup.Clear();
-        if (data.SpecialCells != null)
+        if (specialCells != null)
         {
-            foreach (var entry in data.SpecialCells)
+            foreach (var entry in specialCells)
             {
                 specialCellLookup[(entry.coord.x, entry.coord.y)] = entry.cellType;
             }
         }
 
         CreateHexagonMap();
-        Debug.Log($"[HexGrid] RebuildFromData 完成: radius={mapRadius}, specialCells={data.SpecialCells?.Count ?? 0}");
+        Debug.Log($"[HexGrid] RebuildFromConfig 完成: radius={mapRadius}, specialCells={specialCells?.Count ?? 0}");
     }
 
     // 供 HexMove 遍历所有六角格的外部访问器

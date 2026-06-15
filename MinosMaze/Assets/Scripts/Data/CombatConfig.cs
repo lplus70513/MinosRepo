@@ -10,7 +10,9 @@ public class CombatConfig
     [Range(0, 100)] public int weight = 50;
     public int minFloor = 1;
     public int maxFloor = 999;
-    public BattleMapDataSO mapData;
+    public bool useCustomMap;
+    public int mapRadius = 2;
+    public List<SpecialCellConfig> specialCells;
     public List<EnemyData> enemyDatas;
     public List<Vector2Int> enemySpawnCoords;
     public Vector2Int heroSpawnCoord;
