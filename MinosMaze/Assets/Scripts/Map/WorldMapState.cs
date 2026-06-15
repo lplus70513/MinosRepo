@@ -1,6 +1,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public struct CellLayoutEntry
+{
+    public int x;
+    public int z;
+    public MapCellType type;
+
+    public CellLayoutEntry(int x, int z, MapCellType type)
+    {
+        this.x = x;
+        this.z = z;
+        this.type = type;
+    }
+}
+
 // 大地图可序列化状态，由 GameManager 持有并跨场景保存/恢复
 [System.Serializable]
 public class WorldMapState
@@ -15,6 +30,7 @@ public class WorldMapState
     public List<Vector2Int> clearedCells = new();
     public List<DeckCardEntry> currentDeck = new();
     public List<ActiveBlessing> activeBlessings = new();
+    public List<CellLayoutEntry> cellLayout = new();
     public bool isNewGame = true;
     public int floorLevel = 1;
 }

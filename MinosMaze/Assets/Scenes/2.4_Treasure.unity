@@ -1772,7 +1772,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 32, y: 18}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1663512293
 MonoBehaviour:
@@ -1814,7 +1814,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 1663512294}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
@@ -3011,7 +3011,7 @@ MonoBehaviour:
   escapeButton: {fileID: 1033753139}
   winPanel: {fileID: 1701029765}
   rewardConfig: {fileID: 11400000, guid: d9898f0919b265243b6544774bee7dda, type: 2}
-  mimicChance: 0.1
+  mimicChance: 0.5
   battleSceneName: 2.1_BattleScene
 --- !u!1 &2071335149
 GameObject:

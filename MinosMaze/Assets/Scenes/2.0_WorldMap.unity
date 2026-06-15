@@ -1336,7 +1336,7 @@ MonoBehaviour:
   - cellType: 106
     weight: 15
   - cellType: 105
-    weight: 15
+    weight: 0
 --- !u!4 &1124998874
 Transform:
   m_ObjectHideFlags: 0

@@ -45,7 +45,8 @@ public class WorldMapGrid : HexGrid
     {
         BuildPrefabLookup();
         BuildCellTypeLayout();
-        base.Awake(); // 生成格子，过程中会调用 GetPrefabForCell / CreateHexCell
+        base.Awake();
+        SaveCellLayoutToState();
         PositionPlayer();
         DisableClearedCells();
         MapCollapseSystem.Reset();
@@ -88,12 +89,34 @@ public class WorldMapGrid : HexGrid
         }
     }
 
-    // 构建格子类型布局：中心 BOSS，出生格 Birth，其余随机
+    // 构建格子类型布局：优先从 WorldMapState 恢复，否则仅预设固定格（其余按需随机）
     private void BuildCellTypeLayout()
     {
         cellTypeLayout.Clear();
+
+        GameManager gm = GameManager.Instance;
+        if (gm != null && gm.WorldMapState != null
+            && !gm.WorldMapState.isNewGame
+            && gm.WorldMapState.cellLayout.Count > 0)
+        {
+            foreach (var entry in gm.WorldMapState.cellLayout)
+                cellTypeLayout[(entry.x, entry.z)] = entry.type;
+            return;
+        }
+
         cellTypeLayout[(0, 0)] = MapCellType.WorldMap_Boss;
         cellTypeLayout[(birthCoord.x, birthCoord.y)] = MapCellType.WorldMap_Birth;
+    }
+
+    // 将当前格子类型布局写入 WorldMapState 以便跨场景持久化
+    private void SaveCellLayoutToState()
+    {
+        GameManager gm = GameManager.Instance;
+        if (gm == null || gm.WorldMapState == null) return;
+
+        gm.WorldMapState.cellLayout.Clear();
+        foreach (var kvp in cellTypeLayout)
+            gm.WorldMapState.cellLayout.Add(new CellLayoutEntry(kvp.Key.Item1, kvp.Key.Item2, kvp.Value));
     }
 
     // 获取指定坐标的格子类型（BOSS/出生格优先，其次随机）
