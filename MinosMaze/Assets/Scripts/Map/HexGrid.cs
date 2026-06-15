@@ -202,6 +202,37 @@ public class HexGrid : MonoBehaviour
         }
     }
 
+    // 根据 BattleMapDataSO 重建地图：销毁现有格子，用 SO 数据重新生成
+    public void RebuildFromData(BattleMapDataSO data)
+    {
+        if (data == null)
+        {
+            Debug.LogWarning("[HexGrid] RebuildFromData: data 为空，跳过重建");
+            return;
+        }
+
+        foreach (var cell in cellDict.Values)
+        {
+            if (cell != null)
+                Destroy(cell.gameObject);
+        }
+        cellDict.Clear();
+
+        mapRadius = data.MapRadius;
+
+        specialCellLookup.Clear();
+        if (data.SpecialCells != null)
+        {
+            foreach (var entry in data.SpecialCells)
+            {
+                specialCellLookup[(entry.coord.x, entry.coord.y)] = entry.cellType;
+            }
+        }
+
+        CreateHexagonMap();
+        Debug.Log($"[HexGrid] RebuildFromData 完成: radius={mapRadius}, specialCells={data.SpecialCells?.Count ?? 0}");
+    }
+
     // 供 HexMove 遍历所有六角格的外部访问器
     public static IEnumerable<HexCell> AllCells => cellDict.Values;
 }

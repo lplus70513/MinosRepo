@@ -44,6 +44,21 @@ public class MatchSetupSystem : MonoBehaviour
         CombatConfig combat = PickWeightedRandom(gm?.PendingEncounter);
         Debug.Log($"[MatchSetupSystem] combatPool={(combatPool != null ? combatPool.name : "NULL")}, combat={(combat != null ? combat.configName : "NULL (使用 fallback)")}");
 
+        BattleMapDataSO mapData = combat?.mapData;
+        if (mapData != null)
+        {
+            var hexGrid = FindObjectOfType<HexGrid>();
+            if (hexGrid != null)
+            {
+                hexGrid.RebuildFromData(mapData);
+                Debug.Log($"[MatchSetupSystem] 已根据 SO 重建地图: {mapData.name}");
+            }
+            else
+            {
+                Debug.LogWarning("[MatchSetupSystem] 场景中未找到 HexGrid，无法重建地图");
+            }
+        }
+
         List<EnemyData> enemies;
         List<Vector2Int> spawns;
         Vector2Int heroCoord;
