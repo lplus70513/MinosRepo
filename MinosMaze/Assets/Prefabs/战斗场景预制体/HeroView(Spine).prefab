@@ -364,14 +364,14 @@ Canvas:
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
-  m_OverrideSorting: 0
+  m_OverrideSorting: 1
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 100
   m_TargetDisplay: 0
 --- !u!114 &7100000000000010023
 MonoBehaviour:
@@ -426,6 +426,7 @@ GameObject:
   - component: {fileID: 7100000000000010033}
   - component: {fileID: 7100000000000010034}
   - component: {fileID: 7100000000000010035}
+  - component: {fileID: 7100000000000010036}
   m_Layer: 10
   m_Name: StatusEffectsUI
   m_TagString: Untagged
@@ -505,6 +506,8 @@ MonoBehaviour:
   statusEffectUIPrefab: {fileID: 288063843096682586, guid: 2896e3ca3f95db04dbd0a57de4b85a0a, type: 3}
   armorSprite: {fileID: 21300000, guid: 8d8069e26314fff4d93d7ca57357447f, type: 3}
   burnSprite: {fileID: 21300000, guid: 6700dff425b6a1340b3b9c2d26de10dd, type: 3}
+  canvasGroup: {fileID: 7100000000000010036}
+  fadeDuration: 0.3
 --- !u!114 &7100000000000010035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -531,3 +534,15 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!225 &7100000000000010036
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7100000000000010030}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1229814430363837326}
   - component: {fileID: 7523199825602772059}
   - component: {fileID: 344533035308782947}
+  - component: {fileID: 9990000000000000001}
   m_Layer: 0
   m_Name: StatusEffectsUI
   m_TagString: Untagged
@@ -92,6 +93,8 @@ MonoBehaviour:
   statusEffectUIPrefab: {fileID: 288063843096682586, guid: 2896e3ca3f95db04dbd0a57de4b85a0a, type: 3}
   armorSprite: {fileID: 21300000, guid: 8d8069e26314fff4d93d7ca57357447f, type: 3}
   burnSprite: {fileID: 21300000, guid: 6700dff425b6a1340b3b9c2d26de10dd, type: 3}
+  canvasGroup: {fileID: 9990000000000000001}
+  fadeDuration: 0.3
 --- !u!114 &344533035308782947
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -460,14 +463,14 @@ Canvas:
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
-  m_OverrideSorting: 0
+  m_OverrideSorting: 1
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 100
   m_TargetDisplay: 0
 --- !u!114 &7747436589663580194
 MonoBehaviour:
@@ -509,3 +512,15 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!225 &9990000000000000001
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1436599677730339057}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
