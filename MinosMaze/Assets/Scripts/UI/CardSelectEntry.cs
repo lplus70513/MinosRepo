@@ -15,10 +15,29 @@ public class CardSelectEntry : MonoBehaviour, IPointerClickHandler, IPointerEnte
     [SerializeField] private float hoverScale = 1.1f;
     [SerializeField] private float hoverDuration = 0.1f;
 
+    [SerializeField] private Color outlineColor = Color.white;
+    [SerializeField] private float outlineWidth = 3f;
+
     public CardData CardData { get; private set; }
     private Action<CardData> _onClick;
     private Vector3 _originalScale;
     private Tween _hoverTween;
+    private Material _originalMaterial;
+    private Material _outlineMaterial;
+
+    void Awake()
+    {
+        if (background == null) return;
+        _originalMaterial = background.material;
+
+        Shader shader = Shader.Find("Custom/UIOutline");
+        if (shader == null) return;
+
+        _outlineMaterial = new Material(shader);
+        _outlineMaterial.SetColor("_OutlineColor", outlineColor);
+        _outlineMaterial.SetFloat("_OutlineWidth", outlineWidth);
+        _outlineMaterial.SetFloat("_EnableOutline", 0f);
+    }
 
     public void Setup(CardData data, Action<CardData> onClick)
     {
@@ -36,12 +55,19 @@ public class CardSelectEntry : MonoBehaviour, IPointerClickHandler, IPointerEnte
     {
         _hoverTween?.Kill();
         _hoverTween = transform.DOScale(_originalScale * hoverScale, hoverDuration).SetEase(Ease.OutQuad).SetUpdate(true);
+        if (background != null && _outlineMaterial != null)
+        {
+            _outlineMaterial.SetFloat("_EnableOutline", 1f);
+            background.material = _outlineMaterial;
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         _hoverTween?.Kill();
         _hoverTween = transform.DOScale(_originalScale, hoverDuration).SetEase(Ease.OutQuad).SetUpdate(true);
+        if (background != null)
+            background.material = _originalMaterial;
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -52,5 +78,7 @@ public class CardSelectEntry : MonoBehaviour, IPointerClickHandler, IPointerEnte
     void OnDestroy()
     {
         _hoverTween?.Kill();
+        if (_outlineMaterial != null)
+            Destroy(_outlineMaterial);
     }
 }

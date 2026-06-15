@@ -557,6 +557,13 @@ public class DeckViewer : MonoBehaviour
         CardGridClickHandler clickHandler = hitbox.AddComponent<CardGridClickHandler>();
         clickHandler.Init(ConfirmSelection);
 
+        SpriteRenderer bg = cardView != null ? cardView.Background : null;
+        if (bg != null)
+        {
+            HoverEffect3D hoverEffect = hitbox.AddComponent<HoverEffect3D>();
+            hoverEffect.Init(cardObj.transform, new SpriteRenderer[] { bg });
+        }
+
         scrollOffset = 0f;
         maxScrollOffset = 0f;
         cardContainer.localPosition = cardContainerBasePos;

@@ -26,6 +26,10 @@ public class TreasureController : MonoBehaviour
 
     void Start()
     {
+        AddHoverEffect(normalChestButton);
+        AddHoverEffect(mimicChestButton);
+        AddHoverEffect(escapeButton);
+
         isMimic = Random.value < mimicChance;
 
         if (isMimic)
@@ -82,5 +86,12 @@ public class TreasureController : MonoBehaviour
     private void OnEscape()
     {
         GameManager.Instance.ExitEncounter();
+    }
+
+    private void AddHoverEffect(Button button)
+    {
+        if (button == null) return;
+        if (button.GetComponent<UIHoverEffect>() == null)
+            button.gameObject.AddComponent<UIHoverEffect>();
     }
 }

@@ -15,6 +15,8 @@ public class CardView : MonoBehaviour
     [SerializeField] private SpriteRenderer image;
     [SerializeField] private SpriteRenderer background;
 
+    public SpriteRenderer Background => background;
+
     [Header("升级高亮")]
     [SerializeField] private Color upgradeHighlightColor = Color.green;
 
