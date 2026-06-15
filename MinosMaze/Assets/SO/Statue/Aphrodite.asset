@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c0e35d16a68f1b428f468744c652003, type: 3}
+  m_Name: Aphrodite
+  m_EditorClassIdentifier: 
+  statueName: "\u963F\u4F5B\u6D1B\u72C4\u5FBD"
+  gender: 1
+  blessings:
+  - blessingId: aphrodite_string
+    description: "\u5F97\u52305\u6839\u7EBF"
+    effectType: 4
+    effectValue: 5
+    costType: 2
+    costAmount: 10
+    repeatable: 1

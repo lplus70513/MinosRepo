@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c0e35d16a68f1b428f468744c652003, type: 3}
+  m_Name: Hephaestus
+  m_EditorClassIdentifier: 
+  statueName: "\u8D6B\u83F2\u65AF\u6258\u65AF"
+  gender: 0
+  blessings:
+  - blessingId: hephaestus_random
+    description: "\u83B7\u5F97\u4E00\u5F20\u968F\u673A\u5361\u724C"
+    effectType: 12
+    effectValue: 1
+    costType: 2
+    costAmount: 50
+    repeatable: 1
+  - blessingId: hephaestus_delete
+    description: "\u5220\u9664\u4E00\u5F20\u5361\u724C"
+    effectType: 13
+    effectValue: 1
+    costType: 2
+    costAmount: 25
+    repeatable: 1
+  - blessingId: hephaestus_upgrade
+    description: "\u5347\u7EA72\u5F20\u5361\u724C\uFF0C\u73A9\u5BB6\u53EF\u4EE5\u9009\u62E9\u54EA\u4E24\u5F20"
+    effectType: 14
+    effectValue: 2
+    costType: 2
+    costAmount: 75
+    repeatable: 1

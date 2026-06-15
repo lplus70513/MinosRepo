@@ -8,6 +8,5 @@ public class StatueData : ScriptableObject
 {
     public string statueName;
     public StatueGender gender;
-    public Sprite portrait;
     public List<BlessingEntry> blessings;
 }

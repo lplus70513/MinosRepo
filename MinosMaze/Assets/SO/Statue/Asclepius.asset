@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c0e35d16a68f1b428f468744c652003, type: 3}
+  m_Name: Asclepius
+  m_EditorClassIdentifier: 
+  statueName: "\u963F\u65AF\u514B\u52D2\u5E87\u4FC4\u65AF"
+  gender: 0
+  blessings:
+  - blessingId: asclepius_heal
+    description: "\u7ED9\u4E88\u73A9\u5BB6\u751F\u547D\u503C\u4E0A\u965030%\u7684\u6CBB\u7597"
+    effectType: 16
+    effectValue: 30
+    costType: 2
+    costAmount: 75
+    repeatable: 1
+  - blessingId: asclepius_maxhp
+    description: "\u63D0\u53479\u70B9\u73A9\u5BB6\u7684\u8840\u91CF\u4E0A\u9650"
+    effectType: 17
+    effectValue: 9
+    costType: 2
+    costAmount: 100
+    repeatable: 0

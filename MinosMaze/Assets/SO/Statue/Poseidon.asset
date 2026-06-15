@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c0e35d16a68f1b428f468744c652003, type: 3}
+  m_Name: Poseidon
+  m_EditorClassIdentifier: 
+  statueName: "\u6CE2\u585E\u51AC"
+  gender: 0
+  blessings:
+  - blessingId: poseidon_move
+    description: "\u6BCF\u4E2A\u79FB\u52A8\u56DE\u5408\u73A9\u5BB6\u589E\u52A0\u4E00\u70B9\u79FB\u52A8\u70B9"
+    effectType: 5
+    effectValue: 1
+    costType: 2
+    costAmount: 100
+    repeatable: 0
+  - blessingId: poseidon_action
+    description: "\u6BCF\u56DE\u5408\u73A9\u5BB6\u589E\u52A0\u4E00\u70B9\u884C\u52A8\u70B9"
+    effectType: 6
+    effectValue: 1
+    costType: 3
+    costAmount: 4
+    repeatable: 0
