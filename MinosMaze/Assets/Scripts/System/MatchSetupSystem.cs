@@ -44,6 +44,20 @@ public class MatchSetupSystem : MonoBehaviour
         CombatConfig combat = PickWeightedRandom(gm?.PendingEncounter);
         Debug.Log($"[MatchSetupSystem] combatPool={(combatPool != null ? combatPool.name : "NULL")}, combat={(combat != null ? combat.configName : "NULL (使用 fallback)")}");
 
+        if (combat != null && combat.useCustomMap)
+        {
+            var hexGrid = FindObjectOfType<HexGrid>();
+            if (hexGrid != null)
+            {
+                hexGrid.RebuildFromConfig(combat.mapRadius, combat.specialCells);
+                Debug.Log($"[MatchSetupSystem] 已根据 CombatConfig 重建地图: radius={combat.mapRadius}, specialCells={combat.specialCells?.Count ?? 0}");
+            }
+            else
+            {
+                Debug.LogWarning("[MatchSetupSystem] 场景中未找到 HexGrid，无法重建地图");
+            }
+        }
+
         List<EnemyData> enemies;
         List<Vector2Int> spawns;
         Vector2Int heroCoord;

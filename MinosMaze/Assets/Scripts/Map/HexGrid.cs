@@ -202,6 +202,31 @@ public class HexGrid : MonoBehaviour
         }
     }
 
+    // 根据外部配置重建地图：销毁现有格子，用指定的半径和特殊格列表重新生成
+    public void RebuildFromConfig(int radius, List<SpecialCellConfig> specialCells)
+    {
+        foreach (var cell in cellDict.Values)
+        {
+            if (cell != null)
+                Destroy(cell.gameObject);
+        }
+        cellDict.Clear();
+
+        mapRadius = radius;
+
+        specialCellLookup.Clear();
+        if (specialCells != null)
+        {
+            foreach (var entry in specialCells)
+            {
+                specialCellLookup[(entry.coord.x, entry.coord.y)] = entry.cellType;
+            }
+        }
+
+        CreateHexagonMap();
+        Debug.Log($"[HexGrid] RebuildFromConfig 完成: radius={mapRadius}, specialCells={specialCells?.Count ?? 0}");
+    }
+
     // 供 HexMove 遍历所有六角格的外部访问器
     public static IEnumerable<HexCell> AllCells => cellDict.Values;
 }
