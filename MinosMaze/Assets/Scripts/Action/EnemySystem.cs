@@ -41,6 +41,11 @@ public class EnemySystem : Singleton<EnemySystem>
     {
         for (int i = 0; i < enemyDatas.Count; i++)
         {
+            if (enemyDatas[i] == null)
+            {
+                Debug.LogError($"[EnemySystem] enemyDatas[{i}] 为 null，跳过");
+                continue;
+            }
             Vector3 pos = Vector3.zero;
             Quaternion rot = Quaternion.identity;
             int hexX = 0, hexZ = 0;

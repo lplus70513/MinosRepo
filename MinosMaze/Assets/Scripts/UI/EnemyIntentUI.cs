@@ -1,59 +1,33 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
 
-public class EnemyIntentUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class EnemyIntentUI : MonoBehaviour
 {
     [SerializeField] private Image iconImage;
-    [SerializeField] private GameObject tooltipPanel;
-    [SerializeField] private TMP_Text tooltipText;
-
-    private EnemyIntentData intentData;
-
-    private void Awake()
-    {
-        if (tooltipPanel != null)
-            tooltipPanel.SetActive(false);
-    }
+    [SerializeField] private TMP_Text valueText;
 
     public void SetData(EnemyIntentData data, Sprite icon)
     {
-        intentData = data;
         iconImage.sprite = icon;
-    }
 
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        if (tooltipPanel != null && intentData != null)
+        bool showValue = data.IntentType == EnemyActionType.Attack
+                      || data.IntentType == EnemyActionType.Defense;
+        bool hasValue = data.HitCount > 0 && data.ValuePerHit > 0;
+
+        if (valueText != null)
         {
-            tooltipText.text = BuildTooltipText(intentData);
-            tooltipPanel.SetActive(true);
-        }
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        if (tooltipPanel != null)
-            tooltipPanel.SetActive(false);
-    }
-
-    private string BuildTooltipText(EnemyIntentData data)
-    {
-        switch (data.IntentType)
-        {
-            case EnemyActionType.Attack:
-                return "攻击 " + data.HitCount + "×" + data.ValuePerHit;
-            case EnemyActionType.Defense:
-                return "防御 " + data.HitCount + "×" + data.ValuePerHit;
-            case EnemyActionType.Move:
-                return "移动";
-            case EnemyActionType.Buff:
-                return "增益";
-            case EnemyActionType.Debuff:
-                return "减益";
-            default:
-                return "";
+            if (showValue && hasValue)
+            {
+                valueText.gameObject.SetActive(true);
+                valueText.text = data.HitCount == 1
+                    ? data.ValuePerHit.ToString()
+                    : data.ValuePerHit + "x" + data.HitCount;
+            }
+            else
+            {
+                valueText.gameObject.SetActive(false);
+            }
         }
     }
 }

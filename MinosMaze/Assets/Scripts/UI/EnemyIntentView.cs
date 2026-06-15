@@ -36,19 +36,27 @@ public class EnemyIntentView : MonoBehaviour
 
         canvas.sortingOrder = 100;
 
-        var raycaster = GetComponent<GraphicRaycaster>();
-        if (raycaster == null)
-        {
-            Debug.LogWarning($"[EnemyIntentView] {name} 缺少 GraphicRaycaster 组件，已自动添加。悬停检测需要此组件。");
-            gameObject.AddComponent<GraphicRaycaster>();
-        }
-
         var rect = GetComponent<RectTransform>();
         if (rect != null && (rect.sizeDelta.x <= 1f || rect.sizeDelta.y <= 1f))
         {
-            Debug.LogWarning($"[EnemyIntentView] {name} RectTransform 尺寸过小 ({rect.sizeDelta})，已自动设为 200×80");
-            rect.sizeDelta = new Vector2(200f, 80f);
+            rect.sizeDelta = new Vector2(400f, 80f);
         }
+
+        var layout = GetComponent<HorizontalLayoutGroup>();
+        if (layout == null)
+            layout = gameObject.AddComponent<HorizontalLayoutGroup>();
+        layout.childAlignment = TextAnchor.MiddleCenter;
+        layout.spacing = 3f;
+        layout.childControlWidth = true;
+        layout.childControlHeight = true;
+        layout.childForceExpandWidth = false;
+        layout.childForceExpandHeight = false;
+
+        var fitter = GetComponent<ContentSizeFitter>();
+        if (fitter == null)
+            fitter = gameObject.AddComponent<ContentSizeFitter>();
+        fitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
+        fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
         Debug.Log($"[EnemyIntentView] {name} 初始化, renderMode={canvas.renderMode}, sortingOrder={canvas.sortingOrder}, canvasGroup={(canvasGroup != null ? "已绑定" : "NULL")}, intentUIPrefab={(intentUIPrefab != null ? intentUIPrefab.name : "NULL")}");
 

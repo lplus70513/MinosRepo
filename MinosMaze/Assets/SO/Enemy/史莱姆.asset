@@ -28,6 +28,8 @@ MonoBehaviour:
     <Weight>k__BackingField: 1
     <Tag>k__BackingField: 
     <CooldownTurns>k__BackingField: 0
+    <IsExclusive>k__BackingField: 0
+    <MinTurnToUse>k__BackingField: 0
   - <ActionType>k__BackingField: 1
     <ActionName>k__BackingField: "\u79FB\u52A8"
     <BaseDamage>k__BackingField: 0
@@ -37,6 +39,8 @@ MonoBehaviour:
     <Weight>k__BackingField: 1
     <Tag>k__BackingField: 
     <CooldownTurns>k__BackingField: 0
+    <IsExclusive>k__BackingField: 0
+    <MinTurnToUse>k__BackingField: 0
   - <ActionType>k__BackingField: 4
     <ActionName>k__BackingField: "\u8106\u5F31"
     <BaseDamage>k__BackingField: 0
@@ -46,9 +50,12 @@ MonoBehaviour:
     - <EffectType>k__BackingField: 4
       <StackCount>k__BackingField: 1
       <Target>k__BackingField: 0
+      <ReplaceExisting>k__BackingField: 0
     <Weight>k__BackingField: 1
     <Tag>k__BackingField: "\u8106\u5F31"
     <CooldownTurns>k__BackingField: 1
+    <IsExclusive>k__BackingField: 0
+    <MinTurnToUse>k__BackingField: 0
   <ActionsPerTurn>k__BackingField: 2
   <UseModeSelection>k__BackingField: 0
   <Modes>k__BackingField: []
