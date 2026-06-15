@@ -243,6 +243,32 @@ public class GameManager : MonoBehaviour
         yield return SceneTransitionSystem.Instance.FadeIn();
     }
 
+    // 从一个遭遇场景重定向到另一个遭遇场景（如宝箱怪跳转战斗）
+    public void RedirectEncounter(string newSceneName)
+    {
+        SceneTransitionSystem.Instance.StartCoroutine(RedirectEncounterRoutine(newSceneName));
+    }
+
+    private IEnumerator RedirectEncounterRoutine(string newSceneName)
+    {
+        yield return SceneTransitionSystem.Instance.FadeOut();
+
+        if (!string.IsNullOrEmpty(currentEncounterScene))
+        {
+            AsyncOperation unload = SceneManager.UnloadSceneAsync(currentEncounterScene);
+            if (unload != null)
+                yield return unload;
+        }
+
+        currentEncounterScene = newSceneName;
+        SceneManager.LoadScene(newSceneName, LoadSceneMode.Additive);
+        yield return null;
+        SceneManager.SetActiveScene(SceneManager.GetSceneByName(newSceneName));
+
+        yield return SceneTransitionSystem.Instance.BlackScreenWait();
+        yield return SceneTransitionSystem.Instance.FadeIn();
+    }
+
     // 战斗失败时返回主菜单
     public void ReturnToMainMenu()
     {
