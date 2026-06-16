@@ -59,6 +59,8 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         WorldMapState = new WorldMapState();
+        WorldMapState.stringCount = 15;
+        WorldMapState.gold = 50;
         if (heroData != null)
         {
             WorldMapState.maxHealth = heroData.Health;
@@ -157,6 +159,8 @@ public class GameManager : MonoBehaviour
         WorldMapState = new WorldMapState();
         WorldMapState.playerPosX = -999;
         WorldMapState.playerPosZ = -999;
+        WorldMapState.stringCount = 15;
+        WorldMapState.gold = 50;
         if (heroData != null)
         {
             WorldMapState.maxHealth = heroData.Health;
@@ -175,11 +179,11 @@ public class GameManager : MonoBehaviour
     }
 
     // 保存大地图状态（由 WorldMapMovementSystem 在场景跳转前调用）
-    public void SaveWorldMapState(int x, int z, int movePoints, int currentHealth, int maxHealth)
+    public void SaveWorldMapState(int x, int z, int stringCount, int currentHealth, int maxHealth)
     {
         WorldMapState.playerPosX = x;
         WorldMapState.playerPosZ = z;
-        WorldMapState.remainingMovePoints = movePoints;
+        WorldMapState.stringCount = stringCount;
         WorldMapState.currentHealth = currentHealth;
         WorldMapState.maxHealth = maxHealth;
         WorldMapState.isNewGame = false;

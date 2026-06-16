@@ -37,15 +37,11 @@ public class WorldMapMovementSystem : Singleton<WorldMapMovementSystem>
             return;
         }
 
-        // 恢复存档或使用初始值
+        // 从 WorldMapState.stringCount 恢复线数量
         GameManager gm = GameManager.Instance;
-        if (gm != null && gm.WorldMapState != null && gm.WorldMapState.remainingMovePoints > 0)
+        if (gm != null && gm.WorldMapState != null)
         {
-            MovePoints = gm.WorldMapState.remainingMovePoints;
-        }
-        else
-        {
-            MovePoints = wmg.InitialMovePoints;
+            MovePoints = gm.WorldMapState.stringCount;
         }
 
         // 为大地图牌库检视初始化 CardSystem（读取持久化牌组）
@@ -146,6 +142,7 @@ public class WorldMapMovementSystem : Singleton<WorldMapMovementSystem>
         }
 
         MovePoints--;
+        if (gm != null) gm.WorldMapState.stringCount = MovePoints;
         Vector3 targetPos = HexGrid.GetStandingPoint(hexX, hexZ);
         Tween tween = player.transform.DOMove(targetPos, moveDuration);
         yield return tween.WaitForCompletion();
@@ -209,9 +206,11 @@ public class WorldMapMovementSystem : Singleton<WorldMapMovementSystem>
             gm.SaveWorldMapState(player.HexCoordX, player.HexCoordZ, MovePoints, player.CurrentHealth, player.MaxHealth);
     }
 
-    // 外部补给移动点
-    public void AddMovePoints(int amount)
+    // 外部补给线
+    public void AddString(int amount)
     {
         MovePoints += amount;
+        GameManager gm = GameManager.Instance;
+        if (gm != null) gm.WorldMapState.stringCount = MovePoints;
     }
 }

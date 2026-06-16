@@ -22,7 +22,6 @@ public class WorldMapState
 {
     public int playerPosX;
     public int playerPosZ;
-    public int remainingMovePoints;
     public int maxHealth;
     public int currentHealth;
     public int gold;
