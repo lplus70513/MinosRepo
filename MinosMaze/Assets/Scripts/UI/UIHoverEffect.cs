@@ -9,6 +9,7 @@ public class UIHoverEffect : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     [SerializeField] private float hoverDuration = 0.1f;
     [SerializeField] private Color outlineColor = Color.white;
     [SerializeField] private float outlineWidth = 3f;
+    [SerializeField, Range(0f, 1f)] private float alphaHitThreshold = 0.5f;
 
     private Vector3 originalScale;
     private Tween hoverTween;
@@ -23,6 +24,7 @@ public class UIHoverEffect : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         targetImage = GetComponent<Image>();
         if (targetImage == null) return;
 
+        targetImage.alphaHitTestMinimumThreshold = alphaHitThreshold;
         originalMaterial = targetImage.material;
 
         Shader shader = Shader.Find("Custom/UIOutline");

@@ -1564,6 +1564,8 @@ MonoBehaviour:
   scrollSpeed: 3
   blockedButtons: []
   previewCardScale: 1.3
+  shakeAngle: 15
+  shakeInterval: 0.1
 --- !u!1 &953932015
 GameObject:
   m_ObjectHideFlags: 0
