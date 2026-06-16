@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02002abe5e65cfb4184b51fd307203e9, type: 3}
   m_Name: "\u522E\u524A"
   m_EditorClassIdentifier: 
-  <Description>k__BackingField: "\u9020\u62101\u70B9\u4F24\u5BB3\uFF0C\u7ED9\u4E88\u654C\u4EBA2\u5C42\u865A\u5F31\u3002"
+  <Description>k__BackingField: "\u9020\u62101\u70B9\u4F24\u5BB3\uFF0C\u7ED9\u4E88\u654C\u4EBA2\u5C42\u865A\u5F31"
   <Cost>k__BackingField: 1
   <Image>k__BackingField: {fileID: 775603959, guid: 394d2fe82ccd87f41b6163a042ebd5f9, type: 3}
   <Background>k__BackingField: {fileID: 2004051598, guid: c6dd1d8aa674a1342a0e69187a61a93b, type: 3}
@@ -34,7 +34,7 @@ MonoBehaviour:
     rid: -2
   <BaseGrade>k__BackingField:
     <Name>k__BackingField: "\u522E\u524A"
-    <Description>k__BackingField: "\u9020\u62101\u70B9\u4F24\u5BB3\uFF0C\u7ED9\u4E88\u654C\u4EBA2\u5C42\u865A\u5F31\u3002"
+    <Description>k__BackingField: "\u9020\u62101\u70B9\u4F24\u5BB3, \u7ED9\u4E88\u654C\u4EBA2\u5C42\u865A\u5F31"
     <Cost>k__BackingField: 1
     <HasAttackRange>k__BackingField: 1
     <AttackRange>k__BackingField: 1
@@ -54,7 +54,7 @@ MonoBehaviour:
       rid: -2
   <UpgradeGrade>k__BackingField:
     <Name>k__BackingField: "\u522E\u524A+"
-    <Description>k__BackingField: "\u9020\u62102\u70B9\u4F24\u5BB3\uFF0C\u7ED9\u4E88\u654C\u4EBA3\u5C42\u865A\u5F31\u3002"
+    <Description>k__BackingField: "\u9020\u62102\u70B9\u4F24\u5BB3, \u7ED9\u4E88\u654C\u4EBA3\u5C42\u865A\u5F31"
     <Cost>k__BackingField: 1
     <HasAttackRange>k__BackingField: 1
     <AttackRange>k__BackingField: 1

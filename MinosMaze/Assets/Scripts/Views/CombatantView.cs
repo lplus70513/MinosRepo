@@ -28,6 +28,8 @@ public class CombatantView : MonoBehaviour
 
     public bool PersistArmor { get; set; } = false;
 
+    public int ThornsDamage { get; set; }
+
     public event Action<CombatantView, int> OnHealthChanged;
     public event Action OnStatusChanged;
 

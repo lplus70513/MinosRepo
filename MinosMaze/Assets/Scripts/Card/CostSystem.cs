@@ -8,12 +8,14 @@ public class CostSystem : Singleton<CostSystem>
 
     private const int MAX_COST = 3;
     private int currentCost = MAX_COST;
+    private int bonusCostNextTurn = 0;
 
     void OnEnable()
     {
         ActionSystem.AttachPerformer<SpendCostGA>(SpendCostPerformer);
         ActionSystem.AttachPerformer<RefillCostGA>(RefillCostPerformer);
         ActionSystem.AttachPerformer<GainCostGA>(GainCostPerformer);
+        ActionSystem.AttachPerformer<BonusCostGA>(BonusCostPerformer);
         ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
     }
 
@@ -22,6 +24,7 @@ public class CostSystem : Singleton<CostSystem>
         ActionSystem.DetachPerformer<SpendCostGA>();
         ActionSystem.DetachPerformer<RefillCostGA>();
         ActionSystem.DetachPerformer<GainCostGA>();
+        ActionSystem.DetachPerformer<BonusCostGA>();
         ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
     }
 
@@ -58,6 +61,10 @@ public class CostSystem : Singleton<CostSystem>
                 currentCost -= 1;
         }
 
+        currentCost += bonusCostNextTurn;
+        Debug.Log($"[CostSystem] 下回合额外行动力 +{bonusCostNextTurn}");
+        bonusCostNextTurn = 0;
+
         if (currentCost < 0) currentCost = 0;
         costUI.UpdateCostText(currentCost);
         yield return null;
@@ -74,6 +81,13 @@ public class CostSystem : Singleton<CostSystem>
         currentCost += action.Amount;
         costUI.UpdateCostText(currentCost);
         Debug.Log($"[CostSystem] 获得行动力 +{action.Amount}，当前: {currentCost}");
+        yield return null;
+    }
+
+    private IEnumerator BonusCostPerformer(BonusCostGA ga)
+    {
+        bonusCostNextTurn += ga.Amount;
+        Debug.Log($"[CostSystem] 下回合额外行动力 +{ga.Amount}，累计: {bonusCostNextTurn}");
         yield return null;
     }
 }

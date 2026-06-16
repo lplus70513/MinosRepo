@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02002abe5e65cfb4184b51fd307203e9, type: 3}
   m_Name: "\u6233\u523A"
   m_EditorClassIdentifier: 
-  <Description>k__BackingField: "\u5BF9\u654C\u4EBA\u9020\u62104\u70B9\u4F24\u5BB3\u3002"
+  <Description>k__BackingField: "\u5BF9\u654C\u4EBA\u9020\u62104\u70B9\u4F24\u5BB3"
   <Cost>k__BackingField: 1
-  <ActionPointCost>k__BackingField: 0
   <Image>k__BackingField: {fileID: -1562414915, guid: 8b53220f14bb4604c8466583a33faaa2, type: 3}
   <Background>k__BackingField: {fileID: 2004051598, guid: c6dd1d8aa674a1342a0e69187a61a93b, type: 3}
   <HasAttackRange>k__BackingField: 1
@@ -33,7 +32,6 @@ MonoBehaviour:
     <Name>k__BackingField: "\u6233\u523A"
     <Description>k__BackingField: "\u5BF9\u654C\u4EBA\u9020\u62104\u70B9\u4F24\u5BB3"
     <Cost>k__BackingField: 1
-    <ActionPointCost>k__BackingField: 0
     <HasAttackRange>k__BackingField: 1
     <AttackRange>k__BackingField: 1
     <ManualTargetEffect>k__BackingField:
@@ -50,7 +48,6 @@ MonoBehaviour:
     <Name>k__BackingField: "\u6233\u523A+"
     <Description>k__BackingField: "\u5BF9\u654C\u4EBA\u9020\u62106\u70B9\u4F24\u5BB3"
     <Cost>k__BackingField: 1
-    <ActionPointCost>k__BackingField: 0
     <HasAttackRange>k__BackingField: 1
     <AttackRange>k__BackingField: 1
     <ManualTargetEffect>k__BackingField:

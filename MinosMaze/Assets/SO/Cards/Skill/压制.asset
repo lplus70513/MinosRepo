@@ -19,16 +19,12 @@ MonoBehaviour:
   <HasAttackRange>k__BackingField: 1
   <AttackRange>k__BackingField: 1
   <ManualTargetEffect>k__BackingField:
-    rid: -2
+    rid: 1965764436403159041
   <OtherEffects>k__BackingField:
   - <TargetMode>k__BackingField:
       rid: 1965764339896156167
     <Effect>k__BackingField:
       rid: 1965764339896156168
-  - <TargetMode>k__BackingField:
-      rid: 1965764339896156169
-    <Effect>k__BackingField:
-      rid: 1965764339896156170
   <IsInnate>k__BackingField: 0
   <IsExhaust>k__BackingField: 0
   <IsRetain>k__BackingField: 0
@@ -38,21 +34,17 @@ MonoBehaviour:
     rid: -2
   <BaseGrade>k__BackingField:
     <Name>k__BackingField: "\u538B\u5236"
-    <Description>k__BackingField: "\u83B7\u5F971\u529B\u91CF\uFF0C\u6307\u5B9A\u4E00\u540D\u654C\u4EBA\u5931\u53BB1\u529B\u91CF\u3002"
+    <Description>k__BackingField: "\u83B7\u5F971\u529B\u91CF, \u6307\u5B9A\u4E00\u540D\u654C\u4EBA\u5931\u53BB1\u529B\u91CF"
     <Cost>k__BackingField: 1
     <HasAttackRange>k__BackingField: 0
     <AttackRange>k__BackingField: 1
     <ManualTargetEffect>k__BackingField:
-      rid: -2
+      rid: 1965764436403159042
     <OtherEffects>k__BackingField:
     - <TargetMode>k__BackingField:
         rid: 1965764339896156171
       <Effect>k__BackingField:
         rid: 1965764339896156173
-    - <TargetMode>k__BackingField:
-        rid: 1965764339896156174
-      <Effect>k__BackingField:
-        rid: 1965764339896156175
     <IsInnate>k__BackingField: 0
     <IsExhaust>k__BackingField: 0
     <IsRetain>k__BackingField: 0
@@ -62,21 +54,17 @@ MonoBehaviour:
       rid: -2
   <UpgradeGrade>k__BackingField:
     <Name>k__BackingField: "\u538B\u5236+"
-    <Description>k__BackingField: "\u83B7\u5F971\u529B\u91CF\uFF0C\u6307\u5B9A\u4E00\u540D\u654C\u4EBA\u5931\u53BB2\u529B\u91CF\u3002"
+    <Description>k__BackingField: "\u83B7\u5F971\u529B\u91CF, \u6307\u5B9A\u4E00\u540D\u654C\u4EBA\u5931\u53BB2\u529B\u91CF\u3002"
     <Cost>k__BackingField: 1
     <HasAttackRange>k__BackingField: 0
     <AttackRange>k__BackingField: 1
     <ManualTargetEffect>k__BackingField:
-      rid: -2
+      rid: 1965764436403159043
     <OtherEffects>k__BackingField:
     - <TargetMode>k__BackingField:
         rid: 1965764339896156176
       <Effect>k__BackingField:
         rid: 1965764339896156177
-    - <TargetMode>k__BackingField:
-        rid: 1965764339896156178
-      <Effect>k__BackingField:
-        rid: 1965764339896156179
     <IsInnate>k__BackingField: 0
     <IsExhaust>k__BackingField: 0
     <IsRetain>k__BackingField: 0
@@ -97,14 +85,6 @@ MonoBehaviour:
       data:
         statusEffectType: 2
         stackCount: 1
-    - rid: 1965764339896156169
-      type: {class: ManualTargetTM, ns: , asm: Assembly-CSharp}
-      data: 
-    - rid: 1965764339896156170
-      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
-      data:
-        statusEffectType: 2
-        stackCount: -1
     - rid: 1965764339896156171
       type: {class: HeroTM, ns: , asm: Assembly-CSharp}
       data: 
@@ -113,14 +93,6 @@ MonoBehaviour:
       data:
         statusEffectType: 2
         stackCount: 1
-    - rid: 1965764339896156174
-      type: {class: ManualTargetTM, ns: , asm: Assembly-CSharp}
-      data: 
-    - rid: 1965764339896156175
-      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
-      data:
-        statusEffectType: 2
-        stackCount: -1
     - rid: 1965764339896156176
       type: {class: HeroTM, ns: , asm: Assembly-CSharp}
       data: 
@@ -129,10 +101,17 @@ MonoBehaviour:
       data:
         statusEffectType: 2
         stackCount: 1
-    - rid: 1965764339896156178
-      type: {class: ManualTargetTM, ns: , asm: Assembly-CSharp}
-      data: 
-    - rid: 1965764339896156179
+    - rid: 1965764436403159041
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        statusEffectType: 2
+        stackCount: -1
+    - rid: 1965764436403159042
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        statusEffectType: 2
+        stackCount: -1
+    - rid: 1965764436403159043
       type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
       data:
         statusEffectType: 2

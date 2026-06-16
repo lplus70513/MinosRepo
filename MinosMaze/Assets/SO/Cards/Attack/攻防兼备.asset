@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Description>k__BackingField: "\u5BF9\u654C\u4EBA\u9020\u62105\u70B9\u4F24\u5BB3\uFF0C\u83B7\u5F975\u70B9\u683C\u6321\u3002"
   <Cost>k__BackingField: 1
-  <ActionPointCost>k__BackingField: 0
   <Image>k__BackingField: {fileID: 775603959, guid: 394d2fe82ccd87f41b6163a042ebd5f9, type: 3}
   <Background>k__BackingField: {fileID: 2004051598, guid: c6dd1d8aa674a1342a0e69187a61a93b, type: 3}
   <HasAttackRange>k__BackingField: 1
@@ -35,9 +34,9 @@ MonoBehaviour:
     rid: -2
   <BaseGrade>k__BackingField:
     <Name>k__BackingField: "\u653B\u9632\u517C\u5907"
-    <Description>k__BackingField: "\u5BF9\u654C\u4EBA\u9020\u62105\u70B9\u4F24\u5BB3\uFF0C\u83B7\u5F975\u70B9\u683C\u6321"
+    <Description>k__BackingField: "\u5BF9\u654C\u4EBA\u9020\u62105\u70B9\u4F24\u5BB3,
+      \u83B7\u5F975\u70B9\u683C\u6321"
     <Cost>k__BackingField: 1
-    <ActionPointCost>k__BackingField: 0
     <HasAttackRange>k__BackingField: 1
     <AttackRange>k__BackingField: 1
     <ManualTargetEffect>k__BackingField:
@@ -56,9 +55,9 @@ MonoBehaviour:
       rid: -2
   <UpgradeGrade>k__BackingField:
     <Name>k__BackingField: "\u653B\u9632\u517C\u5907+"
-    <Description>k__BackingField: "\u5BF9\u654C\u4EBA\u9020\u62106\u70B9\u4F24\u5BB3\uFF0C\u83B7\u5F978\u70B9\u683C\u6321"
+    <Description>k__BackingField: "\u5BF9\u654C\u4EBA\u9020\u62106\u70B9\u4F24\u5BB3,
+      \u83B7\u5F978\u70B9\u683C\u6321"
     <Cost>k__BackingField: 1
-    <ActionPointCost>k__BackingField: 0
     <HasAttackRange>k__BackingField: 1
     <AttackRange>k__BackingField: 1
     <ManualTargetEffect>k__BackingField:

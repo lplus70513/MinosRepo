@@ -8,16 +8,20 @@ public class StatusEffectSystem : MonoBehaviour
     {
         ActionSystem.AttachPerformer<AddStatusEffectGA>(AddStatusEffectPerformer);
         ActionSystem.AttachPerformer<DoubleStatusGA>(DoubleStatusPerformer);
+        ActionSystem.AttachPerformer<ApplySpikedShieldGA>(ApplySpikedShieldPerformer);
         ActionSystem.SubscribeReaction<EnemyTurnGA>(OnEnemyTurnPost, ReactionTiming.POST);
         ActionSystem.SubscribeReaction<DealDamageGA>(OnDealDamagePost, ReactionTiming.POST);
+        ActionSystem.SubscribeReaction<DealDamageGA>(OnThornsDamage, ReactionTiming.POST);
     }
 
     private void OnDisable()
     {
         ActionSystem.DetachPerformer<AddStatusEffectGA>();
         ActionSystem.DetachPerformer<DoubleStatusGA>();
+        ActionSystem.DetachPerformer<ApplySpikedShieldGA>();
         ActionSystem.UnsubscribeReaction<EnemyTurnGA>(OnEnemyTurnPost, ReactionTiming.POST);
         ActionSystem.UnsubscribeReaction<DealDamageGA>(OnDealDamagePost, ReactionTiming.POST);
+        ActionSystem.UnsubscribeReaction<DealDamageGA>(OnThornsDamage, ReactionTiming.POST);
     }
 
     private IEnumerator AddStatusEffectPerformer(AddStatusEffectGA addStatusEffectGA)
@@ -51,6 +55,30 @@ public class StatusEffectSystem : MonoBehaviour
         }
     }
 
+    private IEnumerator ApplySpikedShieldPerformer(ApplySpikedShieldGA ga)
+    {
+        HeroView hero = HeroSystem.Instance?.HeroView;
+        if (hero != null)
+        {
+            hero.ThornsDamage = ga.DamageAmount;
+            Debug.Log($"[StatusEffectSystem] 荆棘护盾激活，反伤 {ga.DamageAmount} 点");
+        }
+        yield return null;
+    }
+
+    private void OnThornsDamage(DealDamageGA dealDamageGA)
+    {
+        if (dealDamageGA.Caster is not EnemyView attacker) return;
+
+        HeroView hero = HeroSystem.Instance?.HeroView;
+        if (hero == null || hero.ThornsDamage <= 0) return;
+        if (!dealDamageGA.Targets.Contains(hero)) return;
+
+        DealDamageGA thornsGA = new(hero.ThornsDamage, 1, new List<CombatantView> { attacker }, hero);
+        ActionSystem.Instance.AddReaction(thornsGA);
+        Debug.Log($"[StatusEffectSystem] 荆棘反伤 {hero.ThornsDamage} 点给 {attacker.name}");
+    }
+
     private void OnEnemyTurnPost(EnemyTurnGA enemyTurnGA)
     {
         var allCombatants = new List<CombatantView>();
@@ -73,6 +101,8 @@ public class StatusEffectSystem : MonoBehaviour
 
             combatant.DecayTurnEndEffects();
             combatant.ClearArmorOnTurnEnd();
+
+            combatant.ThornsDamage = 0;
         }
     }
 

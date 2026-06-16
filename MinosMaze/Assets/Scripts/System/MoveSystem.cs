@@ -12,6 +12,7 @@ public class MoveSystem : Singleton<MoveSystem>
         ActionSystem.AttachPerformer<MoveGA>(MovePerformer);
         ActionSystem.AttachPerformer<PullTargetGA>(PullTargetPerformer);
         ActionSystem.AttachPerformer<StepBackGA>(StepBackPerformer);
+        ActionSystem.AttachPerformer<ChargeGA>(ChargePerformer);
     }
 
     void OnDisable()
@@ -19,6 +20,7 @@ public class MoveSystem : Singleton<MoveSystem>
         ActionSystem.DetachPerformer<MoveGA>();
         ActionSystem.DetachPerformer<PullTargetGA>();
         ActionSystem.DetachPerformer<StepBackGA>();
+        ActionSystem.DetachPerformer<ChargeGA>();
     }
 
     private IEnumerator MovePerformer(MoveGA moveGA)
@@ -159,5 +161,113 @@ public class MoveSystem : Singleton<MoveSystem>
         }
 
         return null;
+    }
+
+    private IEnumerator ChargePerformer(ChargeGA ga)
+    {
+        CombatantView mover = ga.Caster;
+        CombatantView target = ga.Target;
+        if (mover == null || target == null) yield break;
+
+        int cx = mover.HexCoordX;
+        int cz = mover.HexCoordZ;
+        int tx = target.HexCoordX;
+        int tz = target.HexCoordZ;
+
+        for (int step = 0; step < ga.Range; step++)
+        {
+            int dirDx = tx - cx;
+            int dirDz = tz - cz;
+
+            float bestDot = float.MinValue;
+            int bestDx = 0, bestDz = 0;
+
+            foreach (var (dx, dz) in hexNeighbors)
+            {
+                float dot = dx * dirDx + dz * dirDz;
+                if (dot > bestDot)
+                {
+                    bestDot = dot;
+                    bestDx = dx;
+                    bestDz = dz;
+                }
+            }
+
+            int nx = cx + bestDx;
+            int nz = cz + bestDz;
+
+            if (!HexGrid.ContainsCell(nx, nz)) break;
+            HexCell cell = HexGrid.GetCell(nx, nz);
+            if (cell == null || !cell.IsWalkable) break;
+
+            int prevX = cx;
+            int prevZ = cz;
+
+            Vector3 targetPos = HexGrid.GetStandingPoint(nx, nz);
+            mover.SetFacing(nx, nz);
+            Tween tween = mover.transform.DOMove(targetPos, 0.12f);
+            yield return tween.WaitForCompletion();
+            mover.HexCoordX = nx;
+            mover.HexCoordZ = nz;
+            cx = nx;
+            cz = nz;
+
+            EnemyView enemyAt = EnemySystem.Instance.GetEnemyAt(nx, nz);
+            if (enemyAt != null)
+            {
+                DealDamageGA damageGA = new(ga.Damage, 1, new List<CombatantView> { enemyAt }, ga.Caster);
+                ActionSystem.Instance.AddReaction(damageGA);
+
+                (int x, int z)? pushCell = FindPushCell(prevX, prevZ, enemyAt.HexCoordX, enemyAt.HexCoordZ);
+                if (pushCell != null)
+                {
+                    MoveGA pushGA = new(enemyAt, pushCell.Value.x, pushCell.Value.z);
+                    ActionSystem.Instance.AddReaction(pushGA);
+                    Debug.Log($"[MoveSystem] 冲锋击退 {enemyAt.name} 至 ({pushCell.Value.x},{pushCell.Value.z})");
+                }
+                else
+                {
+                    Debug.Log($"[MoveSystem] {enemyAt.name} 背后无可用格子，击退失败");
+                }
+
+                yield break;
+            }
+
+            if (nx == tx && nz == tz)
+                yield break;
+        }
+    }
+
+    private (int x, int z)? FindPushCell(int hx, int hz, int ex, int ez)
+    {
+        int dirDx = ex - hx;
+        int dirDz = ez - hz;
+
+        int currentDist = HexGrid.HexDistance(hx, hz, ex, ez);
+        float bestDot = float.MinValue;
+        (int x, int z)? bestCell = null;
+
+        foreach (var (dx, dz) in hexNeighbors)
+        {
+            int nx = ex + dx;
+            int nz = ez + dz;
+
+            if (!HexGrid.ContainsCell(nx, nz)) continue;
+            HexCell cell = HexGrid.GetCell(nx, nz);
+            if (cell == null || !cell.IsWalkable) continue;
+            if (HexMove.IsCellOccupied(nx, nz)) continue;
+
+            int dist = HexGrid.HexDistance(hx, hz, nx, nz);
+            if (dist <= currentDist) continue;
+
+            float dot = dx * dirDx + dz * dirDz;
+            if (dot > bestDot)
+            {
+                bestDot = dot;
+                bestCell = (nx, nz);
+            }
+        }
+
+        return bestCell;
     }
 }
