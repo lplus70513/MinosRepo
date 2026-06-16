@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -49,6 +50,10 @@ public class DeckViewer : MonoBehaviour
 
     [Header("Selection Mode")]
     [SerializeField] private float previewCardScale = 1.0f;
+
+    [Header("升级晃动动画")]
+    [SerializeField] private float shakeAngle = 15f;
+    [SerializeField] private float shakeInterval = 0.1f;
 
     private PileType currentPile = PileType.DrawPile;
     private Dictionary<PileType, Button> tabButtons;
@@ -573,8 +578,32 @@ public class DeckViewer : MonoBehaviour
     {
         var cb = selectionCallback;
         var entry = previewedEntry;
+
+        if (isUpgradePreview && cardContainer != null && cardContainer.childCount > 0)
+        {
+            Transform previewCard = cardContainer.GetChild(0);
+            StartCoroutine(UpgradeShakeCoroutine(previewCard, () =>
+            {
+                CloseSelectionMode();
+                cb?.Invoke(entry);
+            }));
+            return;
+        }
+
         CloseSelectionMode();
         cb?.Invoke(entry);
+    }
+
+    private IEnumerator UpgradeShakeCoroutine(Transform card, Action onComplete)
+    {
+        card.localRotation = Quaternion.Euler(0, 0, shakeAngle);
+        yield return new WaitForSecondsRealtime(shakeInterval);
+        card.localRotation = Quaternion.Euler(0, 0, -shakeAngle);
+        yield return new WaitForSecondsRealtime(shakeInterval);
+        card.localRotation = Quaternion.Euler(0, 0, shakeAngle);
+        yield return new WaitForSecondsRealtime(shakeInterval);
+        card.localRotation = Quaternion.Euler(0, 0, 0);
+        onComplete?.Invoke();
     }
 
     private void CloseSelectionMode()
