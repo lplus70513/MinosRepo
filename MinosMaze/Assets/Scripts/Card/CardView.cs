@@ -61,6 +61,11 @@ public class CardView : MonoBehaviour
     private int[] origCanvasSortingLayerIDs;
     private int[] origCanvasSortingOrders;
 
+    private bool useLiveDamage;
+    private EnemyView lastHoveredTarget;
+    public EnemyView LastHoveredTarget => lastHoveredTarget;
+    public bool UseLiveDamage => useLiveDamage;
+
     void Awake()
     {
         wrapperOrigLocalPos = wrapper.transform.localPosition;
@@ -88,11 +93,12 @@ public class CardView : MonoBehaviour
         }
     }
 
-    public void SetUp(Card card)
+    public void SetUp(Card card, bool useLiveDamage = false)
     {
         Card = card;
+        this.useLiveDamage = useLiveDamage;
+        lastHoveredTarget = null;
         Name.text = card.Name;
-        Description.text = card.Description;
         CostText.text = card.Cost.ToString();
         image.sprite = card.Image;
         background.sprite = card.Background;
@@ -108,6 +114,8 @@ public class CardView : MonoBehaviour
         ResetTextColors();
         if (card.IsUpgraded && card.CardData != null)
             ApplyUpgradeHighlight(card);
+        else
+            RefreshDescription(null);
     }
 
     private void ResetTextColors()
@@ -126,7 +134,16 @@ public class CardView : MonoBehaviour
         if (card.Cost != baseCard.Cost && CostText != null)
             CostText.color = upgradeHighlightColor;
         if (card.Description != baseCard.Description && Description != null)
-            Description.text = HighlightChangedNumbers(baseCard.Description, card.Description);
+        {
+            CombatantView caster = useLiveDamage ? HeroSystem.Instance?.HeroView : null;
+            string baseDesc = useLiveDamage && caster != null
+                ? baseCard.GetLiveDescription(caster, null)
+                : baseCard.Description;
+            string upgradedDesc = useLiveDamage && caster != null
+                ? card.GetLiveDescription(caster, null)
+                : card.Description;
+            Description.text = HighlightChangedNumbers(baseDesc, upgradedDesc);
+        }
     }
 
     private string HighlightChangedNumbers(string baseText, string upgradedText)
@@ -158,6 +175,34 @@ public class CardView : MonoBehaviour
         if (result == upgradedText)
             return $"<color=#{hexColor}>{upgradedText}</color>";
         return result;
+    }
+
+    public void RefreshDescription(CombatantView target)
+    {
+        if (Description == null || Card == null) return;
+        if (!useLiveDamage)
+        {
+            Description.text = Card.Description;
+            return;
+        }
+        CombatantView caster = HeroSystem.Instance?.HeroView;
+        if (caster == null)
+        {
+            Description.text = Card.Description;
+            return;
+        }
+
+        if (Card.IsUpgraded && Card.CardData != null)
+        {
+            Card baseCard = new Card(Card.CardData, isUpgraded: false);
+            string baseDesc = baseCard.GetLiveDescription(caster, target);
+            string upgradedDesc = Card.GetLiveDescription(caster, target);
+            Description.text = HighlightChangedNumbers(baseDesc, upgradedDesc);
+        }
+        else
+        {
+            Description.text = Card.GetLiveDescription(caster, target);
+        }
     }
 
     // ==================== Hover ====================
@@ -328,6 +373,8 @@ public class CardView : MonoBehaviour
     {
         isTransitioning = true;
         state = DragState.DraggingPlay;
+        lastHoveredTarget = null;
+        RefreshDescription(null);
         Vector3 target = handView != null ? handView.GetHandCenterPosition() : transform.position;
         transform.DOKill();
         transform.DOMove(target, animDuration).SetEase(Ease.OutBack, 0.7f)
@@ -344,6 +391,12 @@ public class CardView : MonoBehaviour
         isTransitioning = true;
         ManualTargetSystem.Instance.StopTargeting();
         state = DragState.DraggingNonPlay;
+        if (lastHoveredTarget != null)
+        {
+            lastHoveredTarget.SetOutline(false);
+            lastHoveredTarget = null;
+        }
+        RefreshDescription(null);
         Vector3 mousePos = MouseUtil.GetMousePositionInWorldSpace(-1);
         transform.DOKill();
         transform.DOMove(mousePos, animDuration * 0.5f).SetEase(Ease.OutQuad)
@@ -384,6 +437,20 @@ public class CardView : MonoBehaviour
             else
             {
                 hoverOtherCardTimer = 0f;
+            }
+
+            if (state == DragState.DraggingPlay && ManualTargetSystem.Instance != null)
+            {
+                EnemyView currentTarget = ManualTargetSystem.Instance.GetCurrentHoveredEnemy();
+                if (currentTarget != lastHoveredTarget)
+                {
+                    if (lastHoveredTarget != null)
+                        lastHoveredTarget.SetOutline(false);
+                    lastHoveredTarget = currentTarget;
+                    if (currentTarget != null)
+                        currentTarget.SetOutline(true);
+                    RefreshDescription(currentTarget);
+                }
             }
 
             return;
@@ -482,6 +549,11 @@ public class CardView : MonoBehaviour
         Interactions.Instance.PlayerIsTargeting = false;
         ManualTargetSystem.Instance.StopTargeting();
         HexGrid.ClearAllHighlights();
+        if (lastHoveredTarget != null)
+        {
+            lastHoveredTarget.SetOutline(false);
+            lastHoveredTarget = null;
+        }
     }
 
     // ==================== Drag Lifecycle ====================
@@ -495,6 +567,12 @@ public class CardView : MonoBehaviour
         ManualTargetSystem.Instance.StopTargeting();
         if (targetingCard == this) targetingCard = null;
         HexGrid.ClearAllHighlights();
+
+        if (lastHoveredTarget != null)
+        {
+            lastHoveredTarget.SetOutline(false);
+            lastHoveredTarget = null;
+        }
 
         state = DragState.None;
         isTransitioning = false;
@@ -515,6 +593,13 @@ public class CardView : MonoBehaviour
         ManualTargetSystem.Instance.StopTargeting();
         if (targetingCard == this) targetingCard = null;
         HexGrid.ClearAllHighlights();
+
+        if (lastHoveredTarget != null)
+        {
+            lastHoveredTarget.SetOutline(false);
+            lastHoveredTarget = null;
+        }
+
         state = DragState.None;
         isTransitioning = false;
         isHovered = false;

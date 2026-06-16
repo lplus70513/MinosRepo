@@ -46,4 +46,26 @@ public class ManualTargetSystem : Singleton<ManualTargetSystem>
     {
         arrowView.gameObject.SetActive(false);
     }
+
+    public EnemyView GetCurrentHoveredEnemy()
+    {
+        if (camera3D == null) return null;
+
+        Vector2 mouseScreen = Input.mousePosition;
+        EnemyView best = null;
+        float bestDist = 100f;
+        foreach (var enemy in EnemySystem.Instance.Enemies)
+        {
+            if (enemy == null) continue;
+            Vector3 screenPos = camera3D.WorldToScreenPoint(enemy.transform.position);
+            Vector2 enemyScreen = new(screenPos.x, screenPos.y);
+            float dist = Vector2.Distance(mouseScreen, enemyScreen);
+            if (dist < bestDist)
+            {
+                bestDist = dist;
+                best = enemy;
+            }
+        }
+        return bestDist < 100f ? best : null;
+    }
 }

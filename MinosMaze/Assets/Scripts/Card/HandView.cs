@@ -17,10 +17,43 @@ public class HandView : MonoBehaviour
     private Camera mainCamera;
     private int? hoveredCardIndex;
     private int? draggedCardIndex;
+    private bool heroSubscribed;
 
     private void Awake()
     {
         mainCamera = Camera.main;
+    }
+
+    private void OnDestroy()
+    {
+        if (heroSubscribed)
+        {
+            var hero = HeroSystem.Instance?.HeroView;
+            if (hero != null)
+                hero.OnStatusChanged -= RefreshAllDescriptions;
+        }
+    }
+
+    private void TrySubscribeHeroStatusChanges()
+    {
+        if (heroSubscribed) return;
+        var hero = HeroSystem.Instance?.HeroView;
+        if (hero != null)
+        {
+            hero.OnStatusChanged += RefreshAllDescriptions;
+            heroSubscribed = true;
+        }
+    }
+
+    private void RefreshAllDescriptions()
+    {
+        foreach (var (cardGO, _) in handCards)
+        {
+            if (cardGO == null) continue;
+            CardView cv = cardGO.GetComponent<CardView>();
+            if (cv != null && cv.UseLiveDamage)
+                cv.RefreshDescription(null);
+        }
     }
 
     public CardView AddCard(Card card, Vector3 position, Quaternion rotation)
@@ -32,13 +65,16 @@ public class HandView : MonoBehaviour
 
         if (cardView != null)
         {
-            cardView.SetUp(card);
+            cardView.SetUp(card, useLiveDamage: true);
             float initialZ = newCardGO.transform.position.z;
             handCards.Add((newCardGO, initialZ));
             cardView.handView = this;
             cardView.handIndex = handCards.Count - 1;
             UpdateCardZOrder();
             UpdateCardPositions();
+
+            if (handCards.Count == 1)
+                TrySubscribeHeroStatusChanges();
         }
         return cardView;
     }

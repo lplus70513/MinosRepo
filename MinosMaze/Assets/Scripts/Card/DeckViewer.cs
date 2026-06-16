@@ -250,17 +250,18 @@ public class DeckViewer : MonoBehaviour
         cardContainer.localPosition = cardContainerBasePos;
 
         Vector3 cardScaleVec = Vector3.one * cardScale;
+        bool liveDamage = type != PileType.FullDeck;
 
         for (int i = 0; i < snapshot.Count; i++)
         {
             int col = i % columns;
             int row = i / columns;
             Vector3 pos = new Vector3(col * spacing.x, -row * spacing.y, 0f);
-            BuildCardEntry(snapshot[i], pos, cardScaleVec);
+            BuildCardEntry(snapshot[i], pos, cardScaleVec, liveDamage);
         }
     }
 
-    private void BuildCardEntry(Card card, Vector3 localPos, Vector3 scale)
+    private void BuildCardEntry(Card card, Vector3 localPos, Vector3 scale, bool useLiveDamage = false)
     {
         GameObject cardObj = Instantiate(cardPrefab, cardContainer);
         cardObj.transform.localPosition = localPos;
@@ -269,7 +270,7 @@ public class DeckViewer : MonoBehaviour
         CardView cardView = cardObj.GetComponent<CardView>();
         if (cardView != null)
         {
-            cardView.SetUp(card);
+            cardView.SetUp(card, useLiveDamage);
         }
 
         foreach (Collider col in cardObj.GetComponentsInChildren<Collider>(true))
@@ -287,7 +288,7 @@ public class DeckViewer : MonoBehaviour
         boxCol.size = new Vector3(hitboxWidth, hitboxHeight, 1f);
 
         CardGridHoverTrigger trigger = hitbox.AddComponent<CardGridHoverTrigger>();
-        trigger.Init(card);
+        trigger.Init(card, useLiveDamage);
     }
 
     private void SetSortingGroups()

@@ -317,6 +317,7 @@ public class EnemySystem : Singleton<EnemySystem>
     public void ComputeAndStoreNextTurnIntents()
     {
         Debug.Log($"[EnemySystem] ComputeAndStoreNextTurnIntents, 敌人数量={enemyBoardView.EnemyViews.Count}");
+        HeroView heroView = HeroSystem.Instance?.HeroView;
         foreach (var enemy in enemyBoardView.EnemyViews)
         {
             if (enemy.CurrentHealth <= 0) continue;
@@ -331,7 +332,9 @@ public class EnemySystem : Singleton<EnemySystem>
             {
                 IntentType = a.ActionType,
                 HitCount = a.HitCount,
-                ValuePerHit = a.BaseDamage,
+                ValuePerHit = a.ActionType == EnemyActionType.Attack
+                    ? DamageSystem.CalculateModifiedDamage(a.BaseDamage, enemy, heroView)
+                    : a.BaseDamage,
             });
         }
     }

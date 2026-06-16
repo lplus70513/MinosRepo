@@ -59,7 +59,7 @@ public class DamageSystem : MonoBehaviour
         }
     }
 
-    private int CalculateModifiedDamage(int baseDamage, CombatantView caster, CombatantView target)
+    public static int CalculateModifiedDamage(int baseDamage, CombatantView caster, CombatantView target)
     {
         float damage = baseDamage;
 

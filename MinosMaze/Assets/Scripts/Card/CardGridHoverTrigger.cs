@@ -7,13 +7,15 @@ public class CardGridHoverTrigger : MonoBehaviour
     [SerializeField] private float hoverDuration = 0.1f;
 
     private Card card;
+    private bool useLiveDamage;
     private Transform cardTransform;
     private Vector3 originalScale;
     private Tween hoverTween;
 
-    public void Init(Card card)
+    public void Init(Card card, bool useLiveDamage = false)
     {
         this.card = card;
+        this.useLiveDamage = useLiveDamage;
         cardTransform = transform.parent;
         originalScale = cardTransform.localScale;
     }
@@ -25,7 +27,7 @@ public class CardGridHoverTrigger : MonoBehaviour
         Vector3 worldPos = Camera.main.ScreenToWorldPoint(
             new Vector3(Input.mousePosition.x, Input.mousePosition.y, 5f)
         );
-        CardViewHoverSystem.Instance.Show(card, worldPos);
+        CardViewHoverSystem.Instance.Show(card, worldPos, useLiveDamage);
 
         PlayHoverAnim();
     }

@@ -29,6 +29,7 @@ public class CombatantView : MonoBehaviour
     public bool PersistArmor { get; set; } = false;
 
     public event Action<CombatantView, int> OnHealthChanged;
+    public event Action OnStatusChanged;
 
     private Dictionary<StatusEffectType, int> statusEffects = new();
 
@@ -36,6 +37,8 @@ public class CombatantView : MonoBehaviour
 
     protected static Camera camera3D;
     private static Material alwaysVisibleMaterial;
+    private MaterialPropertyBlock propertyBlock;
+    private static readonly int EnableOutlineId = Shader.PropertyToID("_EnableOutline");
 
     public static EnemyView HoveredEnemy { get; set; }
 
@@ -49,13 +52,16 @@ public class CombatantView : MonoBehaviour
 
         if (alwaysVisibleMaterial == null)
         {
-            Shader shader = Shader.Find("Custom/SpriteAlwaysVisible");
+            Shader shader = Shader.Find("Custom/SpriteAlwaysVisibleOutline");
             if (shader != null)
                 alwaysVisibleMaterial = new Material(shader);
         }
 
         if (spriteRenderer != null && alwaysVisibleMaterial != null)
+        {
             spriteRenderer.material = alwaysVisibleMaterial;
+            propertyBlock = new MaterialPropertyBlock();
+        }
 
         if (spriteRenderer != null)
         {
@@ -245,6 +251,7 @@ public class CombatantView : MonoBehaviour
         }
         if (statusEffectsUI != null)
             statusEffectsUI.UpdateStatusEffectUI(type, GetStatusEffectStacks(type));
+        OnStatusChanged?.Invoke();
     }
 
     public void RemoveStatusEffect(StatusEffectType type, int stackCount)
@@ -260,6 +267,7 @@ public class CombatantView : MonoBehaviour
 
         if (statusEffectsUI != null)
             statusEffectsUI.UpdateStatusEffectUI(type, GetStatusEffectStacks(type));
+        OnStatusChanged?.Invoke();
     }
 
     public void SetStatusEffectStacks(StatusEffectType type, int stackCount)
@@ -274,6 +282,7 @@ public class CombatantView : MonoBehaviour
         }
         if (statusEffectsUI != null)
             statusEffectsUI.UpdateStatusEffectUI(type, stackCount);
+        OnStatusChanged?.Invoke();
     }
 
     public bool HasStatusEffect(StatusEffectType type)
@@ -317,6 +326,14 @@ public class CombatantView : MonoBehaviour
                 Debug.Log($"[CombatantView] {name} 回合结束清空护甲 {armorStacks} 层");
             }
         }
+    }
+
+    public void SetOutline(bool enabled)
+    {
+        if (spriteRenderer == null || propertyBlock == null) return;
+        spriteRenderer.GetPropertyBlock(propertyBlock);
+        propertyBlock.SetFloat(EnableOutlineId, enabled ? 1f : 0f);
+        spriteRenderer.SetPropertyBlock(propertyBlock);
     }
 
     void LateUpdate()

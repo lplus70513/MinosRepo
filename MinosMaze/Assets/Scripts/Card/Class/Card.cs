@@ -1,5 +1,6 @@
-using UnityEngine;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using UnityEngine;
 
 public class Card
 {
@@ -57,5 +58,40 @@ public class Card
         IsUpgraded = true;
         if (data.UpgradeGrade != null)
             Cost = data.UpgradeGrade.Cost;
+    }
+
+    private List<DealDamageEffect> CollectDealDamageEffects()
+    {
+        var result = new List<DealDamageEffect>();
+        if (ManualTargetEffect is DealDamageEffect dde)
+            result.Add(dde);
+        if (OtherEffects != null)
+        {
+            foreach (var wrapper in OtherEffects)
+            {
+                if (wrapper.Effect is DealDamageEffect otherDde)
+                    result.Add(otherDde);
+            }
+        }
+        return result;
+    }
+
+    public string GetLiveDescription(CombatantView caster, CombatantView target)
+    {
+        var damageEffects = CollectDealDamageEffects();
+        if (damageEffects.Count == 0)
+            return Description;
+
+        string desc = Description;
+        foreach (var effect in damageEffects)
+        {
+            int modified = DamageSystem.CalculateModifiedDamage(effect.DamageAmount, caster, target);
+            if (modified != effect.DamageAmount)
+            {
+                string pattern = $@"(?<!\d){effect.DamageAmount}(?!\d)";
+                desc = Regex.Replace(desc, pattern, modified.ToString());
+            }
+        }
+        return desc;
     }
 }

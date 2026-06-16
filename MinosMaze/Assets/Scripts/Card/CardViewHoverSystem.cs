@@ -12,11 +12,11 @@ public class CardViewHoverSystem : Singleton<CardViewHoverSystem>
             hoverCollider = cardViewHover.GetComponent<Collider>();
     }
 
-    public void Show(Card card, Vector3 position)
+    public void Show(Card card, Vector3 position, bool useLiveDamage = false)
     {
         if (cardViewHover == null) return;
         cardViewHover.gameObject.SetActive(true);
-        cardViewHover.SetUp(card);
+        cardViewHover.SetUp(card, useLiveDamage);
         cardViewHover.transform.position = position;
         if (hoverCollider != null) hoverCollider.enabled = false;
     }
