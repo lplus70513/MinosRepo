@@ -9,7 +9,7 @@ public struct CellPrefabMapping
     public GameObject prefab;
 }
 
-// 随机类型条目（权重分配，后续补充具体规则）
+// 随机类型条目（权重分配，用于预计算各类型数量）
 [System.Serializable]
 public struct RandomCellTypeEntry
 {
@@ -18,7 +18,7 @@ public struct RandomCellTypeEntry
 }
 
 // 大地图六边形网格生成器，继承 HexGrid。
-// 中心 (0,0) 固定为 BOSS 格，birthCoord 为出生格，其余按 randomPool 权重随机生成。
+// 中心 (0,0) 固定为 BOSS 格，birthCoord 为出生格，其余按 randomPool 权重预计算数量后带约束放置。
 public class WorldMapGrid : HexGrid
 {
     [Header("大地图配置")]
@@ -30,7 +30,7 @@ public class WorldMapGrid : HexGrid
     [Header("格子类型-Prefab映射")]
     [SerializeField] private CellPrefabMapping[] worldCellPrefabMap;
 
-    [Header("随机类型池（权重分配，暂留空）")]
+    [Header("随机类型池（按权重计算各类型数量）")]
     [SerializeField] private RandomCellTypeEntry[] randomPool;
 
     // 运行时格子类型布局
@@ -89,7 +89,7 @@ public class WorldMapGrid : HexGrid
         }
     }
 
-    // 构建格子类型布局：优先从 WorldMapState 恢复，否则仅预设固定格（其余按需随机）
+    // 构建格子类型布局：优先从 WorldMapState 恢复，否则预设固定格后预生成所有格子类型
     private void BuildCellTypeLayout()
     {
         cellTypeLayout.Clear();
@@ -106,6 +106,7 @@ public class WorldMapGrid : HexGrid
 
         cellTypeLayout[(0, 0)] = MapCellType.WorldMap_Boss;
         cellTypeLayout[(birthCoord.x, birthCoord.y)] = MapCellType.WorldMap_Birth;
+        PreGenerateAllCellTypes();
     }
 
     // 将当前格子类型布局写入 WorldMapState 以便跨场景持久化
@@ -119,40 +120,168 @@ public class WorldMapGrid : HexGrid
             gm.WorldMapState.cellLayout.Add(new CellLayoutEntry(kvp.Key.Item1, kvp.Key.Item2, kvp.Value));
     }
 
-    // 获取指定坐标的格子类型（BOSS/出生格优先，其次随机）
+    // 获取指定坐标的格子类型（所有类型已在 BuildCellTypeLayout 中预生成）
     public MapCellType GetCellType(int x, int z)
     {
         if (cellTypeLayout.TryGetValue((x, z), out var type))
             return type;
 
-        // 随机生成并缓存
-        MapCellType randomType = GetRandomCellType();
-        cellTypeLayout[(x, z)] = randomType;
-        return randomType;
+        Debug.LogWarning($"[WorldMapGrid] 坐标 ({x}, {z}) 未在布局中找到，返回 WorldMap_Empty");
+        return MapCellType.WorldMap_Empty;
     }
 
-    // 从 randomPool 按权重随机选取类型，池为空时返回 WorldMap_Empty
-    private MapCellType GetRandomCellType()
+    private static readonly (int dx, int dz)[] HexOffsets =
+        { (1, 0), (-1, 0), (0, 1), (-1, 1), (1, -1), (0, -1) };
+
+    private int CountAdjacentOfType(int x, int z, MapCellType type)
     {
-        if (randomPool == null || randomPool.Length == 0)
-            return MapCellType.WorldMap_Empty;
+        int count = 0;
+        foreach (var (dx, dz) in HexOffsets)
+        {
+            if (cellTypeLayout.TryGetValue((x + dx, z + dz), out var t) && t == type)
+                count++;
+        }
+        return count;
+    }
+
+    private void ShuffleList<T>(List<T> list)
+    {
+        for (int i = list.Count - 1; i > 0; i--)
+        {
+            int j = Random.Range(0, i + 1);
+            (list[i], list[j]) = (list[j], list[i]);
+        }
+    }
+
+    // 最大余数法：根据 randomPool 权重将 available 个格子精确分配给各类型
+    private Dictionary<MapCellType, int> CalculateTypeCounts(int available)
+    {
+        Dictionary<MapCellType, int> counts = new();
+        if (randomPool == null || randomPool.Length == 0) return counts;
 
         int totalWeight = 0;
         foreach (var entry in randomPool)
             totalWeight += Mathf.Max(0, entry.weight);
+        if (totalWeight <= 0) return counts;
 
-        if (totalWeight <= 0)
-            return MapCellType.WorldMap_Empty;
+        float[] exactCounts = new float[randomPool.Length];
+        int[] floorCounts = new int[randomPool.Length];
+        int floorSum = 0;
 
-        int roll = Random.Range(0, totalWeight);
-        int cumulative = 0;
-        foreach (var entry in randomPool)
+        for (int i = 0; i < randomPool.Length; i++)
         {
-            cumulative += Mathf.Max(0, entry.weight);
-            if (roll < cumulative)
-                return entry.cellType;
+            exactCounts[i] = (float)Mathf.Max(0, randomPool[i].weight) / totalWeight * available;
+            floorCounts[i] = Mathf.FloorToInt(exactCounts[i]);
+            floorSum += floorCounts[i];
         }
-        return randomPool[randomPool.Length - 1].cellType;
+
+        int remainder = available - floorSum;
+        List<int> indices = new();
+        for (int i = 0; i < randomPool.Length; i++) indices.Add(i);
+        indices.Sort((a, b) =>
+            (exactCounts[b] - floorCounts[b]).CompareTo(exactCounts[a] - floorCounts[a]));
+
+        for (int i = 0; i < remainder && i < indices.Count; i++)
+            floorCounts[indices[i]]++;
+
+        for (int i = 0; i < randomPool.Length; i++)
+        {
+            if (floorCounts[i] > 0)
+            {
+                if (counts.ContainsKey(randomPool[i].cellType))
+                    counts[randomPool[i].cellType] += floorCounts[i];
+                else
+                    counts[randomPool[i].cellType] = floorCounts[i];
+            }
+        }
+
+        return counts;
+    }
+
+    // 预生成所有格子类型：按权重计算各类型数量，受约束类型优先放置，不满足约束时降级为 Encounter
+    private void PreGenerateAllCellTypes()
+    {
+        List<(int x, int z)> allCoords = new();
+        for (int z = -mapRadius; z <= mapRadius; z++)
+            for (int x = -mapRadius - Mathf.Min(z, 0); x <= mapRadius - Mathf.Max(z, 0); x++)
+                if (!cellTypeLayout.ContainsKey((x, z)))
+                    allCoords.Add((x, z));
+
+        int available = allCoords.Count;
+        if (available <= 0) return;
+
+        Dictionary<MapCellType, int> targetCounts = CalculateTypeCounts(available);
+        if (targetCounts.Count == 0)
+        {
+            foreach (var (cx, cz) in allCoords)
+                cellTypeLayout[(cx, cz)] = MapCellType.WorldMap_Empty;
+            return;
+        }
+
+        ShuffleList(allCoords);
+
+        Dictionary<MapCellType, int> constrainedTargets = new();
+        int encounterTarget = 0;
+        int eliteTarget = 0;
+
+        foreach (var kvp in targetCounts)
+        {
+            if (kvp.Key == MapCellType.WorldMap_Encounter)
+                encounterTarget = kvp.Value;
+            else if (kvp.Key == MapCellType.WorldMap_Elite)
+                eliteTarget = kvp.Value;
+            else
+                constrainedTargets[kvp.Key] = kvp.Value;
+        }
+
+        HashSet<int> assigned = new();
+        int degradedToEncounter = 0;
+
+        foreach (var kvp in constrainedTargets)
+        {
+            MapCellType type = kvp.Key;
+            int remaining = kvp.Value;
+
+            for (int i = 0; i < allCoords.Count && remaining > 0; i++)
+            {
+                if (assigned.Contains(i)) continue;
+                var (cx, cz) = allCoords[i];
+                if (CountAdjacentOfType(cx, cz, type) == 0)
+                {
+                    cellTypeLayout[(cx, cz)] = type;
+                    assigned.Add(i);
+                    remaining--;
+                }
+            }
+
+            if (remaining > 0)
+            {
+                Debug.Log($"[WorldMapGrid] {type} 有 {remaining} 个因邻居约束无法放置，降级为 Encounter");
+                degradedToEncounter += remaining;
+            }
+        }
+
+        List<int> unassigned = new();
+        for (int i = 0; i < allCoords.Count; i++)
+            if (!assigned.Contains(i))
+                unassigned.Add(i);
+
+        List<MapCellType> fillPool = new();
+        for (int i = 0; i < eliteTarget; i++)
+            fillPool.Add(MapCellType.WorldMap_Elite);
+        for (int i = 0; i < encounterTarget + degradedToEncounter; i++)
+            fillPool.Add(MapCellType.WorldMap_Encounter);
+
+        while (fillPool.Count < unassigned.Count)
+            fillPool.Add(MapCellType.WorldMap_Encounter);
+
+        ShuffleList(fillPool);
+
+        for (int i = 0; i < unassigned.Count; i++)
+        {
+            var (cx, cz) = allCoords[unassigned[i]];
+            cellTypeLayout[(cx, cz)] = fillPool[i];
+        }
     }
 
     // 根据坐标返回对应格子类型的 prefab

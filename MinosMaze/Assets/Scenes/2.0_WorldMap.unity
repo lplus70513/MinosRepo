@@ -1522,11 +1522,11 @@ MonoBehaviour:
     prefab: {fileID: 9084443745589265065, guid: 7a887ef8a0401c44f85f03572503999e, type: 3}
   randomPool:
   - cellType: 101
-    weight: 50
+    weight: 60
   - cellType: 100
-    weight: 20
-  - cellType: 106
     weight: 15
+  - cellType: 106
+    weight: 10
   - cellType: 105
     weight: 0
 --- !u!4 &1124998874
@@ -2597,6 +2597,8 @@ MonoBehaviour:
   scrollSpeed: 3
   blockedButtons: []
   previewCardScale: 1
+  shakeAngle: 15
+  shakeInterval: 0.1
 --- !u!1 &1784081787
 GameObject:
   m_ObjectHideFlags: 0
