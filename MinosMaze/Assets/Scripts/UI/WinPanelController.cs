@@ -11,6 +11,7 @@ public class WinPanelController : MonoBehaviour
     [SerializeField] private GoldDialog goldDialog;
     [SerializeField] private CardSelectDialog cardSelectDialog;
     [SerializeField] private StringDialog stringDialog;
+    [SerializeField] private ResourceHUD resourceHUD;
 
     private BattleReward _reward;
     private bool _goldProcessed;
@@ -59,16 +60,14 @@ public class WinPanelController : MonoBehaviour
     private void OnGoldClick()
     {
         if (_goldProcessed) return;
-        if (goldDialog == null) return;
-        goldDialog.Show(_reward.GoldAmount,
-            onCollected: () =>
-            {
-                if (GameManager.Instance != null)
-                    GameManager.Instance.WorldMapState.gold += _reward.GoldAmount;
-                _goldProcessed = true;
-                if (goldButton != null) goldButton.interactable = false;
-            },
-            onSkipped: () => { _goldProcessed = true; if (goldButton != null) goldButton.interactable = false; });
+        _goldProcessed = true;
+        if (goldButton != null) goldButton.interactable = false;
+
+        if (GameManager.Instance == null) return;
+        int oldGold = GameManager.Instance.WorldMapState.gold;
+        GameManager.Instance.WorldMapState.gold += _reward.GoldAmount;
+        if (resourceHUD != null)
+            resourceHUD.AnimateGold(oldGold, GameManager.Instance.WorldMapState.gold);
     }
 
     private void OnCardClick()
@@ -91,16 +90,14 @@ public class WinPanelController : MonoBehaviour
     private void OnStringClick()
     {
         if (_stringProcessed) return;
-        if (stringDialog == null) return;
-        stringDialog.Show(
-            onCollected: () =>
-            {
-                if (GameManager.Instance != null)
-                    GameManager.Instance.WorldMapState.stringCount += 1;
-                _stringProcessed = true;
-                if (stringButton != null) stringButton.interactable = false;
-            },
-            onSkipped: () => { _stringProcessed = true; if (stringButton != null) stringButton.interactable = false; });
+        _stringProcessed = true;
+        if (stringButton != null) stringButton.interactable = false;
+
+        if (GameManager.Instance == null) return;
+        int oldCount = GameManager.Instance.WorldMapState.stringCount;
+        GameManager.Instance.WorldMapState.stringCount += 1;
+        if (resourceHUD != null)
+            resourceHUD.AnimateString(oldCount, GameManager.Instance.WorldMapState.stringCount);
     }
 
     private void OnClaim()
