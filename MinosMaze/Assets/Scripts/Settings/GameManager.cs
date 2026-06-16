@@ -45,6 +45,8 @@ public class GameManager : MonoBehaviour
     // 当前加载的遭遇子场景名
     private string currentEncounterScene;
 
+    private bool isStartingGame;
+
     private void Awake()
     {
         // 1. �������
@@ -149,6 +151,8 @@ public class GameManager : MonoBehaviour
 
     public void NewGame()
     {
+        if (isStartingGame) return;
+        isStartingGame = true;
         SceneTransitionSystem.Instance.StartCoroutine(NewGameRoutine());
     }
 
@@ -176,6 +180,7 @@ public class GameManager : MonoBehaviour
 
         yield return SceneTransitionSystem.Instance.BlackScreenWait();
         yield return SceneTransitionSystem.Instance.FadeIn();
+        isStartingGame = false;
     }
 
     // 保存大地图状态（由 WorldMapMovementSystem 在场景跳转前调用）
