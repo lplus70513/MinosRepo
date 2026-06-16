@@ -139,6 +139,7 @@ MonoBehaviour:
   healthText: {fileID: 7100000000000010013}
   spriteRenderer: {fileID: 0}
   skeletonAnimation: {fileID: 105711364623528542}
+  portraitRoot: {fileID: 0}
   statusEffectsUI: {fileID: 7100000000000010034}
 --- !u!1 &7100000000000010010
 GameObject:
@@ -505,7 +506,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   statusEffectUIPrefab: {fileID: 288063843096682586, guid: 2896e3ca3f95db04dbd0a57de4b85a0a, type: 3}
   armorSprite: {fileID: 21300000, guid: 8d8069e26314fff4d93d7ca57357447f, type: 3}
-  burnSprite: {fileID: 21300000, guid: 6700dff425b6a1340b3b9c2d26de10dd, type: 3}
+  bleedSprite: {fileID: 0}
+  strengthSprite: {fileID: 0}
+  weaknessSprite: {fileID: 0}
+  vulnerableSprite: {fileID: 0}
+  fortifySprite: {fileID: 0}
+  fragileSprite: {fileID: 0}
+  agileSprite: {fileID: 0}
+  slowSprite: {fileID: 0}
+  chainLightningSprite: {fileID: 0}
+  rootSprite: {fileID: 0}
+  stunSprite: {fileID: 0}
   canvasGroup: {fileID: 7100000000000010036}
   fadeDuration: 0.3
 --- !u!114 &7100000000000010035

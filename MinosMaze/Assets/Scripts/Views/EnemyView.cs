@@ -61,6 +61,13 @@ public class EnemyView : CombatantView
             intentView.Hide();
     }
 
+    protected override void BillboardUI()
+    {
+        base.BillboardUI();
+        if (intentView != null && camera3D != null)
+            intentView.transform.rotation = camera3D.transform.rotation;
+    }
+
     public void DecrementCooldowns()
     {
         var tags = new List<string>(ActionCooldowns.Keys);

@@ -14,6 +14,8 @@ public class CombatantView : MonoBehaviour
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private SkeletonAnimation skeletonAnimation;
 
+    [SerializeField] private Transform portraitRoot;
+
     [SerializeField] private StatusEffectsUI statusEffectsUI;
 
     public int HexCoordX { get; set; }
@@ -32,7 +34,7 @@ public class CombatantView : MonoBehaviour
 
     protected bool facingRight = false;
 
-    private static Camera camera3D;
+    protected static Camera camera3D;
     private static Material alwaysVisibleMaterial;
 
     public static EnemyView HoveredEnemy { get; set; }
@@ -124,12 +126,21 @@ public class CombatantView : MonoBehaviour
         if (shouldFaceRight == facingRight) return;
         facingRight = shouldFaceRight;
 
-        float absX = Mathf.Abs(transform.localScale.x);
+        Transform flipTarget = GetVisualTransform();
+        float absX = Mathf.Abs(flipTarget.localScale.x);
         float targetX = absX * (facingRight ? -1f : 1f);
 
         Sequence seq = DOTween.Sequence();
-        seq.Append(transform.DOScaleX(0, 0.06f).SetEase(Ease.InQuad));
-        seq.Append(transform.DOScaleX(targetX, 0.06f).SetEase(Ease.OutQuad));
+        seq.Append(flipTarget.DOScaleX(0, 0.06f).SetEase(Ease.InQuad));
+        seq.Append(flipTarget.DOScaleX(targetX, 0.06f).SetEase(Ease.OutQuad));
+    }
+
+    private Transform GetVisualTransform()
+    {
+        if (spriteRenderer != null) return spriteRenderer.transform;
+        if (skeletonAnimation != null) return skeletonAnimation.transform;
+        if (portraitRoot != null) return portraitRoot;
+        return transform;
     }
 
     private void UpdateHealthText()
@@ -177,7 +188,8 @@ public class CombatantView : MonoBehaviour
 
         }
 
-        transform.DOShakePosition(0.2f, 0.5f);
+        Transform shakeTarget = portraitRoot != null ? portraitRoot : transform;
+        shakeTarget.DOShakePosition(0.2f, 0.5f);
         UpdateHealthText();
         OnHealthChanged?.Invoke(this, CurrentHealth);
     }
@@ -311,7 +323,17 @@ public class CombatantView : MonoBehaviour
     {
         if (camera3D != null)
         {
-            transform.rotation = camera3D.transform.rotation;
+            Transform billboardTarget = portraitRoot != null ? portraitRoot : transform;
+            billboardTarget.rotation = camera3D.transform.rotation;
+            BillboardUI();
         }
+    }
+
+    protected virtual void BillboardUI()
+    {
+        if (camera3D == null || statusEffectsUI == null) return;
+        Canvas canvas = statusEffectsUI.GetComponentInParent<Canvas>();
+        if (canvas != null)
+            canvas.transform.rotation = camera3D.transform.rotation;
     }
 }

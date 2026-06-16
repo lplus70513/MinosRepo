@@ -36,7 +36,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.28, y: 4.67}
+  m_AnchoredPosition: {x: -0.28, y: 5.46}
   m_SizeDelta: {x: 4, y: 2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &1504215487609977776
@@ -168,9 +168,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d85caf53a1ff144594374702b43aa75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthText: {fileID: 7462245580405713130}
+  healthText: {fileID: 0}
   spriteRenderer: {fileID: 4473006601715427696}
   skeletonAnimation: {fileID: 0}
+  portraitRoot: {fileID: 2438341807737087683}
   statusEffectsUI: {fileID: 1744114177184689470}
   intentView: {fileID: 687028648659481135}
   selectedActions: []
@@ -246,7 +247,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4996612455611679413, guid: b408e9b187577ee429213d77f9ec0c8a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4996612455611679413, guid: b408e9b187577ee429213d77f9ec0c8a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -270,7 +271,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4996612455611679413, guid: b408e9b187577ee429213d77f9ec0c8a, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 3.86
+      value: 1.66
       objectReference: {fileID: 0}
     - target: {fileID: 4996612455611679413, guid: b408e9b187577ee429213d77f9ec0c8a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -423,6 +424,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7fbeb66fe213ee49bc555f0c45030f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &2438341807737087683 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5874147534139733926, guid: f4ca6b579c1655a41ac57e8e8d03c188, type: 3}
+  m_PrefabInstance: {fileID: 8093972366272860517}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3476684491854110174 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4642150031482637499, guid: f4ca6b579c1655a41ac57e8e8d03c188, type: 3}
@@ -433,14 +439,3 @@ SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 5638752156031662101, guid: f4ca6b579c1655a41ac57e8e8d03c188, type: 3}
   m_PrefabInstance: {fileID: 8093972366272860517}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7462245580405713130 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1719434057555261839, guid: f4ca6b579c1655a41ac57e8e8d03c188, type: 3}
-  m_PrefabInstance: {fileID: 8093972366272860517}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
