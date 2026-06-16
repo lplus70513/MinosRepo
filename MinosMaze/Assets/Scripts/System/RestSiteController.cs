@@ -12,6 +12,7 @@ public class RestSiteController : MonoBehaviour
     [SerializeField] private GameObject burningBackground;
     [SerializeField] private GameObject extinguishedBackground;
     [SerializeField] private DeckViewer deckViewer;
+    [SerializeField] private HealthBarPanel healthBarPanel;
 
     [Header("配置")]
     [SerializeField, Range(0f, 1f)] private float healPercent = 0.3f;
@@ -22,8 +23,14 @@ public class RestSiteController : MonoBehaviour
     void Start()
     {
         GameManager gm = GameManager.Instance;
-        if (gm != null && gm.WorldMapState != null && gm.WorldMapState.currentDeck != null)
-            CardSystem.Instance.SetUp(gm.WorldMapState.currentDeck);
+        if (gm != null && gm.WorldMapState != null)
+        {
+            if (gm.WorldMapState.currentDeck != null)
+                CardSystem.Instance.SetUp(gm.WorldMapState.currentDeck);
+
+            if (healthBarPanel != null)
+                healthBarPanel.SetupWorldMap(gm.WorldMapState.maxHealth, gm.WorldMapState.currentHealth);
+        }
 
         healButton.onClick.AddListener(OnHeal);
         discardButton.onClick.AddListener(OnDiscard);

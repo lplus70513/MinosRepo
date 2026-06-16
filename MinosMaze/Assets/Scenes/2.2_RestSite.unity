@@ -1299,6 +1299,7 @@ MonoBehaviour:
   burningBackground: {fileID: 181428779}
   extinguishedBackground: {fileID: 1828565980}
   deckViewer: {fileID: 1515610955}
+  healthBarPanel: {fileID: 1427563643}
   healPercent: 0.3
   exitDelay: 1.5
 --- !u!1 &904799013

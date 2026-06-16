@@ -18,6 +18,9 @@ public class TreasureController : MonoBehaviour
     [SerializeField] private GameObject winPanel;
     [SerializeField] private RewardConfig rewardConfig;
 
+    [Header("UI")]
+    [SerializeField] private HealthBarPanel healthBarPanel;
+
     [Header("配置")]
     [SerializeField, Range(0f, 1f)] private float mimicChance = 0.1f;
     [SerializeField] private string battleSceneName = "2.1_BattleScene";
@@ -26,6 +29,16 @@ public class TreasureController : MonoBehaviour
 
     void Start()
     {
+        GameManager gm = GameManager.Instance;
+        if (gm != null && gm.WorldMapState != null)
+        {
+            if (gm.WorldMapState.currentDeck != null)
+                CardSystem.Instance.SetUp(gm.WorldMapState.currentDeck);
+
+            if (healthBarPanel != null)
+                healthBarPanel.SetupWorldMap(gm.WorldMapState.maxHealth, gm.WorldMapState.currentHealth);
+        }
+
         AddHoverEffect(normalChestButton);
         AddHoverEffect(mimicChestButton);
         AddHoverEffect(escapeButton);

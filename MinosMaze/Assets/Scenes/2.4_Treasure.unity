@@ -3356,6 +3356,7 @@ MonoBehaviour:
   escapeButton: {fileID: 1033753139}
   winPanel: {fileID: 1701029765}
   rewardConfig: {fileID: 11400000, guid: d9898f0919b265243b6544774bee7dda, type: 2}
+  healthBarPanel: {fileID: 696389612}
   mimicChance: 0.3
   battleSceneName: 2.1_BattleScene
 --- !u!1 &2071335149
