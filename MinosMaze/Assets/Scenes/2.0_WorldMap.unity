@@ -1545,9 +1545,9 @@ MonoBehaviour:
   - cellType: 100
     weight: 15
   - cellType: 106
-    weight: 10
+    weight: 15
   - cellType: 105
-    weight: 0
+    weight: 10
 --- !u!4 &1124998874
 Transform:
   m_ObjectHideFlags: 0

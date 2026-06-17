@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
 public class StatueSceneController : MonoBehaviour
 {
@@ -19,13 +21,24 @@ public class StatueSceneController : MonoBehaviour
 
     private StatueData[] assignedStatues = new StatueData[3];
     private BlessingEntry[] assignedBlessings = new BlessingEntry[3];
+    private bool[] slotAvailable = new bool[3];
     private bool optionChosen;
 
     void Start()
     {
         SelectStatues();
+
         for (int i = 0; i < 3; i++)
+        {
             SetupSlot(i);
+            slots[i].infoPanel.SetActive(false);
+
+            int idx = i;
+            AddHoverEvents(slots[i].statueButton,
+                () => { if (!optionChosen) slots[idx].infoPanel.SetActive(true); },
+                () => { slots[idx].infoPanel.SetActive(false); });
+            slots[i].statueButton.onClick.AddListener(() => OnSelectBlessing(idx));
+        }
 
         if (leaveButton != null)
             leaveButton.onClick.AddListener(OnLeave);
@@ -63,24 +76,35 @@ public class StatueSceneController : MonoBehaviour
             slot.nameText.text = statue.statueName;
         if (slot.descriptionText != null)
             slot.descriptionText.text = blessing.description;
-        if (slot.costText != null)
-            slot.costText.text = FormatCost(blessing);
 
         bool alreadyOwned = !blessing.repeatable && HasBlessing(blessing.blessingId);
         bool canAfford = CanAfford(blessing);
-        bool available = !alreadyOwned && canAfford;
 
-        if (slot.selectButton != null)
+        if (alreadyOwned)
         {
-            slot.selectButton.interactable = available;
-            int idx = index;
-            slot.selectButton.onClick.AddListener(() => OnSelectBlessing(idx));
+            if (slot.costText != null)
+                slot.costText.text = "<color=red>\u5DF2\u83B7\u5F97</color>";
+            slotAvailable[index] = false;
+        }
+        else if (!canAfford)
+        {
+            if (slot.costText != null)
+                slot.costText.text = $"<color=red>\u8D44\u6E90\u4E0D\u8DB3</color>\n{FormatCost(blessing)}";
+            slotAvailable[index] = false;
+        }
+        else
+        {
+            if (slot.costText != null)
+                slot.costText.text = FormatCost(blessing);
+            slotAvailable[index] = true;
         }
     }
 
     private void OnSelectBlessing(int index)
     {
         if (optionChosen) return;
+        if (!slotAvailable[index]) return;
+
         optionChosen = true;
 
         StatueData statue = assignedStatues[index];
@@ -92,10 +116,7 @@ public class StatueSceneController : MonoBehaviour
         ApplySpecialInteractions(statue);
 
         for (int i = 0; i < slots.Count; i++)
-        {
-            if (slots[i].selectButton != null)
-                slots[i].selectButton.interactable = false;
-        }
+            slots[i].infoPanel.SetActive(false);
 
         StartCoroutine(DelayedExit());
     }
@@ -109,6 +130,23 @@ public class StatueSceneController : MonoBehaviour
     {
         yield return new WaitForSeconds(exitDelay);
         GameManager.Instance.ExitEncounter();
+    }
+
+    // ========== 悬停事件 ==========
+
+    private void AddHoverEvents(Button button, UnityAction onEnter, UnityAction onExit)
+    {
+        EventTrigger trigger = button.gameObject.GetComponent<EventTrigger>();
+        if (trigger == null)
+            trigger = button.gameObject.AddComponent<EventTrigger>();
+
+        var enterEntry = new EventTrigger.Entry { eventID = EventTriggerType.PointerEnter };
+        enterEntry.callback.AddListener(_ => onEnter());
+        trigger.triggers.Add(enterEntry);
+
+        var exitEntry = new EventTrigger.Entry { eventID = EventTriggerType.PointerExit };
+        exitEntry.callback.AddListener(_ => onExit());
+        trigger.triggers.Add(exitEntry);
     }
 
     // ========== 资源检查与扣除 ==========
@@ -182,7 +220,7 @@ public class StatueSceneController : MonoBehaviour
             case BlessingEffectType.TransformCard:
             case BlessingEffectType.UpgradeCards:
             case BlessingEffectType.DeleteAndGiveCards:
-                Debug.Log($"[StatueScene] 卡牌操作效果 {b.effectType} 将在子任务3中实现");
+                Debug.Log($"[StatueScene] \u5361\u724C\u64CD\u4F5C\u6548\u679C {b.effectType} \u5C06\u5728\u5B50\u4EFB\u52A13\u4E2D\u5B9E\u73B0");
                 break;
         }
     }
