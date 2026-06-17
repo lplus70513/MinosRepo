@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,13 +16,13 @@ public class BlessingSystem : Singleton<BlessingSystem>
         ActionSystem.UnsubscribeReaction<RefillCostGA>(OnRefillCostPost, ReactionTiming.POST);
     }
 
-    public void ApplyBattleStartBlessings()
+    public IEnumerator ApplyBattleStartBlessingsCoroutine()
     {
         var blessings = GameManager.Instance?.WorldMapState?.activeBlessings;
-        if (blessings == null || blessings.Count == 0) return;
+        if (blessings == null || blessings.Count == 0) yield break;
 
         var hero = HeroSystem.Instance?.HeroView;
-        if (hero == null) return;
+        if (hero == null) yield break;
 
         int totalMovePoints = 0;
         int totalActionPoints = 0;
@@ -35,7 +36,7 @@ public class BlessingSystem : Singleton<BlessingSystem>
                     hero.AddStatusEffect(StatusEffectType.STRENGTH, stacks);
                     break;
                 case BlessingEffectType.DamageAllEnemiesOnBattleStart:
-                    DamageAllEnemies(b.effectValue * b.count);
+                    yield return DamageAllEnemiesCoroutine(b.effectValue * b.count);
                     break;
                 case BlessingEffectType.GainStrengthLoseFortify:
                     hero.AddStatusEffect(StatusEffectType.STRENGTH, b.effectValue * b.count);
@@ -63,6 +64,20 @@ public class BlessingSystem : Singleton<BlessingSystem>
             PlayerMovementSystem.Instance.AddMovementPoints(totalMovePoints);
         if (totalActionPoints > 0 && CostSystem.Instance != null)
             CostSystem.Instance.AddCost(totalActionPoints);
+    }
+
+    private IEnumerator DamageAllEnemiesCoroutine(int amount)
+    {
+        var enemies = EnemySystem.Instance?.Enemies;
+        if (enemies == null || enemies.Count == 0) yield break;
+
+        var hero = HeroSystem.Instance?.HeroView;
+        var targets = new List<CombatantView>(enemies);
+        DealDamageGA damageGA = new(amount, 1, targets, hero);
+
+        bool finished = false;
+        ActionSystem.Instance.Perform(damageGA, () => finished = true);
+        yield return new WaitUntil(() => finished);
     }
 
     private void OnEnemyTurnPost(EnemyTurnGA ga)

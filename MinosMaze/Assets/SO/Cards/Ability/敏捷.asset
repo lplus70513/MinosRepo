@@ -17,10 +17,14 @@ MonoBehaviour:
   <Image>k__BackingField: {fileID: 1709695921, guid: 1ed825c84a4d3aa438bfa70d107b81fb, type: 3}
   <Background>k__BackingField: {fileID: 1370473001, guid: 7e9643d6638fe744ca4f76a79d6457f3, type: 3}
   <HasAttackRange>k__BackingField: 0
-  <AttackRange>k__BackingField: 1
+  <AttackRange>k__BackingField: 2
   <ManualTargetEffect>k__BackingField:
     rid: -2
-  <OtherEffects>k__BackingField: []
+  <OtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1965764459753635844
+    <Effect>k__BackingField:
+      rid: 1965764459753635845
   <IsInnate>k__BackingField: 0
   <IsExhaust>k__BackingField: 0
   <IsRetain>k__BackingField: 0
@@ -36,7 +40,11 @@ MonoBehaviour:
     <AttackRange>k__BackingField: 1
     <ManualTargetEffect>k__BackingField:
       rid: -2
-    <OtherEffects>k__BackingField: []
+    <OtherEffects>k__BackingField:
+    - <TargetMode>k__BackingField:
+        rid: 1965764459753635846
+      <Effect>k__BackingField:
+        rid: 1965764459753635847
     <IsInnate>k__BackingField: 0
     <IsExhaust>k__BackingField: 0
     <IsRetain>k__BackingField: 0
@@ -52,7 +60,11 @@ MonoBehaviour:
     <AttackRange>k__BackingField: 1
     <ManualTargetEffect>k__BackingField:
       rid: -2
-    <OtherEffects>k__BackingField: []
+    <OtherEffects>k__BackingField:
+    - <TargetMode>k__BackingField:
+        rid: 1965764459753635848
+      <Effect>k__BackingField:
+        rid: 1965764459753635849
     <IsInnate>k__BackingField: 0
     <IsExhaust>k__BackingField: 0
     <IsRetain>k__BackingField: 0
@@ -65,3 +77,24 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+    - rid: 1965764459753635844
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764459753635845
+      type: {class: AddPerkEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <PerkData>k__BackingField: {fileID: 11400000, guid: 851374c89ff6a5f4394bca0a6923ff56, type: 2}
+    - rid: 1965764459753635846
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764459753635847
+      type: {class: AddPerkEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <PerkData>k__BackingField: {fileID: 11400000, guid: 851374c89ff6a5f4394bca0a6923ff56, type: 2}
+    - rid: 1965764459753635848
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764459753635849
+      type: {class: AddPerkEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <PerkData>k__BackingField: {fileID: 11400000, guid: 851374c89ff6a5f4394bca0a6923ff56, type: 2}
