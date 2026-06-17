@@ -50,6 +50,7 @@ public class DeckViewer : MonoBehaviour
 
     [Header("Selection Mode")]
     [SerializeField] private float previewCardScale = 1.0f;
+    [SerializeField] private float previewSpacing = 5f;
 
     [Header("升级晃动动画")]
     [SerializeField] private float shakeAngle = 15f;
@@ -650,12 +651,12 @@ public class DeckViewer : MonoBehaviour
             Camera.main.transform.position.y, 0f);
         Vector3 basePos = cardContainer.InverseTransformPoint(worldCenter);
 
-        float totalWidth = (cards.Count - 1) * spacing.x;
+        float totalWidth = (cards.Count - 1) * previewSpacing;
         float startX = basePos.x - totalWidth / 2f;
 
         for (int i = 0; i < cards.Count; i++)
         {
-            Vector3 pos = new Vector3(startX + i * spacing.x, basePos.y, basePos.z);
+            Vector3 pos = new Vector3(startX + i * previewSpacing, basePos.y, basePos.z);
             GameObject cardObj = Instantiate(cardPrefab, cardContainer);
             cardObj.transform.localPosition = pos;
             cardObj.transform.localScale = Vector3.one * previewCardScale;
