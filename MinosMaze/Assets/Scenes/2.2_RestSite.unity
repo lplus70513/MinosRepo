@@ -988,11 +988,11 @@ RectTransform:
   - {fileID: 200538146}
   - {fileID: 904799014}
   - {fileID: 1463365784}
+  - {fileID: 1398048495}
   - {fileID: 2133103561}
   - {fileID: 1835077400}
   - {fileID: 379926631}
   - {fileID: 1527024347}
-  - {fileID: 1398048495}
   m_Father: {fileID: 613756747}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1301,7 +1301,7 @@ MonoBehaviour:
   deckViewer: {fileID: 1515610955}
   healthBarPanel: {fileID: 1427563643}
   healPercent: 0.3
-  exitDelay: 1.5
+  exitDelay: 1
 --- !u!1 &904799013
 GameObject:
   m_ObjectHideFlags: 0

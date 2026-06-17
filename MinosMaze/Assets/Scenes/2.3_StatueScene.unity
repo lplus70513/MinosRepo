@@ -389,6 +389,9 @@ MonoBehaviour:
     descriptionText: {fileID: 2049036365}
     costText: {fileID: 2049036364}
   leaveButton: {fileID: 1769936959}
+  deckViewer: {fileID: 2064784175}
+  rewardConfig: {fileID: 11400000, guid: d9898f0919b265243b6544774bee7dda, type: 2}
+  cardPreviewDuration: 2
   exitDelay: 1
 --- !u!1 &186416475
 GameObject:
@@ -2350,11 +2353,11 @@ RectTransform:
   - {fileID: 1954200497}
   - {fileID: 2000177154}
   - {fileID: 380073132}
+  - {fileID: 1616066203}
   - {fileID: 191985943}
   - {fileID: 438516587}
   - {fileID: 668385963}
   - {fileID: 652456215}
-  - {fileID: 1616066203}
   m_Father: {fileID: 1909361986}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}

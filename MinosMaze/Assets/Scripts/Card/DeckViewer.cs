@@ -629,6 +629,69 @@ public class DeckViewer : MonoBehaviour
         if (cardContainer != null) cardContainer.gameObject.SetActive(false);
     }
 
+    // ========== 纯展示模式（不可互动，延迟后自动关闭） ==========
+
+    public void ShowPreviewCards(List<Card> cards, float duration, Action onComplete)
+    {
+        previousTimeScale = Time.timeScale;
+        Time.timeScale = 0f;
+
+        CreateOverlay();
+        SetSortingGroups();
+        if (panelBackgroundImage != null) panelBackgroundImage.enabled = false;
+        if (viewerPanel != null) viewerPanel.SetActive(true);
+        if (cardContainer != null) cardContainer.gameObject.SetActive(true);
+
+        foreach (Transform child in cardContainer)
+            Destroy(child.gameObject);
+
+        Vector3 worldCenter = new Vector3(
+            Camera.main.transform.position.x,
+            Camera.main.transform.position.y, 0f);
+        Vector3 basePos = cardContainer.InverseTransformPoint(worldCenter);
+
+        float totalWidth = (cards.Count - 1) * spacing.x;
+        float startX = basePos.x - totalWidth / 2f;
+
+        for (int i = 0; i < cards.Count; i++)
+        {
+            Vector3 pos = new Vector3(startX + i * spacing.x, basePos.y, basePos.z);
+            GameObject cardObj = Instantiate(cardPrefab, cardContainer);
+            cardObj.transform.localPosition = pos;
+            cardObj.transform.localScale = Vector3.one * previewCardScale;
+
+            CardView cardView = cardObj.GetComponent<CardView>();
+            if (cardView != null)
+                cardView.SetUp(cards[i]);
+
+            foreach (Collider col in cardObj.GetComponentsInChildren<Collider>(true))
+                col.enabled = false;
+        }
+
+        scrollOffset = 0f;
+        maxScrollOffset = 0f;
+        cardContainer.localPosition = cardContainerBasePos;
+
+        StartCoroutine(PreviewDurationCoroutine(duration, onComplete));
+    }
+
+    private IEnumerator PreviewDurationCoroutine(float duration, Action onComplete)
+    {
+        yield return new WaitForSecondsRealtime(duration);
+
+        if (CardViewHoverSystem.Instance != null)
+            CardViewHoverSystem.Instance.Hide();
+
+        DestroyOverlay();
+        RestoreSortingGroups();
+        if (panelBackgroundImage != null) panelBackgroundImage.enabled = true;
+
+        Time.timeScale = previousTimeScale;
+        if (viewerPanel != null) viewerPanel.SetActive(false);
+        if (cardContainer != null) cardContainer.gameObject.SetActive(false);
+
+        onComplete?.Invoke();
+    }
 }
 
 public class CardGridClickHandler : MonoBehaviour

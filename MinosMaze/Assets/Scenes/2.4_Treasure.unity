@@ -3079,11 +3079,11 @@ RectTransform:
   - {fileID: 191691656}
   - {fileID: 1864469851}
   - {fileID: 1747173785}
+  - {fileID: 43764069}
   - {fileID: 614142045}
   - {fileID: 682536792}
   - {fileID: 1798018646}
   - {fileID: 2001519143}
-  - {fileID: 43764069}
   m_Father: {fileID: 328567732}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}

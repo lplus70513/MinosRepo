@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,6 +16,11 @@ public class StatueSceneController : MonoBehaviour
 
     [Header("离开按钮")]
     [SerializeField] private Button leaveButton;
+
+    [Header("卡牌操作")]
+    [SerializeField] private DeckViewer deckViewer;
+    [SerializeField] private RewardConfig rewardConfig;
+    [SerializeField] private float cardPreviewDuration = 2f;
 
     [Header("配置")]
     [SerializeField] private float exitDelay = 1f;
@@ -52,7 +58,7 @@ public class StatueSceneController : MonoBehaviour
         Shuffle(females);
 
         List<StatueData> selected;
-        if (Random.value < 0.5f)
+        if (UnityEngine.Random.value < 0.5f)
             selected = new List<StatueData> { males[0], males[1], females[0] };
         else
             selected = new List<StatueData> { females[0], females[1], males[0] };
@@ -62,7 +68,7 @@ public class StatueSceneController : MonoBehaviour
         {
             assignedStatues[i] = selected[i];
             var blessings = selected[i].blessings;
-            assignedBlessings[i] = blessings[Random.Range(0, blessings.Count)];
+            assignedBlessings[i] = blessings[UnityEngine.Random.Range(0, blessings.Count)];
         }
     }
 
@@ -112,13 +118,18 @@ public class StatueSceneController : MonoBehaviour
 
         DeductCost(blessing);
         GrantBlessing(statue, blessing);
-        ExecuteImmediateEffect(blessing);
         ApplySpecialInteractions(statue);
 
         for (int i = 0; i < slots.Count; i++)
             slots[i].infoPanel.SetActive(false);
 
-        StartCoroutine(DelayedExit());
+        if (IsCardOperation(blessing.effectType))
+            ExecuteCardOperation(blessing, () => StartCoroutine(DelayedExit()));
+        else
+        {
+            ExecuteImmediateEffect(blessing);
+            StartCoroutine(DelayedExit());
+        }
     }
 
     private void OnLeave()
@@ -194,7 +205,7 @@ public class StatueSceneController : MonoBehaviour
             blessings.Add(new ActiveBlessing(b.blessingId, statue.statueName, b.effectType, b.effectValue));
     }
 
-    // ========== 即时效果 ==========
+    // ========== 即时效果（简单资源类） ==========
 
     private void ExecuteImmediateEffect(BlessingEntry b)
     {
@@ -215,14 +226,139 @@ public class StatueSceneController : MonoBehaviour
                 state.maxHealth += b.effectValue;
                 state.currentHealth += b.effectValue;
                 break;
+        }
+    }
+
+    // ========== 卡牌操作 ==========
+
+    private bool IsCardOperation(BlessingEffectType type)
+    {
+        return type == BlessingEffectType.DeleteCard
+            || type == BlessingEffectType.GainRandomCard
+            || type == BlessingEffectType.TransformCard
+            || type == BlessingEffectType.UpgradeCards
+            || type == BlessingEffectType.DeleteAndGiveCards;
+    }
+
+    private void ExecuteCardOperation(BlessingEntry b, Action onComplete)
+    {
+        switch (b.effectType)
+        {
             case BlessingEffectType.DeleteCard:
+                DoDeleteCard(onComplete);
+                break;
             case BlessingEffectType.GainRandomCard:
+                DoGainRandomCard(onComplete);
+                break;
             case BlessingEffectType.TransformCard:
+                DoTransformCard(onComplete);
+                break;
             case BlessingEffectType.UpgradeCards:
+                DoUpgradeCards(b.effectValue, onComplete);
+                break;
             case BlessingEffectType.DeleteAndGiveCards:
-                Debug.Log($"[StatueScene] \u5361\u724C\u64CD\u4F5C\u6548\u679C {b.effectType} \u5C06\u5728\u5B50\u4EFB\u52A13\u4E2D\u5B9E\u73B0");
+                DoDeleteAndGiveCards(onComplete);
+                break;
+            default:
+                onComplete?.Invoke();
                 break;
         }
+    }
+
+    private void DoDeleteCard(Action onComplete)
+    {
+        var deck = GameManager.Instance.WorldMapState.currentDeck;
+        deckViewer.OpenForSelection(deck, (entry) =>
+        {
+            deck.Remove(entry);
+            onComplete?.Invoke();
+        }, () => onComplete?.Invoke());
+    }
+
+    private void DoGainRandomCard(Action onComplete)
+    {
+        CardData newCard = GetRandomCardFromPool();
+        if (newCard == null) { onComplete?.Invoke(); return; }
+
+        GameManager.Instance.WorldMapState.currentDeck.Add(new DeckCardEntry(newCard, false));
+
+        var previewCards = new List<Card> { new Card(newCard) };
+        deckViewer.ShowPreviewCards(previewCards, cardPreviewDuration, onComplete);
+    }
+
+    private void DoTransformCard(Action onComplete)
+    {
+        var deck = GameManager.Instance.WorldMapState.currentDeck;
+        deckViewer.OpenForSelection(deck, (entry) =>
+        {
+            deck.Remove(entry);
+
+            CardData newCard = GetRandomCardFromPool();
+            if (newCard != null)
+            {
+                deck.Add(new DeckCardEntry(newCard, false));
+                var previewCards = new List<Card> { new Card(newCard) };
+                deckViewer.ShowPreviewCards(previewCards, cardPreviewDuration, onComplete);
+            }
+            else
+            {
+                onComplete?.Invoke();
+            }
+        }, () => onComplete?.Invoke());
+    }
+
+    private void DoUpgradeCards(int remaining, Action onComplete)
+    {
+        var deck = GameManager.Instance.WorldMapState.currentDeck;
+        var upgradeable = deck.FindAll(e => !e.IsUpgraded && e.CardData != null && e.CardData.UpgradeGrade != null);
+
+        if (remaining <= 0 || upgradeable.Count == 0)
+        {
+            onComplete?.Invoke();
+            return;
+        }
+
+        deckViewer.OpenForSelection(upgradeable, (entry) =>
+        {
+            entry.IsUpgraded = true;
+            DoUpgradeCards(remaining - 1, onComplete);
+        }, () => onComplete?.Invoke(), upgradePreview: true);
+    }
+
+    private void DoDeleteAndGiveCards(Action onComplete)
+    {
+        var deck = GameManager.Instance.WorldMapState.currentDeck;
+        deckViewer.OpenForSelection(deck, (entry) =>
+        {
+            deck.Remove(entry);
+
+            CardData card1 = GetRandomCardFromPool();
+            CardData card2 = GetRandomCardFromPool();
+
+            var previewCards = new List<Card>();
+            if (card1 != null)
+            {
+                deck.Add(new DeckCardEntry(card1, false));
+                previewCards.Add(new Card(card1));
+            }
+            if (card2 != null)
+            {
+                deck.Add(new DeckCardEntry(card2, false));
+                previewCards.Add(new Card(card2));
+            }
+
+            if (previewCards.Count > 0)
+                deckViewer.ShowPreviewCards(previewCards, cardPreviewDuration, onComplete);
+            else
+                onComplete?.Invoke();
+        }, () => onComplete?.Invoke());
+    }
+
+    private CardData GetRandomCardFromPool()
+    {
+        if (rewardConfig == null || rewardConfig.lootCardPool == null || rewardConfig.lootCardPool.Count == 0)
+            return null;
+        return rewardConfig.lootCardPool[UnityEngine.Random.Range(0, rewardConfig.lootCardPool.Count)];
     }
 
     // ========== 特殊交互 ==========
@@ -271,7 +407,7 @@ public class StatueSceneController : MonoBehaviour
     {
         for (int i = list.Count - 1; i > 0; i--)
         {
-            int j = Random.Range(0, i + 1);
+            int j = UnityEngine.Random.Range(0, i + 1);
             (list[i], list[j]) = (list[j], list[i]);
         }
     }
