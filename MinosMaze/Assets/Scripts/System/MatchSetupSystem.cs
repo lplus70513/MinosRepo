@@ -132,6 +132,9 @@ public class MatchSetupSystem : MonoBehaviour
         foreach (var enemy in EnemySystem.Instance.Enemies)
             enemy.ShowIntents();
 
+        _ = BlessingSystem.Instance;
+        BlessingSystem.Instance.ApplyBattleStartBlessings();
+
         Debug.Log($"[MatchSetupSystem] === 抽牌 === scene={gameObject.scene.name}");
         DrawCardsGA drawCardsGA = new(5);
         ActionSystem.Instance.Perform(drawCardsGA);

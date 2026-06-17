@@ -23,13 +23,16 @@ public class DamageSystem : MonoBehaviour
         int totalUnblocked = 0;
         foreach (var target in dealDamageGA.Targets)
         {
+            if (target == null) continue;
             for (int h = 0; h < dealDamageGA.HitCount; h++)
             {
+                if (target == null) break;
                 int modifiedDamage = CalculateModifiedDamage(dealDamageGA.Amount, dealDamageGA.Caster, target);
                 target.Damage(modifiedDamage);
                 totalUnblocked += target.LastUnblockedDamage;
                 SpawnDamageVFX(target);
                 yield return new WaitForSeconds(0.1f);
+                if (target == null) break;
                 if (target.CurrentHealth == 0 && target is EnemyView)
                 {
                     KillEnemyGA killEnemyGA = new((EnemyView)target);
@@ -81,7 +84,7 @@ public class DamageSystem : MonoBehaviour
 
     private void SpawnDamageVFX(CombatantView target)
     {
-        if (damageVFX != null)
+        if (damageVFX != null && target != null)
         {
             Vector3 pos = new Vector3(target.transform.position.x, target.transform.position.y + 1, target.transform.position.z);
             GameObject vfxInstance = Instantiate(damageVFX, pos, Quaternion.identity);

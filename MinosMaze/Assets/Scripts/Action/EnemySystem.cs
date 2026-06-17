@@ -222,6 +222,7 @@ public class EnemySystem : Singleton<EnemySystem>
     private IEnumerator AttackHeroPerformer(AttackHeroGA attackHeroGA)
     {
         EnemyView attacker = attackHeroGA.Attacker;
+        if (attacker == null) yield break;
         HeroView heroView = HeroSystem.Instance.HeroView;
         EnemyAction action = attackHeroGA.Action;
 
