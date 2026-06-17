@@ -2349,6 +2349,7 @@ GameObject:
   - component: {fileID: 1747173784}
   - component: {fileID: 1747173783}
   - component: {fileID: 1747173782}
+  - component: {fileID: 1747173786}
   m_Layer: 5
   m_Name: "\u724C\u7EC4"
   m_TagString: NoFade
@@ -2457,6 +2458,24 @@ RectTransform:
   m_AnchoredPosition: {x: 699.6, y: 470.8}
   m_SizeDelta: {x: 120, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1747173786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1747173781}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46b9e61ac0ffc9549bbe9a3dcc869687, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.08
+  hoverDuration: 0.1
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 3
+  hitExpandRadius: 10
+  hitAlphaThreshold: 0.1
 --- !u!1 &1756180501
 GameObject:
   m_ObjectHideFlags: 0
@@ -2578,6 +2597,7 @@ GameObject:
   - component: {fileID: 1864469854}
   - component: {fileID: 1864469853}
   - component: {fileID: 1864469852}
+  - component: {fileID: 1864469855}
   m_Layer: 5
   m_Name: "\u8BBE\u7F6E"
   m_TagString: NoFade
@@ -2698,6 +2718,24 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1864469850}
   m_CullTransparentMesh: 1
+--- !u!114 &1864469855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1864469850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46b9e61ac0ffc9549bbe9a3dcc869687, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.08
+  hoverDuration: 0.1
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 3
+  hitExpandRadius: 10
+  hitAlphaThreshold: 0.1
 --- !u!1 &1899791549
 GameObject:
   m_ObjectHideFlags: 0

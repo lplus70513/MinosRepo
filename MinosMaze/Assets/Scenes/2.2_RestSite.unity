@@ -1314,6 +1314,7 @@ GameObject:
   - component: {fileID: 904799017}
   - component: {fileID: 904799016}
   - component: {fileID: 904799015}
+  - component: {fileID: 904799018}
   m_Layer: 5
   m_Name: "\u8BBE\u7F6E"
   m_TagString: NoFade
@@ -1434,6 +1435,24 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 904799013}
   m_CullTransparentMesh: 1
+--- !u!114 &904799018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 904799013}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46b9e61ac0ffc9549bbe9a3dcc869687, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.08
+  hoverDuration: 0.1
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 3
+  hitExpandRadius: 10
+  hitAlphaThreshold: 0.1
 --- !u!1 &1007803145
 GameObject:
   m_ObjectHideFlags: 0
@@ -2328,6 +2347,7 @@ GameObject:
   - component: {fileID: 1463365787}
   - component: {fileID: 1463365786}
   - component: {fileID: 1463365785}
+  - component: {fileID: 1463365788}
   m_Layer: 5
   m_Name: "\u724C\u7EC4"
   m_TagString: NoFade
@@ -2436,6 +2456,24 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1463365783}
   m_CullTransparentMesh: 1
+--- !u!114 &1463365788
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1463365783}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46b9e61ac0ffc9549bbe9a3dcc869687, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.08
+  hoverDuration: 0.1
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 3
+  hitExpandRadius: 10
+  hitAlphaThreshold: 0.1
 --- !u!1 &1515610953
 GameObject:
   m_ObjectHideFlags: 0
