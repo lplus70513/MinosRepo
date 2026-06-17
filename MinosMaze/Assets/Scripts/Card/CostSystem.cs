@@ -33,6 +33,12 @@ public class CostSystem : Singleton<CostSystem>
         return currentCost >= cost;
     }
 
+    public void AddCost(int amount)
+    {
+        currentCost += amount;
+        if (costUI != null) costUI.UpdateCostText(currentCost);
+    }
+
     private IEnumerator SpendCostPerformer(SpendCostGA action)
     {
         if (CardSystem.Instance.FreePlayRemaining > 0)

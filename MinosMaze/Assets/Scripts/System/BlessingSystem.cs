@@ -59,10 +59,10 @@ public class BlessingSystem : Singleton<BlessingSystem>
             }
         }
 
-        if (totalMovePoints > 0)
-            ActionSystem.Instance.Perform(new AddMovePointsGA(totalMovePoints));
-        if (totalActionPoints > 0)
-            ActionSystem.Instance.Perform(new GainCostGA(totalActionPoints));
+        if (totalMovePoints > 0 && PlayerMovementSystem.Instance != null)
+            PlayerMovementSystem.Instance.AddMovementPoints(totalMovePoints);
+        if (totalActionPoints > 0 && CostSystem.Instance != null)
+            CostSystem.Instance.AddCost(totalActionPoints);
     }
 
     private void OnEnemyTurnPost(EnemyTurnGA ga)

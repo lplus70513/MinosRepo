@@ -213,6 +213,11 @@ public class PlayerMovementSystem : Singleton<PlayerMovementSystem>
         yield return null;
     }
 
+    public void AddMovementPoints(int amount)
+    {
+        RemainingMovementPoints += amount;
+    }
+
     private void OnEnemyTurnPost(EnemyTurnGA ga)
     {
         RemainingMovementPoints = 1;
