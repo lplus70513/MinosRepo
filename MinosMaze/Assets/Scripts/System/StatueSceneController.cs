@@ -14,6 +14,9 @@ public class StatueSceneController : MonoBehaviour
     [Header("UI - 3个雕像槽位")]
     [SerializeField] private List<StatueSlotUI> slots;
 
+    [Header("UI")]
+    [SerializeField] private HealthBarPanel healthBarPanel;
+
     [Header("离开按钮")]
     [SerializeField] private Button leaveButton;
 
@@ -32,6 +35,15 @@ public class StatueSceneController : MonoBehaviour
 
     void Start()
     {
+        GameManager gm = GameManager.Instance;
+        if (gm != null && gm.WorldMapState != null)
+        {
+            if (gm.WorldMapState.currentDeck != null)
+                CardSystem.Instance.SetUp(gm.WorldMapState.currentDeck);
+            if (healthBarPanel != null)
+                healthBarPanel.SetupWorldMap(gm.WorldMapState.maxHealth, gm.WorldMapState.currentHealth);
+        }
+
         SelectStatues();
 
         for (int i = 0; i < 3; i++)

@@ -388,6 +388,7 @@ MonoBehaviour:
     nameText: {fileID: 2049036366}
     descriptionText: {fileID: 2049036365}
     costText: {fileID: 2049036364}
+  healthBarPanel: {fileID: 410984496}
   leaveButton: {fileID: 1769936959}
   deckViewer: {fileID: 2064784175}
   rewardConfig: {fileID: 11400000, guid: d9898f0919b265243b6544774bee7dda, type: 2}
