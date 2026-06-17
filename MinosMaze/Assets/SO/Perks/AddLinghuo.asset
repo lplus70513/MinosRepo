@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 289c8e7f72535104f993816b3b528144, type: 3}
+  m_Name: AddLinghuo
+  m_EditorClassIdentifier: 
+  <Image>k__BackingField: {fileID: 0}
+  <PerkCondition>k__BackingField:
+    rid: 1965764450232303654
+  <AutoTargetEffect>k__BackingField:
+    rid: 1965764450232303655
+  <UseAutoTarget>k__BackingField: 1
+  <UseActionAsTarget>k__BackingField: 0
+  <PersistArmor>k__BackingField: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 1965764450232303654
+      type: {class: OnTurnStartCondition, ns: , asm: Assembly-CSharp}
+      data:
+        reactionTiming: 0
+    - rid: 1965764450232303655
+      type: {class: AutoTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 1965764450232303656
+        <Effect>k__BackingField:
+          rid: 1965764450232303658
+    - rid: 1965764450232303656
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764450232303658
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        statusEffectType: 7
+        stackCount: 0
