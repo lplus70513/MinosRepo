@@ -14,14 +14,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Description>k__BackingField: "\u7ED9\u81EA\u8EAB\u589E\u52A08\u70B9\u683C\u6321\u503C\uFF0C\u654C\u4EBA\u672C\u56DE\u5408\u6BCF\u653B\u51FB\u4E00\u6B21\u73A9\u5BB6\u5C31\u53D7\u52302\u70B9\u4F24\u5BB3"
   <Cost>k__BackingField: 2
-  <ActionPointCost>k__BackingField: 0
-  <Image>k__BackingField: {fileID: 0}
-  <Background>k__BackingField: {fileID: 0}
+  <Image>k__BackingField: {fileID: 1709695921, guid: 1ed825c84a4d3aa438bfa70d107b81fb, type: 3}
+  <Background>k__BackingField: {fileID: 1370473001, guid: 7e9643d6638fe744ca4f76a79d6457f3, type: 3}
   <HasAttackRange>k__BackingField: 0
   <AttackRange>k__BackingField: 1
   <ManualTargetEffect>k__BackingField:
     rid: -2
-  <OtherEffects>k__BackingField: []
+  <OtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1965764450232303623
+    <Effect>k__BackingField:
+      rid: 1965764450232303624
+  - <TargetMode>k__BackingField:
+      rid: 1965764450232303625
+    <Effect>k__BackingField:
+      rid: 1965764450232303626
   <IsInnate>k__BackingField: 0
   <IsExhaust>k__BackingField: 0
   <IsRetain>k__BackingField: 0
@@ -32,8 +39,7 @@ MonoBehaviour:
   <BaseGrade>k__BackingField:
     <Name>k__BackingField: "\u5E26\u523A\u76FE"
     <Description>k__BackingField: "\u7ED9\u81EA\u8EAB\u589E\u52A08\u70B9\u683C\u6321\u503C\uFF0C\u654C\u4EBA\u672C\u56DE\u5408\u6BCF\u653B\u51FB\u4E00\u6B21\u73A9\u5BB6\u5C31\u53D7\u52302\u70B9\u4F24\u5BB3"
-    <Cost>k__BackingField: 0
-    <ActionPointCost>k__BackingField: 0
+    <Cost>k__BackingField: 2
     <HasAttackRange>k__BackingField: 0
     <AttackRange>k__BackingField: 1
     <ManualTargetEffect>k__BackingField:
@@ -43,6 +49,10 @@ MonoBehaviour:
         rid: 1965764299068538904
       <Effect>k__BackingField:
         rid: 1965764299068538905
+    - <TargetMode>k__BackingField:
+        rid: 1965764450232303620
+      <Effect>k__BackingField:
+        rid: 1965764450232303622
     <IsInnate>k__BackingField: 0
     <IsExhaust>k__BackingField: 0
     <IsRetain>k__BackingField: 0
@@ -54,12 +64,19 @@ MonoBehaviour:
     <Name>k__BackingField: "\u5E26\u523A\u76FE+"
     <Description>k__BackingField: "\u7ED9\u81EA\u8EAB\u589E\u52A012\u70B9\u683C\u6321\u503C\uFF0C\u654C\u4EBA\u672C\u56DE\u5408\u6BCF\u653B\u51FB\u4E00\u6B21\u73A9\u5BB6\u5C31\u53D7\u52303\u70B9\u4F24\u5BB3"
     <Cost>k__BackingField: 2
-    <ActionPointCost>k__BackingField: 0
     <HasAttackRange>k__BackingField: 0
     <AttackRange>k__BackingField: 1
     <ManualTargetEffect>k__BackingField:
       rid: -2
-    <OtherEffects>k__BackingField: []
+    <OtherEffects>k__BackingField:
+    - <TargetMode>k__BackingField:
+        rid: 1965764450232303616
+      <Effect>k__BackingField:
+        rid: 1965764450232303617
+    - <TargetMode>k__BackingField:
+        rid: 1965764450232303618
+      <Effect>k__BackingField:
+        rid: 1965764450232303619
     <IsInnate>k__BackingField: 0
     <IsExhaust>k__BackingField: 0
     <IsRetain>k__BackingField: 0
@@ -80,3 +97,40 @@ MonoBehaviour:
       data:
         statusEffectType: 0
         stackCount: 8
+    - rid: 1965764450232303616
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764450232303617
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        statusEffectType: 0
+        stackCount: 12
+    - rid: 1965764450232303618
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764450232303619
+      type: {class: SpikedShieldEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 3
+    - rid: 1965764450232303620
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764450232303622
+      type: {class: SpikedShieldEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 2
+    - rid: 1965764450232303623
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764450232303624
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        statusEffectType: 0
+        stackCount: 8
+    - rid: 1965764450232303625
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764450232303626
+      type: {class: SpikedShieldEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 2

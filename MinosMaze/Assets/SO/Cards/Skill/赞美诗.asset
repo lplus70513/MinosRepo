@@ -14,18 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Description>k__BackingField: "\u4E0B1\u6B21\u654C\u4EBA\u7684\u653B\u51FB\u4E0D\u5BF9\u4F60\u9020\u6210\u4F24\u5BB3\u3002"
   <Cost>k__BackingField: 2
-  <ActionPointCost>k__BackingField: 0
   <Image>k__BackingField: {fileID: 1709695921, guid: 1ed825c84a4d3aa438bfa70d107b81fb, type: 3}
   <Background>k__BackingField: {fileID: 1370473001, guid: 7e9643d6638fe744ca4f76a79d6457f3, type: 3}
   <HasAttackRange>k__BackingField: 0
   <AttackRange>k__BackingField: 1
   <ManualTargetEffect>k__BackingField:
     rid: -2
-  <OtherEffects>k__BackingField:
-  - <TargetMode>k__BackingField:
-      rid: 1965764339896156165
-    <Effect>k__BackingField:
-      rid: 1965764339896156166
+  <OtherEffects>k__BackingField: []
   <IsInnate>k__BackingField: 0
   <IsExhaust>k__BackingField: 0
   <IsRetain>k__BackingField: 0
@@ -37,7 +32,6 @@ MonoBehaviour:
     <Name>k__BackingField: "\u8D5E\u7F8E\u8BD7"
     <Description>k__BackingField: "\u4E0B1\u6B21\u654C\u4EBA\u7684\u653B\u51FB\u4E0D\u5BF9\u4F60\u9020\u6210\u4F24\u5BB3\u3002"
     <Cost>k__BackingField: 2
-    <ActionPointCost>k__BackingField: 0
     <HasAttackRange>k__BackingField: 0
     <AttackRange>k__BackingField: 1
     <ManualTargetEffect>k__BackingField:
@@ -54,7 +48,6 @@ MonoBehaviour:
     <Name>k__BackingField: "\u8D5E\u7F8E\u8BD7+"
     <Description>k__BackingField: "\u4E0B2\u6B21\u654C\u4EBA\u7684\u653B\u51FB\u4E0D\u5BF9\u4F60\u9020\u6210\u4F24\u5BB3\u3002"
     <Cost>k__BackingField: 2
-    <ActionPointCost>k__BackingField: 0
     <HasAttackRange>k__BackingField: 0
     <AttackRange>k__BackingField: 1
     <ManualTargetEffect>k__BackingField:
@@ -72,11 +65,3 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 1965764339896156165
-      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
-      data: 
-    - rid: 1965764339896156166
-      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
-      data:
-        statusEffectType: 0
-        stackCount: 0

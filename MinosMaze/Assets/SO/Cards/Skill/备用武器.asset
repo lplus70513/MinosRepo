@@ -12,15 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02002abe5e65cfb4184b51fd307203e9, type: 3}
   m_Name: "\u5907\u7528\u6B66\u5668"
   m_EditorClassIdentifier: 
-  <Description>k__BackingField: 
-  <Cost>k__BackingField: 0
-  <Image>k__BackingField: {fileID: 0}
-  <Background>k__BackingField: {fileID: 0}
+  <Description>k__BackingField: "\u62BD3\u5F20\u724C, \u5C061\u5F20\u724C\u653E\u56DE\u62BD\u724C\u5806"
+  <Cost>k__BackingField: 1
+  <Image>k__BackingField: {fileID: 1709695921, guid: 1ed825c84a4d3aa438bfa70d107b81fb, type: 3}
+  <Background>k__BackingField: {fileID: 1370473001, guid: 7e9643d6638fe744ca4f76a79d6457f3, type: 3}
   <HasAttackRange>k__BackingField: 0
   <AttackRange>k__BackingField: 1
   <ManualTargetEffect>k__BackingField:
     rid: -2
-  <OtherEffects>k__BackingField: []
+  <OtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1965764450232303627
+    <Effect>k__BackingField:
+      rid: 1965764450232303628
+  - <TargetMode>k__BackingField:
+      rid: 1965764450232303629
+    <Effect>k__BackingField:
+      rid: 1965764450232303630
   <IsInnate>k__BackingField: 0
   <IsExhaust>k__BackingField: 0
   <IsRetain>k__BackingField: 0
@@ -29,14 +37,22 @@ MonoBehaviour:
   <AttackRangePattern>k__BackingField:
     rid: -2
   <BaseGrade>k__BackingField:
-    <Name>k__BackingField: 
-    <Description>k__BackingField: 
-    <Cost>k__BackingField: 0
+    <Name>k__BackingField: "\u5907\u7528\u6B66\u5668"
+    <Description>k__BackingField: "\u62BD3\u5F20\u724C, \u5C061\u5F20\u724C\u653E\u56DE\u62BD\u724C\u5806"
+    <Cost>k__BackingField: 1
     <HasAttackRange>k__BackingField: 0
     <AttackRange>k__BackingField: 1
     <ManualTargetEffect>k__BackingField:
       rid: -2
-    <OtherEffects>k__BackingField: []
+    <OtherEffects>k__BackingField:
+    - <TargetMode>k__BackingField:
+        rid: 1965764436403159065
+      <Effect>k__BackingField:
+        rid: 1965764436403159066
+    - <TargetMode>k__BackingField:
+        rid: 1965764436403159067
+      <Effect>k__BackingField:
+        rid: 1965764436403159068
     <IsInnate>k__BackingField: 0
     <IsExhaust>k__BackingField: 0
     <IsRetain>k__BackingField: 0
@@ -45,14 +61,22 @@ MonoBehaviour:
     <AttackRangePattern>k__BackingField:
       rid: -2
   <UpgradeGrade>k__BackingField:
-    <Name>k__BackingField: 
-    <Description>k__BackingField: 
-    <Cost>k__BackingField: 0
+    <Name>k__BackingField: "\u5907\u7528\u6B66\u5668+"
+    <Description>k__BackingField: "\u62BD4\u5F20\u724C, \u5C061\u5F20\u724C\u653E\u56DE\u62BD\u724C\u5806"
+    <Cost>k__BackingField: 1
     <HasAttackRange>k__BackingField: 0
     <AttackRange>k__BackingField: 1
     <ManualTargetEffect>k__BackingField:
       rid: -2
-    <OtherEffects>k__BackingField: []
+    <OtherEffects>k__BackingField:
+    - <TargetMode>k__BackingField:
+        rid: 1965764436403159069
+      <Effect>k__BackingField:
+        rid: 1965764436403159070
+    - <TargetMode>k__BackingField:
+        rid: 1965764436403159071
+      <Effect>k__BackingField:
+        rid: 1965764436403159072
     <IsInnate>k__BackingField: 0
     <IsExhaust>k__BackingField: 0
     <IsRetain>k__BackingField: 0
@@ -65,3 +89,42 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+    - rid: 1965764436403159065
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764436403159066
+      type: {class: DrawCardEffects, ns: , asm: Assembly-CSharp}
+      data:
+        drawAmount: 3
+    - rid: 1965764436403159067
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764436403159068
+      type: {class: ReturnToDrawPileEffect, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764436403159069
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764436403159070
+      type: {class: DrawCardEffects, ns: , asm: Assembly-CSharp}
+      data:
+        drawAmount: 4
+    - rid: 1965764436403159071
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764436403159072
+      type: {class: ReturnToDrawPileEffect, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764450232303627
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764450232303628
+      type: {class: DrawCardEffects, ns: , asm: Assembly-CSharp}
+      data:
+        drawAmount: 3
+    - rid: 1965764450232303629
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764450232303630
+      type: {class: ReturnToDrawPileEffect, ns: , asm: Assembly-CSharp}
+      data: 

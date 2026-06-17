@@ -14,14 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Description>k__BackingField: "\u5BF9\u654C\u4EBA\u9020\u62107\u70B9\u4F24\u5BB3\uFF0C\u82E5\u654C\u4EBA\u62E5\u6709\u865A\u5F31\u5219\u6B64\u724C\u8017\u80FD\u53D8\u4E3A0\u3002"
   <Cost>k__BackingField: 1
-  <ActionPointCost>k__BackingField: 0
   <Image>k__BackingField: {fileID: 775603959, guid: 394d2fe82ccd87f41b6163a042ebd5f9, type: 3}
   <Background>k__BackingField: {fileID: 2004051598, guid: c6dd1d8aa674a1342a0e69187a61a93b, type: 3}
   <HasAttackRange>k__BackingField: 1
   <AttackRange>k__BackingField: 1
   <ManualTargetEffect>k__BackingField:
     rid: 1965764273140137993
-  <OtherEffects>k__BackingField: []
+  <OtherEffects>k__BackingField:
+  - <TargetMode>k__BackingField:
+      rid: 1965764450232303639
+    <Effect>k__BackingField:
+      rid: 1965764450232303638
   <IsInnate>k__BackingField: 0
   <IsExhaust>k__BackingField: 0
   <IsRetain>k__BackingField: 0
@@ -30,15 +33,19 @@ MonoBehaviour:
   <AttackRangePattern>k__BackingField:
     rid: -2
   <BaseGrade>k__BackingField:
-    <Name>k__BackingField: 
-    <Description>k__BackingField: 
-    <Cost>k__BackingField: 0
-    <ActionPointCost>k__BackingField: 0
+    <Name>k__BackingField: "\u8D81\u52BF\u6253\u51FB"
+    <Description>k__BackingField: "\u5BF9\u654C\u4EBA\u9020\u62107\u70B9\u4F24\u5BB3,
+      \u82E5\u654C\u4EBA\u62E5\u6709\u865A\u5F31\u5219\u6B64\u724C\u8017\u80FD\u53D8\u4E3A0"
+    <Cost>k__BackingField: 1
     <HasAttackRange>k__BackingField: 0
     <AttackRange>k__BackingField: 1
     <ManualTargetEffect>k__BackingField:
-      rid: -2
-    <OtherEffects>k__BackingField: []
+      rid: 1965764450232303644
+    <OtherEffects>k__BackingField:
+    - <TargetMode>k__BackingField:
+        rid: 1965764450232303640
+      <Effect>k__BackingField:
+        rid: 1965764450232303641
     <IsInnate>k__BackingField: 0
     <IsExhaust>k__BackingField: 0
     <IsRetain>k__BackingField: 0
@@ -47,15 +54,19 @@ MonoBehaviour:
     <AttackRangePattern>k__BackingField:
       rid: -2
   <UpgradeGrade>k__BackingField:
-    <Name>k__BackingField: 
-    <Description>k__BackingField: 
-    <Cost>k__BackingField: 0
-    <ActionPointCost>k__BackingField: 0
+    <Name>k__BackingField: "\u8D81\u52BF\u6253\u51FB+"
+    <Description>k__BackingField: "\u5BF9\u654C\u4EBA\u9020\u62109\u70B9\u4F24\u5BB3,
+      \u82E5\u654C\u4EBA\u62E5\u6709\u865A\u5F31\u5219\u6B64\u724C\u8017\u80FD\u53D8\u4E3A0"
+    <Cost>k__BackingField: 1
     <HasAttackRange>k__BackingField: 0
     <AttackRange>k__BackingField: 1
     <ManualTargetEffect>k__BackingField:
-      rid: -2
-    <OtherEffects>k__BackingField: []
+      rid: 1965764450232303645
+    <OtherEffects>k__BackingField:
+    - <TargetMode>k__BackingField:
+        rid: 1965764450232303642
+      <Effect>k__BackingField:
+        rid: 1965764450232303643
     <IsInnate>k__BackingField: 0
     <IsExhaust>k__BackingField: 0
     <IsRetain>k__BackingField: 0
@@ -72,4 +83,35 @@ MonoBehaviour:
       type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
       data:
         damageAmount: 7
+        hitCount: 1
+    - rid: 1965764450232303638
+      type: {class: WeaknessCostEffect, ns: , asm: Assembly-CSharp}
+      data:
+        costAmount: 0
+    - rid: 1965764450232303639
+      type: {class: NoTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764450232303640
+      type: {class: NoTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764450232303641
+      type: {class: WeaknessCostEffect, ns: , asm: Assembly-CSharp}
+      data:
+        costAmount: 0
+    - rid: 1965764450232303642
+      type: {class: NoTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764450232303643
+      type: {class: WeaknessCostEffect, ns: , asm: Assembly-CSharp}
+      data:
+        costAmount: 0
+    - rid: 1965764450232303644
+      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 7
+        hitCount: 1
+    - rid: 1965764450232303645
+      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 9
         hitCount: 1

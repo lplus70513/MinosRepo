@@ -12,13 +12,55 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02002abe5e65cfb4184b51fd307203e9, type: 3}
   m_Name: "\u7FFB\u8D8A\u6491\u51FB"
   m_EditorClassIdentifier: 
-  <Description>k__BackingField: 
-  <Cost>k__BackingField: 0
+  <Description>k__BackingField: "\u5F53\u4E0E\u654C\u4EBA\u9762\u5BF9\u9762\uFF08\u5373\u89D2\u8272\u4E0E\u654C\u4EBA\u4E2D\u95F4\u6CA1\u6709\u683C\u5B50\uFF09\u65F6,
+    \u79FB\u52A8\u5230\u654C\u4EBA\u7684\u80CC\u540E"
+  <Cost>k__BackingField: 1
   <Image>k__BackingField: {fileID: 0}
   <Background>k__BackingField: {fileID: 0}
+  <HasAttackRange>k__BackingField: 0
+  <AttackRange>k__BackingField: 1
   <ManualTargetEffect>k__BackingField:
     rid: -2
   <OtherEffects>k__BackingField: []
+  <IsInnate>k__BackingField: 0
+  <IsExhaust>k__BackingField: 0
+  <IsRetain>k__BackingField: 0
+  <CanHitFlying>k__BackingField: 0
+  <IsAttackCard>k__BackingField: 0
+  <AttackRangePattern>k__BackingField:
+    rid: -2
+  <BaseGrade>k__BackingField:
+    <Name>k__BackingField: 
+    <Description>k__BackingField: 
+    <Cost>k__BackingField: 0
+    <HasAttackRange>k__BackingField: 0
+    <AttackRange>k__BackingField: 1
+    <ManualTargetEffect>k__BackingField:
+      rid: -2
+    <OtherEffects>k__BackingField: []
+    <IsInnate>k__BackingField: 0
+    <IsExhaust>k__BackingField: 0
+    <IsRetain>k__BackingField: 0
+    <CanHitFlying>k__BackingField: 0
+    <IsAttackCard>k__BackingField: 0
+    <AttackRangePattern>k__BackingField:
+      rid: -2
+  <UpgradeGrade>k__BackingField:
+    <Name>k__BackingField: 
+    <Description>k__BackingField: 
+    <Cost>k__BackingField: 0
+    <HasAttackRange>k__BackingField: 0
+    <AttackRange>k__BackingField: 1
+    <ManualTargetEffect>k__BackingField:
+      rid: -2
+    <OtherEffects>k__BackingField: []
+    <IsInnate>k__BackingField: 0
+    <IsExhaust>k__BackingField: 0
+    <IsRetain>k__BackingField: 0
+    <CanHitFlying>k__BackingField: 0
+    <IsAttackCard>k__BackingField: 0
+    <AttackRangePattern>k__BackingField:
+      rid: -2
   references:
     version: 2
     RefIds:
