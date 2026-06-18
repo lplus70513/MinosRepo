@@ -134,4 +134,21 @@ public class BlessingSystem : Singleton<BlessingSystem>
         DealDamageGA damageGA = new(amount, 1, targets, hero);
         ActionSystem.Instance.Perform(damageGA);
     }
+
+    public bool TryResurrect(HeroView hero, System.Action onResurrect = null)
+    {
+        var blessings = GameManager.Instance?.WorldMapState?.activeBlessings;
+        if (blessings == null) return false;
+
+        var resurrect = blessings.Find(b => b.effectType == BlessingEffectType.Resurrection);
+        if (resurrect == null) return false;
+
+        int reviveHP = Mathf.CeilToInt(hero.MaxHealth * 0.3f);
+        hero.SetCurrentHealth(reviveHP);
+        blessings.Remove(resurrect);
+
+        onResurrect?.Invoke();
+
+        return true;
+    }
 }

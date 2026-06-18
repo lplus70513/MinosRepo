@@ -80,6 +80,10 @@ public class BattleResultSystem : Singleton<BattleResultSystem>
         if (_battleEnded) return;
         var hero = HeroSystem.Instance?.HeroView;
         if (hero == null || hero.CurrentHealth > 0) return;
+
+        if (BlessingSystem.Instance != null && BlessingSystem.Instance.TryResurrect(hero))
+            return;
+
         _battleEnded = true;
         ActionSystem.Instance.AddReaction(new BattleLoseGA());
     }
