@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
     [Header("大地图配置")]
     [SerializeField] private string worldMapSceneName = "2.0_WorldMap";
     [SerializeField] private HeroData heroData;
+    [SerializeField] private CardDatabase cardDatabase;
 
     [Header("场景切换渐变")]
     [SerializeField] private float fadeOutDuration = 0.3f;
@@ -46,6 +47,8 @@ public class GameManager : MonoBehaviour
     private string currentEncounterScene;
 
     private bool isStartingGame;
+
+    public bool IsInGame { get; private set; }
 
     private void Awake()
     {
@@ -103,11 +106,16 @@ public class GameManager : MonoBehaviour
         if (SettingsPanel != null)
         {
             SettingsPanel.SetActive(true);
+
+            var sm = SettingsPanel.GetComponent<SettingManager>();
+            if (sm == null) sm = SettingsPanel.GetComponentInChildren<SettingManager>();
+            if (sm != null) sm.RefreshButtons(IsInGame);
+
             Debug.Log("设置面板已打开");
         }
         else
         {
-            Debug.LogError("设置SettingsPanel 引用未赋值！请检查场景0的Inspector。");
+            Debug.LogError("SettingsPanel 引用未赋值！请检查场景0的Inspector。");
         }
     }
 
@@ -142,7 +150,10 @@ public class GameManager : MonoBehaviour
 
     public void GameStart()
     {
-        NewGame();
+        if (SaveSystem.HasSave())
+            ContinueGame();
+        else
+            NewGame();
     }
 
     // ========== 大地图场景管理 ==========
@@ -181,6 +192,7 @@ public class GameManager : MonoBehaviour
         yield return SceneTransitionSystem.Instance.BlackScreenWait();
         yield return SceneTransitionSystem.Instance.FadeIn();
         isStartingGame = false;
+        IsInGame = true;
     }
 
     // 保存大地图状态（由 WorldMapMovementSystem 在场景跳转前调用）
@@ -305,11 +317,59 @@ public class GameManager : MonoBehaviour
 
         yield return SceneTransitionSystem.Instance.BlackScreenWait();
         yield return SceneTransitionSystem.Instance.FadeIn();
+        IsInGame = false;
     }
 
     // GameOver：移动点耗尽且未到 BOSS 格（暂留空）
     public void OnGameOver()
     {
         Debug.Log("[GameManager] 移动点耗尽，游戏失败");
+    }
+
+    // ========== 存档相关 ==========
+
+    public void ContinueGame()
+    {
+        if (isStartingGame) return;
+        isStartingGame = true;
+        SceneTransitionSystem.Instance.StartCoroutine(ContinueGameRoutine());
+    }
+
+    private IEnumerator ContinueGameRoutine()
+    {
+        yield return SceneTransitionSystem.Instance.FadeOut();
+
+        WorldMapState loaded = SaveSystem.Load(cardDatabase);
+        if (loaded != null)
+        {
+            WorldMapState = loaded;
+        }
+
+        if (SceneManager.GetSceneByName("1_MainMenu").isLoaded)
+            SceneManager.UnloadSceneAsync("1_MainMenu");
+        if (SceneManager.GetSceneByName("1_Mainmenu").isLoaded)
+            SceneManager.UnloadSceneAsync("1_Mainmenu");
+
+        SceneManager.LoadScene(worldMapSceneName, LoadSceneMode.Additive);
+        yield return null;
+
+        yield return SceneTransitionSystem.Instance.BlackScreenWait();
+        yield return SceneTransitionSystem.Instance.FadeIn();
+        isStartingGame = false;
+        IsInGame = true;
+    }
+
+    public void AbandonGame()
+    {
+        SaveSystem.DeleteSave();
+        CloseSettings();
+        ReturnToMainMenu();
+    }
+
+    public void SaveAndExit()
+    {
+        SaveSystem.Save(WorldMapState);
+        CloseSettings();
+        ReturnToMainMenu();
     }
 }
