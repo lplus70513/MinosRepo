@@ -196,7 +196,7 @@ public class WorldMapMovementSystem : Singleton<WorldMapMovementSystem>
     }
 
     // 将当前状态保存到 GameManager（用于跨场景恢复）
-    private void SaveStateToGameManager()
+    public void SaveStateToGameManager()
     {
         GameManager gm = GameManager.Instance;
         if (gm == null) return;

@@ -255,12 +255,14 @@ public class GameManager : MonoBehaviour
     {
         yield return SceneTransitionSystem.Instance.FadeOut();
 
-        if (!string.IsNullOrEmpty(currentEncounterScene))
+        if (!string.IsNullOrEmpty(currentEncounterScene)
+            && SceneManager.GetSceneByName(currentEncounterScene).isLoaded)
         {
             AsyncOperation unload = SceneManager.UnloadSceneAsync(currentEncounterScene);
             if (unload != null)
                 yield return unload;
         }
+        currentEncounterScene = null;
         SceneManager.LoadScene(worldMapSceneName, LoadSceneMode.Additive);
         yield return null;
         SceneManager.SetActiveScene(SceneManager.GetSceneByName(worldMapSceneName));
@@ -279,7 +281,8 @@ public class GameManager : MonoBehaviour
     {
         yield return SceneTransitionSystem.Instance.FadeOut();
 
-        if (!string.IsNullOrEmpty(currentEncounterScene))
+        if (!string.IsNullOrEmpty(currentEncounterScene)
+            && SceneManager.GetSceneByName(currentEncounterScene).isLoaded)
         {
             AsyncOperation unload = SceneManager.UnloadSceneAsync(currentEncounterScene);
             if (unload != null)
@@ -305,12 +308,14 @@ public class GameManager : MonoBehaviour
     {
         yield return SceneTransitionSystem.Instance.FadeOut();
 
-        if (!string.IsNullOrEmpty(currentEncounterScene))
+        if (!string.IsNullOrEmpty(currentEncounterScene)
+            && SceneManager.GetSceneByName(currentEncounterScene).isLoaded)
         {
             AsyncOperation unload = SceneManager.UnloadSceneAsync(currentEncounterScene);
             if (unload != null)
                 yield return unload;
         }
+        currentEncounterScene = null;
         if (SceneManager.GetSceneByName(worldMapSceneName).isLoaded)
         {
             AsyncOperation unload = SceneManager.UnloadSceneAsync(worldMapSceneName);
@@ -371,6 +376,9 @@ public class GameManager : MonoBehaviour
 
     public void SaveAndExit()
     {
+        if (WorldMapMovementSystem.Instance != null)
+            WorldMapMovementSystem.Instance.SaveStateToGameManager();
+
         SaveSystem.Save(WorldMapState);
         CloseSettings();
         ReturnToMainMenu();
