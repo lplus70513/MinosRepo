@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: d60c93e837669bd4f941b43480a7e9db
+guid: 85cffc94a4839c84f9aa4731430c9b35
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -95,40 +95,18 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites:
-    - serializedVersion: 2
-      name: Cost_2_0
-      rect:
-        serializedVersion: 2
-        x: 41
-        y: 31
-        width: 46
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: fca690e304dd24348ab5dccb22171b76
-      internalID: -2108266079
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
+    sprites: []
     outline: []
     physicsShape: []
     bones: []
-    spriteID: bad727d4713bd364bbb69bb6c84850f0
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable:
-      Cost_2_0: -2108266079
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
