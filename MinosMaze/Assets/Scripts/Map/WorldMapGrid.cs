@@ -95,6 +95,13 @@ public class WorldMapGrid : HexGrid
         cellTypeLayout.Clear();
 
         GameManager gm = GameManager.Instance;
+
+        if (GameManager.PendingNewGame)
+        {
+            GameManager.PendingNewGame = false;
+            gm.ResetWorldMapStateForNewGame();
+        }
+
         if (gm != null && gm.WorldMapState != null
             && !gm.WorldMapState.isNewGame
             && gm.WorldMapState.cellLayout.Count > 0)

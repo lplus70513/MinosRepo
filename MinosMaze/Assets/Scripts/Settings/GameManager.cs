@@ -48,6 +48,8 @@ public class GameManager : MonoBehaviour
 
     private bool isStartingGame;
 
+    public static bool PendingNewGame { get; set; }
+
     public bool IsInGame
     {
         get
@@ -91,9 +93,9 @@ public class GameManager : MonoBehaviour
         }
         SceneTransitionSystem.Instance.SetConfig(fadeOutDuration, fadeInDuration, blackScreenDuration, overlaySortingOrder, dontCoverTag);
 
-        if (SceneManager.GetSceneByName("1_Mainmenu").isLoaded == false)
+        if (SceneManager.GetSceneByName("1_MainMenu").isLoaded == false)
         {
-            SceneManager.LoadScene("1_Mainmenu", LoadSceneMode.Additive);
+            SceneManager.LoadScene("1_MainMenu", LoadSceneMode.Additive);
         }
 
         if (SettingsPanel == null)
@@ -106,6 +108,19 @@ public class GameManager : MonoBehaviour
                 Debug.Log("�Զ��ҵ��� SettingsPanel��");
             }
         }
+    }
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStaticFields()
+    {
+        _instance = null;
+        PendingNewGame = false;
+    }
+
+    private void OnDestroy()
+    {
+        if (_instance == this)
+            _instance = null;
     }
 
     public void OpenSettings()
@@ -131,7 +146,6 @@ public class GameManager : MonoBehaviour
         if (SettingsPanel != null)
         {
             SettingsPanel.SetActive(false);
-            Debug.Log("设置面板已关闭");
         }
     }
 
@@ -173,15 +187,14 @@ public class GameManager : MonoBehaviour
         SceneTransitionSystem.Instance.StartCoroutine(NewGameRoutine());
     }
 
-    private IEnumerator NewGameRoutine()
+    public void ResetWorldMapStateForNewGame()
     {
-        yield return SceneTransitionSystem.Instance.FadeOut();
-
         WorldMapState = new WorldMapState();
         WorldMapState.playerPosX = -999;
         WorldMapState.playerPosZ = -999;
         WorldMapState.stringCount = 15;
         WorldMapState.gold = 50;
+        WorldMapState.isNewGame = true;
         if (heroData != null)
         {
             WorldMapState.maxHealth = heroData.Health;
@@ -190,6 +203,14 @@ public class GameManager : MonoBehaviour
                 ? heroData.Deck.FindAll(cd => cd != null).ConvertAll(cd => new DeckCardEntry(cd, false))
                 : new List<DeckCardEntry>();
         }
+    }
+
+    private IEnumerator NewGameRoutine()
+    {
+        yield return SceneTransitionSystem.Instance.FadeOut();
+
+        Instance.ResetWorldMapStateForNewGame();
+        PendingNewGame = true;
         if (SceneManager.GetSceneByName("1_MainMenu").isLoaded)
             SceneManager.UnloadSceneAsync("1_MainMenu");
         SceneManager.LoadScene(worldMapSceneName, LoadSceneMode.Additive);
@@ -301,6 +322,7 @@ public class GameManager : MonoBehaviour
     // 战斗失败时返回主菜单
     public void ReturnToMainMenu()
     {
+        isStartingGame = false;
         SceneTransitionSystem.Instance.StartCoroutine(ReturnToMainMenuRoutine());
     }
 
@@ -322,8 +344,8 @@ public class GameManager : MonoBehaviour
             if (unload != null)
                 yield return unload;
         }
-        if (!SceneManager.GetSceneByName("1_Mainmenu").isLoaded)
-            SceneManager.LoadScene("1_Mainmenu", LoadSceneMode.Additive);
+        if (!SceneManager.GetSceneByName("1_MainMenu").isLoaded)
+            SceneManager.LoadScene("1_MainMenu", LoadSceneMode.Additive);
 
         yield return SceneTransitionSystem.Instance.BlackScreenWait();
         yield return SceneTransitionSystem.Instance.FadeIn();
@@ -348,16 +370,14 @@ public class GameManager : MonoBehaviour
     {
         yield return SceneTransitionSystem.Instance.FadeOut();
 
-        WorldMapState loaded = SaveSystem.Load(cardDatabase);
+        WorldMapState loaded = SaveSystem.Load(Instance.cardDatabase);
         if (loaded != null)
         {
-            WorldMapState = loaded;
+            Instance.WorldMapState = loaded;
         }
 
         if (SceneManager.GetSceneByName("1_MainMenu").isLoaded)
             SceneManager.UnloadSceneAsync("1_MainMenu");
-        if (SceneManager.GetSceneByName("1_Mainmenu").isLoaded)
-            SceneManager.UnloadSceneAsync("1_Mainmenu");
 
         SceneManager.LoadScene(worldMapSceneName, LoadSceneMode.Additive);
         yield return null;
@@ -370,6 +390,8 @@ public class GameManager : MonoBehaviour
     public void AbandonGame()
     {
         SaveSystem.DeleteSave();
+        isStartingGame = false;
+        currentEncounterScene = null;
         CloseSettings();
         ReturnToMainMenu();
     }
