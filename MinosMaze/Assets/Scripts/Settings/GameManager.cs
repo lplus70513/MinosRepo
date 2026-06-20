@@ -48,7 +48,15 @@ public class GameManager : MonoBehaviour
 
     private bool isStartingGame;
 
-    public bool IsInGame { get; private set; }
+    public bool IsInGame
+    {
+        get
+        {
+            return SceneManager.GetSceneByName(worldMapSceneName).isLoaded
+                || (!string.IsNullOrEmpty(currentEncounterScene)
+                    && SceneManager.GetSceneByName(currentEncounterScene).isLoaded);
+        }
+    }
 
     private void Awake()
     {
@@ -108,10 +116,8 @@ public class GameManager : MonoBehaviour
             SettingsPanel.SetActive(true);
 
             var sm = SettingsPanel.GetComponent<SettingManager>();
-            if (sm == null) sm = SettingsPanel.GetComponentInChildren<SettingManager>();
+            if (sm == null) sm = SettingsPanel.GetComponentInChildren<SettingManager>(true);
             if (sm != null) sm.RefreshButtons(IsInGame);
-
-            Debug.Log("设置面板已打开");
         }
         else
         {
@@ -192,7 +198,6 @@ public class GameManager : MonoBehaviour
         yield return SceneTransitionSystem.Instance.BlackScreenWait();
         yield return SceneTransitionSystem.Instance.FadeIn();
         isStartingGame = false;
-        IsInGame = true;
     }
 
     // 保存大地图状态（由 WorldMapMovementSystem 在场景跳转前调用）
@@ -317,7 +322,6 @@ public class GameManager : MonoBehaviour
 
         yield return SceneTransitionSystem.Instance.BlackScreenWait();
         yield return SceneTransitionSystem.Instance.FadeIn();
-        IsInGame = false;
     }
 
     // GameOver：移动点耗尽且未到 BOSS 格（暂留空）
@@ -356,7 +360,6 @@ public class GameManager : MonoBehaviour
         yield return SceneTransitionSystem.Instance.BlackScreenWait();
         yield return SceneTransitionSystem.Instance.FadeIn();
         isStartingGame = false;
-        IsInGame = true;
     }
 
     public void AbandonGame()
