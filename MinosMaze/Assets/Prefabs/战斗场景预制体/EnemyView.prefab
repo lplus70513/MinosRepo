@@ -92,11 +92,11 @@ MonoBehaviour:
   canvasGroup: {fileID: 1504215487609977776}
   intentUIPrefab: {fileID: 8198827249511099942}
   fadeDuration: 0.5
-  attackSprite: {fileID: 21300000, guid: 3f6df12d0ea3365468f38516c101da80, type: 3}
-  moveSprite: {fileID: 21300000, guid: 6d3b37536db1f434e8fbe1d8bec6c12f, type: 3}
-  defenseSprite: {fileID: 21300000, guid: 6d3b37536db1f434e8fbe1d8bec6c12f, type: 3}
-  buffSprite: {fileID: 21300000, guid: 6d3b37536db1f434e8fbe1d8bec6c12f, type: 3}
-  debuffSprite: {fileID: 21300000, guid: 6d3b37536db1f434e8fbe1d8bec6c12f, type: 3}
+  attackSprite: {fileID: 1167233741, guid: f9ffe777f1ef88f4894e498c4caa76a3, type: 3}
+  moveSprite: {fileID: 1830869308, guid: 4063f05f283595b4b9f3ee9a1096387e, type: 3}
+  defenseSprite: {fileID: 1723982374, guid: b8bc86815fe7a5348b803d7838d21148, type: 3}
+  buffSprite: {fileID: 1192658996, guid: 1d38183e10a8950449e41a0edcdce44f, type: 3}
+  debuffSprite: {fileID: 2124776761, guid: 58dc60cf19f6ffb4b910764854bad920, type: 3}
 --- !u!223 &2347804588404241586
 Canvas:
   m_ObjectHideFlags: 0

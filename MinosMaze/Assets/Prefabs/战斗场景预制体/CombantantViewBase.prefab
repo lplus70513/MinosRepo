@@ -125,8 +125,8 @@ MonoBehaviour:
   statusEffectUIPrefab: {fileID: 288063843096682586, guid: 2896e3ca3f95db04dbd0a57de4b85a0a, type: 3}
   armorSprite: {fileID: 21300000, guid: 8d8069e26314fff4d93d7ca57357447f, type: 3}
   bleedSprite: {fileID: 0}
-  strengthSprite: {fileID: 0}
-  weaknessSprite: {fileID: 0}
+  strengthSprite: {fileID: 460414416, guid: b130d5909dfd61c458b45d42cdfb95cc, type: 3}
+  weaknessSprite: {fileID: 821622222, guid: 8e5d3d034d7091942820d2aebdafe26d, type: 3}
   vulnerableSprite: {fileID: 0}
   fortifySprite: {fileID: 0}
   fragileSprite: {fileID: 0}

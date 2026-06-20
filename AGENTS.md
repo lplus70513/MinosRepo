@@ -21,7 +21,7 @@
 ## Architecture: Action/Reaction system
 The core gameplay engine is a custom event pipeline — **not** UnityEvents or C# events:
 - `ActionSystem` singleton manages `GameAction` subclasses (30+ types in `Action/GameAction/`)
-- Key actions: `PlayCardGA`, `DealDamageGA`, `KillEnemyGA`, `MoveGA`, `DrawCardsGA`, `EnemyTurnGA`, `AttackHeroGA`, `AddStatusEffectGA`, `BattleWinGA`, `BattleLoseGA`, `RefillCostGA`, `DiscardAllCardsGA`
+- Key actions: `PlayCardGA`, `PerformEffectGA`, `DealDamageGA`, `KillEnemyGA`, `MoveGA`, `DrawCardsGA`, `EnemyTurnGA`, `AttackHeroGA`, `AddStatusEffectGA`, `BattleWinGA`, `BattleLoseGA`, `RefillCostGA`, `DiscardAllCardsGA`, `MultiGA`, `AddPerkGA`, `GainCostGA`, `SpendCostGA`
 - Each `GameAction` has three reaction lists: `PreReactions`, `PerformReactions`, `PostReactions`
 - Flow order per action: PreSubscribers → PreReactions → Performer → PerformReactions → PostSubscribers → PostReactions
 - Systems register via `ActionSystem.AttachPerformer<T>(Func<T, IEnumerator>)`
@@ -35,7 +35,8 @@ The core gameplay engine is a custom event pipeline — **not** UnityEvents or C
 
 ## Serialization: SREditor
 - Embedded package at `MinosMaze/Assets/SREditor/` enables `[SerializeReference]` for polymorphic types
-- `Effect`, `TargetMode`, `PerkCondition`, and `AutoTargetEffect` abstract classes in `.asset` files use this — do not break the reference chain
+- `Effect`, `TargetMode`, and `PerkCondition` abstract classes in `.asset` files use this — do not break the reference chain
+- `AutoTargetEffect` is a **concrete** class (not abstract) — it holds `[SerializeReference]` fields for `TargetMode` + `Effect`, used by `PerkData`
 
 ## Singleton pattern
 - `Singleton<T>` base class (at `Action/Class/Singleton.cs`) auto-creates instances via `FindObjectOfType` or `new GameObject`
@@ -44,8 +45,8 @@ The core gameplay engine is a custom event pipeline — **not** UnityEvents or C
 
 ## Effects system
 - `Effect` abstract base class: `Card/Class/Effect.cs`
-- Concrete Effect subclasses live in `Data/Effects/` (16+ types):
-  `DealDamageEffect`, `DrawCardEffects` (note: class name has trailing 's'), `AddStatusEffectEffect`, `AddCardToHandEffect`, `AddMovePointsEffect`, `AddPerkEffect`, `BonusDrawEffect`, `DealArmorDamageEffect`, `DoubleStatusEffect`, `FreePlayEffect`, `GainActionPointsEffect`, `IfAttackedThisTurnEffect`, `MultiEffect`, `PullTargetEffect`, `RandomPlayFromHandEffect`, `ReturnToDrawPileEffect`, `StepBackEffect`
+- Concrete Effect subclasses live in `Data/Effects/` (21 types):
+  `DealDamageEffect`, `DrawCardEffects` (class name has trailing 's', but file is `DrawCardEffect.cs`), `AddStatusEffectEffect`, `AddCardToHandEffect`, `AddMovePointsEffect`, `AddPerkEffect`, `BonusCostEffect`, `BonusDrawEffect`, `ChargeEffect`, `DealArmorDamageEffect`, `DoubleStatusEffect`, `FreePlayEffect`, `GainCostEffect`, `IfAttackedThisTurnEffect`, `MultiEffect`, `PullTargetEffect`, `RandomPlayFromHandEffect`, `ReturnToDrawPileEffect`, `SpikedShieldEffect`, `StepBackEffect`, `WeaknessCostEffect`
 - `BleedEffect` and `WeaknessEffect` have no C# class files — only serialized references in `.asset` cards. Their `GetGameAction()` returns `null`.
 
 ## Status effects
@@ -58,6 +59,7 @@ The core gameplay engine is a custom event pipeline — **not** UnityEvents or C
 ## Perk system
 - `PerkSystem` singleton (located at `Data/Perk/PerkSystem.cs`) holds a `List<Perk>`. `Perk` subscribes to game actions via `PerkCondition` and queues `AutoTargetEffect` as a new `GameAction` when conditions are met.
 - `PerkCondition` subclasses (7 total, in `Scripts/PerkCondition/`): `OnEnemyAttackCondition`, `OnAttackCardPlayedCondition`, `OnBleedAppliedCondition`, `OnCardDrawnCondition`, `OnTurnEndCondition`, `OnTurnStartCondition`, `OnUnblockedDamageCondition`
+- Base class `PerkCondition` is at `Data/Perk/PerkCondition.cs`, subclasses at `Scripts/PerkCondition/`
 
 ## Animation & rendering
 - **DOTween** (`MinosMaze/Assets/Plugin/DOTween/`): all tweening (card movement, hand arrangement, damage shake, card discard scaling)
@@ -79,13 +81,13 @@ The core gameplay engine is a custom event pipeline — **not** UnityEvents or C
 | `Scripts/Action/GameAction/` | 30+ GameAction subclasses |
 | `Scripts/Action/` (root) | Also contains `EnemySystem.cs`, `DamageSystem.cs` |
 | `Scripts/Card/` | Card system, hand view, cost (`CardSystem`, `CostSystem`, `CardViewHoverSystem`) |
-| `Scripts/Card/Class/` | Base classes: `Card.cs`, `Effect.cs`, `TargetMode.cs` |
+| `Scripts/Card/Class/` | Base classes: `Card.cs`, `Effect.cs`, `TargetMode.cs`, `AutoTargetEffect.cs`, `CardGradeData.cs` |
 | `Scripts/Data/` | ScriptableObject data: cards, heroes, enemies, perks, targets |
-| `Scripts/Data/Effects/` | All concrete `Effect` subclasses (16+) |
-| `Scripts/Data/Perk/` | `PerkSystem.cs`, `Perk.cs`, `AutoTargetEffect` subclasses |
+| `Scripts/Data/Effects/` | All concrete `Effect` subclasses (21 total) |
+| `Scripts/Data/Perk/` | `PerkSystem.cs`, `Perk.cs`, `PerkData.cs`, `PerkCondition.cs` (base), `PerksUI.cs` |
 | `Scripts/Data/Hero & Enemy/` | `EnemyViewCreator.cs`, hero/enemy data |
 | `Scripts/Map/` | Hex grid (`HexGrid`, `HexCell`, `HexMetrics`, `HexMove`, `HexPathfinder`) and world map (`WorldMapGrid`, `WorldMapState`) |
-| `Scripts/System/` | `HeroSystem`, `MoveSystem`, `MatchSetupSystem`, `Interactions`, `StatusEffectSystem`, `CameraController`, `ManualTargetSystem`, `BattleResultSystem`, `RewardSystem`, `SceneTransitionSystem`, `MapCollapseSystem`, `WorldMapMovementSystem`, `WorldMapPlayerSystem`, `PlayerMovementSystem`, `HexRayCast` |
+| `Scripts/System/` | `HeroSystem`, `MoveSystem`, `MatchSetupSystem`, `Interactions`, `StatusEffectSystem`, `CameraController`, `ManualTargetSystem`, `BattleResultSystem`, `RewardSystem`, `SceneTransitionSystem`, `MapCollapseSystem`, `WorldMapMovementSystem`, `WorldMapPlayerSystem`, `PlayerMovementSystem`, `HexRayCast`, `BlessingSystem`, `StatueSceneController`, `RestSiteController`, `TreasureController` |
 | `Scripts/Settings/` | `GameManager`, `SettingManager` (stub), `UIBinder`, `QuitGame` |
 | `Scripts/Views/` | MVC views (`CombatantView`, `HeroView`, `EnemyView`, `WorldMapPlayerView`) |
 | `Scripts/UI/` | UI components (`StatusEffectsUI`, `CostUI`, `HealthBarUI`, `EndTurnButtonUI`) |
