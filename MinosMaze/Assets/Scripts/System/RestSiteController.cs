@@ -61,9 +61,6 @@ public class RestSiteController : MonoBehaviour
     {
         if (button == null) return;
 
-        if (button.GetComponent<UIHoverEffect>() == null)
-            button.gameObject.AddComponent<UIHoverEffect>();
-
         EventTrigger trigger = button.GetComponent<EventTrigger>();
         if (trigger == null)
             trigger = button.gameObject.AddComponent<EventTrigger>();
