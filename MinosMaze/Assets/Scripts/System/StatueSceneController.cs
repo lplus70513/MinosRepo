@@ -146,6 +146,8 @@ public class StatueSceneController : MonoBehaviour
 
     private void OnLeave()
     {
+        if (leaveButton != null)
+            leaveButton.interactable = false;
         GameManager.Instance.ExitEncounter();
     }
 

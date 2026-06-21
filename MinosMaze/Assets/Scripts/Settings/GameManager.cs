@@ -47,6 +47,7 @@ public class GameManager : MonoBehaviour
     private string currentEncounterScene;
 
     private bool isStartingGame;
+    private bool isExitingEncounter;
 
     public static bool PendingNewGame { get; set; }
 
@@ -265,6 +266,9 @@ public class GameManager : MonoBehaviour
     // 退出遭遇子场景：标记当前格为已清除，卸载子场景，重新加载大地图
     public void ExitEncounter()
     {
+        if (isExitingEncounter) return;
+        isExitingEncounter = true;
+
         Vector2Int cell = new(WorldMapState.playerPosX, WorldMapState.playerPosZ);
         if (!WorldMapState.clearedCells.Contains(cell))
             WorldMapState.clearedCells.Add(cell);
@@ -290,6 +294,8 @@ public class GameManager : MonoBehaviour
 
         yield return SceneTransitionSystem.Instance.BlackScreenWait();
         yield return SceneTransitionSystem.Instance.FadeIn();
+
+        isExitingEncounter = false;
     }
 
     // 从一个遭遇场景重定向到另一个遭遇场景（如宝箱怪跳转战斗）
