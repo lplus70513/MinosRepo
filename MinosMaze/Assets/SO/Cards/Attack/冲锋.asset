@@ -16,8 +16,8 @@ MonoBehaviour:
   <Cost>k__BackingField: 2
   <Image>k__BackingField: {fileID: 775603959, guid: 394d2fe82ccd87f41b6163a042ebd5f9, type: 3}
   <Background>k__BackingField: {fileID: 2004051598, guid: c6dd1d8aa674a1342a0e69187a61a93b, type: 3}
-  <HasAttackRange>k__BackingField: 1
-  <AttackRange>k__BackingField: 2
+  <HasAttackRange>k__BackingField: 0
+  <AttackRange>k__BackingField: 3
   <ManualTargetEffect>k__BackingField:
     rid: 1965764450232303650
   <OtherEffects>k__BackingField: []
@@ -27,13 +27,13 @@ MonoBehaviour:
   <CanHitFlying>k__BackingField: 0
   <IsAttackCard>k__BackingField: 1
   <AttackRangePattern>k__BackingField:
-    rid: 1965764450232303660
+    rid: 1965764545516666880
   <BaseGrade>k__BackingField:
     <Name>k__BackingField: "\u51B2\u950B\uFF01"
     <Description>k__BackingField: "\u5411\u524D\u51B2\u523A3\u683C\uFF0C\u5BF9\u8DEF\u5F84\u4E0A\u7684\u654C\u4EBA\u9020\u62108\u70B9\u4F24\u5BB3\uFF0C\u649E\u51FB\u5230\u7B2C\u4E00\u4E2A\u654C\u4EBA\u540E\u505C\u4E0B\uFF0C\u5E76\u51FB\u9000\u654C\u4EBA\u4E00\u683C\u3002"
     <Cost>k__BackingField: 2
     <HasAttackRange>k__BackingField: 1
-    <AttackRange>k__BackingField: 1
+    <AttackRange>k__BackingField: 3
     <ManualTargetEffect>k__BackingField:
       rid: 1965764450232303651
     <OtherEffects>k__BackingField: []
@@ -43,13 +43,13 @@ MonoBehaviour:
     <CanHitFlying>k__BackingField: 0
     <IsAttackCard>k__BackingField: 0
     <AttackRangePattern>k__BackingField:
-      rid: 1965764450232303660
+      rid: 1965764545516666881
   <UpgradeGrade>k__BackingField:
     <Name>k__BackingField: "\u51B2\u950B\uFF01+"
     <Description>k__BackingField: "\u5411\u524D\u51B2\u523A3\u683C\uFF0C\u5BF9\u8DEF\u5F84\u4E0A\u7684\u654C\u4EBA\u9020\u621010\u70B9\u4F24\u5BB3\uFF0C\u649E\u51FB\u5230\u7B2C\u4E00\u4E2A\u654C\u4EBA\u540E\u505C\u4E0B\uFF0C\u5E76\u51FB\u9000\u654C\u4EBA\u4E00\u683C\u3002"
     <Cost>k__BackingField: 2
     <HasAttackRange>k__BackingField: 1
-    <AttackRange>k__BackingField: 2
+    <AttackRange>k__BackingField: 3
     <ManualTargetEffect>k__BackingField:
       rid: 1965764450232303652
     <OtherEffects>k__BackingField: []
@@ -59,12 +59,10 @@ MonoBehaviour:
     <CanHitFlying>k__BackingField: 0
     <IsAttackCard>k__BackingField: 0
     <AttackRangePattern>k__BackingField:
-      rid: 1965764450232303660
+      rid: 1965764545516666882
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
     - rid: 1965764450232303650
       type: {class: ChargeEffect, ns: , asm: Assembly-CSharp}
       data:
@@ -80,7 +78,15 @@ MonoBehaviour:
       data:
         range: 3
         damageAmount: 10
-    - rid: 1965764450232303660
+    - rid: 1965764545516666880
       type: {class: LineRange, ns: , asm: Assembly-CSharp}
       data:
-        length: 3
+        length: 2
+    - rid: 1965764545516666881
+      type: {class: LineRange, ns: , asm: Assembly-CSharp}
+      data:
+        length: 2
+    - rid: 1965764545516666882
+      type: {class: LineRange, ns: , asm: Assembly-CSharp}
+      data:
+        length: 2

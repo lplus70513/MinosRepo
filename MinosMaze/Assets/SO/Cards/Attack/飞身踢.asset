@@ -31,7 +31,7 @@ MonoBehaviour:
   <CanHitFlying>k__BackingField: 0
   <IsAttackCard>k__BackingField: 1
   <AttackRangePattern>k__BackingField:
-    rid: -2
+    rid: 1965764545516666886
   <BaseGrade>k__BackingField:
     <Name>k__BackingField: "\u98DE\u8EAB\u8E22"
     <Description>k__BackingField: "\u5BF9\u654C\u4EBA\u9020\u62104\u70B9\u4F24\u5BB3,
@@ -52,7 +52,7 @@ MonoBehaviour:
     <CanHitFlying>k__BackingField: 0
     <IsAttackCard>k__BackingField: 1
     <AttackRangePattern>k__BackingField:
-      rid: -2
+      rid: 1965764545516666887
   <UpgradeGrade>k__BackingField:
     <Name>k__BackingField: "\u98DE\u8EAB\u8E22+"
     <Description>k__BackingField: "\u5BF9\u654C\u4EBA\u9020\u62104\u70B9\u4F24\u5BB3,
@@ -73,12 +73,10 @@ MonoBehaviour:
     <CanHitFlying>k__BackingField: 0
     <IsAttackCard>k__BackingField: 1
     <AttackRangePattern>k__BackingField:
-      rid: -2
+      rid: 1965764545516666888
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
     - rid: 1965764257158791235
       type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
       data:
@@ -112,3 +110,15 @@ MonoBehaviour:
     - rid: 1965764257158791243
       type: {class: StepBackEffect, ns: , asm: Assembly-CSharp}
       data: 
+    - rid: 1965764545516666886
+      type: {class: LineRange, ns: , asm: Assembly-CSharp}
+      data:
+        length: 2
+    - rid: 1965764545516666887
+      type: {class: LineRange, ns: , asm: Assembly-CSharp}
+      data:
+        length: 2
+    - rid: 1965764545516666888
+      type: {class: LineRange, ns: , asm: Assembly-CSharp}
+      data:
+        length: 2
