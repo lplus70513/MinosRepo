@@ -118,7 +118,7 @@ public class StatusEffectsUI : MonoBehaviour
         }
     }
 
-    private Sprite GetSpriteByType(StatusEffectType statusEffectType)
+    public Sprite GetSpriteByType(StatusEffectType statusEffectType)
     {
         return statusEffectType switch
         {

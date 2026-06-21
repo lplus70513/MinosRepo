@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
 using Spine;
@@ -17,6 +18,8 @@ public class CombatantView : MonoBehaviour
     [SerializeField] private Transform portraitRoot;
 
     [SerializeField] private StatusEffectsUI statusEffectsUI;
+
+    [SerializeField] private CombatantTooltipUI tooltipUI;
 
     public int HexCoordX { get; set; }
     public int HexCoordZ { get; set; }
@@ -79,6 +82,48 @@ public class CombatantView : MonoBehaviour
             col.size = new Vector3(2f, 3f, 1f);
             col.center = new Vector3(0f, 1.5f, 0f);
         }
+
+        tooltipUI = GetComponentInChildren<CombatantTooltipUI>(true);
+        if (tooltipUI == null)
+        {
+            tooltipUI = CreateTooltipChild();
+        }
+        if (tooltipUI != null)
+        {
+            tooltipUI.gameObject.SetActive(false);
+            Debug.Log($"[CombatantView] {name} tooltipUI 已连线, activeSelf={tooltipUI.gameObject.activeSelf}");
+        }
+    }
+
+    private CombatantTooltipUI CreateTooltipChild()
+    {
+        Transform parent = portraitRoot != null ? portraitRoot : transform;
+
+        GameObject go = new GameObject("CombatantTooltipUI");
+        go.transform.SetParent(parent, false);
+        go.transform.localPosition = new Vector3(2.5f, 1.5f, 0f);
+        go.transform.localRotation = Quaternion.identity;
+        go.transform.localScale = Vector3.one;
+        go.layer = gameObject.layer;
+
+        RectTransform rect = go.AddComponent<RectTransform>();
+        rect.sizeDelta = new Vector2(3f, 2f);
+        rect.pivot = new Vector2(0f, 1f);
+
+        Canvas canvas = go.AddComponent<Canvas>();
+        canvas.renderMode = RenderMode.WorldSpace;
+        canvas.overrideSorting = true;
+        canvas.sortingOrder = 101;
+
+        CanvasScaler scaler = go.AddComponent<CanvasScaler>();
+        scaler.dynamicPixelsPerUnit = 100f;
+
+        go.AddComponent<GraphicRaycaster>();
+
+        CombatantTooltipUI tooltip = go.AddComponent<CombatantTooltipUI>();
+
+        Debug.Log($"[CombatantView] {name} 自动创建 tooltipUI 子物体");
+        return tooltip;
     }
 
     void OnDestroy()
@@ -298,6 +343,32 @@ public class CombatantView : MonoBehaviour
         else return 0;
     }
 
+    public IReadOnlyDictionary<StatusEffectType, int> GetStatusEffects()
+    {
+        return statusEffects;
+    }
+
+    public Sprite GetStatusEffectSprite(StatusEffectType type)
+    {
+        if (statusEffectsUI != null)
+            return statusEffectsUI.GetSpriteByType(type);
+        return null;
+    }
+
+    public void ShowTooltip()
+    {
+        if (tooltipUI == null) return;
+        if (GetStatusEffects().Count == 0) return;
+        tooltipUI.Populate(this);
+        tooltipUI.Show();
+    }
+
+    public void HideTooltip()
+    {
+        if (tooltipUI != null)
+            tooltipUI.Hide();
+    }
+
     public void DecayTurnEndEffects()
     {
         StatusEffectType[] decayTypes = {
@@ -345,6 +416,14 @@ public class CombatantView : MonoBehaviour
             Transform billboardTarget = portraitRoot != null ? portraitRoot : transform;
             billboardTarget.rotation = camera3D.transform.rotation;
             BillboardUI();
+        }
+
+        if (tooltipUI != null && tooltipUI.gameObject.activeSelf)
+        {
+            tooltipUI.transform.rotation = camera3D.transform.rotation;
+            Vector3 scale = tooltipUI.transform.localScale;
+            scale.x = Mathf.Abs(scale.x);
+            tooltipUI.transform.localScale = scale;
         }
     }
 
