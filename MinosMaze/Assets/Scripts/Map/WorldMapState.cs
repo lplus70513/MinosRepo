@@ -32,4 +32,25 @@ public class WorldMapState
     public List<CellLayoutEntry> cellLayout = new();
     public bool isNewGame = true;
     public int floorLevel = 1;
+
+    // 浅拷贝：值字段直接复制，List 复制独立容器（元素引用共享）。
+    // 遭遇场景对列表均为 Add 新元素，不会原地修改已有元素，故浅拷贝足以隔离后续追加。
+    public WorldMapState Clone()
+    {
+        return new WorldMapState
+        {
+            playerPosX = playerPosX,
+            playerPosZ = playerPosZ,
+            maxHealth = maxHealth,
+            currentHealth = currentHealth,
+            gold = gold,
+            stringCount = stringCount,
+            clearedCells = new List<Vector2Int>(clearedCells),
+            currentDeck = new List<DeckCardEntry>(currentDeck),
+            activeBlessings = new List<ActiveBlessing>(activeBlessings),
+            cellLayout = new List<CellLayoutEntry>(cellLayout),
+            isNewGame = isNewGame,
+            floorLevel = floorLevel
+        };
+    }
 }

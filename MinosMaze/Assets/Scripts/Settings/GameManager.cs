@@ -40,6 +40,10 @@ public class GameManager : MonoBehaviour
     [System.NonSerialized]
     public WorldMapState WorldMapState = new();
 
+    // 进入遭遇格之前的大地图快照，供遭遇场景内"保存并退出"回退到进入前状态
+    [System.NonSerialized]
+    private WorldMapState preEncounterSnapshot;
+
     // 当前待加载的遭遇标识（cellType + floor），由 WorldMapMovementSystem 写入
     public EncounterConfig PendingEncounter { get; set; }
 
@@ -55,9 +59,8 @@ public class GameManager : MonoBehaviour
     {
         get
         {
-            return SceneManager.GetSceneByName(worldMapSceneName).isLoaded
-                || (!string.IsNullOrEmpty(currentEncounterScene)
-                    && SceneManager.GetSceneByName(currentEncounterScene).isLoaded);
+            // 只要不在主菜单，即视为游戏进行中（大地图或任意遭遇场景：宝箱/战斗/雕像/火堆）
+            return !SceneManager.GetSceneByName("1_MainMenu").isLoaded;
         }
     }
 
@@ -210,6 +213,15 @@ public class GameManager : MonoBehaviour
     {
         yield return SceneTransitionSystem.Instance.FadeOut();
 
+        if (!string.IsNullOrEmpty(currentEncounterScene)
+            && SceneManager.GetSceneByName(currentEncounterScene).isLoaded)
+        {
+            AsyncOperation unloadEnc = SceneManager.UnloadSceneAsync(currentEncounterScene);
+            if (unloadEnc != null)
+                yield return unloadEnc;
+        }
+        currentEncounterScene = null;
+
         Instance.ResetWorldMapStateForNewGame();
         PendingNewGame = true;
         if (SceneManager.GetSceneByName("1_MainMenu").isLoaded)
@@ -220,6 +232,16 @@ public class GameManager : MonoBehaviour
         yield return SceneTransitionSystem.Instance.BlackScreenWait();
         yield return SceneTransitionSystem.Instance.FadeIn();
         isStartingGame = false;
+    }
+
+    // 玩家踏入遭遇格之前，记录"进入前"大地图快照，供保存并退出回退
+    public void CaptureEncounterEntrySnapshot(int playerX, int playerZ, int movePoints)
+    {
+        preEncounterSnapshot = WorldMapState.Clone();
+        preEncounterSnapshot.playerPosX = playerX;
+        preEncounterSnapshot.playerPosZ = playerZ;
+        preEncounterSnapshot.stringCount = movePoints;
+        preEncounterSnapshot.isNewGame = false;
     }
 
     // 保存大地图状态（由 WorldMapMovementSystem 在场景跳转前调用）
@@ -268,6 +290,9 @@ public class GameManager : MonoBehaviour
     {
         if (isExitingEncounter) return;
         isExitingEncounter = true;
+
+        // 遭遇已正常完成，进入前快照作废
+        preEncounterSnapshot = null;
 
         Vector2Int cell = new(WorldMapState.playerPosX, WorldMapState.playerPosZ);
         if (!WorldMapState.clearedCells.Contains(cell))
@@ -376,6 +401,15 @@ public class GameManager : MonoBehaviour
     {
         yield return SceneTransitionSystem.Instance.FadeOut();
 
+        if (!string.IsNullOrEmpty(currentEncounterScene)
+            && SceneManager.GetSceneByName(currentEncounterScene).isLoaded)
+        {
+            AsyncOperation unloadEnc = SceneManager.UnloadSceneAsync(currentEncounterScene);
+            if (unloadEnc != null)
+                yield return unloadEnc;
+        }
+        currentEncounterScene = null;
+
         WorldMapState loaded = SaveSystem.Load(Instance.cardDatabase);
         if (loaded != null)
         {
@@ -397,17 +431,28 @@ public class GameManager : MonoBehaviour
     {
         SaveSystem.DeleteSave();
         isStartingGame = false;
-        currentEncounterScene = null;
+        preEncounterSnapshot = null;
         CloseSettings();
         ReturnToMainMenu();
     }
 
     public void SaveAndExit()
     {
-        if (WorldMapMovementSystem.Instance != null)
-            WorldMapMovementSystem.Instance.SaveStateToGameManager();
+        bool onWorldMap = string.IsNullOrEmpty(currentEncounterScene)
+            && SceneManager.GetSceneByName(worldMapSceneName).isLoaded;
+        if (onWorldMap)
+        {
+            var move = FindObjectOfType<WorldMapMovementSystem>();
+            if (move != null) move.SaveStateToGameManager();
+            SaveSystem.Save(WorldMapState);
+        }
+        else
+        {
+            // 遭遇场景内退出：回退到进入该格之前的快照
+            SaveSystem.Save(preEncounterSnapshot != null ? preEncounterSnapshot : WorldMapState);
+        }
 
-        SaveSystem.Save(WorldMapState);
+        preEncounterSnapshot = null;
         CloseSettings();
         ReturnToMainMenu();
     }

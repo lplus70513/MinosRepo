@@ -128,6 +128,14 @@ public class WorldMapMovementSystem : Singleton<WorldMapMovementSystem>
         ClearAllHighlights();
         highlightsVisible = false;
 
+        // 目标是遭遇格时，在改动任何状态前记录"进入前"快照，供保存并退出回退
+        if (!string.IsNullOrEmpty(GetSceneForCellType(cellType)))
+        {
+            GameManager gmSnap = GameManager.Instance;
+            if (gmSnap != null)
+                gmSnap.CaptureEncounterEntrySnapshot(player.HexCoordX, player.HexCoordZ, MovePoints);
+        }
+
         // 离开当前格时标记为已走过并播放塌陷动画
         GameManager gm = GameManager.Instance;
         if (gm != null)
