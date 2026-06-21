@@ -412,6 +412,12 @@ public class CardSystem : Singleton<CardSystem>
             targets.Add(enemy);
         }
 
+        if (!added.Contains(manualTarget))
+        {
+            added.Add(manualTarget);
+            targets.Add(manualTarget);
+        }
+
         return targets;
     }
 

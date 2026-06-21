@@ -174,6 +174,8 @@ public class CombatantView : MonoBehaviour
 
     public void SetFacing(int targetHexX, int targetHexZ)
     {
+        if (!this) return;
+
         int worldDx = 2 * (targetHexX - HexCoordX) + (targetHexZ - HexCoordZ);
         bool shouldFaceRight = worldDx > 0;
         if (shouldFaceRight == facingRight) return;

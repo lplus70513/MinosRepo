@@ -26,6 +26,7 @@ public class MoveSystem : Singleton<MoveSystem>
     private IEnumerator MovePerformer(MoveGA moveGA)
     {
         CombatantView mover = moveGA.Mover;
+        if (mover == null) yield break;
 
         HexCell targetCell = HexGrid.GetCell(moveGA.ToX, moveGA.ToZ);
         if (targetCell == null || !targetCell.IsWalkable)
@@ -87,6 +88,47 @@ public class MoveSystem : Singleton<MoveSystem>
             yield break;
         }
 
+        EnemyView nearest = null;
+        int nearestDist = int.MaxValue;
+        foreach (var enemy in enemies)
+        {
+            if (enemy == null) continue;
+            int d = HexGrid.HexDistance(mover.HexCoordX, mover.HexCoordZ, enemy.HexCoordX, enemy.HexCoordZ);
+            if (d < nearestDist)
+            {
+                nearestDist = d;
+                nearest = enemy;
+            }
+        }
+
+        if (nearest == null)
+        {
+            Debug.Log("[MoveSystem] 无有效敌人，后退效果空过");
+            yield break;
+        }
+
+        int dirDx = mover.HexCoordX - nearest.HexCoordX;
+        int dirDz = mover.HexCoordZ - nearest.HexCoordZ;
+
+        int matchIdx = FindDirectionIndex(dirDx, dirDz);
+        if (matchIdx >= 0)
+        {
+            var (ddx, ddz) = hexNeighbors[matchIdx];
+            int nx = mover.HexCoordX + ddx;
+            int nz = mover.HexCoordZ + ddz;
+            if (HexGrid.ContainsCell(nx, nz) && !HexMove.IsCellOccupied(nx, nz))
+            {
+                HexCell cell = HexGrid.GetCell(nx, nz);
+                if (cell != null && cell.IsWalkable)
+                {
+                    MoveGA moveGA = new(mover, nx, nz);
+                    ActionSystem.Instance.AddReaction(moveGA);
+                    Debug.Log($"[MoveSystem] 后退至 ({nx},{nz})");
+                    yield break;
+                }
+            }
+        }
+
         int bestDist = int.MinValue;
         (int x, int z)? bestCell = null;
 
@@ -120,10 +162,38 @@ public class MoveSystem : Singleton<MoveSystem>
         }
 
         var (bx, bz) = bestCell.Value;
-        MoveGA moveGA = new(mover, bx, bz);
-        ActionSystem.Instance.AddReaction(moveGA);
+        MoveGA moveGA2 = new(mover, bx, bz);
+        ActionSystem.Instance.AddReaction(moveGA2);
         Debug.Log($"[MoveSystem] 后退至 ({bx},{bz})");
         yield return null;
+    }
+
+    private static int FindDirectionIndex(int dx, int dz)
+    {
+        if (dx == 0 && dz == 0) return -1;
+        for (int i = 0; i < 6; i++)
+        {
+            var (ddx, ddz) = hexNeighbors[i];
+            if (ddx == 0)
+            {
+                if (dx != 0) continue;
+                if (ddz > 0 && dz > 0) return i;
+                if (ddz < 0 && dz < 0) return i;
+            }
+            else if (ddz == 0)
+            {
+                if (dz != 0) continue;
+                if (ddx > 0 && dx > 0) return i;
+                if (ddx < 0 && dx < 0) return i;
+            }
+            else
+            {
+                if (dx % ddx != 0 || dz % ddz != 0) continue;
+                if (dx / ddx != dz / ddz) continue;
+                if (dx / ddx > 0) return i;
+            }
+        }
+        return -1;
     }
 
     private (int x, int z)? FindPullCell(int px, int pz, int tx, int tz)
@@ -131,21 +201,24 @@ public class MoveSystem : Singleton<MoveSystem>
         int dirDx = tx - px;
         int dirDz = tz - pz;
 
-        int bestIdx = 0;
-        float bestDot = float.MinValue;
-
-        for (int i = 0; i < 6; i++)
+        int matchIdx = FindDirectionIndex(dirDx, dirDz);
+        if (matchIdx >= 0)
         {
-            var (dx, dz) = hexNeighbors[i];
-            float dot = dx * dirDx + dz * dirDz;
-            if (dot > bestDot)
+            var (ddx, ddz) = hexNeighbors[matchIdx];
+            int nx = px + ddx;
+            int nz = pz + ddz;
+            if (HexGrid.ContainsCell(nx, nz) && !HexMove.IsCellOccupied(nx, nz))
             {
-                bestDot = dot;
-                bestIdx = i;
+                HexCell cell = HexGrid.GetCell(nx, nz);
+                if (cell != null && cell.IsWalkable)
+                    return (nx, nz);
             }
         }
 
-        int[] searchOrder = { bestIdx, (bestIdx + 1) % 6, (bestIdx + 5) % 6, (bestIdx + 2) % 6, (bestIdx + 4) % 6, (bestIdx + 3) % 6 };
+        var searchOrder = new System.Collections.Generic.List<int>();
+        if (matchIdx >= 0) searchOrder.Add(matchIdx);
+        for (int i = 0; i < 6; i++)
+            if (i != matchIdx) searchOrder.Add(i);
 
         foreach (int idx in searchOrder)
         {
@@ -176,47 +249,51 @@ public class MoveSystem : Singleton<MoveSystem>
 
         for (int step = 0; step < ga.Range; step++)
         {
-            int dirDx = tx - cx;
-            int dirDz = tz - cz;
-
-            float bestDot = float.MinValue;
             int bestDx = 0, bestDz = 0;
+            int bestDist = HexGrid.HexDistance(cx, cz, tx, tz);
 
             foreach (var (dx, dz) in hexNeighbors)
             {
-                float dot = dx * dirDx + dz * dirDz;
-                if (dot > bestDot)
+                int nx = cx + dx;
+                int nz = cz + dz;
+                if (!HexGrid.ContainsCell(nx, nz)) continue;
+                int dist = HexGrid.HexDistance(nx, nz, tx, tz);
+                if (dist < bestDist)
                 {
-                    bestDot = dot;
+                    bestDist = dist;
                     bestDx = dx;
                     bestDz = dz;
                 }
             }
 
-            int nx = cx + bestDx;
-            int nz = cz + bestDz;
+            if (bestDx == 0 && bestDz == 0) break;
 
-            if (!HexGrid.ContainsCell(nx, nz)) break;
-            HexCell cell = HexGrid.GetCell(nx, nz);
+            int nx2 = cx + bestDx;
+            int nz2 = cz + bestDz;
+
+            if (!HexGrid.ContainsCell(nx2, nz2)) break;
+            HexCell cell = HexGrid.GetCell(nx2, nz2);
             if (cell == null || !cell.IsWalkable) break;
 
             int prevX = cx;
             int prevZ = cz;
 
-            Vector3 targetPos = HexGrid.GetStandingPoint(nx, nz);
-            mover.SetFacing(nx, nz);
+            Vector3 targetPos = HexGrid.GetStandingPoint(nx2, nz2);
+            mover.SetFacing(nx2, nz2);
             Tween tween = mover.transform.DOMove(targetPos, 0.12f);
             yield return tween.WaitForCompletion();
-            mover.HexCoordX = nx;
-            mover.HexCoordZ = nz;
-            cx = nx;
-            cz = nz;
+            mover.HexCoordX = nx2;
+            mover.HexCoordZ = nz2;
+            cx = nx2;
+            cz = nz2;
 
-            EnemyView enemyAt = EnemySystem.Instance.GetEnemyAt(nx, nz);
+            EnemyView enemyAt = EnemySystem.Instance.GetEnemyAt(nx2, nz2);
             if (enemyAt != null)
             {
                 DealDamageGA damageGA = new(ga.Damage, 1, new List<CombatantView> { enemyAt }, ga.Caster);
                 ActionSystem.Instance.AddReaction(damageGA);
+
+                if (!enemyAt) yield break;
 
                 (int x, int z)? pushCell = FindPushCell(prevX, prevZ, enemyAt.HexCoordX, enemyAt.HexCoordZ);
                 if (pushCell != null)
@@ -233,7 +310,7 @@ public class MoveSystem : Singleton<MoveSystem>
                 yield break;
             }
 
-            if (nx == tx && nz == tz)
+            if (nx2 == tx && nz2 == tz)
                 yield break;
         }
     }
@@ -242,8 +319,26 @@ public class MoveSystem : Singleton<MoveSystem>
     {
         int dirDx = ex - hx;
         int dirDz = ez - hz;
-
         int currentDist = HexGrid.HexDistance(hx, hz, ex, ez);
+
+        int matchIdx = FindDirectionIndex(dirDx, dirDz);
+        if (matchIdx >= 0)
+        {
+            var (ddx, ddz) = hexNeighbors[matchIdx];
+            int nx = ex + ddx;
+            int nz = ez + ddz;
+            if (HexGrid.ContainsCell(nx, nz))
+            {
+                HexCell cell = HexGrid.GetCell(nx, nz);
+                if (cell != null && cell.IsWalkable && !HexMove.IsCellOccupied(nx, nz))
+                {
+                    int dist = HexGrid.HexDistance(hx, hz, nx, nz);
+                    if (dist > currentDist)
+                        return (nx, nz);
+                }
+            }
+        }
+
         float bestDot = float.MinValue;
         (int x, int z)? bestCell = null;
 
