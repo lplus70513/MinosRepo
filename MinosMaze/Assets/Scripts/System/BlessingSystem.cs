@@ -36,7 +36,7 @@ public class BlessingSystem : Singleton<BlessingSystem>
                     hero.AddStatusEffect(StatusEffectType.STRENGTH, stacks);
                     break;
                 case BlessingEffectType.DamageAllEnemiesOnBattleStart:
-                    yield return DamageAllEnemiesCoroutine(b.effectValue * b.count);
+                    DamageAllEnemies(b.effectValue * b.count);
                     break;
                 case BlessingEffectType.GainStrengthLoseFortify:
                     hero.AddStatusEffect(StatusEffectType.STRENGTH, b.effectValue * b.count);
