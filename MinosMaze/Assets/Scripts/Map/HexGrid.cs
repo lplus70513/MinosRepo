@@ -182,6 +182,54 @@ public class HexGrid : MonoBehaviour
         return result;
     }
 
+    // 判断两点是否在六角格的同一直线上（6个主方向之一）
+    public static bool IsOnStraightLine(int fromX, int fromZ, int toX, int toZ)
+    {
+        int dx = toX - fromX;
+        int dz = toZ - fromZ;
+        if (dx == 0 && dz == 0) return true;
+        (int x, int z)[] dirs = { (1, 0), (-1, 0), (0, 1), (-1, 1), (1, -1), (0, -1) };
+        foreach (var (ddx, ddz) in dirs)
+        {
+            if (ddx == 0)
+            {
+                if (dx != 0) continue;
+                if (ddz > 0 && dz > 0 && dz % ddz == 0) return true;
+                if (ddz < 0 && dz < 0 && dz % ddz == 0) return true;
+            }
+            else if (ddz == 0)
+            {
+                if (dz != 0) continue;
+                if (ddx > 0 && dx > 0 && dx % ddx == 0) return true;
+                if (ddx < 0 && dx < 0 && dx % ddx == 0) return true;
+            }
+            else
+            {
+                if (dx % ddx != 0 || dz % ddz != 0) continue;
+                if (dx / ddx != dz / ddz) continue;
+                if (dx / ddx > 0) return true;
+            }
+        }
+        return false;
+    }
+
+    // 高亮显示中心格 range 步内、且在同一直线上的所有格子
+    public static void HighlightCellsOnStraightLines(int centerX, int centerZ, int range)
+    {
+        (int dx, int dz)[] dirs = { (1, 0), (-1, 0), (0, 1), (-1, 1), (1, -1), (0, -1) };
+        foreach (var (ddx, ddz) in dirs)
+        {
+            for (int step = 1; step <= range; step++)
+            {
+                int x = centerX + ddx * step;
+                int z = centerZ + ddz * step;
+                if (!ContainsCell(x, z)) break;
+                HexCell cell = GetCell(x, z);
+                if (cell != null) cell.SetHighlight(true);
+            }
+        }
+    }
+
     // 高亮显示中心格 range 步内的所有格子（用于显示攻击范围等）
     public static void HighlightCellsInRange(int centerX, int centerZ, int range)
     {

@@ -260,7 +260,10 @@ public class CardView : MonoBehaviour
             if (Card.HasAttackRange)
             {
                 HeroView hero = HeroSystem.Instance.HeroView;
-                HexGrid.HighlightCellsInRange(hero.HexCoordX, hero.HexCoordZ, Card.AttackRange);
+                if (Card.AttackRangePattern is LineRange)
+                    HexGrid.HighlightCellsOnStraightLines(hero.HexCoordX, hero.HexCoordZ, Card.AttackRange);
+                else
+                    HexGrid.HighlightCellsInRange(hero.HexCoordX, hero.HexCoordZ, Card.AttackRange);
             }
         }
 
@@ -524,9 +527,19 @@ public class CardView : MonoBehaviour
         if (target != null && hasCost && Card.HasAttackRange)
         {
             HeroView hero = HeroSystem.Instance.HeroView;
-            int dist = HexGrid.HexDistance(hero.HexCoordX, hero.HexCoordZ, target.HexCoordX, target.HexCoordZ);
-            if (dist > Card.AttackRange)
-                target = null;
+            if (Card.AttackRangePattern is LineRange)
+            {
+                if (!HexGrid.IsOnStraightLine(hero.HexCoordX, hero.HexCoordZ, target.HexCoordX, target.HexCoordZ))
+                    target = null;
+                else if (HexGrid.HexDistance(hero.HexCoordX, hero.HexCoordZ, target.HexCoordX, target.HexCoordZ) > Card.AttackRange)
+                    target = null;
+            }
+            else
+            {
+                int dist = HexGrid.HexDistance(hero.HexCoordX, hero.HexCoordZ, target.HexCoordX, target.HexCoordZ);
+                if (dist > Card.AttackRange)
+                    target = null;
+            }
         }
 
         if (target != null && hasCost)
