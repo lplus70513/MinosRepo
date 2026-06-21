@@ -423,7 +423,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17f37e8d7078d1d489afc6af60d5ec20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltipPrefab: {fileID: 4292942411446356481, guid: a8bb26bdda2c97f47958ca81fcf70f19, type: 3}
   hoverScreenDistance: 120
 --- !u!1 &118275579
 GameObject:
@@ -5351,6 +5350,10 @@ PrefabInstance:
     - target: {fileID: 1205878704869316746, guid: ade2284585c6cf849b410fb605069f03, type: 3}
       propertyPath: m_Name
       value: "\u573A\u666F\u5EFA\u7B51"
+      objectReference: {fileID: 0}
+    - target: {fileID: 1205878704869316746, guid: ade2284585c6cf849b410fb605069f03, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1871036233537975548, guid: ade2284585c6cf849b410fb605069f03, type: 3}
       propertyPath: m_LocalPosition.x

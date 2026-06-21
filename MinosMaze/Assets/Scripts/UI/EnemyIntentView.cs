@@ -106,6 +106,15 @@ public class EnemyIntentView : MonoBehaviour
         });
     }
 
+    private static readonly Dictionary<EnemyActionType, int> IntentSortOrder = new Dictionary<EnemyActionType, int>
+    {
+        { EnemyActionType.Move, 0 },
+        { EnemyActionType.Attack, 1 },
+        { EnemyActionType.Defense, 2 },
+        { EnemyActionType.Buff, 3 },
+        { EnemyActionType.Debuff, 4 },
+    };
+
     private void RebuildChildren(List<EnemyIntentData> intents)
     {
         foreach (Transform child in transform)
@@ -119,6 +128,8 @@ public class EnemyIntentView : MonoBehaviour
             Debug.LogError($"[EnemyIntentView] {name} intentUIPrefab 未绑定！");
             return;
         }
+
+        intents.Sort((a, b) => IntentSortOrder[a.IntentType].CompareTo(IntentSortOrder[b.IntentType]));
 
         foreach (var intent in intents)
         {
