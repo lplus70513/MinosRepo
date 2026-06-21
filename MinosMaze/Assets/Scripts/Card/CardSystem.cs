@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -38,6 +39,7 @@ public class CardSystem : Singleton<CardSystem>
     private int freePlayRemaining = 0;
     private SelectCardFromHandGA pendingSelectGA;
     private bool subscriptionsActive = false;
+    private CardSelectOverlay cardSelectOverlay;
 
     public int FreePlayRemaining => freePlayRemaining;
     public bool IsSelectingCardFromHand => pendingSelectGA != null;
@@ -45,6 +47,14 @@ public class CardSystem : Singleton<CardSystem>
     public void ConsumeFreePlay()
     {
         if (freePlayRemaining > 0) freePlayRemaining--;
+    }
+
+    void Awake()
+    {
+        base.Awake();
+        GameObject overlayGO = new GameObject("CardSelectOverlay");
+        overlayGO.transform.SetParent(transform);
+        cardSelectOverlay = overlayGO.AddComponent<CardSelectOverlay>();
     }
 
     void OnEnable()
@@ -242,7 +252,7 @@ public class CardSystem : Singleton<CardSystem>
             yield break;
         }
         hand.Remove(ga.Card);
-        handView.RemoveCard(ga.Card);
+        // 视觉移除（动画 + Destroy）已由 CardSelectOverlay 在确认时处理
         drawPile.Add(ga.Card);
         Debug.Log($"[CardSystem] 将 {ga.Card.Name} 放回抽牌堆");
         yield return null;
@@ -257,29 +267,42 @@ public class CardSystem : Singleton<CardSystem>
         }
 
         pendingSelectGA = ga;
-        Debug.Log($"[CardSystem] 等待玩家从手牌中选择一张牌 (共 {hand.Count} 张)");
+        Card confirmedCard = null;
+        bool done = false;
 
-        while (ga.SelectedCard == null && pendingSelectGA == ga)
+        Action<Card> onConfirmedHandler = (card) => { confirmedCard = card; done = true; };
+        Action onCancelledHandler = () => { done = true; };
+        cardSelectOverlay.OnConfirmed += onConfirmedHandler;
+        cardSelectOverlay.OnCancelled += onCancelledHandler;
+        cardSelectOverlay.StartSelection(drawPilePoint, handView);
+
+        Debug.Log($"[CardSystem] 等待玩家从手牌中选择一张牌放回抽牌堆 (共 {hand.Count} 张)");
+
+        while (!done && pendingSelectGA == ga)
             yield return null;
 
         pendingSelectGA = null;
+        cardSelectOverlay.OnConfirmed -= onConfirmedHandler;
+        cardSelectOverlay.OnCancelled -= onCancelledHandler;
 
-        if (ga.SelectedCard == null) yield break;
+        if (confirmedCard == null) yield break;
+
+        ga.SelectedCard = confirmedCard;
 
         if (ga.OnSelectAction is ReturnToDrawPileGA)
         {
-            ReturnToDrawPileGA returnGA = new(ga.SelectedCard);
+            ReturnToDrawPileGA returnGA = new(confirmedCard);
             ActionSystem.Instance.AddReaction(returnGA);
         }
     }
 
-    public void OnHandCardSelected(Card card)
+    public void OnHandCardSelected(CardView cardView)
     {
         if (pendingSelectGA == null) return;
-        if (!hand.Contains(card)) return;
+        if (!hand.Contains(cardView.Card)) return;
 
-        Debug.Log($"[CardSystem] 玩家选择了 {card.Name}");
-        pendingSelectGA.SelectedCard = card;
+        Debug.Log($"[CardSystem] 玩家点击了 {cardView.Card.Name}");
+        cardSelectOverlay.OnCardLeftClicked(cardView);
     }
 
     private IEnumerator FreePlayPerformer(FreePlayGA ga)
@@ -309,7 +332,7 @@ public class CardSystem : Singleton<CardSystem>
             var pool = pass == 0 ? nonTargeted : targeted;
             while (pool.Count > 0 && played < ga.Amount)
             {
-                int idx = Random.Range(0, pool.Count);
+                int idx = UnityEngine.Random.Range(0, pool.Count);
                 Card card = pool[idx];
                 pool.RemoveAt(idx);
 
@@ -328,7 +351,7 @@ public class CardSystem : Singleton<CardSystem>
                         valid.Add(e);
                     }
                     if (valid.Count > 0)
-                        manualTarget = valid[Random.Range(0, valid.Count)];
+                        manualTarget = valid[UnityEngine.Random.Range(0, valid.Count)];
                     else
                         continue;
                 }

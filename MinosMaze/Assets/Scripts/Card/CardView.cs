@@ -228,7 +228,7 @@ public class CardView : MonoBehaviour
 
         if (CardSystem.Instance.IsSelectingCardFromHand)
         {
-            CardSystem.Instance.OnHandCardSelected(Card);
+            CardSystem.Instance.OnHandCardSelected(this);
             return;
         }
 
@@ -276,6 +276,7 @@ public class CardView : MonoBehaviour
     void OnMouseDrag()
     {
         if (!Interactions.Instance.PlayerCanInteract()) return;
+        if (CardSystem.Instance.IsSelectingCardFromHand) return;
 
         bool inPlayArea = IsMouseInPlayArea();
 
@@ -310,6 +311,8 @@ public class CardView : MonoBehaviour
             CancelDrag();
             return;
         }
+
+        if (CardSystem.Instance.IsSelectingCardFromHand) return;
 
         var hero = HeroSystem.Instance?.HeroView;
         if (hero != null)
@@ -515,7 +518,8 @@ public class CardView : MonoBehaviour
             target = null;
         }
 
-        bool hasCost = CostSystem.Instance.HasEnoughCost(Card.Cost);
+        int effectiveCost = Card.GetEffectiveCost(target);
+        bool hasCost = CostSystem.Instance.HasEnoughCost(effectiveCost);
 
         if (target != null && hasCost && Card.HasAttackRange)
         {
@@ -609,7 +613,7 @@ public class CardView : MonoBehaviour
 
     // ==================== Sorting Order ====================
 
-    void BringToFront()
+    public void BringToFront()
     {
         int topID = GetTopSortingLayerID();
         for (int i = 0; i < allRenderers.Length; i++)
@@ -626,7 +630,7 @@ public class CardView : MonoBehaviour
         }
     }
 
-    void RestoreSortingOrder()
+    public void RestoreSortingOrder()
     {
         for (int i = 0; i < allRenderers.Length; i++)
         {

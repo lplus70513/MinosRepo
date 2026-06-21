@@ -10,8 +10,8 @@ public class WeaknessCostEffect : Effect
         if (targets == null || targets.Count == 0) return null;
 
         bool targetHasWeakness = targets[0].HasStatusEffect(StatusEffectType.WEAKNESS);
-        if (targetHasWeakness) return null;
+        if (targetHasWeakness) return new GainCostGA(costAmount);
 
-        return new SpendCostGA(costAmount);
+        return null;
     }
 }

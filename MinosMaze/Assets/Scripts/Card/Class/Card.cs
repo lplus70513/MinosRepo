@@ -52,6 +52,19 @@ public class Card
         Cost = Grade?.Cost ?? cardData.Cost;
     }
 
+    public int GetEffectiveCost(CombatantView target)
+    {
+        if (target != null && target.HasStatusEffect(StatusEffectType.WEAKNESS) && OtherEffects != null)
+        {
+            foreach (var wrapper in OtherEffects)
+            {
+                if (wrapper.Effect is WeaknessCostEffect)
+                    return 0;
+            }
+        }
+        return Cost;
+    }
+
     public void Upgrade()
     {
         if (IsUpgraded) return;

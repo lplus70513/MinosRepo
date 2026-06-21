@@ -17,7 +17,7 @@ MonoBehaviour:
   <Image>k__BackingField: {fileID: 1709695921, guid: 1ed825c84a4d3aa438bfa70d107b81fb, type: 3}
   <Background>k__BackingField: {fileID: 1370473001, guid: 7e9643d6638fe744ca4f76a79d6457f3, type: 3}
   <HasAttackRange>k__BackingField: 1
-  <AttackRange>k__BackingField: 1
+  <AttackRange>k__BackingField: 2
   <ManualTargetEffect>k__BackingField:
     rid: 1965764436403159041
   <OtherEffects>k__BackingField:
@@ -36,8 +36,8 @@ MonoBehaviour:
     <Name>k__BackingField: "\u538B\u5236"
     <Description>k__BackingField: "\u83B7\u5F971\u529B\u91CF, \u6307\u5B9A\u4E00\u540D\u654C\u4EBA\u5931\u53BB1\u529B\u91CF"
     <Cost>k__BackingField: 1
-    <HasAttackRange>k__BackingField: 0
-    <AttackRange>k__BackingField: 1
+    <HasAttackRange>k__BackingField: 1
+    <AttackRange>k__BackingField: 2
     <ManualTargetEffect>k__BackingField:
       rid: 1965764436403159042
     <OtherEffects>k__BackingField:
@@ -56,8 +56,8 @@ MonoBehaviour:
     <Name>k__BackingField: "\u538B\u5236+"
     <Description>k__BackingField: "\u83B7\u5F971\u529B\u91CF, \u6307\u5B9A\u4E00\u540D\u654C\u4EBA\u5931\u53BB2\u529B\u91CF\u3002"
     <Cost>k__BackingField: 1
-    <HasAttackRange>k__BackingField: 0
-    <AttackRange>k__BackingField: 1
+    <HasAttackRange>k__BackingField: 1
+    <AttackRange>k__BackingField: 2
     <ManualTargetEffect>k__BackingField:
       rid: 1965764436403159043
     <OtherEffects>k__BackingField:

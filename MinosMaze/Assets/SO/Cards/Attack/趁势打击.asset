@@ -87,24 +87,24 @@ MonoBehaviour:
     - rid: 1965764450232303638
       type: {class: WeaknessCostEffect, ns: , asm: Assembly-CSharp}
       data:
-        costAmount: 0
+        costAmount: 1
     - rid: 1965764450232303639
-      type: {class: NoTM, ns: , asm: Assembly-CSharp}
+      type: {class: ManualTargetTM, ns: , asm: Assembly-CSharp}
       data: 
     - rid: 1965764450232303640
-      type: {class: NoTM, ns: , asm: Assembly-CSharp}
+      type: {class: ManualTargetTM, ns: , asm: Assembly-CSharp}
       data: 
     - rid: 1965764450232303641
       type: {class: WeaknessCostEffect, ns: , asm: Assembly-CSharp}
       data:
-        costAmount: 0
+        costAmount: 1
     - rid: 1965764450232303642
-      type: {class: NoTM, ns: , asm: Assembly-CSharp}
+      type: {class: ManualTargetTM, ns: , asm: Assembly-CSharp}
       data: 
     - rid: 1965764450232303643
       type: {class: WeaknessCostEffect, ns: , asm: Assembly-CSharp}
       data:
-        costAmount: 0
+        costAmount: 1
     - rid: 1965764450232303644
       type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
       data:

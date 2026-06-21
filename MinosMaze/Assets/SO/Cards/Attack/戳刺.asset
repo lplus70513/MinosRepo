@@ -21,7 +21,7 @@ MonoBehaviour:
   <ManualTargetEffect>k__BackingField:
     rid: 5015277394648891392
   <OtherEffects>k__BackingField: []
-  <IsInnate>k__BackingField: 0
+  <IsInnate>k__BackingField: 1
   <IsExhaust>k__BackingField: 0
   <IsRetain>k__BackingField: 0
   <CanHitFlying>k__BackingField: 0
