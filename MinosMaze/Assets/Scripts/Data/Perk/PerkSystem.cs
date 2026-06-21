@@ -25,6 +25,11 @@ public class PerkSystem : Singleton<PerkSystem>
 
     public void AddPerk(Perk perk)
     {
+        if (perk == null)
+        {
+            Debug.LogWarning("[PerkSystem] 尝试添加空的 Perk，已跳过");
+            return;
+        }
         perks.Add(perk);
         perksUI.AddPerkUI(perk);
         perk.OnAdd();

@@ -121,11 +121,15 @@ public class MatchSetupSystem : MonoBehaviour
             deck = new List<DeckCardEntry>();
 
         CardSystem.Instance.SetUp(deck);
-        PerkSystem.Instance.AddPerk(new Perk(perkData));
+        if (perkData != null)
+            PerkSystem.Instance.AddPerk(new Perk(perkData));
+        else
+            Debug.LogWarning("[MatchSetupSystem] perkData 未配置或引用丢失，跳过初始 Perk 添加");
         Debug.Log($"[MatchSetupSystem] 场景初始化完成, 等待淡入结束再抽牌");
 
-        if (SceneTransitionSystem.Instance != null)
-            yield return new WaitUntil(() => !SceneTransitionSystem.Instance.IsTransitioning);
+        var sts = SceneTransitionSystem.Instance;
+        if (sts != null)
+            yield return new WaitUntil(() => !sts.IsTransitioning);
 
         Debug.Log($"[MatchSetupSystem] === 计算首轮敌人意图并抽牌 === scene={gameObject.scene.name}");
         EnemySystem.Instance.ComputeAndStoreNextTurnIntents();

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class Perk 
 {
-    public Sprite Image => data.Image;
+    public Sprite Image => data != null ? data.Image : null;
 
     private readonly PerkData data;
 
@@ -14,18 +14,27 @@ public class Perk
     public Perk(PerkData perkData)
     {
         data = perkData;
-        condition = data.PerkCondition;
-        effect = data.AutoTargetEffect;
+        if (data != null)
+        {
+            condition = data.PerkCondition;
+            effect = data.AutoTargetEffect;
+        }
     }
 
     public void OnAdd()
     {
+        if (condition == null)
+        {
+            Debug.LogWarning("[Perk] PerkData 为空或 PerkCondition 为空，跳过 OnAdd");
+            return;
+        }
         condition.SubscribeCondition(Reaction);
         SetupPassive();
     }
 
     public void OnRemove()
     {
+        if (condition == null) return;
         condition.UnsubscribeCondition(Reaction);
         RemovePassive();
     }

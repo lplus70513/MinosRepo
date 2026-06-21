@@ -4079,7 +4079,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   heroData: {fileID: 11400000, guid: 10994a7c60da5e740aba04ce877de85c, type: 2}
-  perkData: {fileID: 11400000, guid: b9f88f460a8aeef458def85e25a80c0d, type: 2}
+  perkData: {fileID: 0}
   enemyDatas: []
   rewardConfig: {fileID: 11400000, guid: d9898f0919b265243b6544774bee7dda, type: 2}
   healthBarPanel: {fileID: 1912773962}
