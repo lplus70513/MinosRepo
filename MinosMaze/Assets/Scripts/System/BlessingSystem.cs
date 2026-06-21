@@ -129,10 +129,11 @@ public class BlessingSystem : Singleton<BlessingSystem>
         var enemies = EnemySystem.Instance?.Enemies;
         if (enemies == null || enemies.Count == 0) return;
 
-        var hero = HeroSystem.Instance?.HeroView;
-        var targets = new List<CombatantView>(enemies);
-        DealDamageGA damageGA = new(amount, 1, targets, hero);
-        ActionSystem.Instance.Perform(damageGA);
+        foreach (var enemy in new List<CombatantView>(enemies))
+        {
+            if (enemy == null) continue;
+            enemy.Damage(amount);
+        }
     }
 
     public bool TryResurrect(HeroView hero, System.Action onResurrect = null)

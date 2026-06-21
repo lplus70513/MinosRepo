@@ -82,19 +82,13 @@ public class StatusEffectsUI : MonoBehaviour
             {
                 StatusEffectUI statusEffectUI = statusEffectUIs[statusEffectType];
                 statusEffectUIs.Remove(statusEffectType);
+                statusEffectUI.gameObject.SetActive(false);
+                Destroy(statusEffectUI.gameObject);
 
                 if (statusEffectUIs.Count == 0)
                 {
                     canvasGroup.DOKill();
-                    canvasGroup.DOFade(0f, fadeDuration).OnComplete(() =>
-                    {
-                        if (statusEffectUI != null)
-                            Destroy(statusEffectUI.gameObject);
-                    });
-                }
-                else
-                {
-                    Destroy(statusEffectUI.gameObject);
+                    canvasGroup.DOFade(0f, fadeDuration);
                 }
             }
         }
