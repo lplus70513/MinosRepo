@@ -8,6 +8,8 @@ public class HealthBarUI : MonoBehaviour
     [SerializeField] private Image fillImage;
     [SerializeField] private Image bufferImage;
     [SerializeField] private TMP_Text healthValueText;
+    [SerializeField] private Image shieldBarImage;
+    [SerializeField] private TMP_Text shieldValueText;
     [SerializeField] private float bufferDuration = 0.5f;
 
     private int maxHealth;
@@ -30,6 +32,18 @@ public class HealthBarUI : MonoBehaviour
         bufferImage.fillAmount = fill;
 
         UpdateHealthValueText(currentHp);
+        SetArmor(0);
+    }
+
+    public void SetArmor(int armor)
+    {
+        if (shieldBarImage != null)
+            shieldBarImage.gameObject.SetActive(armor > 0);
+        if (shieldValueText != null)
+        {
+            shieldValueText.gameObject.SetActive(armor > 0);
+            shieldValueText.text = armor.ToString();
+        }
     }
 
     public void SetHealth(int newHealth)
