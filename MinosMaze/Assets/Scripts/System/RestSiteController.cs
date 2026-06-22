@@ -217,7 +217,6 @@ public class RestSiteController : MonoBehaviour
         deckViewer.OpenForSelection(upgradeable, (entry) =>
         {
             entry.IsUpgraded = true;
-            AudioManager.Instance?.PlaySFX(AudioManager.Instance?.Config?.cardUpgradeSFX);
             OnOptionComplete();
         }, () =>
         {

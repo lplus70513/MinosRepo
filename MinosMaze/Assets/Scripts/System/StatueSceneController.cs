@@ -338,7 +338,6 @@ public class StatueSceneController : MonoBehaviour
         deckViewer.OpenForSelection(upgradeable, (entry) =>
         {
             entry.IsUpgraded = true;
-            AudioManager.Instance?.PlaySFX(AudioManager.Instance?.Config?.cardUpgradeSFX);
             DoUpgradeCards(remaining - 1, onComplete);
         }, () => onComplete?.Invoke(), upgradePreview: true);
     }

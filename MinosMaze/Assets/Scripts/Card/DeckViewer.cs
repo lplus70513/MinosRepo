@@ -586,6 +586,8 @@ public class DeckViewer : MonoBehaviour
 
         if (isUpgradePreview && cardContainer != null && cardContainer.childCount > 0)
         {
+            AudioManager.Instance?.PlaySFX(AudioManager.Instance?.Config?.cardUpgradeSFX);
+
             Transform previewCard = cardContainer.GetChild(0);
             StartCoroutine(UpgradeShakeCoroutine(previewCard, () =>
             {
