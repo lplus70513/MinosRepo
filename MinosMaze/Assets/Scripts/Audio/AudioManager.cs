@@ -23,6 +23,7 @@ public class AudioManager : MonoBehaviour
     private AudioSource bgmSourceB;
     private AudioSource sfxSource;
     private bool usingSourceA = true;
+    private bool _sourcesInitialized;
 
     private float bgmVolume = 1f;
     private float sfxVolume = 1f;
@@ -42,6 +43,24 @@ public class AudioManager : MonoBehaviour
 
         _instance = this;
         DontDestroyOnLoad(gameObject);
+    }
+
+    private void OnDestroy()
+    {
+        if (_instance == this)
+            _instance = null;
+    }
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStaticFields()
+    {
+        _instance = null;
+    }
+
+    private void InitializeSources()
+    {
+        if (_sourcesInitialized) return;
+        _sourcesInitialized = true;
 
         bgmSourceA = gameObject.AddComponent<AudioSource>();
         bgmSourceA.loop = true;
@@ -61,20 +80,10 @@ public class AudioManager : MonoBehaviour
         sfxVolume = PlayerPrefs.GetFloat("SFXVolume", 1f);
     }
 
-    private void OnDestroy()
-    {
-        if (_instance == this)
-            _instance = null;
-    }
-
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-    private static void ResetStaticFields()
-    {
-        _instance = null;
-    }
-
     public void PlayBGM(AudioClip clip, float fadeDuration = 0.5f)
     {
+        InitializeSources();
+
         if (clip == null)
         {
             StopBGM(fadeDuration);
@@ -100,6 +109,8 @@ public class AudioManager : MonoBehaviour
 
     public void StopBGM(float fadeDuration = 0.5f)
     {
+        InitializeSources();
+
         bgmSourceA.DOKill();
         bgmSourceB.DOKill();
 
@@ -111,13 +122,17 @@ public class AudioManager : MonoBehaviour
 
     public void PlaySFX(AudioClip clip)
     {
-        if (clip == null || sfxSource == null) return;
+        InitializeSources();
+
+        if (clip == null) return;
         sfxSource.PlayOneShot(clip, sfxVolume);
     }
 
     public void PlaySFX(AudioClip clip, float pitchVariation)
     {
-        if (clip == null || sfxSource == null) return;
+        InitializeSources();
+
+        if (clip == null) return;
         float originalPitch = sfxSource.pitch;
         sfxSource.pitch = 1f + Random.Range(-pitchVariation, pitchVariation);
         sfxSource.PlayOneShot(clip, sfxVolume);
@@ -126,6 +141,8 @@ public class AudioManager : MonoBehaviour
 
     public void SetBGMVolume(float volume)
     {
+        InitializeSources();
+
         bgmVolume = Mathf.Clamp01(volume);
         if (bgmSourceA.isPlaying) bgmSourceA.volume = bgmVolume;
         if (bgmSourceB.isPlaying) bgmSourceB.volume = bgmVolume;
@@ -134,12 +151,16 @@ public class AudioManager : MonoBehaviour
 
     public void SetSFXVolume(float volume)
     {
+        InitializeSources();
+
         sfxVolume = Mathf.Clamp01(volume);
         PlayerPrefs.SetFloat("SFXVolume", sfxVolume);
     }
 
     public void PlayBGMForScene(string sceneName, MapCellType cellType = MapCellType.Battle_Empty)
     {
+        InitializeSources();
+
         if (config == null) return;
 
         switch (sceneName)

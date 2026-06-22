@@ -176,6 +176,7 @@ public class GameManager : MonoBehaviour
 
     public void GameStart()
     {
+        isStartingGame = false;
         if (SaveSystem.HasSave())
             ContinueGame();
         else
