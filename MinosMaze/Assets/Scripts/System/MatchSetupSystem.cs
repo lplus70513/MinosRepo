@@ -22,6 +22,9 @@ public class MatchSetupSystem : MonoBehaviour
     [Header("遭遇配置池（按层数过滤 + 权重随机）")]
     [SerializeField] private CombatPoolSO combatPool;
 
+    [Header("BOSS 战斗池（中心格专属）")]
+    [SerializeField] private CombatPoolSO bossCombatPool;
+
     private void Start()
     {
         StartCoroutine(DelayedSetup());
@@ -41,7 +44,11 @@ public class MatchSetupSystem : MonoBehaviour
         var gm = GameManager.Instance;
         Debug.Log($"[MatchSetupSystem] GameManager={(gm != null ? "OK" : "NULL")}, PendingEncounter={(gm?.PendingEncounter != null ? $"cellType={gm.PendingEncounter.cellType} floor={gm.PendingEncounter.floorLevel}" : "NULL")}");
 
-        CombatConfig combat = PickWeightedRandom(gm?.PendingEncounter);
+        bool isBoss = gm?.PendingEncounter?.cellType == MapCellType.WorldMap_Boss;
+        CombatPoolSO activePool = isBoss ? bossCombatPool : combatPool;
+        Debug.Log($"[MatchSetupSystem] isBoss={isBoss}, activePool={(activePool != null ? activePool.name : "NULL (将使用 fallback)")}");
+
+        CombatConfig combat = PickWeightedRandom(gm?.PendingEncounter, activePool);
         Debug.Log($"[MatchSetupSystem] combatPool={(combatPool != null ? combatPool.name : "NULL")}, combat={(combat != null ? combat.configName : "NULL (使用 fallback)")}");
 
         if (combat != null && combat.useCustomMap)
@@ -146,9 +153,9 @@ public class MatchSetupSystem : MonoBehaviour
         Debug.Log($"[MatchSetupSystem] === Start 结束 ===");
     }
 
-    private CombatConfig PickWeightedRandom(EncounterConfig pending)
+    private CombatConfig PickWeightedRandom(EncounterConfig pending, CombatPoolSO pool)
     {
-        if (combatPool == null || combatPool.configs == null || combatPool.configs.Count == 0)
+        if (pool == null || pool.configs == null || pool.configs.Count == 0)
             return null;
 
         List<CombatConfig> candidates = new();
@@ -157,20 +164,22 @@ public class MatchSetupSystem : MonoBehaviour
         if (pending != null)
         {
             int floor = pending.floorLevel;
-            foreach (var cfg in combatPool.configs)
+            int difficulty = pending.difficultyLevel;
+            foreach (var cfg in pool.configs)
             {
                 if (cfg == null) continue;
-                if (cfg.minFloor <= floor && floor <= cfg.maxFloor && cfg.weight > 0)
-                {
-                    candidates.Add(cfg);
-                    totalWeight += cfg.weight;
-                }
+                if (cfg.weight <= 0) continue;
+                if (cfg.minFloor > floor || cfg.maxFloor < floor) continue;
+                // 难度等级过滤（difficultyLevel>0 才生效，向后兼容旧存档）
+                if (difficulty > 0 && cfg.difficultyLevel != difficulty) continue;
+                candidates.Add(cfg);
+                totalWeight += cfg.weight;
             }
         }
 
         if (candidates.Count == 0)
         {
-            candidates = combatPool.configs.FindAll(c => c != null && c.weight > 0);
+            candidates = pool.configs.FindAll(c => c != null && c.weight > 0);
             foreach (var cfg in candidates)
                 totalWeight += cfg.weight;
         }

@@ -49,6 +49,36 @@ public class WorldMapMovementSystem : Singleton<WorldMapMovementSystem>
         {
             CardSystem.Instance.SetUp(gm.WorldMapState.currentDeck);
         }
+
+        // 延迟检测 GameOver（从遭遇场景返回后可能线耗尽或周围坍塌）
+        StartCoroutine(DelayedGameOverCheck());
+    }
+
+    private IEnumerator DelayedGameOverCheck()
+    {
+        yield return new WaitForSeconds(0.3f);
+        var sts = SceneTransitionSystem.Instance;
+        if (sts != null)
+            yield return new WaitUntil(() => !sts.IsTransitioning);
+
+        WorldMapPlayerView player = WorldMapPlayerSystem.Instance.PlayerView;
+        if (player == null) yield break;
+
+        // 线耗尽且不在 BOSS 格
+        HexCell currentCell = HexGrid.GetCell(player.HexCoordX, player.HexCoordZ);
+        if (MovePoints <= 0 && (currentCell == null || currentCell.cellType != MapCellType.WorldMap_Boss))
+        {
+            Debug.Log("[WorldMapMovementSystem] 启动检测：移动点耗尽且不在 BOSS 格，游戏失败");
+            GameManager.Instance.OnGameOver();
+            yield break;
+        }
+
+        // 周围格子全部坍塌
+        if (MapCollapseSystem.CheckPlayerSurrounded(player.HexCoordX, player.HexCoordZ))
+        {
+            Debug.Log("[WorldMapMovementSystem] 启动检测：周围格子全部坍塌，游戏失败");
+            GameManager.Instance.OnGameOver();
+        }
     }
 
     void Update()
@@ -201,7 +231,26 @@ public class WorldMapMovementSystem : Singleton<WorldMapMovementSystem>
         if (gm == null) return;
 
         int floor = gm.WorldMapState?.floorLevel ?? 1;
-        gm.PendingEncounter = new EncounterConfig { cellType = cellType, floorLevel = floor };
+
+        // 计算距大地图中心的难度等级
+        int difficultyLevel = 1;
+        WorldMapPlayerView player = WorldMapPlayerSystem.Instance?.PlayerView;
+        if (player != null)
+        {
+            int distance = HexGrid.HexDistance(0, 0, player.HexCoordX, player.HexCoordZ);
+            WorldMapGrid wmg = FindObjectOfType<WorldMapGrid>();
+            int mapRadius = wmg != null ? wmg.mapRadius : 6;
+            const int tierCount = 3;
+            int rawTier = tierCount - Mathf.FloorToInt((float)distance * tierCount / (mapRadius + 1));
+            difficultyLevel = Mathf.Clamp(rawTier, 1, tierCount);
+        }
+
+        gm.PendingEncounter = new EncounterConfig
+        {
+            cellType = cellType,
+            floorLevel = floor,
+            difficultyLevel = difficultyLevel
+        };
     }
 
     // 将当前状态保存到 GameManager（用于跨场景恢复）

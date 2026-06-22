@@ -50,19 +50,6 @@ public class BattleResultSystem : Singleton<BattleResultSystem>
                 }
             }
         }
-        if (losePanel == null)
-        {
-            var allObjects = FindObjectsByType<GameObject>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-            foreach (var obj in allObjects)
-            {
-                if (obj.name == "LosePanel")
-                {
-                    losePanel = obj;
-                    Debug.Log("[BattleResultSystem] 自动找到了 LosePanel");
-                    break;
-                }
-            }
-        }
     }
 
     private void OnKillEnemyPost(KillEnemyGA killEnemyGA)
@@ -91,6 +78,18 @@ public class BattleResultSystem : Singleton<BattleResultSystem>
     private IEnumerator BattleWinPerformer(BattleWinGA battleWinGA)
     {
         Debug.Log("[BattleResultSystem] 战斗胜利！所有敌人已消灭。");
+
+        // 检测是否为 BOSS 格战斗（中心格），若是则触发游戏全局胜利
+        bool isBoss = GameManager.Instance?.PendingEncounter?.cellType == MapCellType.WorldMap_Boss;
+        if (isBoss)
+        {
+            Debug.Log("[BattleResultSystem] BOSS 格战斗胜利 → 游戏全局胜利");
+            GameManager.Instance.ShowGameWin();
+            yield return null;
+            yield break;
+        }
+
+        // 普通战斗胜利：显示 WinPanel + 奖励
         if (winPanel == null) FindPanelsIfNull();
         if (winPanel != null)
         {
@@ -108,9 +107,7 @@ public class BattleResultSystem : Singleton<BattleResultSystem>
     private IEnumerator BattleLosePerformer(BattleLoseGA battleLoseGA)
     {
         Debug.Log("[BattleResultSystem] 战斗失败！英雄已死亡。");
-        if (losePanel == null) FindPanelsIfNull();
-        if (losePanel != null)
-            losePanel.SetActive(true);
+        GameManager.Instance.ShowGameLose();
         yield return null;
     }
 }

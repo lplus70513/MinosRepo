@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // 单场遭遇的敌群配置，属于 EncounterRandomizer 的随机池中的一条。
-// 配置名称、权重、适用层数范围、敌群数据、出生坐标、奖励
+// 配置名称、权重、适用层数范围、难度等级、敌群数据、出生坐标、奖励
 [System.Serializable]
 public class CombatConfig
 {
@@ -10,6 +10,8 @@ public class CombatConfig
     [Range(0, 100)] public int weight = 50;
     public int minFloor = 1;
     public int maxFloor = 999;
+    /// <summary>敌群难度等级: 1=弱 2=中 3=强，用于按大地图距中心距离筛选遭遇</summary>
+    [Range(1, 3)] public int difficultyLevel = 1;
     public bool useCustomMap;
     public int mapRadius = 2;
     public List<SpecialCellConfig> specialCells;
