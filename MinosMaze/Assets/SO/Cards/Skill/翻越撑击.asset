@@ -15,7 +15,7 @@ MonoBehaviour:
   <Description>k__BackingField: "\u5F53\u4E0E\u654C\u4EBA\u9762\u5BF9\u9762\uFF08\u5373\u89D2\u8272\u4E0E\u654C\u4EBA\u4E2D\u95F4\u6CA1\u6709\u683C\u5B50\uFF09\u65F6,
     \u79FB\u52A8\u5230\u654C\u4EBA\u7684\u80CC\u540E"
   <Cost>k__BackingField: 1
-  <Image>k__BackingField: {fileID: 0}
+  <Image>k__BackingField: {fileID: 535090658, guid: de988a9a074fd834ebc40590bc93e749, type: 3}
   <Background>k__BackingField: {fileID: 0}
   <HasAttackRange>k__BackingField: 0
   <AttackRange>k__BackingField: 1

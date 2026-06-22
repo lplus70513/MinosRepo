@@ -14,8 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Description>k__BackingField: "\u57281*1\u7684\u8303\u56F4\u5236\u4F5C\u4E00\u4E2A\u9677\u9631\uFF0C\u4E0B\u56DE\u5408\u751F\u6548\uFF0C\u82E5\u654C\u4EBA\u6216\u81EA\u5DF1\u8D70\u5230\u8BE5\u9677\u9631\u683C\uFF0C\u5219\u9020\u621010\u4F24\u5BB3\uFF0C\u5E76\u9020\u6210\u5B9A\u8EAB\u6548\u679C\u3002"
   <Cost>k__BackingField: 0
-  <ActionPointCost>k__BackingField: 0
-  <Image>k__BackingField: {fileID: 0}
+  <Image>k__BackingField: {fileID: -1649551121, guid: 3d93ee1779b739340911054159b59fe6, type: 3}
   <Background>k__BackingField: {fileID: 0}
   <HasAttackRange>k__BackingField: 0
   <AttackRange>k__BackingField: 1
@@ -33,7 +32,6 @@ MonoBehaviour:
     <Name>k__BackingField: 
     <Description>k__BackingField: 
     <Cost>k__BackingField: 0
-    <ActionPointCost>k__BackingField: 0
     <HasAttackRange>k__BackingField: 0
     <AttackRange>k__BackingField: 1
     <ManualTargetEffect>k__BackingField:
@@ -50,7 +48,6 @@ MonoBehaviour:
     <Name>k__BackingField: 
     <Description>k__BackingField: 
     <Cost>k__BackingField: 0
-    <ActionPointCost>k__BackingField: 0
     <HasAttackRange>k__BackingField: 0
     <AttackRange>k__BackingField: 1
     <ManualTargetEffect>k__BackingField:

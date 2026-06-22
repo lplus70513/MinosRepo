@@ -16,7 +16,7 @@ MonoBehaviour:
     2 \u70B9\u4F24\u5BB3\uFF0C\u82E5\u8BE5\u540D\u654C\u4EBA\u4E0D\u8DDD\u79BB\u73A9\u5BB6\u4E3A
     1 \uFF0C\u5219\u5C06\u654C\u4EBA\u62FD\u81F3\u73A9\u5BB6\u9762\u524D\u3002"
   <Cost>k__BackingField: 1
-  <Image>k__BackingField: {fileID: 775603959, guid: 394d2fe82ccd87f41b6163a042ebd5f9, type: 3}
+  <Image>k__BackingField: {fileID: 2116308169, guid: 011abeda7db270042965c4b13fa6ca32, type: 3}
   <Background>k__BackingField: {fileID: 2004051598, guid: c6dd1d8aa674a1342a0e69187a61a93b, type: 3}
   <HasAttackRange>k__BackingField: 1
   <AttackRange>k__BackingField: 2

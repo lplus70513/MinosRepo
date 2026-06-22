@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Description>k__BackingField: "\u7ED9\u81EA\u8EAB\u589E\u52A04\u70B9\u683C\u6321\u503C\uFF0C\u82E5\u8BE5\u56DE\u5408\u5185\u4F60\u653B\u51FB\u8FC7\u654C\u4EBA\uFF0C\u5219\u518D\u589E\u52A03\u683C\u6321\u503C\u3002"
   <Cost>k__BackingField: 1
-  <Image>k__BackingField: {fileID: 1709695921, guid: 1ed825c84a4d3aa438bfa70d107b81fb, type: 3}
+  <Image>k__BackingField: {fileID: -296598, guid: faff197c05c654a48be92926d6608421, type: 3}
   <Background>k__BackingField: {fileID: 1370473001, guid: 7e9643d6638fe744ca4f76a79d6457f3, type: 3}
   <HasAttackRange>k__BackingField: 0
   <AttackRange>k__BackingField: 1

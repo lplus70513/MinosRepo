@@ -12,18 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fadff84ce82d15647820d07a06497237, type: 3}
   m_Name: Audio Config
   m_EditorClassIdentifier: 
-  mainMenuBGM: {fileID: 0}
+  mainMenuBGM: {fileID: 8300000, guid: c56b3b7bcaa28fa4f8e83b265bdd3c12, type: 3}
   worldMapBGM: {fileID: 0}
-  normalBattleBGMs: []
-  eliteBattleBGM: {fileID: 0}
-  restSiteBGM: {fileID: 0}
-  playerAttackSFX: {fileID: 0}
-  playerHitSFX: {fileID: 0}
+  normalBattleBGMs:
+  - {fileID: 8300000, guid: 4f9753ec748fbe84aa17e688f478fad2, type: 3}
+  - {fileID: 8300000, guid: 05a858ae94990d54c990daa79a695538, type: 3}
+  eliteBattleBGM: {fileID: 8300000, guid: bd67ebe91dbb9934f85bdcf8e3046940, type: 3}
+  restSiteBGM: {fileID: 8300000, guid: 232536b9c1c45d043bde5d744586e70f, type: 3}
+  playerAttackSFX: {fileID: 8300000, guid: 42c3a5ac665725643a9e1fb49329bc68, type: 3}
+  playerHitSFX: {fileID: 8300000, guid: f6bb7fbe3ba08af409ee8e1d5ab6d08e, type: 3}
   buttonClickSFX: {fileID: 0}
   goldCollectSFX: {fileID: 0}
   stringCollectSFX: {fileID: 0}
-  cardDeleteSFX: {fileID: 0}
+  cardDeleteSFX: {fileID: 8300000, guid: d62b197e4c0fbb94ca992cc29c25e744, type: 3}
   cardUpgradeSFX: {fileID: 0}
   blessingSFX: {fileID: 0}
   playerMoveSFX: {fileID: 0}
-  healSFX: {fileID: 0}
+  healSFX: {fileID: 8300000, guid: 895dbab203825ce4095afd0c8e162e33, type: 3}
