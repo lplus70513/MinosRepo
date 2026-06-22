@@ -201,7 +201,26 @@ public class WorldMapMovementSystem : Singleton<WorldMapMovementSystem>
         if (gm == null) return;
 
         int floor = gm.WorldMapState?.floorLevel ?? 1;
-        gm.PendingEncounter = new EncounterConfig { cellType = cellType, floorLevel = floor };
+
+        // 计算距大地图中心的难度等级
+        int difficultyLevel = 1;
+        WorldMapPlayerView player = WorldMapPlayerSystem.Instance?.PlayerView;
+        if (player != null)
+        {
+            int distance = HexGrid.HexDistance(0, 0, player.HexCoordX, player.HexCoordZ);
+            WorldMapGrid wmg = FindObjectOfType<WorldMapGrid>();
+            int mapRadius = wmg != null ? wmg.mapRadius : 6;
+            const int tierCount = 3;
+            int rawTier = tierCount - Mathf.FloorToInt((float)distance * tierCount / (mapRadius + 1));
+            difficultyLevel = Mathf.Clamp(rawTier, 1, tierCount);
+        }
+
+        gm.PendingEncounter = new EncounterConfig
+        {
+            cellType = cellType,
+            floorLevel = floor,
+            difficultyLevel = difficultyLevel
+        };
     }
 
     // 将当前状态保存到 GameManager（用于跨场景恢复）

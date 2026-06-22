@@ -157,14 +157,16 @@ public class MatchSetupSystem : MonoBehaviour
         if (pending != null)
         {
             int floor = pending.floorLevel;
+            int difficulty = pending.difficultyLevel;
             foreach (var cfg in combatPool.configs)
             {
                 if (cfg == null) continue;
-                if (cfg.minFloor <= floor && floor <= cfg.maxFloor && cfg.weight > 0)
-                {
-                    candidates.Add(cfg);
-                    totalWeight += cfg.weight;
-                }
+                if (cfg.weight <= 0) continue;
+                if (cfg.minFloor > floor || cfg.maxFloor < floor) continue;
+                // 难度等级过滤（difficultyLevel>0 才生效，向后兼容旧存档）
+                if (difficulty > 0 && cfg.difficultyLevel != difficulty) continue;
+                candidates.Add(cfg);
+                totalWeight += cfg.weight;
             }
         }
 
