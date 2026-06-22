@@ -203,6 +203,7 @@ public class GameManager : MonoBehaviour
 
     public void ResetWorldMapStateForNewGame()
     {
+        PendingEncounter = null;
         WorldMapState = new WorldMapState();
         WorldMapState.playerPosX = -999;
         WorldMapState.playerPosZ = -999;
@@ -303,6 +304,8 @@ public class GameManager : MonoBehaviour
         if (isExitingEncounter) return;
         isExitingEncounter = true;
 
+        PendingEncounter = null;
+
         // 遭遇已正常完成，进入前快照作废
         preEncounterSnapshot = null;
 
@@ -367,6 +370,7 @@ public class GameManager : MonoBehaviour
     // 战斗失败/游戏胜利/游戏失败时返回主菜单
     public void ReturnToMainMenu()
     {
+        PendingEncounter = null;
         if (gameWinPanel != null) gameWinPanel.SetActive(false);
         if (gameLosePanel != null) gameLosePanel.SetActive(false);
         isStartingGame = false;
