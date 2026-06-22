@@ -21,11 +21,11 @@ MonoBehaviour:
   restSiteBGM: {fileID: 8300000, guid: 232536b9c1c45d043bde5d744586e70f, type: 3}
   playerAttackSFX: {fileID: 8300000, guid: 42c3a5ac665725643a9e1fb49329bc68, type: 3}
   playerHitSFX: {fileID: 8300000, guid: f6bb7fbe3ba08af409ee8e1d5ab6d08e, type: 3}
-  buttonClickSFX: {fileID: 0}
-  goldCollectSFX: {fileID: 0}
-  stringCollectSFX: {fileID: 0}
+  buttonClickSFX: {fileID: 8300000, guid: 3ea67cdfd3312874d95d4b9fc337a9ee, type: 3}
+  goldCollectSFX: {fileID: 8300000, guid: cbc7fecc07ee7d04dbd207ebf007930e, type: 3}
+  stringCollectSFX: {fileID: 8300000, guid: 96a39ef6c28f240429773eb3ed6930a8, type: 3}
   cardDeleteSFX: {fileID: 8300000, guid: d62b197e4c0fbb94ca992cc29c25e744, type: 3}
   cardUpgradeSFX: {fileID: 0}
-  blessingSFX: {fileID: 0}
-  playerMoveSFX: {fileID: 0}
+  blessingSFX: {fileID: 8300000, guid: bb15246c8f616d34382199597ec7c915, type: 3}
+  playerMoveSFX: {fileID: 8300000, guid: 20c3df9d2fe108742b2b184b7236342b, type: 3}
   healSFX: {fileID: 8300000, guid: 895dbab203825ce4095afd0c8e162e33, type: 3}
