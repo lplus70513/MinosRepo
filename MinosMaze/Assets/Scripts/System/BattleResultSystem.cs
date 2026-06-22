@@ -79,7 +79,8 @@ public class BattleResultSystem : Singleton<BattleResultSystem>
     {
         Debug.Log("[BattleResultSystem] 战斗胜利！所有敌人已消灭。");
 
-        // 检测是否为 BOSS 格战斗（中心格），若是则触发游戏全局胜利
+        Interactions.Instance.IsShowingReward = true;
+
         bool isBoss = GameManager.Instance?.PendingEncounter?.cellType == MapCellType.WorldMap_Boss;
         if (isBoss)
         {
@@ -107,6 +108,7 @@ public class BattleResultSystem : Singleton<BattleResultSystem>
     private IEnumerator BattleLosePerformer(BattleLoseGA battleLoseGA)
     {
         Debug.Log("[BattleResultSystem] 战斗失败！英雄已死亡。");
+        Interactions.Instance.IsShowingReward = true;
         GameManager.Instance.ShowGameLose();
         yield return null;
     }

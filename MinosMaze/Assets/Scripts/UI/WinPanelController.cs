@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class WinPanelController : MonoBehaviour
 {
@@ -13,6 +14,11 @@ public class WinPanelController : MonoBehaviour
     [SerializeField] private StringDialog stringDialog;
     [SerializeField] private ResourceHUD resourceHUD;
 
+    [Header("弹出动画")]
+    [SerializeField] private Transform scaleRoot;
+    [SerializeField] private CanvasGroup canvasGroup;
+    [SerializeField] private float popDuration = 0.2f;
+
     private BattleReward _reward;
     private bool _goldProcessed;
     private bool _cardProcessed;
@@ -20,6 +26,16 @@ public class WinPanelController : MonoBehaviour
 
     void Awake()
     {
+        if (scaleRoot == null)
+            scaleRoot = transform;
+
+        if (canvasGroup == null)
+        {
+            canvasGroup = GetComponent<CanvasGroup>();
+            if (canvasGroup == null)
+                canvasGroup = gameObject.AddComponent<CanvasGroup>();
+        }
+
         if (claimButton != null)
             claimButton.onClick.AddListener(OnClaim);
         if (goldButton != null)
@@ -36,6 +52,12 @@ public class WinPanelController : MonoBehaviour
         _goldProcessed = false;
         _cardProcessed = false;
         _stringProcessed = false;
+
+        scaleRoot.localScale = Vector3.zero;
+        canvasGroup.alpha = 0f;
+
+        scaleRoot.DOScale(1f, popDuration).SetEase(Ease.OutBack);
+        canvasGroup.DOFade(1f, popDuration).SetEase(Ease.OutQuad);
 
         if (goldButton != null)
             goldButton.interactable = true;
@@ -105,6 +127,7 @@ public class WinPanelController : MonoBehaviour
     private void OnClaim()
     {
         Debug.Log("[WinPanel] 退出战斗");
+        Interactions.Instance.IsShowingReward = false;
         var hero = HeroSystem.Instance?.HeroView;
         if (hero != null)
             GameManager.Instance.SaveBattleResult(hero.CurrentHealth, hero.MaxHealth);

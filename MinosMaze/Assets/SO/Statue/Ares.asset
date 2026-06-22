@@ -16,7 +16,8 @@ MonoBehaviour:
   gender: 0
   blessings:
   - blessingId: ares_strength
-    description: "\u6BCF\u573A\u6218\u6597\u5F00\u59CB\u65F6\uFF0C\u83B7\u5F972\u70B9\u529B\u91CF\uFF0C\u5931\u53BB1\u70B9\u575A\u56FA"
+    description: "\u6BCF\u573A\u6218\u6597\u5F00\u59CB\u65F6, \u83B7\u5F972\u70B9\u529B\u91CF,
+      \u5931\u53BB1\u70B9\u575A\u56FA"
     effectType: 3
     effectValue: 2
     costType: 1

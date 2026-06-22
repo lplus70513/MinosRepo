@@ -67,8 +67,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: New Text
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 71a97420206a4c4418ccc167b44ffb01, type: 2}
-  m_sharedMaterial: {fileID: -6922619108207798505, guid: 71a97420206a4c4418ccc167b44ffb01, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 16a93bb699a00f140887110cba0c08c7, type: 2}
+  m_sharedMaterial: {fileID: -7715300000198643474, guid: 16a93bb699a00f140887110cba0c08c7, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -99,7 +99,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -199,10 +199,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: "\u54C8\u8FEA\u65AF"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 71a97420206a4c4418ccc167b44ffb01, type: 2}
-  m_sharedMaterial: {fileID: -6922619108207798505, guid: 71a97420206a4c4418ccc167b44ffb01, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 16a93bb699a00f140887110cba0c08c7, type: 2}
+  m_sharedMaterial: {fileID: -7715300000198643474, guid: 16a93bb699a00f140887110cba0c08c7, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -335,8 +335,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: New Text
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 71a97420206a4c4418ccc167b44ffb01, type: 2}
-  m_sharedMaterial: {fileID: -6922619108207798505, guid: 71a97420206a4c4418ccc167b44ffb01, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 16a93bb699a00f140887110cba0c08c7, type: 2}
+  m_sharedMaterial: {fileID: -7715300000198643474, guid: 16a93bb699a00f140887110cba0c08c7, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -367,7 +367,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0

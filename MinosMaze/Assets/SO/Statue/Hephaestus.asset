@@ -30,7 +30,7 @@ MonoBehaviour:
     costAmount: 25
     repeatable: 1
   - blessingId: hephaestus_upgrade
-    description: "\u5347\u7EA72\u5F20\u5361\u724C\uFF0C\u73A9\u5BB6\u53EF\u4EE5\u9009\u62E9\u54EA\u4E24\u5F20"
+    description: "\u9009\u62E9\u5361\u7EC4\u4E2D\u76842\u5F20\u724C\u5347\u7EA7"
     effectType: 14
     effectValue: 2
     costType: 2

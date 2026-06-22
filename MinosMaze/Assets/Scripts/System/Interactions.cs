@@ -5,10 +5,12 @@ public class Interactions : Singleton<Interactions>
     public bool PlayerIsDragging { get; set; } = false;
     public bool PlayerIsTargeting { get; set; } = false;
     public bool IsViewingDeck { get; set; } = false;
+    public bool IsShowingReward { get; set; } = false;
 
     public bool PlayerCanInteract()
     {
         if (IsViewingDeck) return false;
+        if (IsShowingReward) return false;
 
         if (SceneTransitionSystem.Instance != null && SceneTransitionSystem.Instance.IsTransitioning) return false;
 
@@ -24,6 +26,7 @@ public class Interactions : Singleton<Interactions>
     public bool PlayerCanHover()
     {
         if (IsViewingDeck) return false;
+        if (IsShowingReward) return false;
         if (PlayerIsDragging || PlayerIsTargeting) return false;
         return true;
     }

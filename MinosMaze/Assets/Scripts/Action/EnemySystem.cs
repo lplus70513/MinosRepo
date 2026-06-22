@@ -57,7 +57,14 @@ public class EnemySystem : Singleton<EnemySystem>
                 pos = HexGrid.GetStandingPoint(coord.x, coord.y);
             }
             enemyBoardView.AddEnemy(enemyDatas[i], pos, rot, hexX, hexZ);
+            EnemyView view = enemyBoardView.EnemyViews[enemyBoardView.EnemyViews.Count - 1];
+            view.OnStatusChanged += OnEnemyStatusChanged;
         }
+    }
+
+    private void OnEnemyStatusChanged()
+    {
+        RefreshIntentsForAllEnemies();
     }
 
     private IEnumerator EnemyTurnPerformer(EnemyTurnGA enemyTurnGA)
@@ -301,12 +308,39 @@ public class EnemySystem : Singleton<EnemySystem>
             yield break;
         }
 
+        killEnemyGA.EnemyView.OnStatusChanged -= OnEnemyStatusChanged;
         killEnemyGA.EnemyView.HideIntents();
         yield return enemyBoardView.RemoveEnemy(killEnemyGA.EnemyView);
     }
 
     private void EnemyTurnPostReaction(EnemyTurnGA enemyTurnGA)
     {
+        var allCombatants = new List<CombatantView>();
+        if (HeroSystem.Instance.HeroView != null)
+            allCombatants.Add(HeroSystem.Instance.HeroView);
+        foreach (var enemy in enemyBoardView.EnemyViews)
+            if (enemy != null && enemy.CurrentHealth > 0) allCombatants.Add(enemy);
+
+        foreach (var combatant in allCombatants)
+        {
+            int bleedStacks = combatant.GetStatusEffectStacks(StatusEffectType.BLEED);
+            if (bleedStacks > 0)
+            {
+                DealDamageGA bleedGA = new(bleedStacks, 1, new List<CombatantView> { combatant }, null);
+                ActionSystem.Instance.AddReaction(bleedGA);
+                Debug.Log($"[EnemySystem] 回合结束 {combatant.name} 出血 {bleedStacks} 点伤害");
+            }
+        }
+
+        foreach (var combatant in allCombatants)
+        {
+            combatant.DecayTurnEndEffects();
+            combatant.ClearArmorOnTurnEnd();
+        }
+
+        if (HeroSystem.Instance.HeroView != null)
+            HeroSystem.Instance.HeroView.ThornsDamage = 0;
+
         ComputeAndStoreNextTurnIntents();
         foreach (var enemy in enemyBoardView.EnemyViews)
         {
@@ -337,6 +371,35 @@ public class EnemySystem : Singleton<EnemySystem>
                     ? DamageSystem.CalculateModifiedDamage(a.BaseDamage, enemy, heroView)
                     : a.BaseDamage,
             });
+        }
+    }
+
+    private void UpdateIntentValues()
+    {
+        HeroView heroView = HeroSystem.Instance?.HeroView;
+        foreach (var enemy in enemyBoardView.EnemyViews)
+        {
+            if (enemy.CurrentHealth <= 0) continue;
+            if (enemy.selectedActions == null || enemy.selectedActions.Count == 0) continue;
+
+            enemy.currentIntents = enemy.selectedActions.ConvertAll(a => new EnemyIntentData
+            {
+                IntentType = a.ActionType,
+                HitCount = a.HitCount,
+                ValuePerHit = a.ActionType == EnemyActionType.Attack
+                    ? DamageSystem.CalculateModifiedDamage(a.BaseDamage, enemy, heroView)
+                    : a.BaseDamage,
+            });
+        }
+    }
+
+    private void RefreshIntentsForAllEnemies()
+    {
+        UpdateIntentValues();
+        foreach (var enemy in enemyBoardView.EnemyViews)
+        {
+            if (enemy.CurrentHealth <= 0) continue;
+            enemy.ShowIntents();
         }
     }
 

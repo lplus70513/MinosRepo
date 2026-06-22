@@ -9,7 +9,6 @@ public class StatusEffectSystem : MonoBehaviour
         ActionSystem.AttachPerformer<AddStatusEffectGA>(AddStatusEffectPerformer);
         ActionSystem.AttachPerformer<DoubleStatusGA>(DoubleStatusPerformer);
         ActionSystem.AttachPerformer<ApplySpikedShieldGA>(ApplySpikedShieldPerformer);
-        ActionSystem.SubscribeReaction<EnemyTurnGA>(OnEnemyTurnPost, ReactionTiming.POST);
         ActionSystem.SubscribeReaction<DealDamageGA>(OnDealDamagePost, ReactionTiming.POST);
         ActionSystem.SubscribeReaction<DealDamageGA>(OnThornsDamage, ReactionTiming.POST);
     }
@@ -19,7 +18,6 @@ public class StatusEffectSystem : MonoBehaviour
         ActionSystem.DetachPerformer<AddStatusEffectGA>();
         ActionSystem.DetachPerformer<DoubleStatusGA>();
         ActionSystem.DetachPerformer<ApplySpikedShieldGA>();
-        ActionSystem.UnsubscribeReaction<EnemyTurnGA>(OnEnemyTurnPost, ReactionTiming.POST);
         ActionSystem.UnsubscribeReaction<DealDamageGA>(OnDealDamagePost, ReactionTiming.POST);
         ActionSystem.UnsubscribeReaction<DealDamageGA>(OnThornsDamage, ReactionTiming.POST);
     }
@@ -77,33 +75,6 @@ public class StatusEffectSystem : MonoBehaviour
         DealDamageGA thornsGA = new(hero.ThornsDamage, 1, new List<CombatantView> { attacker }, hero);
         ActionSystem.Instance.AddReaction(thornsGA);
         Debug.Log($"[StatusEffectSystem] 荆棘反伤 {hero.ThornsDamage} 点给 {attacker.name}");
-    }
-
-    private void OnEnemyTurnPost(EnemyTurnGA enemyTurnGA)
-    {
-        var allCombatants = new List<CombatantView>();
-        if (HeroSystem.Instance.HeroView != null)
-            allCombatants.Add(HeroSystem.Instance.HeroView);
-        if (EnemySystem.Instance.Enemies != null)
-        {
-            foreach (var enemy in EnemySystem.Instance.Enemies)
-                if (enemy != null) allCombatants.Add(enemy);
-        }
-
-        foreach (var combatant in allCombatants)
-        {
-            int bleedStacks = combatant.GetStatusEffectStacks(StatusEffectType.BLEED);
-            if (bleedStacks > 0)
-            {
-                DealDamageGA bleedGA = new(bleedStacks, 1, new List<CombatantView> { combatant }, null);
-                ActionSystem.Instance.AddReaction(bleedGA);
-            }
-
-            combatant.DecayTurnEndEffects();
-            combatant.ClearArmorOnTurnEnd();
-
-            combatant.ThornsDamage = 0;
-        }
     }
 
     private void OnDealDamagePost(DealDamageGA dealDamageGA)
