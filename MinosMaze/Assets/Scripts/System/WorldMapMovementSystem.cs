@@ -49,6 +49,36 @@ public class WorldMapMovementSystem : Singleton<WorldMapMovementSystem>
         {
             CardSystem.Instance.SetUp(gm.WorldMapState.currentDeck);
         }
+
+        // 延迟检测 GameOver（从遭遇场景返回后可能线耗尽或周围坍塌）
+        StartCoroutine(DelayedGameOverCheck());
+    }
+
+    private IEnumerator DelayedGameOverCheck()
+    {
+        yield return new WaitForSeconds(0.3f);
+        var sts = SceneTransitionSystem.Instance;
+        if (sts != null)
+            yield return new WaitUntil(() => !sts.IsTransitioning);
+
+        WorldMapPlayerView player = WorldMapPlayerSystem.Instance.PlayerView;
+        if (player == null) yield break;
+
+        // 线耗尽且不在 BOSS 格
+        HexCell currentCell = HexGrid.GetCell(player.HexCoordX, player.HexCoordZ);
+        if (MovePoints <= 0 && (currentCell == null || currentCell.cellType != MapCellType.WorldMap_Boss))
+        {
+            Debug.Log("[WorldMapMovementSystem] 启动检测：移动点耗尽且不在 BOSS 格，游戏失败");
+            GameManager.Instance.OnGameOver();
+            yield break;
+        }
+
+        // 周围格子全部坍塌
+        if (MapCollapseSystem.CheckPlayerSurrounded(player.HexCoordX, player.HexCoordZ))
+        {
+            Debug.Log("[WorldMapMovementSystem] 启动检测：周围格子全部坍塌，游戏失败");
+            GameManager.Instance.OnGameOver();
+        }
     }
 
     void Update()

@@ -24,6 +24,10 @@ public class GameManager : MonoBehaviour
     [Header("UI ����")]
     public GameObject SettingsPanel;
 
+    [Header("游戏结束面板")]
+    [SerializeField] private GameObject gameWinPanel;
+    [SerializeField] private GameObject gameLosePanel;
+
     [Header("大地图配置")]
     [SerializeField] private string worldMapSceneName = "2.0_WorldMap";
     [SerializeField] private HeroData heroData;
@@ -76,6 +80,9 @@ public class GameManager : MonoBehaviour
         // 2. ��ֵ���־û�
         _instance = this;
         DontDestroyOnLoad(gameObject);
+
+        if (gameWinPanel != null) gameWinPanel.SetActive(false);
+        if (gameLosePanel != null) gameLosePanel.SetActive(false);
 
         WorldMapState = new WorldMapState();
         WorldMapState.stringCount = 15;
@@ -357,9 +364,11 @@ public class GameManager : MonoBehaviour
         yield return SceneTransitionSystem.Instance.FadeIn();
     }
 
-    // 战斗失败时返回主菜单
+    // 战斗失败/游戏胜利/游戏失败时返回主菜单
     public void ReturnToMainMenu()
     {
+        if (gameWinPanel != null) gameWinPanel.SetActive(false);
+        if (gameLosePanel != null) gameLosePanel.SetActive(false);
         isStartingGame = false;
         SceneTransitionSystem.Instance.StartCoroutine(ReturnToMainMenuRoutine());
     }
@@ -390,10 +399,35 @@ public class GameManager : MonoBehaviour
         yield return SceneTransitionSystem.Instance.FadeIn();
     }
 
-    // GameOver：移动点耗尽且未到 BOSS 格（暂留空）
+    // GameOver：移动点耗尽/周围坍塌触发游戏失败
     public void OnGameOver()
     {
-        Debug.Log("[GameManager] 移动点耗尽，游戏失败");
+        Debug.Log("[GameManager] 游戏失败");
+        ShowGameLose();
+    }
+
+    // 游戏胜利：中心格战斗完成后调用
+    public void ShowGameWin()
+    {
+        Debug.Log("[GameManager] 游戏胜利！");
+        if (gameWinPanel == null)
+        {
+            Debug.LogError("[GameManager] gameWinPanel 未配置！请在 0_Manager 场景的 GameManager Inspector 中拖入 GameWinPanel");
+            return;
+        }
+        gameWinPanel.SetActive(true);
+    }
+
+    // 游戏失败：血量归0/线耗尽/周围坍塌时调用
+    public void ShowGameLose()
+    {
+        Debug.Log("[GameManager] 游戏失败！");
+        if (gameLosePanel == null)
+        {
+            Debug.LogError("[GameManager] gameLosePanel 未配置！请在 0_Manager 场景的 GameManager Inspector 中拖入 GameLosePanel");
+            return;
+        }
+        gameLosePanel.SetActive(true);
     }
 
     // ========== 存档相关 ==========

@@ -30,6 +30,39 @@ public static class MapCollapseSystem
             yield return CollapseRing(currentMaxRing);
             currentMaxRing--;
         }
+
+        // 检查玩家周围格子是否全部坍塌
+        if (CheckPlayerSurrounded(x, z))
+        {
+            Debug.Log("[MapCollapseSystem] 玩家周围格子全部坍塌，游戏失败");
+            GameManager.Instance.OnGameOver();
+        }
+    }
+
+    // 检查玩家周围所有合法邻居是否全部已清除（坍塌）
+    public static bool CheckPlayerSurrounded(int x, int z)
+    {
+        GameManager gm = GameManager.Instance;
+        if (gm == null) return false;
+
+        // 六边形轴向坐标下的 6 个邻居偏移
+        (int dx, int dz)[] offsets = { (1, 0), (-1, 0), (0, 1), (-1, 1), (1, -1), (0, -1) };
+        int neighborCount = 0;
+        int clearedCount = 0;
+
+        foreach (var (dx, dz) in offsets)
+        {
+            int nx = x + dx;
+            int nz = z + dz;
+            if (!HexGrid.ContainsCell(nx, nz)) continue;
+            neighborCount++;
+            Vector2Int coord = new(nx, nz);
+            if (gm.WorldMapState.clearedCells.Contains(coord))
+                clearedCount++;
+        }
+
+        // 所有地图内的邻居都在已清除列表中则判定为被围困
+        return neighborCount > 0 && neighborCount == clearedCount;
     }
 
     // 首次调用时从活跃格子计算地图当前最大环数
