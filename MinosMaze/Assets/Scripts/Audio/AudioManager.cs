@@ -78,19 +78,18 @@ public class AudioManager : MonoBehaviour
         if (ActiveBGMSource.clip == clip && ActiveBGMSource.isPlaying)
             return;
 
-        ActiveBGMSource.DOKill();
-        ActiveBGMSource.DOFade(0f, fadeDuration).OnComplete(() =>
-        {
-            ActiveBGMSource.Stop();
-        });
+        AudioSource oldSource = ActiveBGMSource;
+        oldSource.DOKill();
+        oldSource.DOFade(0f, fadeDuration).OnComplete(() => oldSource.Stop());
 
         usingSourceA = !usingSourceA;
 
-        ActiveBGMSource.clip = clip;
-        ActiveBGMSource.volume = 0f;
-        ActiveBGMSource.Play();
-        ActiveBGMSource.DOKill();
-        ActiveBGMSource.DOFade(bgmVolume, fadeDuration);
+        AudioSource newSource = ActiveBGMSource;
+        newSource.clip = clip;
+        newSource.volume = 0f;
+        newSource.Play();
+        newSource.DOKill();
+        newSource.DOFade(bgmVolume, fadeDuration);
     }
 
     public void StopBGM(float fadeDuration = 0.5f)
