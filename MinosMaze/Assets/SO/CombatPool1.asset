@@ -14,32 +14,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   configs:
   - configName: "\u5C0F\u53F2\u83B1\u59C61"
-    weight: 20
+    weight: 100
     minFloor: 1
     maxFloor: 2
     useCustomMap: 1
-    mapRadius: 6
+    mapRadius: 3
     specialCells:
-    - coord: {x: 5, y: 0}
+    - coord: {x: 0, y: 1}
       cellType: 2
-    - coord: {x: 5, y: 1}
+    - coord: {x: -2, y: 1}
       cellType: 2
-    - coord: {x: 5, y: 2}
+    - coord: {x: 1, y: 2}
       cellType: 2
-    - coord: {x: 5, y: 3}
+    - coord: {x: 2, y: -1}
       cellType: 2
     enemyDatas:
     - {fileID: 11400000, guid: b2a5924665279d649ad12ca3d745fd17, type: 2}
     - {fileID: 11400000, guid: b2a5924665279d649ad12ca3d745fd17, type: 2}
     - {fileID: 11400000, guid: b2a5924665279d649ad12ca3d745fd17, type: 2}
     enemySpawnCoords:
-    - {x: 1, y: 3}
+    - {x: 0, y: 0}
     - {x: 2, y: -2}
     - {x: -2, y: 0}
-    heroSpawnCoord: {x: -4, y: 4}
+    heroSpawnCoord: {x: -3, y: 3}
     rewardConfig: {fileID: 11400000, guid: d9898f0919b265243b6544774bee7dda, type: 2}
   - configName: "\u866B\u5B50"
-    weight: 20
+    weight: 0
     minFloor: 1
     maxFloor: 2
     useCustomMap: 1
@@ -66,7 +66,7 @@ MonoBehaviour:
     heroSpawnCoord: {x: 0, y: 4}
     rewardConfig: {fileID: 11400000, guid: d9898f0919b265243b6544774bee7dda, type: 2}
   - configName: "\u9AB7\u9AC5"
-    weight: 20
+    weight: 0
     minFloor: 1
     maxFloor: 2
     useCustomMap: 1
@@ -95,7 +95,7 @@ MonoBehaviour:
     heroSpawnCoord: {x: 0, y: 4}
     rewardConfig: {fileID: 11400000, guid: d9898f0919b265243b6544774bee7dda, type: 2}
   - configName: "\u8001\u9F20"
-    weight: 20
+    weight: 0
     minFloor: 1
     maxFloor: 2
     useCustomMap: 1
@@ -122,7 +122,7 @@ MonoBehaviour:
     heroSpawnCoord: {x: 0, y: 3}
     rewardConfig: {fileID: 11400000, guid: d9898f0919b265243b6544774bee7dda, type: 2}
   - configName: "\u53F2\u83B1\u59C6\u4E4B\u738B"
-    weight: 20
+    weight: 0
     minFloor: 1
     maxFloor: 2
     useCustomMap: 1
@@ -144,5 +144,133 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 4d8eda31d00364a41b2402ed876b0e1e, type: 2}
     enemySpawnCoords:
     - {x: -1, y: 1}
+    heroSpawnCoord: {x: 0, y: 3}
+    rewardConfig: {fileID: 11400000, guid: d9898f0919b265243b6544774bee7dda, type: 2}
+  - configName: "\u5DE8\u8718\u86DB"
+    weight: 0
+    minFloor: 1
+    maxFloor: 2
+    useCustomMap: 1
+    mapRadius: 5
+    specialCells:
+    - coord: {x: 0, y: 0}
+      cellType: 2
+    - coord: {x: 0, y: 1}
+      cellType: 2
+    - coord: {x: 0, y: 2}
+      cellType: 2
+    - coord: {x: 2, y: 0}
+      cellType: 2
+    - coord: {x: -3, y: 1}
+      cellType: 2
+    - coord: {x: -3, y: 2}
+      cellType: 2
+    - coord: {x: -3, y: 3}
+      cellType: 2
+    - coord: {x: 1, y: -2}
+      cellType: 2
+    - coord: {x: 0, y: -4}
+      cellType: 2
+    - coord: {x: -1, y: -3}
+      cellType: 2
+    enemyDatas:
+    - {fileID: 11400000, guid: e8979a9ba9b0cec4680fba4bb4bd02a1, type: 2}
+    enemySpawnCoords:
+    - {x: -1, y: 1}
+    heroSpawnCoord: {x: 0, y: 3}
+    rewardConfig: {fileID: 11400000, guid: d9898f0919b265243b6544774bee7dda, type: 2}
+  - configName: "\u5F02\u9E1F"
+    weight: 0
+    minFloor: 1
+    maxFloor: 2
+    useCustomMap: 1
+    mapRadius: 4
+    specialCells:
+    - coord: {x: 0, y: 0}
+      cellType: 2
+    - coord: {x: 0, y: 1}
+      cellType: 2
+    - coord: {x: 0, y: 2}
+      cellType: 2
+    - coord: {x: 2, y: -1}
+      cellType: 2
+    - coord: {x: -3, y: 1}
+      cellType: 2
+    - coord: {x: -3, y: 2}
+      cellType: 2
+    - coord: {x: -2, y: 2}
+      cellType: 2
+    - coord: {x: 2, y: -2}
+      cellType: 2
+    - coord: {x: 1, y: -2}
+      cellType: 2
+    enemyDatas:
+    - {fileID: 11400000, guid: feef8d76f1327524eb80a12e85f31065, type: 2}
+    enemySpawnCoords:
+    - {x: -1, y: 1}
+    heroSpawnCoord: {x: 0, y: 3}
+    rewardConfig: {fileID: 11400000, guid: d9898f0919b265243b6544774bee7dda, type: 2}
+  - configName: "\u7A7A\u76D4\u7532"
+    weight: 0
+    minFloor: 1
+    maxFloor: 2
+    useCustomMap: 1
+    mapRadius: 4
+    specialCells:
+    - coord: {x: 0, y: -2}
+      cellType: 2
+    - coord: {x: 0, y: 1}
+      cellType: 2
+    - coord: {x: 0, y: 2}
+      cellType: 2
+    - coord: {x: 2, y: -1}
+      cellType: 2
+    - coord: {x: -3, y: 1}
+      cellType: 2
+    - coord: {x: -3, y: 2}
+      cellType: 2
+    - coord: {x: -2, y: 2}
+      cellType: 2
+    - coord: {x: 2, y: -2}
+      cellType: 2
+    - coord: {x: 1, y: -2}
+      cellType: 2
+    enemyDatas:
+    - {fileID: 11400000, guid: a8ada6e43e1f04d468b86fb3be57b9d9, type: 2}
+    enemySpawnCoords:
+    - {x: 0, y: 0}
+    heroSpawnCoord: {x: 0, y: 3}
+    rewardConfig: {fileID: 11400000, guid: d9898f0919b265243b6544774bee7dda, type: 2}
+  - configName: "\u8FF7\u9014\u65C5\u4EBA"
+    weight: 0
+    minFloor: 1
+    maxFloor: 2
+    useCustomMap: 1
+    mapRadius: 5
+    specialCells:
+    - coord: {x: 0, y: -2}
+      cellType: 2
+    - coord: {x: 0, y: 1}
+      cellType: 2
+    - coord: {x: 2, y: -1}
+      cellType: 2
+    - coord: {x: -3, y: 1}
+      cellType: 2
+    - coord: {x: -3, y: 2}
+      cellType: 2
+    - coord: {x: -2, y: 2}
+      cellType: 2
+    - coord: {x: 2, y: -2}
+      cellType: 2
+    - coord: {x: 1, y: -2}
+      cellType: 2
+    - coord: {x: -1, y: -1}
+      cellType: 2
+    - coord: {x: -2, y: 0}
+      cellType: 2
+    enemyDatas:
+    - {fileID: 11400000, guid: 0911c322054b1014a931092b41a05251, type: 2}
+    enemySpawnCoords:
+    - {x: 0, y: 0}
     heroSpawnCoord: {x: 0, y: 3}
     rewardConfig: {fileID: 11400000, guid: d9898f0919b265243b6544774bee7dda, type: 2}
