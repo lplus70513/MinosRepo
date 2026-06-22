@@ -38,8 +38,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 811c262a752a77b45acfb322c196c414, type: 2}
   - {fileID: 11400000, guid: c3849a41c88b9654cb179bd3e38e0cbc, type: 2}
   - {fileID: 11400000, guid: a3d8d186084987643a7f65efbef6edd9, type: 2}
-  - {fileID: 11400000, guid: c9134cf086fa2da4189ffd4c8b8e9779, type: 2}
-  - {fileID: 11400000, guid: c9134cf086fa2da4189ffd4c8b8e9779, type: 2}
   normalGoldWeights:
   - amount: 8
     weight: 0.1
