@@ -19,4 +19,5 @@ public class EnemyData : ScriptableObject
     [field: SerializeField] public int ReviveHealth { get; private set; } = 4;
     [field: SerializeField] public bool PersistArmor { get; private set; }
     [field: SerializeField] public List<StatusEffectInfliction> OnDealDamageEffects { get; private set; }
+    [field: SerializeField] public AudioClip HitSFX { get; private set; }
 }

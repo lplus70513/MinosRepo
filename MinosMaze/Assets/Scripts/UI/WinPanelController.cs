@@ -68,6 +68,7 @@ public class WinPanelController : MonoBehaviour
         GameManager.Instance.WorldMapState.gold += _reward.GoldAmount;
         if (resourceHUD != null)
             resourceHUD.AnimateGold(oldGold, GameManager.Instance.WorldMapState.gold);
+        AudioManager.Instance?.PlaySFX(AudioManager.Instance?.Config?.goldCollectSFX);
     }
 
     private void OnCardClick()
@@ -98,6 +99,7 @@ public class WinPanelController : MonoBehaviour
         GameManager.Instance.WorldMapState.stringCount += 1;
         if (resourceHUD != null)
             resourceHUD.AnimateString(oldCount, GameManager.Instance.WorldMapState.stringCount);
+        AudioManager.Instance?.PlaySFX(AudioManager.Instance?.Config?.stringCollectSFX);
     }
 
     private void OnClaim()

@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fadff84ce82d15647820d07a06497237, type: 3}
+  m_Name: Audio Config
+  m_EditorClassIdentifier: 
+  mainMenuBGM: {fileID: 0}
+  worldMapBGM: {fileID: 0}
+  normalBattleBGMs: []
+  eliteBattleBGM: {fileID: 0}
+  restSiteBGM: {fileID: 0}
+  playerAttackSFX: {fileID: 0}
+  playerHitSFX: {fileID: 0}
+  buttonClickSFX: {fileID: 0}
+  goldCollectSFX: {fileID: 0}
+  stringCollectSFX: {fileID: 0}
+  cardDeleteSFX: {fileID: 0}
+  cardUpgradeSFX: {fileID: 0}
+  blessingSFX: {fileID: 0}
+  playerMoveSFX: {fileID: 0}
+  healSFX: {fileID: 0}

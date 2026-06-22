@@ -31,6 +31,10 @@ public class DamageSystem : MonoBehaviour
                 target.Damage(modifiedDamage);
                 totalUnblocked += target.LastUnblockedDamage;
                 SpawnDamageVFX(target);
+                if (target is EnemyView enemyView && enemyView.SourceData != null && enemyView.SourceData.HitSFX != null)
+                    AudioManager.Instance?.PlaySFX(enemyView.SourceData.HitSFX);
+                else if (target is HeroView)
+                    AudioManager.Instance?.PlaySFX(AudioManager.Instance?.Config?.playerHitSFX);
                 yield return new WaitForSeconds(0.1f);
                 if (target == null) break;
                 if (target.CurrentHealth == 0 && target is EnemyView)

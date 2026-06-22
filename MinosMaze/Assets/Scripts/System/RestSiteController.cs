@@ -179,6 +179,7 @@ public class RestSiteController : MonoBehaviour
                 gm.WorldMapState.maxHealth);
         }
 
+        AudioManager.Instance?.PlaySFX(AudioManager.Instance?.Config?.healSFX);
         OnOptionComplete();
     }
 
@@ -194,6 +195,7 @@ public class RestSiteController : MonoBehaviour
         deckViewer.OpenForSelection(deck, (entry) =>
         {
             deck.Remove(entry);
+            AudioManager.Instance?.PlaySFX(AudioManager.Instance?.Config?.cardDeleteSFX);
             OnOptionComplete();
         }, () =>
         {
@@ -215,6 +217,7 @@ public class RestSiteController : MonoBehaviour
         deckViewer.OpenForSelection(upgradeable, (entry) =>
         {
             entry.IsUpgraded = true;
+            AudioManager.Instance?.PlaySFX(AudioManager.Instance?.Config?.cardUpgradeSFX);
             OnOptionComplete();
         }, () =>
         {

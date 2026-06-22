@@ -43,6 +43,8 @@ public class MoveSystem : Singleton<MoveSystem>
 
         Vector3 targetPos = HexGrid.GetStandingPoint(moveGA.ToX, moveGA.ToZ);
         mover.SetFacing(moveGA.ToX, moveGA.ToZ);
+        if (mover is HeroView)
+            AudioManager.Instance?.PlaySFX(AudioManager.Instance?.Config?.playerMoveSFX);
         Tween tween = mover.transform.DOMove(targetPos, 0.2f);
         yield return tween.WaitForCompletion();
         mover.HexCoordX = moveGA.ToX;

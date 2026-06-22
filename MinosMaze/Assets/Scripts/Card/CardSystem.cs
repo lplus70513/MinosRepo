@@ -161,6 +161,7 @@ public class CardSystem : Singleton<CardSystem>
         {
             HeroView hero = HeroSystem.Instance.HeroView;
             hero.SetFacing(playCardGA.ManualTarget.HexCoordX, playCardGA.ManualTarget.HexCoordZ);
+            AudioManager.Instance?.PlaySFX(AudioManager.Instance?.Config?.playerAttackSFX);
             yield return hero.PlayAttackAnimation();
 
             List<CombatantView> targets = ResolveManualTargets(playCardGA);

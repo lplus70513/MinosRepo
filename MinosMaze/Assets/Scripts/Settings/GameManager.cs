@@ -102,6 +102,8 @@ public class GameManager : MonoBehaviour
             SceneManager.LoadScene("1_MainMenu", LoadSceneMode.Additive);
         }
 
+        AudioManager.Instance?.PlayBGMForScene("1_MainMenu");
+
         if (SettingsPanel == null)
         {
             // �����ڳ�����ͨ�����ֲ���
@@ -230,6 +232,7 @@ public class GameManager : MonoBehaviour
         yield return null;
 
         yield return SceneTransitionSystem.Instance.BlackScreenWait();
+        AudioManager.Instance?.PlayBGMForScene(worldMapSceneName);
         yield return SceneTransitionSystem.Instance.FadeIn();
         isStartingGame = false;
     }
@@ -282,6 +285,7 @@ public class GameManager : MonoBehaviour
         SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneName));
 
         yield return SceneTransitionSystem.Instance.BlackScreenWait();
+        AudioManager.Instance?.PlayBGMForScene(sceneName, PendingEncounter?.cellType ?? MapCellType.Battle_Empty);
         yield return SceneTransitionSystem.Instance.FadeIn();
     }
 
@@ -318,6 +322,7 @@ public class GameManager : MonoBehaviour
         SceneManager.SetActiveScene(SceneManager.GetSceneByName(worldMapSceneName));
 
         yield return SceneTransitionSystem.Instance.BlackScreenWait();
+        AudioManager.Instance?.PlayBGMForScene(worldMapSceneName);
         yield return SceneTransitionSystem.Instance.FadeIn();
 
         isExitingEncounter = false;
@@ -347,6 +352,7 @@ public class GameManager : MonoBehaviour
         SceneManager.SetActiveScene(SceneManager.GetSceneByName(newSceneName));
 
         yield return SceneTransitionSystem.Instance.BlackScreenWait();
+        AudioManager.Instance?.PlayBGMForScene(newSceneName, PendingEncounter?.cellType ?? MapCellType.Battle_Empty);
         yield return SceneTransitionSystem.Instance.FadeIn();
     }
 
@@ -379,6 +385,7 @@ public class GameManager : MonoBehaviour
             SceneManager.LoadScene("1_MainMenu", LoadSceneMode.Additive);
 
         yield return SceneTransitionSystem.Instance.BlackScreenWait();
+        AudioManager.Instance?.PlayBGMForScene("1_MainMenu");
         yield return SceneTransitionSystem.Instance.FadeIn();
     }
 
@@ -423,6 +430,7 @@ public class GameManager : MonoBehaviour
         yield return null;
 
         yield return SceneTransitionSystem.Instance.BlackScreenWait();
+        AudioManager.Instance?.PlayBGMForScene(worldMapSceneName);
         yield return SceneTransitionSystem.Instance.FadeIn();
         isStartingGame = false;
     }

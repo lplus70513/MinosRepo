@@ -151,6 +151,7 @@ public class WorldMapMovementSystem : Singleton<WorldMapMovementSystem>
 
         MovePoints--;
         if (gm != null) gm.WorldMapState.stringCount = MovePoints;
+        AudioManager.Instance?.PlaySFX(AudioManager.Instance?.Config?.playerMoveSFX);
         Vector3 targetPos = HexGrid.GetStandingPoint(hexX, hexZ);
         Tween tween = player.transform.DOMove(targetPos, moveDuration);
         yield return tween.WaitForCompletion();

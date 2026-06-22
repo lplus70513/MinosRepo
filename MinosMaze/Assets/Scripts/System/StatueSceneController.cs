@@ -130,6 +130,7 @@ public class StatueSceneController : MonoBehaviour
 
         DeductCost(blessing);
         GrantBlessing(statue, blessing);
+        AudioManager.Instance?.PlaySFX(AudioManager.Instance?.Config?.blessingSFX);
         ApplySpecialInteractions(statue);
 
         for (int i = 0; i < slots.Count; i++)
@@ -285,6 +286,7 @@ public class StatueSceneController : MonoBehaviour
         deckViewer.OpenForSelection(deck, (entry) =>
         {
             deck.Remove(entry);
+            AudioManager.Instance?.PlaySFX(AudioManager.Instance?.Config?.cardDeleteSFX);
             onComplete?.Invoke();
         }, () => onComplete?.Invoke());
     }
@@ -306,6 +308,7 @@ public class StatueSceneController : MonoBehaviour
         deckViewer.OpenForSelection(deck, (entry) =>
         {
             deck.Remove(entry);
+            AudioManager.Instance?.PlaySFX(AudioManager.Instance?.Config?.cardDeleteSFX);
 
             CardData newCard = GetRandomCardFromPool();
             if (newCard != null)
@@ -335,6 +338,7 @@ public class StatueSceneController : MonoBehaviour
         deckViewer.OpenForSelection(upgradeable, (entry) =>
         {
             entry.IsUpgraded = true;
+            AudioManager.Instance?.PlaySFX(AudioManager.Instance?.Config?.cardUpgradeSFX);
             DoUpgradeCards(remaining - 1, onComplete);
         }, () => onComplete?.Invoke(), upgradePreview: true);
     }
