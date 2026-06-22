@@ -244,6 +244,21 @@ public class HexGrid : MonoBehaviour
         }
     }
 
+    // 高亮显示环形范围（minRadius ~ maxRadius，用于环状攻击范围显示）
+    public static void HighlightRingCells(int centerX, int centerZ, int minRadius, int maxRadius)
+    {
+        var coords = GetCoordsInRange(centerX, centerZ, maxRadius);
+        foreach (var (x, z) in coords)
+        {
+            int dist = HexDistance(centerX, centerZ, x, z);
+            if (dist >= minRadius)
+            {
+                HexCell cell = GetCell(x, z);
+                if (cell != null) cell.SetHighlight(true);
+            }
+        }
+    }
+
     // 清除所有格子的攻击高亮
     public static void ClearAllHighlights()
     {

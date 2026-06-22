@@ -6,15 +6,19 @@ public class PlayCardGA : GameAction
 
     public Card Card { get; set; }
 
-    public PlayCardGA(Card card)
+    public bool IsFreePlay { get; private set; }
+
+    public PlayCardGA(Card card, bool isFreePlay = false)
     {
         Card = card;
         ManualTarget = null;
+        IsFreePlay = isFreePlay;
     }
 
-    public PlayCardGA(Card card, EnemyView target)
+    public PlayCardGA(Card card, EnemyView target, bool isFreePlay = false)
     {
         Card = card;
         ManualTarget = target;
+        IsFreePlay = isFreePlay;
     }
 }

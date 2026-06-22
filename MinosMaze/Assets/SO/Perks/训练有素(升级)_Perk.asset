@@ -40,4 +40,4 @@ MonoBehaviour:
     - rid: 1965764565328199686
       type: {class: FreePlayEffect, ns: , asm: Assembly-CSharp}
       data:
-        freeCount: 1
+        freeCount: 2

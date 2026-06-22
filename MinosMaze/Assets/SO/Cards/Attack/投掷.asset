@@ -24,13 +24,13 @@ MonoBehaviour:
   <IsInnate>k__BackingField: 0
   <IsExhaust>k__BackingField: 0
   <IsRetain>k__BackingField: 0
-  <CanHitFlying>k__BackingField: 0
+  <CanHitFlying>k__BackingField: 1
   <IsAttackCard>k__BackingField: 1
   <AttackRangePattern>k__BackingField:
     rid: -2
   <BaseGrade>k__BackingField:
     <Name>k__BackingField: "\u6295\u63B7"
-    <Description>k__BackingField: "\u9020\u62108\u70B9\u4F24\u5BB3"
+    <Description>k__BackingField: "\u9020\u62108\u70B9\u4F24\u5BB3, \u53EF\u4EE5\u51FB\u843D\u98DE\u884C\u654C\u4EBA"
     <Cost>k__BackingField: 1
     <HasAttackRange>k__BackingField: 1
     <AttackRange>k__BackingField: 2
@@ -40,13 +40,13 @@ MonoBehaviour:
     <IsInnate>k__BackingField: 0
     <IsExhaust>k__BackingField: 0
     <IsRetain>k__BackingField: 0
-    <CanHitFlying>k__BackingField: 0
+    <CanHitFlying>k__BackingField: 1
     <IsAttackCard>k__BackingField: 1
     <AttackRangePattern>k__BackingField:
-      rid: -2
+      rid: 1965764565328199693
   <UpgradeGrade>k__BackingField:
     <Name>k__BackingField: "\u6295\u63B7+"
-    <Description>k__BackingField: "\u9020\u621011\u70B9\u4F24\u5BB3"
+    <Description>k__BackingField: "\u9020\u621011\u70B9\u4F24\u5BB3, \u53EF\u4EE5\u51FB\u843D\u98DE\u884C\u654C\u4EBA"
     <Cost>k__BackingField: 1
     <HasAttackRange>k__BackingField: 1
     <AttackRange>k__BackingField: 2
@@ -56,10 +56,10 @@ MonoBehaviour:
     <IsInnate>k__BackingField: 0
     <IsExhaust>k__BackingField: 0
     <IsRetain>k__BackingField: 0
-    <CanHitFlying>k__BackingField: 0
+    <CanHitFlying>k__BackingField: 1
     <IsAttackCard>k__BackingField: 1
     <AttackRangePattern>k__BackingField:
-      rid: -2
+      rid: 1965764565328199694
   references:
     version: 2
     RefIds:
@@ -80,3 +80,13 @@ MonoBehaviour:
       data:
         damageAmount: 11
         hitCount: 1
+    - rid: 1965764565328199693
+      type: {class: RingRange, ns: , asm: Assembly-CSharp}
+      data:
+        maxRadius: 2
+        minRadius: 2
+    - rid: 1965764565328199694
+      type: {class: RingRange, ns: , asm: Assembly-CSharp}
+      data:
+        maxRadius: 2
+        minRadius: 2
