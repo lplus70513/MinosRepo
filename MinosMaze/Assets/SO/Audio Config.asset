@@ -25,7 +25,7 @@ MonoBehaviour:
   goldCollectSFX: {fileID: 8300000, guid: cbc7fecc07ee7d04dbd207ebf007930e, type: 3}
   stringCollectSFX: {fileID: 8300000, guid: 96a39ef6c28f240429773eb3ed6930a8, type: 3}
   cardDeleteSFX: {fileID: 8300000, guid: d62b197e4c0fbb94ca992cc29c25e744, type: 3}
-  cardUpgradeSFX: {fileID: 0}
+  cardUpgradeSFX: {fileID: 8300000, guid: 0e7c4d77fcded474089f5f45bcaecef0, type: 3}
   blessingSFX: {fileID: 8300000, guid: bb15246c8f616d34382199597ec7c915, type: 3}
   playerMoveSFX: {fileID: 8300000, guid: 20c3df9d2fe108742b2b184b7236342b, type: 3}
   healSFX: {fileID: 8300000, guid: 895dbab203825ce4095afd0c8e162e33, type: 3}
