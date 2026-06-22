@@ -14,9 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   configs:
   - configName: "\u5C0F\u53F2\u83B1\u59C61"
-    weight: 100
+    weight: 10
     minFloor: 1
     maxFloor: 2
+    difficultyLevel: 1
     useCustomMap: 1
     mapRadius: 3
     specialCells:
@@ -39,9 +40,10 @@ MonoBehaviour:
     heroSpawnCoord: {x: -3, y: 3}
     rewardConfig: {fileID: 11400000, guid: d9898f0919b265243b6544774bee7dda, type: 2}
   - configName: "\u866B\u5B50"
-    weight: 0
+    weight: 10
     minFloor: 1
     maxFloor: 2
+    difficultyLevel: 1
     useCustomMap: 1
     mapRadius: 4
     specialCells:
@@ -66,9 +68,10 @@ MonoBehaviour:
     heroSpawnCoord: {x: 0, y: 4}
     rewardConfig: {fileID: 11400000, guid: d9898f0919b265243b6544774bee7dda, type: 2}
   - configName: "\u9AB7\u9AC5"
-    weight: 0
+    weight: 10
     minFloor: 1
     maxFloor: 2
+    difficultyLevel: 1
     useCustomMap: 1
     mapRadius: 4
     specialCells:
@@ -95,9 +98,10 @@ MonoBehaviour:
     heroSpawnCoord: {x: 0, y: 4}
     rewardConfig: {fileID: 11400000, guid: d9898f0919b265243b6544774bee7dda, type: 2}
   - configName: "\u8001\u9F20"
-    weight: 0
+    weight: 10
     minFloor: 1
     maxFloor: 2
+    difficultyLevel: 1
     useCustomMap: 1
     mapRadius: 3
     specialCells:
@@ -122,9 +126,10 @@ MonoBehaviour:
     heroSpawnCoord: {x: 0, y: 3}
     rewardConfig: {fileID: 11400000, guid: d9898f0919b265243b6544774bee7dda, type: 2}
   - configName: "\u53F2\u83B1\u59C6\u4E4B\u738B"
-    weight: 0
+    weight: 10
     minFloor: 1
     maxFloor: 2
+    difficultyLevel: 3
     useCustomMap: 1
     mapRadius: 5
     specialCells:
@@ -147,9 +152,10 @@ MonoBehaviour:
     heroSpawnCoord: {x: 0, y: 3}
     rewardConfig: {fileID: 11400000, guid: d9898f0919b265243b6544774bee7dda, type: 2}
   - configName: "\u5DE8\u8718\u86DB"
-    weight: 0
+    weight: 10
     minFloor: 1
     maxFloor: 2
+    difficultyLevel: 3
     useCustomMap: 1
     mapRadius: 5
     specialCells:
@@ -180,9 +186,10 @@ MonoBehaviour:
     heroSpawnCoord: {x: 0, y: 3}
     rewardConfig: {fileID: 11400000, guid: d9898f0919b265243b6544774bee7dda, type: 2}
   - configName: "\u5F02\u9E1F"
-    weight: 0
+    weight: 10
     minFloor: 1
     maxFloor: 2
+    difficultyLevel: 1
     useCustomMap: 1
     mapRadius: 4
     specialCells:
@@ -211,9 +218,10 @@ MonoBehaviour:
     heroSpawnCoord: {x: 0, y: 3}
     rewardConfig: {fileID: 11400000, guid: d9898f0919b265243b6544774bee7dda, type: 2}
   - configName: "\u7A7A\u76D4\u7532"
-    weight: 0
+    weight: 10
     minFloor: 1
     maxFloor: 2
+    difficultyLevel: 2
     useCustomMap: 1
     mapRadius: 4
     specialCells:
@@ -242,9 +250,10 @@ MonoBehaviour:
     heroSpawnCoord: {x: 0, y: 3}
     rewardConfig: {fileID: 11400000, guid: d9898f0919b265243b6544774bee7dda, type: 2}
   - configName: "\u8FF7\u9014\u65C5\u4EBA"
-    weight: 0
+    weight: 10
     minFloor: 1
     maxFloor: 2
+    difficultyLevel: 3
     useCustomMap: 1
     mapRadius: 5
     specialCells:
