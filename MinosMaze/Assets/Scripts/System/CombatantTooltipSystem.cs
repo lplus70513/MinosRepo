@@ -59,8 +59,8 @@ public class CombatantTooltipSystem : Singleton<CombatantTooltipSystem>
                 tooltipInstance.Populate(hovered);
                 lastHovered = hovered;
             }
-            tooltipInstance.UpdatePosition(Input.mousePosition);
             tooltipInstance.Show();
+            tooltipInstance.UpdatePosition(Input.mousePosition);
         }
         else
         {

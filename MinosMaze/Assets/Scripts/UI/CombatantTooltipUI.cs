@@ -15,9 +15,12 @@ public class CombatantTooltipUI : MonoBehaviour
     [SerializeField] private Sprite chainLightningSprite, rootSprite, stunSprite;
 
     private readonly List<StatusEffectTooltipEntry> entries = new();
+    private bool needSnap;
 
     void Awake()
     {
+        transform.localScale = Vector3.one;
+
         Canvas canvas = GetComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
         canvas.sortingOrder = 101;
@@ -78,6 +81,11 @@ public class CombatantTooltipUI : MonoBehaviour
         float panelWidth = rect.rect.width;
         float panelHeight = rect.rect.height;
 
+        if (panelWidth <= 1f)
+            panelWidth = 300f;
+        if (panelHeight <= 1f)
+            panelHeight = entries.Count * 120f + Mathf.Max(0, entries.Count - 1) * 4f;
+
         Vector2 pos = mouseScreenPos;
 
         if (mouseScreenPos.x < Screen.width * 0.5f)
@@ -94,7 +102,15 @@ public class CombatantTooltipUI : MonoBehaviour
         float maxY = Screen.height - panelHeight;
         pos.y = Mathf.Clamp(pos.y, 0f, maxY);
 
-        rect.position = Vector2.Lerp(rect.position, pos, 1f - Mathf.Exp(-25f * Time.deltaTime));
+        if (needSnap)
+        {
+            rect.position = pos;
+            needSnap = false;
+        }
+        else
+        {
+            rect.position = Vector2.Lerp(rect.position, pos, 1f - Mathf.Exp(-25f * Time.deltaTime));
+        }
     }
 
     private Sprite GetSpriteByType(StatusEffectType type)
@@ -122,7 +138,9 @@ public class CombatantTooltipUI : MonoBehaviour
         if (!gameObject.activeSelf)
         {
             gameObject.SetActive(true);
-            Debug.Log("[CombatantTooltipUI] Show");
+            Canvas.ForceUpdateCanvases();
+            LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)transform);
+            needSnap = true;
         }
     }
 
