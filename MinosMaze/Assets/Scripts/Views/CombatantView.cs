@@ -300,6 +300,11 @@ public class CombatantView : MonoBehaviour
         else return 0;
     }
 
+    public IReadOnlyDictionary<StatusEffectType, int> GetStatusEffects()
+    {
+        return statusEffects;
+    }
+
     public void DecayTurnEndEffects()
     {
         StatusEffectType[] decayTypes = {

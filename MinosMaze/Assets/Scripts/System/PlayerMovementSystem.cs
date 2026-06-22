@@ -13,6 +13,7 @@ public class PlayerMovementSystem : Singleton<PlayerMovementSystem>
     {
         ActionSystem.SubscribeReaction<EnemyTurnGA>(OnEnemyTurnPost, ReactionTiming.POST);
         ActionSystem.AttachPerformer<AddMovePointsGA>(AddMovePointsPerformer);
+        _ = CombatantTooltipSystem.Instance;
     }
 
     void OnDisable()

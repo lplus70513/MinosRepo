@@ -420,9 +420,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 97533741}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17f37e8d7078d1d489afc6af60d5ec20, type: 3}
+  m_Script: {fileID: 11500000, guid: bbf2a1f1541452043b6c00109b7c6345, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tooltipPrefab: {fileID: 4117527430217036859, guid: a8bb26bdda2c97f47958ca81fcf70f19, type: 3}
   hoverScreenDistance: 120
 --- !u!1 &118275579
 GameObject:
