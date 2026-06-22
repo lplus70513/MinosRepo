@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02002abe5e65cfb4184b51fd307203e9, type: 3}
   m_Name: "\u51C6\u5907"
   m_EditorClassIdentifier: 
-  <Description>k__BackingField: "\u4E0B\u56DE\u5408\u989D\u5916\u62BD2\u5F20\u724C\u3002"
+  <Description>k__BackingField: "\u4E0B\u56DE\u5408\u989D\u5916\u62BD2\u5F20\u724C"
   <Cost>k__BackingField: 1
   <Image>k__BackingField: {fileID: 1324705443, guid: 2cd1bf34bf92ec240bf0899ce061cd93, type: 3}
   <Background>k__BackingField: {fileID: 1370473001, guid: 7e9643d6638fe744ca4f76a79d6457f3, type: 3}

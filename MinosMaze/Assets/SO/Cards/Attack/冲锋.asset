@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02002abe5e65cfb4184b51fd307203e9, type: 3}
   m_Name: "\u51B2\u950B"
   m_EditorClassIdentifier: 
-  <Description>k__BackingField: "\u5411\u524D\u51B2\u523A3\u683C\uFF0C\u5BF9\u8DEF\u5F84\u4E0A\u7684\u654C\u4EBA\u9020\u62108\u70B9\u4F24\u5BB3\uFF0C\u649E\u51FB\u5230\u7B2C\u4E00\u4E2A\u654C\u4EBA\u540E\u505C\u4E0B\uFF0C\u5E76\u51FB\u9000\u654C\u4EBA1\u683C\u3002"
+  <Description>k__BackingField: "\u5411\u524D\u51B2\u523A3\u683C, \u5BF9\u8DEF\u5F84\u4E0A\u7684\u654C\u4EBA\u9020\u62108\u70B9\u4F24\u5BB3,
+    \u649E\u51FB\u5230\u7B2C\u4E00\u4E2A\u654C\u4EBA\u540E\u505C\u4E0B, \u5E76\u51FB\u9000\u654C\u4EBA1\u683C"
   <Cost>k__BackingField: 2
   <Image>k__BackingField: {fileID: -921563340, guid: 4d60c869a436deb4d8d0035a379aaba1, type: 3}
   <Background>k__BackingField: {fileID: 2004051598, guid: c6dd1d8aa674a1342a0e69187a61a93b, type: 3}

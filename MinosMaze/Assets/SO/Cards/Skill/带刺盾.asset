@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02002abe5e65cfb4184b51fd307203e9, type: 3}
   m_Name: "\u5E26\u523A\u76FE"
   m_EditorClassIdentifier: 
-  <Description>k__BackingField: "\u7ED9\u81EA\u8EAB\u589E\u52A08\u70B9\u683C\u6321\u503C\uFF0C\u654C\u4EBA\u672C\u56DE\u5408\u6BCF\u653B\u51FB\u4E00\u6B21\u73A9\u5BB6\u5C31\u53D7\u52302\u70B9\u4F24\u5BB3"
+  <Description>k__BackingField: "\u7ED9\u81EA\u8EAB\u589E\u52A08\u70B9\u683C\u6321,
+    \u654C\u4EBA\u672C\u56DE\u5408\u6BCF\u653B\u51FB\u4E00\u6B21\u73A9\u5BB6\u5C31\u53D7\u52302\u70B9\u4F24\u5BB3"
   <Cost>k__BackingField: 2
   <Image>k__BackingField: {fileID: -1266559995, guid: 1ff9468e2b9c74249a8fd7f5083a8cc6, type: 3}
   <Background>k__BackingField: {fileID: 1370473001, guid: 7e9643d6638fe744ca4f76a79d6457f3, type: 3}

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02002abe5e65cfb4184b51fd307203e9, type: 3}
   m_Name: "\u5632\u8BBD"
   m_EditorClassIdentifier: 
-  <Description>k__BackingField: "\u83B7\u5F972\u70B9\u683C\u6321\uFF0C\u7ED9\u4E88\u654C\u4EBA1\u5C42\u865A\u5F31\u3002"
+  <Description>k__BackingField: "\u83B7\u5F973\u70B9\u683C\u6321, \u7ED9\u4E88\u654C\u4EBA1\u5C42\u865A\u5F31"
   <Cost>k__BackingField: 1
   <Image>k__BackingField: {fileID: -754411897, guid: 3275bbc72abc6fb47a23a6ca5f55151a, type: 3}
   <Background>k__BackingField: {fileID: 1370473001, guid: 7e9643d6638fe744ca4f76a79d6457f3, type: 3}
@@ -34,8 +34,7 @@ MonoBehaviour:
     rid: -2
   <BaseGrade>k__BackingField:
     <Name>k__BackingField: "\u5632\u8BBD"
-    <Description>k__BackingField: "\u83B7\u5F973\u70B9\u683C\u6321\uFF0C\u7ED9\u4E88\u654C\u4EBA
-      1 \u5C42\u865A\u5F31\u3002"
+    <Description>k__BackingField: "\u83B7\u5F973\u70B9\u683C\u6321, \u7ED9\u4E88\u654C\u4EBA1\u5C42\u865A\u5F31"
     <Cost>k__BackingField: 1
     <HasAttackRange>k__BackingField: 1
     <AttackRange>k__BackingField: 1
@@ -55,7 +54,7 @@ MonoBehaviour:
       rid: -2
   <UpgradeGrade>k__BackingField:
     <Name>k__BackingField: "\u5632\u8BBD+"
-    <Description>k__BackingField: "\u83B7\u5F975\u70B9\u683C\u6321\uFF0C\u7ED9\u4E88\u654C\u4EBA1\u5C42\u865A\u5F31\u3002"
+    <Description>k__BackingField: "\u83B7\u5F975\u70B9\u683C\u6321, \u7ED9\u4E88\u654C\u4EBA1\u5C42\u865A\u5F31"
     <Cost>k__BackingField: 1
     <HasAttackRange>k__BackingField: 1
     <AttackRange>k__BackingField: 1
@@ -85,7 +84,7 @@ MonoBehaviour:
       type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
       data:
         statusEffectType: 0
-        stackCount: 2
+        stackCount: 3
     - rid: 1965764273140138000
       type: {class: HeroTM, ns: , asm: Assembly-CSharp}
       data: 

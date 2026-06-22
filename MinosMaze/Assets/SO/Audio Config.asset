@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Audio Config
   m_EditorClassIdentifier: 
   mainMenuBGM: {fileID: 8300000, guid: c56b3b7bcaa28fa4f8e83b265bdd3c12, type: 3}
-  worldMapBGM: {fileID: 0}
+  worldMapBGM: {fileID: 8300000, guid: c56b3b7bcaa28fa4f8e83b265bdd3c12, type: 3}
   normalBattleBGMs:
   - {fileID: 8300000, guid: 4f9753ec748fbe84aa17e688f478fad2, type: 3}
   - {fileID: 8300000, guid: 05a858ae94990d54c990daa79a695538, type: 3}
