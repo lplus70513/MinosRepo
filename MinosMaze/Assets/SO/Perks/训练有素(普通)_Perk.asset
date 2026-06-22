@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 289c8e7f72535104f993816b3b528144, type: 3}
+  m_Name: "\u8BAD\u7EC3\u6709\u7D20(\u666E\u901A)_Perk"
+  m_EditorClassIdentifier: 
+  <Image>k__BackingField: {fileID: 881021379, guid: 3e80f2dc464d5c44bae6ad954182fa7b, type: 3}
+  <PerkCondition>k__BackingField:
+    rid: 1965764565328199683
+  <AutoTargetEffect>k__BackingField:
+    rid: 1965764565328199684
+  <UseAutoTarget>k__BackingField: 1
+  <UseActionAsTarget>k__BackingField: 0
+  <PersistArmor>k__BackingField: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 1965764565328199683
+      type: {class: OnTurnStartCondition, ns: , asm: Assembly-CSharp}
+      data:
+        reactionTiming: 1
+    - rid: 1965764565328199684
+      type: {class: AutoTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 1965764565328199685
+        <Effect>k__BackingField:
+          rid: 1965764565328199686
+    - rid: 1965764565328199685
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764565328199686
+      type: {class: FreePlayEffect, ns: , asm: Assembly-CSharp}
+      data:
+        freeCount: 1

@@ -2,10 +2,28 @@ using UnityEngine;
 
 public class CombatantTooltipSystem : Singleton<CombatantTooltipSystem>
 {
+    [SerializeField] private CombatantTooltipUI tooltipPrefab;
+
     [SerializeField] private float hoverScreenDistance = 120f;
 
+    private CombatantTooltipUI tooltipInstance;
     private Camera camera3D;
     private CombatantView lastHovered;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        if (tooltipPrefab != null)
+        {
+            tooltipInstance = Instantiate(tooltipPrefab, transform);
+            tooltipInstance.gameObject.SetActive(false);
+            Debug.Log($"[CombatantTooltipSystem] 已实例化 tooltip: {tooltipPrefab.name}");
+        }
+        else
+        {
+            Debug.LogError("[CombatantTooltipSystem] tooltipPrefab 未设置！请在 Inspector 中将 CombatantTooltipUI 预制体拖入 Tooltip Prefab 字段");
+        }
+    }
 
     void Start()
     {
@@ -23,7 +41,8 @@ public class CombatantTooltipSystem : Singleton<CombatantTooltipSystem>
 
     void Update()
     {
-        if (camera3D == null) return;
+        if (tooltipInstance == null || camera3D == null)
+            return;
 
         if (!Interactions.Instance.PlayerCanHover())
         {
@@ -33,14 +52,15 @@ public class CombatantTooltipSystem : Singleton<CombatantTooltipSystem>
 
         CombatantView hovered = GetHoveredCombatant();
 
-        if (hovered != null)
+        if (hovered != null && hovered.GetStatusEffects().Count > 0)
         {
             if (hovered != lastHovered)
             {
-                HideLastHovered();
-                hovered.ShowTooltip();
+                tooltipInstance.Populate(hovered);
                 lastHovered = hovered;
             }
+            tooltipInstance.UpdatePosition(Input.mousePosition);
+            tooltipInstance.Show();
         }
         else
         {
@@ -89,7 +109,7 @@ public class CombatantTooltipSystem : Singleton<CombatantTooltipSystem>
     {
         if (lastHovered != null)
         {
-            lastHovered.HideTooltip();
+            tooltipInstance.Hide();
             lastHovered = null;
         }
     }

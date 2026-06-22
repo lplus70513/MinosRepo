@@ -46,7 +46,11 @@ public class CardSystem : Singleton<CardSystem>
 
     public void ConsumeFreePlay()
     {
-        if (freePlayRemaining > 0) freePlayRemaining--;
+        if (freePlayRemaining > 0)
+        {
+            freePlayRemaining--;
+            handView?.RefreshAllCostDisplays();
+        }
     }
 
     void Awake()
@@ -152,9 +156,12 @@ public class CardSystem : Singleton<CardSystem>
             cardDiscardCoroutine = StartCoroutine(PlayCardDiscardSequence(cardView));
         }
 
-        // ���ķ��� 
-        SpendCostGA spendCostGA = new(playCardGA.Card.Cost);
-        ActionSystem.Instance.AddReaction(spendCostGA);
+        // 消耗费用（免费出牌跳过）
+        if (!playCardGA.IsFreePlay)
+        {
+            SpendCostGA spendCostGA = new(playCardGA.Card.Cost);
+            ActionSystem.Instance.AddReaction(spendCostGA);
+        }
 
         // 如果是手选目标攻击牌，立即开始英雄攻击动画
         if(playCardGA.Card.ManualTargetEffect != null)
@@ -310,6 +317,7 @@ public class CardSystem : Singleton<CardSystem>
     {
         freePlayRemaining += ga.Amount;
         Debug.Log($"[CardSystem] 免费出牌次数 +{ga.Amount}，剩余: {freePlayRemaining}");
+        handView?.RefreshAllCostDisplays();
         yield return null;
     }
 
@@ -318,13 +326,34 @@ public class CardSystem : Singleton<CardSystem>
         var nonTargeted = new List<Card>();
         var targeted = new List<Card>();
         var enemies = EnemySystem.Instance?.Enemies;
+        var hero = HeroSystem.Instance?.HeroView;
 
         foreach (var card in hand)
         {
             if (card.ManualTargetEffect != null)
-                targeted.Add(card);
+            {
+                // 仅在有有效目标时才加入目标牌池
+                bool hasValidTarget = false;
+                if (enemies != null && hero != null)
+                {
+                    foreach (var e in enemies)
+                    {
+                        if (e == null) continue;
+                        if (card.HasAttackRange && HexGrid.HexDistance(hero.HexCoordX, hero.HexCoordZ, e.HexCoordX, e.HexCoordZ) > card.AttackRange)
+                            continue;
+                        if (!card.CanHitFlying && e.EnemyType == EnemyType.Flying)
+                            continue;
+                        hasValidTarget = true;
+                        break;
+                    }
+                }
+                if (hasValidTarget)
+                    targeted.Add(card);
+            }
             else
+            {
                 nonTargeted.Add(card);
+            }
         }
 
         int played = 0;
@@ -338,9 +367,8 @@ public class CardSystem : Singleton<CardSystem>
                 pool.RemoveAt(idx);
 
                 EnemyView manualTarget = null;
-                if (card.ManualTargetEffect != null && enemies != null && enemies.Count > 0)
+                if (card.ManualTargetEffect != null && enemies != null && enemies.Count > 0 && hero != null)
                 {
-                    var hero = HeroSystem.Instance.HeroView;
                     var valid = new List<EnemyView>();
                     foreach (var e in enemies)
                     {
@@ -357,7 +385,27 @@ public class CardSystem : Singleton<CardSystem>
                         continue;
                 }
 
-                PlayCardGA playGA = manualTarget != null ? new(card, manualTarget) : new(card);
+                // 模拟拖出并打出的动画
+                CardView cardView = handView.GetCardView(card);
+                if (cardView != null)
+                {
+                    cardView.BringToFront();
+                    Vector3 origPos = cardView.transform.position;
+
+                    // 阶段1：悬停抬起
+                    cardView.transform.DOMoveY(origPos.y + 1.2f, 0.2f).SetEase(Ease.OutBack);
+                    cardView.transform.DOScale(1.1f, 0.2f).SetEase(Ease.OutBack);
+                    yield return new WaitForSeconds(0.25f);
+
+                    // 阶段2：移动到打出位置
+                    Vector3 playCenter = handView.GetHandCenterPosition();
+                    cardView.transform.DOMove(playCenter, 0.25f).SetEase(Ease.InOutQuad);
+                    yield return new WaitForSeconds(0.3f);
+                }
+
+                PlayCardGA playGA = manualTarget != null
+                    ? new(card, manualTarget, isFreePlay: true)
+                    : new(card, isFreePlay: true);
                 ActionSystem.Instance.AddReaction(playGA);
                 played++;
                 Debug.Log($"[CardSystem] 随机自动打出: {card.Name}");

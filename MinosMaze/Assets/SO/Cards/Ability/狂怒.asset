@@ -26,7 +26,7 @@ MonoBehaviour:
     <Effect>k__BackingField:
       rid: 1965764459753635855
   <IsInnate>k__BackingField: 0
-  <IsExhaust>k__BackingField: 0
+  <IsExhaust>k__BackingField: 1
   <IsRetain>k__BackingField: 0
   <CanHitFlying>k__BackingField: 0
   <IsAttackCard>k__BackingField: 0
@@ -47,7 +47,7 @@ MonoBehaviour:
       <Effect>k__BackingField:
         rid: 1965764459753635857
     <IsInnate>k__BackingField: 0
-    <IsExhaust>k__BackingField: 0
+    <IsExhaust>k__BackingField: 1
     <IsRetain>k__BackingField: 0
     <CanHitFlying>k__BackingField: 0
     <IsAttackCard>k__BackingField: 0
@@ -68,7 +68,7 @@ MonoBehaviour:
       <Effect>k__BackingField:
         rid: 1965764459753635859
     <IsInnate>k__BackingField: 0
-    <IsExhaust>k__BackingField: 0
+    <IsExhaust>k__BackingField: 1
     <IsRetain>k__BackingField: 1
     <CanHitFlying>k__BackingField: 0
     <IsAttackCard>k__BackingField: 0

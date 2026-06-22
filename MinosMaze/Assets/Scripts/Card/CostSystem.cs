@@ -16,7 +16,6 @@ public class CostSystem : Singleton<CostSystem>
         ActionSystem.AttachPerformer<RefillCostGA>(RefillCostPerformer);
         ActionSystem.AttachPerformer<GainCostGA>(GainCostPerformer);
         ActionSystem.AttachPerformer<BonusCostGA>(BonusCostPerformer);
-        ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
     }
 
     void OnDisable()
@@ -25,7 +24,6 @@ public class CostSystem : Singleton<CostSystem>
         ActionSystem.DetachPerformer<RefillCostGA>();
         ActionSystem.DetachPerformer<GainCostGA>();
         ActionSystem.DetachPerformer<BonusCostGA>();
-        ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
     }
 
     public bool HasEnoughCost(int cost)
@@ -74,12 +72,6 @@ public class CostSystem : Singleton<CostSystem>
         if (currentCost < 0) currentCost = 0;
         costUI.UpdateCostText(currentCost);
         yield return null;
-    }
-
-    private void EnemyTurnPostReaction(EnemyTurnGA enemyTurnGA)
-    {
-        RefillCostGA refillCostGA = new();
-        ActionSystem.Instance.AddReaction(refillCostGA);
     }
 
     private IEnumerator GainCostPerformer(GainCostGA action)

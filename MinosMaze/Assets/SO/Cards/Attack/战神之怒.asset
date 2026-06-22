@@ -34,7 +34,7 @@ MonoBehaviour:
     rid: -2
   <BaseGrade>k__BackingField:
     <Name>k__BackingField: "\u6218\u795E\u4E4B\u6012"
-    <Description>k__BackingField: "\u9020\u62104\u70B9\u4F24\u5BB3 2 \u6B21, \u83B7\u5F971\u70B9\u529B\u91CF"
+    <Description>k__BackingField: "\u9020\u62104\u70B9\u4F24\u5BB32\u6B21, \u83B7\u5F971\u70B9\u529B\u91CF"
     <Cost>k__BackingField: 1
     <HasAttackRange>k__BackingField: 1
     <AttackRange>k__BackingField: 1

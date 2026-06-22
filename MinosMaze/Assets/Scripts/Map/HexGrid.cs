@@ -100,6 +100,9 @@ public class HexGrid : MonoBehaviour
         return position;
     }
 
+    // 子类可覆写以改变六角格生成时的旋转角度
+    protected virtual Quaternion CellRotation => Quaternion.Euler(0, 90, 0);
+
     // 获取指定坐标处应使用的格子预制体（子类可覆写以支持多 prefab）
     protected virtual GameObject GetPrefabForCell(int x, int z)
     {
@@ -120,7 +123,7 @@ public class HexGrid : MonoBehaviour
             Debug.LogWarning($"[HexGrid] 坐标 ({x}, {z}) 无对应 prefab，跳过创建");
             return;
         }
-        GameObject hexCellObject = Instantiate(prefab, position, Quaternion.Euler(0, 90, 0), transform);
+        GameObject hexCellObject = Instantiate(prefab, position, CellRotation, transform);
         HexCell hexCell = hexCellObject.GetComponent<HexCell>();
         hexCell.SetCoord(x, z);
         if (specialCellLookup.TryGetValue((x, z), out MapCellType cellType))
@@ -238,6 +241,21 @@ public class HexGrid : MonoBehaviour
         {
             HexCell cell = GetCell(x, z);
             if (cell != null) cell.SetHighlight(true);
+        }
+    }
+
+    // 高亮显示环形范围（minRadius ~ maxRadius，用于环状攻击范围显示）
+    public static void HighlightRingCells(int centerX, int centerZ, int minRadius, int maxRadius)
+    {
+        var coords = GetCoordsInRange(centerX, centerZ, maxRadius);
+        foreach (var (x, z) in coords)
+        {
+            int dist = HexDistance(centerX, centerZ, x, z);
+            if (dist >= minRadius)
+            {
+                HexCell cell = GetCell(x, z);
+                if (cell != null) cell.SetHighlight(true);
+            }
         }
     }
 

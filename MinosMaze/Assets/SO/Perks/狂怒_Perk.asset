@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 289c8e7f72535104f993816b3b528144, type: 3}
   m_Name: "\u72C2\u6012_Perk"
   m_EditorClassIdentifier: 
-  <Image>k__BackingField: {fileID: 0}
+  <Image>k__BackingField: {fileID: -215465464, guid: 0dfdc404203a3e740b3f78e2f7950688, type: 3}
   <PerkCondition>k__BackingField:
     rid: 1965764459753635850
   <AutoTargetEffect>k__BackingField:

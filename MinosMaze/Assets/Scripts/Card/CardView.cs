@@ -99,7 +99,7 @@ public class CardView : MonoBehaviour
         this.useLiveDamage = useLiveDamage;
         lastHoveredTarget = null;
         Name.text = card.Name;
-        CostText.text = card.Cost.ToString();
+        CostText.text = (CardSystem.Instance != null && CardSystem.Instance.FreePlayRemaining > 0) ? "0" : card.Cost.ToString();
         image.sprite = card.Image;
         background.sprite = card.Background;
 
@@ -116,6 +116,12 @@ public class CardView : MonoBehaviour
             ApplyUpgradeHighlight(card);
         else
             RefreshDescription(null);
+    }
+
+    public void RefreshCostDisplay()
+    {
+        if (CostText == null || Card == null) return;
+        CostText.text = (CardSystem.Instance != null && CardSystem.Instance.FreePlayRemaining > 0) ? "0" : Card.Cost.ToString();
     }
 
     private void ResetTextColors()
@@ -260,7 +266,9 @@ public class CardView : MonoBehaviour
             if (Card.HasAttackRange)
             {
                 HeroView hero = HeroSystem.Instance.HeroView;
-                if (Card.AttackRangePattern is LineRange)
+                if (Card.AttackRangePattern is RingRange ring)
+                    HexGrid.HighlightRingCells(hero.HexCoordX, hero.HexCoordZ, ring.MinRadius, ring.MaxRadius);
+                else if (Card.AttackRangePattern is LineRange)
                     HexGrid.HighlightCellsOnStraightLines(hero.HexCoordX, hero.HexCoordZ, Card.AttackRange);
                 else
                     HexGrid.HighlightCellsInRange(hero.HexCoordX, hero.HexCoordZ, Card.AttackRange);
@@ -527,7 +535,13 @@ public class CardView : MonoBehaviour
         if (target != null && hasCost && Card.HasAttackRange)
         {
             HeroView hero = HeroSystem.Instance.HeroView;
-            if (Card.AttackRangePattern is LineRange)
+            if (Card.AttackRangePattern is RingRange ring)
+            {
+                int dist = HexGrid.HexDistance(hero.HexCoordX, hero.HexCoordZ, target.HexCoordX, target.HexCoordZ);
+                if (dist < ring.MinRadius || dist > ring.MaxRadius)
+                    target = null;
+            }
+            else if (Card.AttackRangePattern is LineRange)
             {
                 if (!HexGrid.IsOnStraightLine(hero.HexCoordX, hero.HexCoordZ, target.HexCoordX, target.HexCoordZ))
                     target = null;
