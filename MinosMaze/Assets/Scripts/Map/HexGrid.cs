@@ -100,6 +100,9 @@ public class HexGrid : MonoBehaviour
         return position;
     }
 
+    // 子类可覆写以改变六角格生成时的旋转角度
+    protected virtual Quaternion CellRotation => Quaternion.Euler(0, 90, 0);
+
     // 获取指定坐标处应使用的格子预制体（子类可覆写以支持多 prefab）
     protected virtual GameObject GetPrefabForCell(int x, int z)
     {
@@ -120,7 +123,7 @@ public class HexGrid : MonoBehaviour
             Debug.LogWarning($"[HexGrid] 坐标 ({x}, {z}) 无对应 prefab，跳过创建");
             return;
         }
-        GameObject hexCellObject = Instantiate(prefab, position, Quaternion.Euler(0, 90, 0), transform);
+        GameObject hexCellObject = Instantiate(prefab, position, CellRotation, transform);
         HexCell hexCell = hexCellObject.GetComponent<HexCell>();
         hexCell.SetCoord(x, z);
         if (specialCellLookup.TryGetValue((x, z), out MapCellType cellType))

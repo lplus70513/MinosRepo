@@ -46,6 +46,8 @@ public class WorldMapGrid : HexGrid
         BuildPrefabLookup();
         BuildCellTypeLayout();
         base.Awake();
+        // 整个地图绕Y轴逆时针旋转90度
+        transform.rotation = Quaternion.Euler(0, 270, 0);
         SaveCellLayoutToState();
         PositionPlayer();
         DisableClearedCells();
