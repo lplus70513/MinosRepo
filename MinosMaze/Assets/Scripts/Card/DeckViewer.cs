@@ -533,6 +533,11 @@ public class DeckViewer : MonoBehaviour
             Destroy(child.gameObject);
         }
 
+        scrollOffset = 0f;
+        maxScrollOffset = 0f;
+        cardContainer.localPosition = cardContainerBasePos;
+        Physics.SyncTransforms();
+
         Card previewCard = isUpgradePreview
             ? new Card(entry.CardData, isUpgraded: true)
             : new Card(entry.CardData, entry.IsUpgraded);
@@ -572,10 +577,6 @@ public class DeckViewer : MonoBehaviour
             HoverEffect3D hoverEffect = hitbox.AddComponent<HoverEffect3D>();
             hoverEffect.Init(cardObj.transform, new SpriteRenderer[] { bg });
         }
-
-        scrollOffset = 0f;
-        maxScrollOffset = 0f;
-        cardContainer.localPosition = cardContainerBasePos;
     }
 
     private void ConfirmSelection()
@@ -648,6 +649,10 @@ public class DeckViewer : MonoBehaviour
         foreach (Transform child in cardContainer)
             Destroy(child.gameObject);
 
+        scrollOffset = 0f;
+        maxScrollOffset = 0f;
+        cardContainer.localPosition = cardContainerBasePos;
+
         Vector3 worldCenter = new Vector3(
             Camera.main.transform.position.x,
             Camera.main.transform.position.y, 0f);
@@ -670,10 +675,6 @@ public class DeckViewer : MonoBehaviour
             foreach (Collider col in cardObj.GetComponentsInChildren<Collider>(true))
                 col.enabled = false;
         }
-
-        scrollOffset = 0f;
-        maxScrollOffset = 0f;
-        cardContainer.localPosition = cardContainerBasePos;
 
         StartCoroutine(PreviewDurationCoroutine(duration, onComplete));
     }

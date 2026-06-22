@@ -137,6 +137,7 @@ MonoBehaviour:
   stunSprite: {fileID: 0}
   canvasGroup: {fileID: 9223372036854775807}
   fadeDuration: 0.3
+  disableDisplay: 1
 --- !u!114 &344533035308782947
 MonoBehaviour:
   m_ObjectHideFlags: 0
