@@ -9,8 +9,12 @@ public class SettingManager : MonoBehaviour
     [SerializeField] private Button abandonButton;
     [SerializeField] private Button saveAndExitButton;
 
-    [Header("设置子面板（暂留空）")]
+    [Header("设置子面板")]
     [SerializeField] private GameObject settingsSubPanel;
+
+    [Header("音量滑条")]
+    [SerializeField] private Slider bgmSlider;
+    [SerializeField] private Slider sfxSlider;
 
     private void Start()
     {
@@ -22,6 +26,17 @@ public class SettingManager : MonoBehaviour
             abandonButton.onClick.AddListener(OnAbandon);
         if (saveAndExitButton != null)
             saveAndExitButton.onClick.AddListener(OnSaveAndExit);
+
+        if (bgmSlider != null)
+        {
+            bgmSlider.value = AudioManager.Instance != null ? AudioManager.Instance.BGMVolume : 1f;
+            bgmSlider.onValueChanged.AddListener(v => { if (AudioManager.Instance != null) AudioManager.Instance.SetBGMVolume(v); });
+        }
+        if (sfxSlider != null)
+        {
+            sfxSlider.value = AudioManager.Instance != null ? AudioManager.Instance.SFXVolume : 1f;
+            sfxSlider.onValueChanged.AddListener(v => { if (AudioManager.Instance != null) AudioManager.Instance.SetSFXVolume(v); });
+        }
     }
 
     public void RefreshButtons(bool inGame)

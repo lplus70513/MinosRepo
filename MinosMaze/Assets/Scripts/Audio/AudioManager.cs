@@ -27,6 +27,9 @@ public class AudioManager : MonoBehaviour
     private float bgmVolume = 1f;
     private float sfxVolume = 1f;
 
+    public float BGMVolume => bgmVolume;
+    public float SFXVolume => sfxVolume;
+
     private AudioSource ActiveBGMSource => usingSourceA ? bgmSourceA : bgmSourceB;
 
     private void Awake()
@@ -53,6 +56,9 @@ public class AudioManager : MonoBehaviour
         sfxSource = gameObject.AddComponent<AudioSource>();
         sfxSource.loop = false;
         sfxSource.playOnAwake = false;
+
+        bgmVolume = PlayerPrefs.GetFloat("BGMVolume", 1f);
+        sfxVolume = PlayerPrefs.GetFloat("SFXVolume", 1f);
     }
 
     private void OnDestroy()
@@ -121,13 +127,15 @@ public class AudioManager : MonoBehaviour
     public void SetBGMVolume(float volume)
     {
         bgmVolume = Mathf.Clamp01(volume);
-        if (ActiveBGMSource.isPlaying)
-            ActiveBGMSource.volume = bgmVolume;
+        if (bgmSourceA.isPlaying) bgmSourceA.volume = bgmVolume;
+        if (bgmSourceB.isPlaying) bgmSourceB.volume = bgmVolume;
+        PlayerPrefs.SetFloat("BGMVolume", bgmVolume);
     }
 
     public void SetSFXVolume(float volume)
     {
         sfxVolume = Mathf.Clamp01(volume);
+        PlayerPrefs.SetFloat("SFXVolume", sfxVolume);
     }
 
     public void PlayBGMForScene(string sceneName, MapCellType cellType = MapCellType.Battle_Empty)
