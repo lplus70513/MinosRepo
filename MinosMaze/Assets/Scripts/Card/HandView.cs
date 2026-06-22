@@ -56,6 +56,16 @@ public class HandView : MonoBehaviour
         }
     }
 
+    public void RefreshAllCostDisplays()
+    {
+        foreach (var (cardGO, _) in handCards)
+        {
+            if (cardGO == null) continue;
+            CardView cv = cardGO.GetComponent<CardView>();
+            if (cv != null) cv.RefreshCostDisplay();
+        }
+    }
+
     public CardView AddCard(Card card, Vector3 position, Quaternion rotation)
     {
         if (handCards.Count >= maxHandSize) return null;

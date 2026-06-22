@@ -10,36 +10,34 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 289c8e7f72535104f993816b3b528144, type: 3}
-  m_Name: "\u72C2\u6012_Perk"
+  m_Name: "\u8BAD\u7EC3\u6709\u7D20(\u5347\u7EA7)_Perk"
   m_EditorClassIdentifier: 
-  <Image>k__BackingField: {fileID: -215465464, guid: 0dfdc404203a3e740b3f78e2f7950688, type: 3}
+  <Image>k__BackingField: {fileID: 881021379, guid: 3e80f2dc464d5c44bae6ad954182fa7b, type: 3}
   <PerkCondition>k__BackingField:
-    rid: 1965764459753635850
+    rid: 1965764565328199683
   <AutoTargetEffect>k__BackingField:
-    rid: 1965764459753635851
+    rid: 1965764565328199684
   <UseAutoTarget>k__BackingField: 1
   <UseActionAsTarget>k__BackingField: 0
   <PersistArmor>k__BackingField: 0
   references:
     version: 2
     RefIds:
-    - rid: 1965764459753635850
-      type: {class: OnAttackCardPlayedCondition, ns: , asm: Assembly-CSharp}
+    - rid: 1965764565328199683
+      type: {class: OnTurnStartCondition, ns: , asm: Assembly-CSharp}
       data:
         reactionTiming: 1
-        thresholdCount: 1
-    - rid: 1965764459753635851
+    - rid: 1965764565328199684
       type: {class: AutoTargetEffect, ns: , asm: Assembly-CSharp}
       data:
         <TargetMode>k__BackingField:
-          rid: 1965764459753635852
+          rid: 1965764565328199685
         <Effect>k__BackingField:
-          rid: 1965764459753635853
-    - rid: 1965764459753635852
+          rid: 1965764565328199686
+    - rid: 1965764565328199685
       type: {class: HeroTM, ns: , asm: Assembly-CSharp}
       data: 
-    - rid: 1965764459753635853
-      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+    - rid: 1965764565328199686
+      type: {class: FreePlayEffect, ns: , asm: Assembly-CSharp}
       data:
-        statusEffectType: 2
-        stackCount: 1
+        freeCount: 1

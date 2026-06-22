@@ -380,7 +380,8 @@ public class CombatantView : MonoBehaviour
             StatusEffectType.FRAGILE,
             StatusEffectType.SLOW,
             StatusEffectType.ROOT,
-            StatusEffectType.STUN
+            StatusEffectType.STUN,
+            StatusEffectType.AGILE
         };
 
         foreach (var type in decayTypes)

@@ -10,6 +10,9 @@ public class EndTurnButtonUI : MonoBehaviour
         if (!Interactions.Instance.PlayerCanInteract()) return;
 
         EnemyTurnGA enemyTurnGA = new();
-        ActionSystem.Instance.Perform(enemyTurnGA);
+        ActionSystem.Instance.Perform(enemyTurnGA, () =>
+        {
+            ActionSystem.Instance.Perform(new RefillCostGA());
+        });
     }
 }

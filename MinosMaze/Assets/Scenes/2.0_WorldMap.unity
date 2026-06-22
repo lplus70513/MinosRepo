@@ -1718,7 +1718,7 @@ MonoBehaviour:
   zoomSpeed: 30
   enableClamp: 1
   xClamp: {x: -25, y: 25}
-  zClamp: {x: -40, y: 8.5}
+  zClamp: {x: -50, y: 8.5}
   yClamp: {x: 15, y: 60}
 --- !u!81 &1520618347
 AudioListener:

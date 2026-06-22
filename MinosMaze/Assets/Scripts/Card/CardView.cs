@@ -99,7 +99,7 @@ public class CardView : MonoBehaviour
         this.useLiveDamage = useLiveDamage;
         lastHoveredTarget = null;
         Name.text = card.Name;
-        CostText.text = card.Cost.ToString();
+        CostText.text = (CardSystem.Instance != null && CardSystem.Instance.FreePlayRemaining > 0) ? "0" : card.Cost.ToString();
         image.sprite = card.Image;
         background.sprite = card.Background;
 
@@ -116,6 +116,12 @@ public class CardView : MonoBehaviour
             ApplyUpgradeHighlight(card);
         else
             RefreshDescription(null);
+    }
+
+    public void RefreshCostDisplay()
+    {
+        if (CostText == null || Card == null) return;
+        CostText.text = (CardSystem.Instance != null && CardSystem.Instance.FreePlayRemaining > 0) ? "0" : Card.Cost.ToString();
     }
 
     private void ResetTextColors()

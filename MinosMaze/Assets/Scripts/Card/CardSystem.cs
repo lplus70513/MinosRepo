@@ -46,7 +46,11 @@ public class CardSystem : Singleton<CardSystem>
 
     public void ConsumeFreePlay()
     {
-        if (freePlayRemaining > 0) freePlayRemaining--;
+        if (freePlayRemaining > 0)
+        {
+            freePlayRemaining--;
+            handView?.RefreshAllCostDisplays();
+        }
     }
 
     void Awake()
@@ -310,6 +314,7 @@ public class CardSystem : Singleton<CardSystem>
     {
         freePlayRemaining += ga.Amount;
         Debug.Log($"[CardSystem] 免费出牌次数 +{ga.Amount}，剩余: {freePlayRemaining}");
+        handView?.RefreshAllCostDisplays();
         yield return null;
     }
 
