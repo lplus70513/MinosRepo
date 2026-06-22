@@ -36,9 +36,13 @@ MonoBehaviour:
     <AttackRange>k__BackingField: 1
     <ManualTargetEffect>k__BackingField:
       rid: -2
-    <OtherEffects>k__BackingField: []
+    <OtherEffects>k__BackingField:
+    - <TargetMode>k__BackingField:
+        rid: 1965764569601409030
+      <Effect>k__BackingField:
+        rid: 1965764569601409031
     <IsInnate>k__BackingField: 0
-    <IsExhaust>k__BackingField: 0
+    <IsExhaust>k__BackingField: 1
     <IsRetain>k__BackingField: 0
     <CanHitFlying>k__BackingField: 0
     <IsAttackCard>k__BackingField: 0
@@ -52,9 +56,13 @@ MonoBehaviour:
     <AttackRange>k__BackingField: 1
     <ManualTargetEffect>k__BackingField:
       rid: -2
-    <OtherEffects>k__BackingField: []
+    <OtherEffects>k__BackingField:
+    - <TargetMode>k__BackingField:
+        rid: 1965764569601409032
+      <Effect>k__BackingField:
+        rid: 1965764569601409033
     <IsInnate>k__BackingField: 0
-    <IsExhaust>k__BackingField: 0
+    <IsExhaust>k__BackingField: 1
     <IsRetain>k__BackingField: 0
     <CanHitFlying>k__BackingField: 0
     <IsAttackCard>k__BackingField: 0
@@ -65,3 +73,17 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+    - rid: 1965764569601409030
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764569601409031
+      type: {class: AddPerkEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <PerkData>k__BackingField: {fileID: 11400000, guid: 872f1bee7b8b99c498864001e464a96c, type: 2}
+    - rid: 1965764569601409032
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1965764569601409033
+      type: {class: AddPerkEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <PerkData>k__BackingField: {fileID: 11400000, guid: 872f1bee7b8b99c498864001e464a96c, type: 2}

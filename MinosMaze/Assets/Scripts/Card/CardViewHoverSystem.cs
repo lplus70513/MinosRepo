@@ -4,6 +4,8 @@ public class CardViewHoverSystem : Singleton<CardViewHoverSystem>
 {
     [SerializeField] private CardView cardViewHover;
 
+    public CardView CardViewHover => cardViewHover;
+
     private Collider hoverCollider;
 
     void Awake()

@@ -211,6 +211,7 @@ public class DeckViewer : MonoBehaviour
             scrollOffset += scroll * scrollSpeed;
             scrollOffset = Mathf.Clamp(scrollOffset, 0f, maxScrollOffset);
             cardContainer.localPosition = cardContainerBasePos + new Vector3(0, scrollOffset, 0);
+            Physics.SyncTransforms();
         }
     }
 
@@ -307,6 +308,7 @@ public class DeckViewer : MonoBehaviour
         {
             if (cv == null) continue;
             if (cardContainer != null && cv.transform.IsChildOf(cardContainer)) continue;
+            if (CardViewHoverSystem.Instance != null && CardViewHoverSystem.Instance.CardViewHover == cv) continue;
 
             SortingGroup sg = cv.GetComponent<SortingGroup>();
             if (sg != null)
