@@ -18,6 +18,9 @@ public class StatusEffectsUI : MonoBehaviour
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private float fadeDuration = 0.3f;
 
+    [Header("调试")]
+    [SerializeField] private bool disableDisplay;
+
     private Dictionary<StatusEffectType, StatusEffectUI> statusEffectUIs = new();
 
     private static Material uiAlwaysVisibleMaterial;
@@ -74,6 +77,8 @@ public class StatusEffectsUI : MonoBehaviour
 
     public void UpdateStatusEffectUI(StatusEffectType statusEffectType, int stackCount)
     {
+        if (disableDisplay) return;
+
         bool wasEmpty = statusEffectUIs.Count == 0;
 
         if (stackCount == 0)

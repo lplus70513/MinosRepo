@@ -66,6 +66,7 @@ public class CombatantTooltipUI : MonoBehaviour
             entries.Add(entry);
         }
 
+        Canvas.ForceUpdateCanvases();
         LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
 
         Debug.Log($"[CombatantTooltipUI] Populate: {combatant.name}, 状态效果 {effects.Count} 个, entryCount={entries.Count}");
@@ -93,7 +94,7 @@ public class CombatantTooltipUI : MonoBehaviour
         float maxY = Screen.height - panelHeight;
         pos.y = Mathf.Clamp(pos.y, 0f, maxY);
 
-        rect.position = Vector2.Lerp(rect.position, pos, 30f * Time.deltaTime);
+        rect.position = Vector2.Lerp(rect.position, pos, 1f - Mathf.Exp(-25f * Time.deltaTime));
     }
 
     private Sprite GetSpriteByType(StatusEffectType type)
