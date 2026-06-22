@@ -4090,6 +4090,7 @@ MonoBehaviour:
   - {x: -1, y: 2}
   - {x: 1, y: 1}
   combatPool: {fileID: 11400000, guid: 043613f2178c74c479a73ba97e539ff9, type: 2}
+  bossCombatPool: {fileID: 11400000, guid: 5ead3e8de382bd64ba7850e0cdd43215, type: 2}
 --- !u!114 &1599919349 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1485521105205643388, guid: 1ab11ea9a16fc764dbd9b8be06c46475, type: 3}
