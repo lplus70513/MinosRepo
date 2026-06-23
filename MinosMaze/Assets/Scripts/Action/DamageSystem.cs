@@ -52,7 +52,7 @@ public class DamageSystem : MonoBehaviour
     {
         foreach (var target in ga.Targets)
         {
-            int armorStacks = target.GetStatusEffectStacks(StatusEffectType.ARMOR);
+            int armorStacks = ga.Caster.GetStatusEffectStacks(StatusEffectType.ARMOR);
             if (armorStacks <= 0)
             {
                 Debug.Log($"[DamageSystem] {target.name} 无护甲，跳过护甲伤害");

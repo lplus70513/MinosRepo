@@ -19,12 +19,8 @@ MonoBehaviour:
   <HasAttackRange>k__BackingField: 1
   <AttackRange>k__BackingField: 1
   <ManualTargetEffect>k__BackingField:
-    rid: -2
-  <OtherEffects>k__BackingField:
-  - <TargetMode>k__BackingField:
-      rid: 1965764257158791192
-    <Effect>k__BackingField:
-      rid: 1965764257158791193
+    rid: 1965764599686889480
+  <OtherEffects>k__BackingField: []
   <IsInnate>k__BackingField: 0
   <IsExhaust>k__BackingField: 0
   <IsRetain>k__BackingField: 0
@@ -39,12 +35,8 @@ MonoBehaviour:
     <HasAttackRange>k__BackingField: 1
     <AttackRange>k__BackingField: 1
     <ManualTargetEffect>k__BackingField:
-      rid: -2
-    <OtherEffects>k__BackingField:
-    - <TargetMode>k__BackingField:
-        rid: 1965764257158791194
-      <Effect>k__BackingField:
-        rid: 1965764257158791195
+      rid: 1965764599686889478
+    <OtherEffects>k__BackingField: []
     <IsInnate>k__BackingField: 0
     <IsExhaust>k__BackingField: 0
     <IsRetain>k__BackingField: 0
@@ -59,12 +51,8 @@ MonoBehaviour:
     <HasAttackRange>k__BackingField: 1
     <AttackRange>k__BackingField: 1
     <ManualTargetEffect>k__BackingField:
-      rid: -2
-    <OtherEffects>k__BackingField:
-    - <TargetMode>k__BackingField:
-        rid: 1965764257158791196
-      <Effect>k__BackingField:
-        rid: 1965764257158791197
+      rid: 1965764599686889479
+    <OtherEffects>k__BackingField: []
     <IsInnate>k__BackingField: 0
     <IsExhaust>k__BackingField: 0
     <IsRetain>k__BackingField: 0
@@ -77,21 +65,12 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 1965764257158791192
-      type: {class: ManualTargetTM, ns: , asm: Assembly-CSharp}
-      data: 
-    - rid: 1965764257158791193
+    - rid: 1965764599686889478
       type: {class: DealArmorDamageEffect, ns: , asm: Assembly-CSharp}
       data: 
-    - rid: 1965764257158791194
-      type: {class: ManualTargetTM, ns: , asm: Assembly-CSharp}
-      data: 
-    - rid: 1965764257158791195
+    - rid: 1965764599686889479
       type: {class: DealArmorDamageEffect, ns: , asm: Assembly-CSharp}
       data: 
-    - rid: 1965764257158791196
-      type: {class: ManualTargetTM, ns: , asm: Assembly-CSharp}
-      data: 
-    - rid: 1965764257158791197
+    - rid: 1965764599686889480
       type: {class: DealArmorDamageEffect, ns: , asm: Assembly-CSharp}
       data: 

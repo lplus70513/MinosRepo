@@ -28,6 +28,8 @@ MonoBehaviour:
     <Weight>k__BackingField: 1
     <Tag>k__BackingField: 
     <CooldownTurns>k__BackingField: 0
+    <IsExclusive>k__BackingField: 0
+    <MinTurnToUse>k__BackingField: 0
   - <ActionType>k__BackingField: 1
     <ActionName>k__BackingField: "\u79FB\u52A8"
     <BaseDamage>k__BackingField: 0
@@ -37,6 +39,8 @@ MonoBehaviour:
     <Weight>k__BackingField: 1
     <Tag>k__BackingField: 
     <CooldownTurns>k__BackingField: 0
+    <IsExclusive>k__BackingField: 0
+    <MinTurnToUse>k__BackingField: 0
   <ActionsPerTurn>k__BackingField: 1
   <UseModeSelection>k__BackingField: 0
   <Modes>k__BackingField: []
@@ -45,3 +49,4 @@ MonoBehaviour:
   <ReviveHealth>k__BackingField: 4
   <PersistArmor>k__BackingField: 0
   <OnDealDamageEffects>k__BackingField: []
+  <HitSFX>k__BackingField: {fileID: 0}
