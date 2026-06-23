@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
 using DG.Tweening;
@@ -137,51 +135,15 @@ public class CardView : MonoBehaviour
 
         if (card.Name != baseCard.Name && Name != null)
             Name.color = upgradeHighlightColor;
-        if (card.Cost != baseCard.Cost && CostText != null)
-            CostText.color = upgradeHighlightColor;
-        if (card.Description != baseCard.Description && Description != null)
+        if (Description != null)
         {
             CombatantView caster = useLiveDamage ? HeroSystem.Instance?.HeroView : null;
-            string baseDesc = useLiveDamage && caster != null
-                ? baseCard.GetLiveDescription(caster, null)
-                : baseCard.Description;
-            string upgradedDesc = useLiveDamage && caster != null
+            Description.text = useLiveDamage && caster != null
                 ? card.GetLiveDescription(caster, null)
                 : card.Description;
-            Description.text = HighlightChangedNumbers(baseDesc, upgradedDesc);
         }
     }
 
-    private string HighlightChangedNumbers(string baseText, string upgradedText)
-    {
-        string hexColor = ColorUtility.ToHtmlStringRGB(upgradeHighlightColor);
-        var baseMatches = Regex.Matches(baseText, @"\d+");
-        var upgradeMatches = Regex.Matches(upgradedText, @"\d+");
-
-        if (upgradeMatches.Count == 0)
-            return $"<color=#{hexColor}>{upgradedText}</color>";
-
-        var baseNums = new List<string>();
-        foreach (Match m in baseMatches)
-            baseNums.Add(m.Value);
-
-        string result = upgradedText;
-        for (int i = upgradeMatches.Count - 1; i >= 0; i--)
-        {
-            Match m = upgradeMatches[i];
-            string upgradeNum = m.Value;
-            string baseNum = i < baseNums.Count ? baseNums[i] : "";
-            if (upgradeNum != baseNum)
-            {
-                string colored = $"<color=#{hexColor}>{upgradeNum}</color>";
-                result = result.Remove(m.Index, m.Length).Insert(m.Index, colored);
-            }
-        }
-
-        if (result == upgradedText)
-            return $"<color=#{hexColor}>{upgradedText}</color>";
-        return result;
-    }
 
     public void RefreshDescription(CombatantView target)
     {
@@ -200,10 +162,7 @@ public class CardView : MonoBehaviour
 
         if (Card.IsUpgraded && Card.CardData != null)
         {
-            Card baseCard = new Card(Card.CardData, isUpgraded: false);
-            string baseDesc = baseCard.GetLiveDescription(caster, target);
-            string upgradedDesc = Card.GetLiveDescription(caster, target);
-            Description.text = HighlightChangedNumbers(baseDesc, upgradedDesc);
+            Description.text = Card.GetLiveDescription(caster, target);
         }
         else
         {

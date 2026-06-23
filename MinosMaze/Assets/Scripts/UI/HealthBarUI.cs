@@ -9,6 +9,7 @@ public class HealthBarUI : MonoBehaviour
     [SerializeField] private Image bufferImage;
     [SerializeField] private TMP_Text healthValueText;
     [SerializeField] private Image shieldBarImage;
+    [SerializeField] private Image shieldIconImage;
     [SerializeField] private TMP_Text shieldValueText;
     [SerializeField] private float bufferDuration = 0.5f;
 
@@ -39,6 +40,8 @@ public class HealthBarUI : MonoBehaviour
     {
         if (shieldBarImage != null)
             shieldBarImage.gameObject.SetActive(armor > 0);
+        if (shieldIconImage != null)
+            shieldIconImage.gameObject.SetActive(armor > 0);
         if (shieldValueText != null)
         {
             shieldValueText.gameObject.SetActive(armor > 0);
