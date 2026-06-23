@@ -33,6 +33,7 @@ public class EnemyView : CombatantView
         EnemyType = enemyData.Type;
         PersistArmor = enemyData.PersistArmor;
         int actualHealth = enemyData.HealthRange.RandomValue;
+        actualHealth = DifficultySystem.ScaleHP(actualHealth);
         SetupBase(actualHealth, enemyData.Image);
     }
 
