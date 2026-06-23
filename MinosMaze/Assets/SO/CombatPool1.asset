@@ -186,7 +186,7 @@ MonoBehaviour:
     heroSpawnCoord: {x: 0, y: 3}
     rewardConfig: {fileID: 11400000, guid: d9898f0919b265243b6544774bee7dda, type: 2}
   - configName: "\u5F02\u9E1F"
-    weight: 15
+    weight: 6
     minFloor: 1
     maxFloor: 2
     difficultyLevel: 2
@@ -218,7 +218,7 @@ MonoBehaviour:
     heroSpawnCoord: {x: 0, y: 3}
     rewardConfig: {fileID: 11400000, guid: d9898f0919b265243b6544774bee7dda, type: 2}
   - configName: "\u7A7A\u76D4\u7532"
-    weight: 15
+    weight: 6
     minFloor: 1
     maxFloor: 2
     difficultyLevel: 2
@@ -321,7 +321,7 @@ MonoBehaviour:
     - {x: 0, y: 0}
     heroSpawnCoord: {x: 0, y: 3}
     rewardConfig: {fileID: 11400000, guid: d9898f0919b265243b6544774bee7dda, type: 2}
-  - configName: "\u7A7A\u76D4\u7532\u8001\u9F20"
+  - configName: "\u7A7A\u76D4\u7532\u53CC\u8001\u9F20"
     weight: 6
     minFloor: 1
     maxFloor: 2
@@ -355,5 +355,117 @@ MonoBehaviour:
     - {x: 0, y: 0}
     - {x: 1, y: 0}
     - {x: -1, y: 0}
+    heroSpawnCoord: {x: 0, y: 3}
+    rewardConfig: {fileID: 11400000, guid: d9898f0919b265243b6544774bee7dda, type: 2}
+  - configName: "\u53CC\u8001\u9F20\u4E00\u866B\u5B50"
+    weight: 6
+    minFloor: 1
+    maxFloor: 2
+    difficultyLevel: 2
+    useCustomMap: 1
+    mapRadius: 4
+    specialCells:
+    - coord: {x: 0, y: -2}
+      cellType: 2
+    - coord: {x: 0, y: 1}
+      cellType: 2
+    - coord: {x: 0, y: 2}
+      cellType: 2
+    - coord: {x: 2, y: -1}
+      cellType: 2
+    - coord: {x: -3, y: -1}
+      cellType: 2
+    - coord: {x: -3, y: 2}
+      cellType: 2
+    - coord: {x: -2, y: 2}
+      cellType: 2
+    - coord: {x: 2, y: -2}
+      cellType: 2
+    - coord: {x: 1, y: -2}
+      cellType: 2
+    enemyDatas:
+    - {fileID: 11400000, guid: a4178809bd6515647b7ca0676f003693, type: 2}
+    - {fileID: 11400000, guid: c99fe55065162d24aa460d4b1291434c, type: 2}
+    - {fileID: 11400000, guid: c99fe55065162d24aa460d4b1291434c, type: 2}
+    enemySpawnCoords:
+    - {x: 0, y: 0}
+    - {x: 1, y: 0}
+    - {x: -1, y: 0}
+    heroSpawnCoord: {x: 0, y: 3}
+    rewardConfig: {fileID: 11400000, guid: d9898f0919b265243b6544774bee7dda, type: 2}
+  - configName: "\u56DB\u5C0F\u5929\u738B"
+    weight: 6
+    minFloor: 1
+    maxFloor: 2
+    difficultyLevel: 2
+    useCustomMap: 1
+    mapRadius: 4
+    specialCells:
+    - coord: {x: 0, y: -2}
+      cellType: 2
+    - coord: {x: 0, y: 1}
+      cellType: 2
+    - coord: {x: 0, y: 2}
+      cellType: 2
+    - coord: {x: 2, y: -1}
+      cellType: 2
+    - coord: {x: -3, y: -1}
+      cellType: 2
+    - coord: {x: -3, y: 2}
+      cellType: 2
+    - coord: {x: -2, y: 2}
+      cellType: 2
+    - coord: {x: 2, y: -2}
+      cellType: 2
+    - coord: {x: 1, y: -2}
+      cellType: 2
+    enemyDatas:
+    - {fileID: 11400000, guid: a4178809bd6515647b7ca0676f003693, type: 2}
+    - {fileID: 11400000, guid: c99fe55065162d24aa460d4b1291434c, type: 2}
+    - {fileID: 11400000, guid: b2a5924665279d649ad12ca3d745fd17, type: 2}
+    - {fileID: 11400000, guid: bc12006dafd48144db0432a7855e74ca, type: 2}
+    enemySpawnCoords:
+    - {x: 0, y: 0}
+    - {x: 1, y: 0}
+    - {x: -1, y: 0}
+    - {x: -2, y: 0}
+    heroSpawnCoord: {x: 0, y: 3}
+    rewardConfig: {fileID: 11400000, guid: d9898f0919b265243b6544774bee7dda, type: 2}
+  - configName: "\u53CC\u53F2\u83B1\u59C6\u53CC\u9AB7\u9AC5"
+    weight: 6
+    minFloor: 1
+    maxFloor: 2
+    difficultyLevel: 2
+    useCustomMap: 1
+    mapRadius: 4
+    specialCells:
+    - coord: {x: 0, y: -2}
+      cellType: 2
+    - coord: {x: 0, y: 1}
+      cellType: 2
+    - coord: {x: 0, y: 2}
+      cellType: 2
+    - coord: {x: 2, y: -1}
+      cellType: 2
+    - coord: {x: -3, y: -1}
+      cellType: 2
+    - coord: {x: -3, y: 2}
+      cellType: 2
+    - coord: {x: -2, y: 2}
+      cellType: 2
+    - coord: {x: 2, y: -2}
+      cellType: 2
+    - coord: {x: 1, y: -2}
+      cellType: 2
+    enemyDatas:
+    - {fileID: 11400000, guid: a4178809bd6515647b7ca0676f003693, type: 2}
+    - {fileID: 11400000, guid: c99fe55065162d24aa460d4b1291434c, type: 2}
+    - {fileID: 11400000, guid: b2a5924665279d649ad12ca3d745fd17, type: 2}
+    - {fileID: 11400000, guid: bc12006dafd48144db0432a7855e74ca, type: 2}
+    enemySpawnCoords:
+    - {x: 0, y: 0}
+    - {x: 1, y: 0}
+    - {x: -1, y: 0}
+    - {x: -2, y: 0}
     heroSpawnCoord: {x: 0, y: 3}
     rewardConfig: {fileID: 11400000, guid: d9898f0919b265243b6544774bee7dda, type: 2}
