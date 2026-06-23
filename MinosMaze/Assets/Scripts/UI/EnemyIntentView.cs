@@ -10,6 +10,11 @@ public class EnemyIntentView : MonoBehaviour
     [SerializeField] private GameObject intentUIPrefab;
     [SerializeField] private float fadeDuration = 0.5f;
 
+    [Header("浮动动画")]
+    [SerializeField] private bool enableFloatAnimation = true;
+    [SerializeField] private float floatAmplitude = 0.3f;
+    [SerializeField] private float floatDuration = 1.5f;
+
     [Header("意图图标")]
     [SerializeField] private Sprite attackSprite;
     [SerializeField] private Sprite moveSprite;
@@ -18,6 +23,7 @@ public class EnemyIntentView : MonoBehaviour
     [SerializeField] private Sprite debuffSprite;
 
     private Canvas canvas;
+    private Tween floatTween;
 
     private void Awake()
     {
@@ -64,6 +70,26 @@ public class EnemyIntentView : MonoBehaviour
             canvasGroup.alpha = 0f;
         else
             Debug.LogError($"[EnemyIntentView] {name} 缺少 CanvasGroup 引用！");
+    }
+
+    private void Start()
+    {
+        if (enableFloatAnimation)
+            PlayFloatAnimation();
+    }
+
+    private void OnDestroy()
+    {
+        floatTween?.Kill();
+    }
+
+    public void PlayFloatAnimation()
+    {
+        floatTween?.Kill();
+        floatTween = transform.DOLocalMoveY(floatAmplitude, floatDuration)
+            .SetRelative(true)
+            .SetEase(Ease.InOutQuad)
+            .SetLoops(-1, LoopType.Yoyo);
     }
 
     public void Show(List<EnemyIntentData> intents)

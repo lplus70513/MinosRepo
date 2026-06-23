@@ -92,6 +92,9 @@ MonoBehaviour:
   canvasGroup: {fileID: 1504215487609977776}
   intentUIPrefab: {fileID: 8198827249511099942}
   fadeDuration: 0.5
+  enableFloatAnimation: 1
+  floatAmplitude: 0.5
+  floatDuration: 1.5
   attackSprite: {fileID: 1167233741, guid: f9ffe777f1ef88f4894e498c4caa76a3, type: 3}
   moveSprite: {fileID: 1830869308, guid: 4063f05f283595b4b9f3ee9a1096387e, type: 3}
   defenseSprite: {fileID: 1723982374, guid: b8bc86815fe7a5348b803d7838d21148, type: 3}
