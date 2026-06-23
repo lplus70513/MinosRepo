@@ -255,6 +255,7 @@ public class WorldMapMovementSystem : Singleton<WorldMapMovementSystem>
             floorLevel = floor,
             difficultyLevel = difficultyLevel
         };
+        gm.IsBossEncounter = cellType == MapCellType.WorldMap_Boss;
     }
 
     // 将当前状态保存到 GameManager（用于跨场景恢复）

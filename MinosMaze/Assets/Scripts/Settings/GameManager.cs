@@ -54,6 +54,9 @@ public class GameManager : MonoBehaviour
     // 当前待加载的遭遇标识（cellType + floor），由 WorldMapMovementSystem 写入
     public EncounterConfig PendingEncounter { get; set; }
 
+    // 当前遭遇是否为 BOSS 格（中心格）战斗，由 WorldMapMovementSystem.SetPendingEncounter 同步写入
+    public bool IsBossEncounter { get; set; }
+
     // 当前加载的遭遇子场景名
     private string currentEncounterScene;
 
@@ -84,6 +87,7 @@ public class GameManager : MonoBehaviour
         _instance = this;
         DontDestroyOnLoad(gameObject);
 
+        FindGamePanelsIfNull();
         if (gameWinPanel != null) gameWinPanel.SetActive(false);
         if (gameLosePanel != null) gameLosePanel.SetActive(false);
 
@@ -203,6 +207,36 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void FindGamePanelsIfNull()
+    {
+        if (gameWinPanel == null)
+        {
+            var allObjects = FindObjectsByType<GameObject>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            foreach (var obj in allObjects)
+            {
+                if (obj.name == "GameWinPanel")
+                {
+                    gameWinPanel = obj;
+                    Debug.Log("[GameManager] 自动找到了 GameWinPanel");
+                    break;
+                }
+            }
+        }
+        if (gameLosePanel == null)
+        {
+            var allObjects = FindObjectsByType<GameObject>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            foreach (var obj in allObjects)
+            {
+                if (obj.name == "GameLosePanel")
+                {
+                    gameLosePanel = obj;
+                    Debug.Log("[GameManager] 自动找到了 GameLosePanel");
+                    break;
+                }
+            }
+        }
+    }
+
 
     public void GameStart()
     {
@@ -227,6 +261,7 @@ public class GameManager : MonoBehaviour
     public void ResetWorldMapStateForNewGame()
     {
         PendingEncounter = null;
+        IsBossEncounter = false;
         WorldMapState = new WorldMapState();
         WorldMapState.playerPosX = -999;
         WorldMapState.playerPosZ = -999;
@@ -328,6 +363,7 @@ public class GameManager : MonoBehaviour
         isExitingEncounter = true;
 
         PendingEncounter = null;
+        IsBossEncounter = false;
 
         // 遭遇已正常完成，进入前快照作废
         preEncounterSnapshot = null;
@@ -394,6 +430,7 @@ public class GameManager : MonoBehaviour
     public void ReturnToMainMenu()
     {
         PendingEncounter = null;
+        IsBossEncounter = false;
         if (gameWinPanel != null) gameWinPanel.SetActive(false);
         if (gameLosePanel != null) gameLosePanel.SetActive(false);
         isStartingGame = false;
@@ -437,9 +474,10 @@ public class GameManager : MonoBehaviour
     public void ShowGameWin()
     {
         Debug.Log("[GameManager] 游戏胜利！");
+        FindGamePanelsIfNull();
         if (gameWinPanel == null)
         {
-            Debug.LogError("[GameManager] gameWinPanel 未配置！请在 0_Manager 场景的 GameManager Inspector 中拖入 GameWinPanel");
+            Debug.LogError("[GameManager] gameWinPanel 未找到！请在 0_Manager 场景中创建名为 GameWinPanel 的 GameObject 或拖入引用");
             return;
         }
         gameWinPanel.SetActive(true);
@@ -449,9 +487,10 @@ public class GameManager : MonoBehaviour
     public void ShowGameLose()
     {
         Debug.Log("[GameManager] 游戏失败！");
+        FindGamePanelsIfNull();
         if (gameLosePanel == null)
         {
-            Debug.LogError("[GameManager] gameLosePanel 未配置！请在 0_Manager 场景的 GameManager Inspector 中拖入 GameLosePanel");
+            Debug.LogError("[GameManager] gameLosePanel 未找到！请在 0_Manager 场景中创建名为 GameLosePanel 的 GameObject 或拖入引用");
             return;
         }
         gameLosePanel.SetActive(true);

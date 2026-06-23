@@ -44,7 +44,7 @@ public class MatchSetupSystem : MonoBehaviour
         var gm = GameManager.Instance;
         Debug.Log($"[MatchSetupSystem] GameManager={(gm != null ? "OK" : "NULL")}, PendingEncounter={(gm?.PendingEncounter != null ? $"cellType={gm.PendingEncounter.cellType} floor={gm.PendingEncounter.floorLevel}" : "NULL")}");
 
-        bool isBoss = gm?.PendingEncounter?.cellType == MapCellType.WorldMap_Boss;
+        bool isBoss = gm != null && gm.IsBossEncounter;
         CombatPoolSO activePool = isBoss ? bossCombatPool : combatPool;
         Debug.Log($"[MatchSetupSystem] isBoss={isBoss}, activePool={(activePool != null ? activePool.name : "NULL (将使用 fallback)")}");
 
