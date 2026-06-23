@@ -206,6 +206,11 @@ public class EnemySystem : Singleton<EnemySystem>
             remaining.Remove(selected);
 
             if (selected.IsExclusive) break;
+
+            if (selected.ActionType == EnemyActionType.Attack)
+            {
+                remaining.RemoveAll(a => a.ActionType == EnemyActionType.Attack);
+            }
         }
 
         return result;
