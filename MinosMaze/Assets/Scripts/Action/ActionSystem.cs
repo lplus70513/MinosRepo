@@ -18,6 +18,16 @@ public class ActionSystem : Singleton<ActionSystem>
     private static Dictionary<Type, Dictionary<Delegate, Action<GameAction>>> postWrappers = new();
     private static Dictionary<Type, Func<GameAction,IEnumerator>> performers = new();
 
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStaticDictionaries()
+    {
+        preSubs.Clear();
+        postSubs.Clear();
+        preWrappers.Clear();
+        postWrappers.Clear();
+        performers.Clear();
+    }
+
     // Perform执行核心
     public void Perform(GameAction action, System.Action OnPerformFinished = null)
     {

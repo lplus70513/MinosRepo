@@ -249,6 +249,8 @@ public class WorldMapMovementSystem : Singleton<WorldMapMovementSystem>
             difficultyLevel = Mathf.Clamp(rawTier, 1, tierCount);
         }
 
+        Debug.Log($"[SetPendingEncounter] cellType={cellType}, IsBoss={(cellType == MapCellType.WorldMap_Boss)}, 此前 PendingEncounter.cellType={gm.PendingEncounter?.cellType.ToString() ?? "null"}, IsBossEncounter={gm.IsBossEncounter}");
+
         gm.PendingEncounter = new EncounterConfig
         {
             cellType = cellType,

@@ -84,6 +84,7 @@ public class TreasureController : MonoBehaviour
     {
         GameManager gm = GameManager.Instance;
         int floor = gm.WorldMapState?.floorLevel ?? 1;
+        Debug.Log($"[TreasureController] OnFight: 设置 PendingEncounter.cellType=WorldMap_Encounter (此前 cellType={gm.PendingEncounter?.cellType.ToString() ?? "null"})");
         gm.PendingEncounter = new EncounterConfig
         {
             cellType = MapCellType.WorldMap_Encounter,

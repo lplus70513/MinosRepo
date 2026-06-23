@@ -260,6 +260,7 @@ public class GameManager : MonoBehaviour
 
     public void ResetWorldMapStateForNewGame()
     {
+        Debug.Log($"[GameManager] ResetWorldMapStateForNewGame: 清空 PendingEncounter (此前 cellType={PendingEncounter?.cellType.ToString() ?? "null"}), IsBossEncounter={IsBossEncounter}");
         PendingEncounter = null;
         IsBossEncounter = false;
         WorldMapState = new WorldMapState();
@@ -362,6 +363,7 @@ public class GameManager : MonoBehaviour
         if (isExitingEncounter) return;
         isExitingEncounter = true;
 
+        Debug.Log($"[GameManager] ExitEncounter: 清空 PendingEncounter (此前 cellType={PendingEncounter?.cellType.ToString() ?? "null"}), IsBossEncounter={IsBossEncounter}");
         PendingEncounter = null;
         IsBossEncounter = false;
 
@@ -429,6 +431,7 @@ public class GameManager : MonoBehaviour
     // 战斗失败/游戏胜利/游戏失败时返回主菜单
     public void ReturnToMainMenu()
     {
+        Debug.Log($"[GameManager] ReturnToMainMenu: 清空 PendingEncounter (此前 cellType={PendingEncounter?.cellType.ToString() ?? "null"}), IsBossEncounter={IsBossEncounter}");
         PendingEncounter = null;
         IsBossEncounter = false;
         if (gameWinPanel != null) gameWinPanel.SetActive(false);
@@ -475,6 +478,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("[GameManager] 游戏胜利！");
         FindGamePanelsIfNull();
+        if (Interactions.Instance != null) Interactions.Instance.IsShowingReward = false;
         if (gameWinPanel == null)
         {
             Debug.LogError("[GameManager] gameWinPanel 未找到！请在 0_Manager 场景中创建名为 GameWinPanel 的 GameObject 或拖入引用");
@@ -488,6 +492,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("[GameManager] 游戏失败！");
         FindGamePanelsIfNull();
+        if (Interactions.Instance != null) Interactions.Instance.IsShowingReward = false;
         if (gameLosePanel == null)
         {
             Debug.LogError("[GameManager] gameLosePanel 未找到！请在 0_Manager 场景中创建名为 GameLosePanel 的 GameObject 或拖入引用");

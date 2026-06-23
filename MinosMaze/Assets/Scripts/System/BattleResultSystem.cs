@@ -81,9 +81,10 @@ public class BattleResultSystem : Singleton<BattleResultSystem>
 
         Interactions.Instance.IsShowingReward = true;
 
-        bool isBoss = GameManager.Instance != null
-            && GameManager.Instance.IsBossEncounter
-            && GameManager.Instance.PendingEncounter?.cellType == MapCellType.WorldMap_Boss;
+        var gm = GameManager.Instance;
+        bool isBoss = gm != null
+            && gm.PendingEncounter?.cellType == MapCellType.WorldMap_Boss;
+        Debug.Log($"[BattleResultSystem] isBoss判断: gm={(gm != null ? "OK" : "NULL")}, IsBossEncounter={gm?.IsBossEncounter}, PendingEncounter={(gm?.PendingEncounter != null ? $"cellType={gm.PendingEncounter.cellType}" : "null")}, => isBoss={isBoss}");
         if (isBoss)
         {
             Debug.Log("[BattleResultSystem] BOSS 格战斗胜利 → 游戏全局胜利");
