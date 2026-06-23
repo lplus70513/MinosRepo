@@ -56,6 +56,12 @@ public class DeckViewer : MonoBehaviour
     [SerializeField] private float shakeAngle = 15f;
     [SerializeField] private float shakeInterval = 0.1f;
 
+    [Header("燃烧消融特效")]
+    [SerializeField] private Material burnMaterial;
+    [SerializeField] private float burnDuration = 1.5f;
+    [SerializeField] private GameObject flameParticlePrefab;
+    [SerializeField] private GameObject smokeParticlePrefab;
+
     private PileType currentPile = PileType.DrawPile;
     private Dictionary<PileType, Button> tabButtons;
     private float scrollOffset;
@@ -70,6 +76,7 @@ public class DeckViewer : MonoBehaviour
     private bool isSelectionMode;
     private bool isPreviewState;
     private bool isUpgradePreview;
+    private bool useBurnEffect;
     private DeckCardEntry previewedEntry;
     private List<DeckCardEntry> selectionEntries;
     private Action<DeckCardEntry> selectionCallback;
@@ -597,6 +604,18 @@ public class DeckViewer : MonoBehaviour
             return;
         }
 
+        // 燃烧消融特效：丢弃卡牌时使用
+        if (useBurnEffect && cardContainer != null && cardContainer.childCount > 0)
+        {
+            Transform previewCard = cardContainer.GetChild(0);
+            StartCoroutine(BurnDiscardCoroutine(previewCard, () =>
+            {
+                CloseSelectionMode();
+                cb?.Invoke(entry);
+            }));
+            return;
+        }
+
         CloseSelectionMode();
         cb?.Invoke(entry);
     }
@@ -613,11 +632,40 @@ public class DeckViewer : MonoBehaviour
         onComplete?.Invoke();
     }
 
+    /// <summary>启用/禁用丢弃卡牌时的燃烧消融特效</summary>
+    public void SetBurnMode(bool enable)
+    {
+        useBurnEffect = enable;
+    }
+
+    /// <summary>燃烧消融协程：附加 BurnController 并等待其完成</summary>
+    private IEnumerator BurnDiscardCoroutine(Transform card, Action onComplete)
+    {
+        AudioManager.Instance?.PlaySFX(AudioManager.Instance?.Config?.cardDeleteSFX);
+
+        BurnController burnController = card.gameObject.AddComponent<BurnController>();
+        burnController.Configure(burnMaterial, burnDuration,
+            flameParticlePrefab, smokeParticlePrefab, autoDestroy: false);
+
+        burnController.OnBurnComplete += () =>
+        {
+            Destroy(card.gameObject);
+        };
+
+        burnController.StartBurn();
+
+        // 等待燃烧动画完成
+        yield return new WaitForSecondsRealtime(burnDuration + 0.5f);
+
+        onComplete?.Invoke();
+    }
+
     private void CloseSelectionMode()
     {
         isSelectionMode = false;
         isPreviewState = false;
         isUpgradePreview = false;
+        useBurnEffect = false;
         previewedEntry = null;
         selectionEntries = null;
         selectionCallback = null;

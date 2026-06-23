@@ -2510,11 +2510,18 @@ MonoBehaviour:
   overlayAlpha: 0.7
   overlaySortingOrder: 30000
   scrollSpeed: 3
-  blockedButtons: []
+  blockedButtons:
+  - {fileID: 1007803147}
+  - {fileID: 1346203349}
+  - {fileID: 263848978}
   previewCardScale: 1.3
   previewSpacing: 5
   shakeAngle: 10
   shakeInterval: 0.2
+  burnMaterial: {fileID: 2100000, guid: 4b2b597e0e2e019418d347945f34debd, type: 2}
+  burnDuration: 1.5
+  flameParticlePrefab: {fileID: 0}
+  smokeParticlePrefab: {fileID: 0}
 --- !u!224 &1527024347 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1797462677429482960, guid: cdf1a124c604cb6409f61a2e88e87abf, type: 3}

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using DG.Tweening;
 
 public class GameManager : MonoBehaviour
 {
@@ -23,6 +24,8 @@ public class GameManager : MonoBehaviour
 
     [Header("UI ����")]
     public GameObject SettingsPanel;
+    [SerializeField] private CanvasGroup settingsCanvasGroup;
+    [SerializeField] private float settingsFadeDuration = 0.15f;
 
     [Header("游戏结束面板")]
     [SerializeField] private GameObject gameWinPanel;
@@ -143,6 +146,14 @@ public class GameManager : MonoBehaviour
         {
             SettingsPanel.SetActive(true);
 
+            if (settingsCanvasGroup == null)
+                settingsCanvasGroup = SettingsPanel.GetComponent<CanvasGroup>();
+            if (settingsCanvasGroup == null)
+                settingsCanvasGroup = SettingsPanel.AddComponent<CanvasGroup>();
+
+            settingsCanvasGroup.alpha = 0f;
+            settingsCanvasGroup.DOFade(1f, settingsFadeDuration).SetEase(Ease.OutQuad);
+
             var sm = SettingsPanel.GetComponent<SettingManager>();
             if (sm == null) sm = SettingsPanel.GetComponentInChildren<SettingManager>(true);
             if (sm != null) sm.RefreshButtons(IsInGame);
@@ -158,7 +169,19 @@ public class GameManager : MonoBehaviour
         FindSettingsPanelIfNull();
         if (SettingsPanel != null)
         {
-            SettingsPanel.SetActive(false);
+            if (settingsCanvasGroup == null)
+                settingsCanvasGroup = SettingsPanel.GetComponent<CanvasGroup>();
+
+            if (settingsCanvasGroup != null)
+            {
+                settingsCanvasGroup.DOFade(0f, settingsFadeDuration)
+                    .SetEase(Ease.OutQuad)
+                    .OnComplete(() => SettingsPanel.SetActive(false));
+            }
+            else
+            {
+                SettingsPanel.SetActive(false);
+            }
         }
     }
 
