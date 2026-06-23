@@ -245,8 +245,10 @@ MonoBehaviour:
       cellType: 2
     enemyDatas:
     - {fileID: 11400000, guid: a8ada6e43e1f04d468b86fb3be57b9d9, type: 2}
+    - {fileID: 11400000, guid: bc12006dafd48144db0432a7855e74ca, type: 2}
     enemySpawnCoords:
     - {x: 0, y: 0}
+    - {x: 1, y: 0}
     heroSpawnCoord: {x: 0, y: 3}
     rewardConfig: {fileID: 11400000, guid: d9898f0919b265243b6544774bee7dda, type: 2}
   - configName: "\u8FF7\u9014\u65C5\u4EBA"

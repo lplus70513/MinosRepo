@@ -23,17 +23,43 @@ MonoBehaviour:
     specialCells:
     - coord: {x: 0, y: 0}
       cellType: 2
-    - coord: {x: 0, y: 0}
+    - coord: {x: -1, y: 0}
       cellType: 2
-    - coord: {x: 0, y: 0}
+    - coord: {x: 0, y: 1}
       cellType: 2
-    - coord: {x: 0, y: 0}
+    - coord: {x: -2, y: -2}
+      cellType: 2
+    - coord: {x: 2, y: 2}
+      cellType: 2
+    - coord: {x: -4, y: -4}
+      cellType: 2
+    - coord: {x: -4, y: -3}
+      cellType: 2
+    - coord: {x: -4, y: -2}
+      cellType: 2
+    - coord: {x: -4, y: -1}
+      cellType: 2
+    - coord: {x: 0, y: -3}
+      cellType: 2
+    - coord: {x: 1, y: -3}
+      cellType: 2
+    - coord: {x: 2, y: -3}
+      cellType: 2
+    - coord: {x: 0, y: 3}
+      cellType: 2
+    - coord: {x: -1, y: 4}
+      cellType: 2
+    - coord: {x: 1, y: 2}
+      cellType: 2
+    - coord: {x: 2, y: 1}
       cellType: 2
     enemyDatas:
     - {fileID: 11400000, guid: feef8d76f1327524eb80a12e85f31065, type: 2}
+    - {fileID: 11400000, guid: a8ada6e43e1f04d468b86fb3be57b9d9, type: 2}
+    - {fileID: 11400000, guid: 0911c322054b1014a931092b41a05251, type: 2}
     enemySpawnCoords:
     - {x: 1, y: 0}
-    - {x: 2, y: 0}
-    - {x: 3, y: 0}
-    heroSpawnCoord: {x: 4, y: 0}
+    - {x: -1, y: 1}
+    - {x: 3, y: -3}
+    heroSpawnCoord: {x: -4, y: 5}
     rewardConfig: {fileID: 11400000, guid: d9898f0919b265243b6544774bee7dda, type: 2}
