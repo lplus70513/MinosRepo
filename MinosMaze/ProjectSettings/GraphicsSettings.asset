@@ -35,9 +35,16 @@ GraphicsSettings:
   - {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
   - {fileID: 4800000, guid: 280c0db7353c48e4391517242c011a50, type: 3}
   - {fileID: 4800000, guid: 310177a9ebaa1c24487815346d482e7b, type: 3}
+  - {fileID: 4800000, guid: c97deb05a3d15d14683392ba9265f0fe, type: 3}
+  - {fileID: 4800000, guid: 087dab3bca3b33543b7044ab58644437, type: 3}
+  - {fileID: 4800000, guid: 8a8e4b0c7d6f5e4a3b2c1d0e9f8a7b6c, type: 3}
+  - {fileID: 4800000, guid: b2f2d569cd1499542b76eb0adc39ed46, type: 3}
+  - {fileID: 4800000, guid: c5c782a133d4aef43bd953deb302ee4b, type: 3}
+  - {fileID: 4800000, guid: 483439e918c153449aa92868b827dec3, type: 3}
+  - {fileID: 4800000, guid: e7e3afd3f1ddb3346a3240438e8ec9f5, type: 3}
+  - {fileID: 4800000, guid: 2771b595bfaff864996e2f646f14c81b, type: 3}
   m_PreloadedShaders:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 1, guid: a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6, type: 2}
   m_PreloadShadersBatchTimeLimit: -1
   m_SpritesDefaultMaterial: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_CustomRenderPipeline: {fileID: 0}
