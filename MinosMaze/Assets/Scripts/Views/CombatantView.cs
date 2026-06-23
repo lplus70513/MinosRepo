@@ -211,6 +211,15 @@ public class CombatantView : MonoBehaviour
         OnHealthChanged?.Invoke(this, CurrentHealth);
     }
 
+    public void SetMaxHealth(int maxHealth)
+    {
+        MaxHealth = maxHealth;
+        if (CurrentHealth > MaxHealth)
+            CurrentHealth = MaxHealth;
+        UpdateHealthText();
+        OnHealthChanged?.Invoke(this, CurrentHealth);
+    }
+
     private static bool IsNonStackable(StatusEffectType type)
     {
         return type == StatusEffectType.WEAKNESS
