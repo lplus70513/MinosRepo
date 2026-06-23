@@ -819,6 +819,8 @@ MonoBehaviour:
     sceneName: 2.4_Treasure
   - cellType: 105
     sceneName: 2.3_StatueScene
+  - cellType: 104
+    sceneName: 2.1_BattleScene
   moveDuration: 0.2
 --- !u!4 &606988349
 Transform:
@@ -1390,6 +1392,8 @@ MonoBehaviour:
     prefab: {fileID: 3646822269367452885, guid: 4db4fb77f7c75074c950b21fd1e3acd1, type: 3}
   - cellType: 105
     prefab: {fileID: 9084443745589265065, guid: 7a887ef8a0401c44f85f03572503999e, type: 3}
+  - cellType: 104
+    prefab: {fileID: 508066840148608474, guid: 1c82c5f8100478647b66f2e075cf60a3, type: 3}
   birthCoord: {x: 0, y: 5}
   initialMovePoints: 9
   playerMaxHealth: 100
@@ -1401,6 +1405,8 @@ MonoBehaviour:
     prefab: {fileID: 3646822269367452885, guid: 4db4fb77f7c75074c950b21fd1e3acd1, type: 3}
   - cellType: 105
     prefab: {fileID: 9084443745589265065, guid: 7a887ef8a0401c44f85f03572503999e, type: 3}
+  - cellType: 104
+    prefab: {fileID: 508066840148608474, guid: 1c82c5f8100478647b66f2e075cf60a3, type: 3}
   randomPool:
   - cellType: 101
     weight: 60

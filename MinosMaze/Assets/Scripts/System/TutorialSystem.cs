@@ -52,6 +52,8 @@ public class TutorialSystem : MonoBehaviour
     public void Play()
     {
         if (IsPlaying || IsComplete) return;
+        if (tutorialSteps != null)
+            tutorialSteps.RemoveAll(s => s == null);
         if (tutorialSteps == null || tutorialSteps.Count == 0)
         {
             Debug.LogWarning("[TutorialSystem] 教程步骤列表为空，跳过教程。");
