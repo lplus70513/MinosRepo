@@ -12,12 +12,7 @@ public class IfAttackedThisTurnEffect : Effect
         if (targets == null || targets.Count == 0) return null;
         var hero = HeroSystem.Instance?.HeroView;
         if (hero == null) return null;
-
-        foreach (var target in targets)
-        {
-            if (target is EnemyView ev && hero.AttackedThisTurn.Contains(ev))
-                return InnerEffect?.GetGameAction(targets, caster);
-        }
-        return null;
+        if (hero.AttackedThisTurn.Count == 0) return null;
+        return InnerEffect?.GetGameAction(targets, caster);
     }
 }
