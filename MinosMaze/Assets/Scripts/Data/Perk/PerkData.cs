@@ -7,6 +7,10 @@ using SerializeReferenceEditor;
 
 public class PerkData : ScriptableObject
 {
+    [field: SerializeField] public string Name { get; private set; }
+
+    [field: SerializeField, TextArea(2, 4)] public string Description { get; private set; }
+
     [field: SerializeField] public Sprite Image { get; private set; }
 
     [field: SerializeField, SerializeReference, SR] public PerkCondition PerkCondition { get; private set; }

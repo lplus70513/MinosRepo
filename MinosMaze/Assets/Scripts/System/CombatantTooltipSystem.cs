@@ -60,7 +60,9 @@ public class CombatantTooltipSystem : Singleton<CombatantTooltipSystem>
                 lastHovered = hovered;
             }
             tooltipInstance.Show();
-            tooltipInstance.UpdatePosition(Input.mousePosition);
+            Vector3 worldPos = hovered.transform.position;
+            Vector3 screenPos = camera3D.WorldToScreenPoint(worldPos);
+            tooltipInstance.UpdatePosition(screenPos);
         }
         else
         {
