@@ -222,9 +222,7 @@ public class CombatantView : MonoBehaviour
 
     private static bool IsNonStackable(StatusEffectType type)
     {
-        return type == StatusEffectType.WEAKNESS
-            || type == StatusEffectType.VULNERABLE
-            || type == StatusEffectType.FRAGILE
+        return type == StatusEffectType.FRAGILE
             || type == StatusEffectType.SLOW
             || type == StatusEffectType.CHAIN_LIGHTNING
             || type == StatusEffectType.ROOT
@@ -238,12 +236,22 @@ public class CombatantView : MonoBehaviour
 
         if (stackCount < 0)
         {
-            RemoveStatusEffect(type, -stackCount);
-            return;
+            if (IsNonStackable(type))
+            {
+                if (statusEffects.Remove(type))
+                {
+                    if (statusEffectsUI != null)
+                        statusEffectsUI.UpdateStatusEffectUI(type, 0);
+                    OnStatusChanged?.Invoke();
+                }
+                return;
+            }
         }
-
-        if (IsNonStackable(type) && HasStatusEffect(type))
-            return;
+        else
+        {
+            if (IsNonStackable(type) && HasStatusEffect(type))
+                return;
+        }
 
         int effectiveStacks = stackCount;
 
@@ -257,6 +265,8 @@ public class CombatantView : MonoBehaviour
         if (statusEffects.ContainsKey(type))
         {
             statusEffects[type] += effectiveStacks;
+            if (statusEffects[type] == 0)
+                statusEffects.Remove(type);
         }
         else
         {
@@ -272,7 +282,7 @@ public class CombatantView : MonoBehaviour
         if (statusEffects.ContainsKey(type))
         {
             statusEffects[type] -= stackCount;
-            if (statusEffects[type] <= 0)
+            if (statusEffects[type] == 0)
             {
                 statusEffects.Remove(type);
             }
@@ -285,7 +295,7 @@ public class CombatantView : MonoBehaviour
 
     public void SetStatusEffectStacks(StatusEffectType type, int stackCount)
     {
-        if (stackCount <= 0)
+        if (stackCount == 0)
         {
             statusEffects.Remove(type);
         }
