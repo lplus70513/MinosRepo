@@ -1470,6 +1470,10 @@ MonoBehaviour:
   previewSpacing: 5
   shakeAngle: 15
   shakeInterval: 0.1
+  burnMaterial: {fileID: 0}
+  burnDuration: 1.5
+  flameParticlePrefab: {fileID: 0}
+  smokeParticlePrefab: {fileID: 0}
 --- !u!1001 &481258359
 PrefabInstance:
   m_ObjectHideFlags: 0
