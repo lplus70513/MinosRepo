@@ -10,7 +10,7 @@
 - **World map layer**: hex-grid exploration with movement points. `GameManager` persists `WorldMapState` (position, health, move points, cleared cells) across scene transitions via `SaveWorldMapState`/`SaveBattleResult`.
 - **Battle layer**: card-based combat encounters entered via `GameManager.EnterEncounter("SceneName")` and exited via `ExitEncounter()`. Scenes load/unload additively.
 - Key scenes: `0_Manager` (boot) → `1_MainMenu` → `2.0_WorldMap` ↔ encounter scenes (`2.1_BattleScene`, `2.2_RestSite`, `2.3_StatueScene`)
-- **Caution**: Code references main menu as `"1_Mainmenu"` (lowercase 'm') in some places and `"1_MainMenu"` in others — inconsistency in GameManager.cs.
+- **Caution**: `GameManager.cs` consistently uses `"1_MainMenu"` (capital M). `AudioManager.cs` handles both `"1_MainMenu"` and `"1_Mainmenu"` as a defensive fallback. When referencing the main menu scene, prefer `"1_MainMenu"`.
 
 ## Entry points
 - Boot scene: `MinosMaze/Assets/Scenes/0_Manager.unity` — `GameManager` singleton sets `DontDestroyOnLoad`, then additively loads `1_MainMenu`
@@ -30,8 +30,19 @@ The core gameplay engine is a custom event pipeline — **not** UnityEvents or C
 
 ## Input gating: Interactions
 - `Interactions` singleton gates all player input
-- `PlayerCanInteract()` returns `false` when `ActionSystem.IsPerforming`, when deck viewer is open, or when hero is STUNNED
-- `PlayerCanHover()` additionally returns `false` during drag/targeting
+- `PlayerCanInteract()` returns `false` when any of: deck viewer is open, reward dialog is shown, scene is transitioning, or hero is STUNNED. Returns `true` only when `ActionSystem.IsPerforming` is false.
+- **Special bypass**: when `CardSystem.Instance.IsSelectingCardFromHand` is true, `PlayerCanInteract()` returns `true` even if hero is STUNNED.
+- `PlayerCanHover()` returns `false` when: deck viewer is open, reward dialog is shown, or player is dragging/targeting.
+
+## Audio system
+- `AudioManager` (in `Scripts/Audio/`) runs a dual-AudioSource BGM crossfade system. Uses `AudioConfig` ScriptableObject for per-scene BGM/SFX mappings.
+- Scene-based BGM: call `AudioManager.Instance.PlayBGMForScene("SceneName")` on scene transitions.
+- `AudioManager` is **not** a `Singleton<T>` — it uses its own `_instance` pattern, same as `GameManager`.
+
+## Save system
+- `SaveSystem` (static class in `Scripts/Settings/SaveSystem.cs`) serializes game state to `Application.persistentDataPath/save.json`.
+- `SaveData` contains: player position, health, gold, string count, floor level, cleared cells, deck, active blessings, cell layout.
+- `GameManager` calls `SaveSystem.SaveGame()` / `SaveSystem.LoadGame()` for save/load and save-and-exit flow.
 
 ## Serialization: SREditor
 - Embedded package at `MinosMaze/Assets/SREditor/` enables `[SerializeReference]` for polymorphic types
@@ -41,7 +52,7 @@ The core gameplay engine is a custom event pipeline — **not** UnityEvents or C
 ## Singleton pattern
 - `Singleton<T>` base class (at `Action/Class/Singleton.cs`) auto-creates instances via `FindObjectOfType` or `new GameObject`
 - Most systems use it: `ActionSystem`, `HeroSystem`, `CardSystem`, `CostSystem`, `Interactions`, `ManualTargetSystem`, `EnemyViewCreator`, `CardViewHoverSystem`, `PerkSystem`
-- **Exception**: `GameManager` does NOT use `Singleton<T>` — it implements its own `_instance` + `FindObjectOfType` pattern manually
+- **Exceptions** (use manual `_instance` + `FindObjectOfType`): `GameManager`, `AudioManager`
 
 ## Effects system
 - `Effect` abstract base class: `Card/Class/Effect.cs`
@@ -77,22 +88,22 @@ The core gameplay engine is a custom event pipeline — **not** UnityEvents or C
 ## Key directories
 | Directory | Purpose |
 |---|---|
-| `Scripts/Action/` | `ActionSystem`, `Singleton<T>`, `GameAction` base, `ReactionTiming` |
+| `Scripts/Action/` | `ActionSystem`, `Singleton<T>`, `GameAction` base, `ReactionTiming`, `EnemySystem`, `DamageSystem` |
 | `Scripts/Action/GameAction/` | 30+ GameAction subclasses |
-| `Scripts/Action/` (root) | Also contains `EnemySystem.cs`, `DamageSystem.cs` |
+| `Scripts/Audio/` | `AudioManager` (dual-BGM crossfade), `AudioConfig` SO |
 | `Scripts/Card/` | Card system, hand view, cost (`CardSystem`, `CostSystem`, `CardViewHoverSystem`) |
-| `Scripts/Card/Class/` | Base classes: `Card.cs`, `Effect.cs`, `TargetMode.cs`, `AutoTargetEffect.cs`, `CardGradeData.cs` |
-| `Scripts/Data/` | ScriptableObject data: cards, heroes, enemies, perks, targets |
+| `Scripts/Card/Class/` | Base classes: `Card.cs`, `Effect.cs`, `TargetMode.cs`, `AutoTargetEffect.cs`, `CardGradeData.cs`, `HexRangePattern.cs`, `DeckCardEntry.cs` |
+| `Scripts/Data/` | ScriptableObject data: `CardDatabase`, `CombatConfig`, `EncounterConfig`, `RewardConfig`, `StatusEffectData`, `HeroData`, `EnemyData` |
 | `Scripts/Data/Effects/` | All concrete `Effect` subclasses (21 total) |
-| `Scripts/Data/Perk/` | `PerkSystem.cs`, `Perk.cs`, `PerkData.cs`, `PerkCondition.cs` (base), `PerksUI.cs` |
-| `Scripts/Data/Hero & Enemy/` | `EnemyViewCreator.cs`, hero/enemy data |
+| `Scripts/Data/Perk/` | `PerkSystem.cs`, `Perk.cs`, `PerkData.cs`, `PerkCondition.cs` (base), `PerksUI.cs`, `PerkUI.cs` |
+| `Scripts/Data/Hero & Enemy/` | `EnemyViewCreator`, `HeroData`, `EnemyData`, `EnemyAction`, `EnemyMode`, `EnemyType`, `EnemyBoardView` |
 | `Scripts/Map/` | Hex grid (`HexGrid`, `HexCell`, `HexMetrics`, `HexMove`, `HexPathfinder`) and world map (`WorldMapGrid`, `WorldMapState`) |
-| `Scripts/System/` | `HeroSystem`, `MoveSystem`, `MatchSetupSystem`, `Interactions`, `StatusEffectSystem`, `CameraController`, `ManualTargetSystem`, `BattleResultSystem`, `RewardSystem`, `SceneTransitionSystem`, `MapCollapseSystem`, `WorldMapMovementSystem`, `WorldMapPlayerSystem`, `PlayerMovementSystem`, `HexRayCast`, `BlessingSystem`, `StatueSceneController`, `RestSiteController`, `TreasureController` |
-| `Scripts/Settings/` | `GameManager`, `SettingManager` (stub), `UIBinder`, `QuitGame` |
+| `Scripts/System/` | `HeroSystem`, `MoveSystem`, `MatchSetupSystem`, `Interactions`, `StatusEffectSystem`, `CameraController`, `ManualTargetSystem`, `BattleResultSystem`, `RewardSystem`, `SceneTransitionSystem`, `MapCollapseSystem`, `WorldMapMovementSystem`, `WorldMapPlayerSystem`, `PlayerMovementSystem`, `HexRayCast`, `BlessingSystem`, `DifficultySystem`, `TutorialSystem`, `CombatantTooltipSystem`, `StatueSceneController`, `RestSiteController`, `TreasureController` |
+| `Scripts/Settings/` | `GameManager`, `SettingManager`, `SaveSystem` (static), `UIBinder`, `QuitGame` |
 | `Scripts/Views/` | MVC views (`CombatantView`, `HeroView`, `EnemyView`, `WorldMapPlayerView`) |
-| `Scripts/UI/` | UI components (`StatusEffectsUI`, `CostUI`, `HealthBarUI`, `EndTurnButtonUI`) |
+| `Scripts/UI/` | ~27 UI scripts: `StatusEffectsUI`, `CostUI`, `HealthBarUI`, `EndTurnButtonUI`, `CardSelectDialog`, `EnemyIntentView/UI/Data`, `RoundDisplayController`, `ResourceHUD`, `DifficultyDisplay`, `TutorialPanel`, `StatueSlotUI`, `CombatantTooltipUI`, `WinPanelController`, `LosePanelController`, etc. |
 | `Scripts/PopupText/` | Floating damage/heal text (uses DOTween) |
-| `Scripts/Enums/` | `StatusEffectType.cs` enum |
+| `Scripts/Enums/` | `StatusEffectType`, `BlessingEffectType`, `BlessingCostType` |
 | `Scripts/Extensions/` | `ListExtensions.cs` |
 | `Scripts/Interfaces/` | `IHaveCaster.cs` |
 | `Scripts/PerkCondition/` | 7 PerkCondition subclasses |
@@ -106,5 +117,4 @@ The core gameplay engine is a custom event pipeline — **not** UnityEvents or C
 Note: All directories above are relative to `MinosMaze/Assets/`.
 
 ## Known stubs / missing
-- `BleedEffect` and `WeaknessEffect` have no C# class files — only serialized references in `.asset` cards
-- `SettingManager` is an empty stub (`Start` + `Update` only)
+- `BleedEffect` and `WeaknessEffect` have no C# class files — only serialized references in `.asset` cards. Their `GetGameAction()` returns `null`.
