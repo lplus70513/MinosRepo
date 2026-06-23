@@ -215,7 +215,7 @@ GameObject:
   - component: {fileID: 549264822}
   - component: {fileID: 549264821}
   m_Layer: 5
-  m_Name: WinPanel
+  m_Name: GameWinPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

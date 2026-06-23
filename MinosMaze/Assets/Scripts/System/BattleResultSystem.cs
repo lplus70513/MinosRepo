@@ -45,11 +45,31 @@ public class BattleResultSystem : Singleton<BattleResultSystem>
                 if (obj.name == "WinPanel")
                 {
                     winPanel = obj;
-                    Debug.Log("[BattleResultSystem] 自动找到了 WinPanel");
+                    string path = GetGameObjectPath(obj);
+                    var components = obj.GetComponents<Component>();
+                    string componentNames = "";
+                    for (int i = 0; i < components.Length; i++)
+                    {
+                        if (i > 0) componentNames += ", ";
+                        componentNames += components[i].GetType().Name;
+                    }
+                    Debug.Log($"[BattleResultSystem] 自动找到了 WinPanel: 路径={path}, 组件=[{componentNames}], 实例ID={obj.GetInstanceID()}");
                     break;
                 }
             }
         }
+    }
+
+    private static string GetGameObjectPath(GameObject obj)
+    {
+        string path = obj.name;
+        Transform parent = obj.transform.parent;
+        while (parent != null)
+        {
+            path = parent.name + "/" + path;
+            parent = parent.parent;
+        }
+        return path;
     }
 
     private void OnKillEnemyPost(KillEnemyGA killEnemyGA)
@@ -97,6 +117,7 @@ public class BattleResultSystem : Singleton<BattleResultSystem>
         if (winPanel == null) FindPanelsIfNull();
         if (winPanel != null)
         {
+            Debug.Log($"[BattleResultSystem] 激活 winPanel: name={winPanel.name}, 路径={GetGameObjectPath(winPanel)}, 实例ID={winPanel.GetInstanceID()}");
             winPanel.SetActive(true);
             var controller = winPanel.GetComponent<WinPanelController>();
             if (controller != null)
