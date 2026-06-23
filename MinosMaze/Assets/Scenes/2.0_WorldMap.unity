@@ -1319,7 +1319,6 @@ MonoBehaviour:
   enemyBarPrefab: {fileID: 7326061374848083231, guid: 74d1ee517ae9fc543a95445f945eeb1a, type: 3}
   enemyBarContainer: {fileID: 710764740}
   enemyBarScale: {x: 1, y: 1, z: 1}
-  enemyNameTextPrefab: {fileID: 223435870371823565, guid: adc56078e678aa343ac1f57c93d26c7f, type: 3}
 --- !u!1 &1054164265
 GameObject:
   m_ObjectHideFlags: 0
@@ -1409,9 +1408,9 @@ MonoBehaviour:
     prefab: {fileID: 508066840148608474, guid: 1c82c5f8100478647b66f2e075cf60a3, type: 3}
   randomPool:
   - cellType: 101
-    weight: 60
+    weight: 55
   - cellType: 100
-    weight: 15
+    weight: 20
   - cellType: 106
     weight: 15
   - cellType: 105
