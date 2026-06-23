@@ -1621,7 +1621,7 @@ MonoBehaviour:
   burningBackground: {fileID: 181428779}
   extinguishedBackground: {fileID: 1828565980}
   deckViewer: {fileID: 1515610955}
-  healthBarPanel: {fileID: 0}
+  healthBarPanel: {fileID: 1165828532}
   titleText: {fileID: 560040177}
   descriptionText: {fileID: 684770677}
   healTitle: "\u5C0F\u61A9"
