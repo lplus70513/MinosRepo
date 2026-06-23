@@ -21,42 +21,38 @@ MonoBehaviour:
     useCustomMap: 1
     mapRadius: 5
     specialCells:
-    - coord: {x: 0, y: 0}
-      cellType: 2
     - coord: {x: -1, y: 0}
       cellType: 2
     - coord: {x: 0, y: 1}
       cellType: 2
-    - coord: {x: -2, y: -2}
+    - coord: {x: -2, y: 2}
       cellType: 2
-    - coord: {x: 2, y: 2}
+    - coord: {x: 2, y: -2}
       cellType: 2
-    - coord: {x: -4, y: -4}
+    - coord: {x: -4, y: 4}
       cellType: 2
-    - coord: {x: -4, y: -3}
+    - coord: {x: -4, y: 3}
       cellType: 2
-    - coord: {x: -4, y: -2}
+    - coord: {x: -4, y: 2}
       cellType: 2
-    - coord: {x: -4, y: -1}
+    - coord: {x: -4, y: 1}
       cellType: 2
     - coord: {x: 0, y: -3}
       cellType: 2
     - coord: {x: 1, y: -3}
       cellType: 2
-    - coord: {x: 2, y: -3}
+    - coord: {x: 4, y: -4}
       cellType: 2
     - coord: {x: 0, y: 3}
       cellType: 2
     - coord: {x: -1, y: 4}
       cellType: 2
-    - coord: {x: 1, y: 2}
-      cellType: 2
     - coord: {x: 2, y: 1}
       cellType: 2
     enemyDatas:
     - {fileID: 11400000, guid: feef8d76f1327524eb80a12e85f31065, type: 2}
-    - {fileID: 11400000, guid: a8ada6e43e1f04d468b86fb3be57b9d9, type: 2}
     - {fileID: 11400000, guid: 0911c322054b1014a931092b41a05251, type: 2}
+    - {fileID: 11400000, guid: a8ada6e43e1f04d468b86fb3be57b9d9, type: 2}
     enemySpawnCoords:
     - {x: 1, y: 0}
     - {x: -1, y: 1}
