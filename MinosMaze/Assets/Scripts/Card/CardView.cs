@@ -307,7 +307,9 @@ public class CardView : MonoBehaviour
 
         bool inPlayArea = IsMouseInPlayArea();
 
-        if (Card.ManualTargetEffect != null)
+        bool needManualTarget = Card.ManualTargetEffect != null
+            || (Card.OtherEffects != null && Card.OtherEffects.Exists(e => e.TargetMode is ManualTargetTM));
+        if (needManualTarget)
         {
             if (inPlayArea)
             {
