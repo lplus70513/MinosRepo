@@ -1,17 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 public class PerkSystem : Singleton<PerkSystem>
 {
     [SerializeField] private PerksUI perksUI;
 
     private readonly List<Perk> perks = new();
-
-    public IReadOnlyList<Perk> ActivePerks => perks;
-
-    public event Action OnPerksChanged;
 
     void OnEnable()
     {
@@ -38,7 +33,6 @@ public class PerkSystem : Singleton<PerkSystem>
         perks.Add(perk);
         perksUI.AddPerkUI(perk);
         perk.OnAdd();
-        OnPerksChanged?.Invoke();
     }
 
     public void RemovePerk(Perk perk)
@@ -46,7 +40,6 @@ public class PerkSystem : Singleton<PerkSystem>
         perks.Remove(perk);
         perksUI.RemovePerkUI(perk);
         perk.OnRemove();
-        OnPerksChanged?.Invoke();
     }
 
     private IEnumerator AddPerkPerformer(AddPerkGA ga)

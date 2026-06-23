@@ -18,8 +18,6 @@ public class CombatantView : MonoBehaviour
 
     [SerializeField] private StatusEffectsUI statusEffectsUI;
 
-    [SerializeField] protected UIEffectView uiEffectView;
-
     public int HexCoordX { get; set; }
     public int HexCoordZ { get; set; }
 
@@ -45,14 +43,6 @@ public class CombatantView : MonoBehaviour
     private static readonly int EnableOutlineId = Shader.PropertyToID("_EnableOutline");
 
     public static EnemyView HoveredEnemy { get; set; }
-
-    private bool isUIEffectDirty = true;
-
-    protected bool IsUIEffectDirty
-    {
-        get => isUIEffectDirty;
-        set => isUIEffectDirty = value;
-    }
 
     void Awake()
     {
@@ -89,8 +79,6 @@ public class CombatantView : MonoBehaviour
             col.size = new Vector3(2f, 3f, 1f);
             col.center = new Vector3(0f, 1.5f, 0f);
         }
-
-        OnStatusChanged += () => IsUIEffectDirty = true;
     }
 
     void OnDestroy()
@@ -99,56 +87,6 @@ public class CombatantView : MonoBehaviour
         {
             HoveredEnemy = null;
         }
-    }
-
-    void Update()
-    {
-        if (uiEffectView == null || camera3D == null)
-            return;
-
-        if (!Interactions.Instance.PlayerCanHover())
-        {
-            uiEffectView.Hide();
-            return;
-        }
-
-        bool mouseOverMe = false;
-        if (camera3D != null)
-        {
-            Ray ray = camera3D.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit, 100f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Collide))
-            {
-                mouseOverMe = hit.collider != null && hit.collider.gameObject == gameObject;
-            }
-        }
-
-        if (mouseOverMe && HasUIEffectContent())
-        {
-            if (IsUIEffectDirty)
-            {
-                Debug.Log($"[CombatantView] {name} PopulateUIEffect");
-                PopulateUIEffect();
-                IsUIEffectDirty = false;
-            }
-            uiEffectView.Show();
-        }
-        else
-        {
-            uiEffectView.Hide();
-            if (!mouseOverMe)
-                IsUIEffectDirty = true;
-        }
-    }
-
-    protected virtual bool HasUIEffectContent()
-    {
-        return GetStatusEffects().Count > 0;
-    }
-
-    protected virtual void PopulateUIEffect()
-    {
-        if (uiEffectView == null) return;
-        uiEffectView.Populate(GetStatusEffects(), null);
     }
 
     protected void SetupBase(int health, Sprite image)
@@ -439,13 +377,9 @@ public class CombatantView : MonoBehaviour
 
     protected virtual void BillboardUI()
     {
-        if (camera3D == null) return;
-
-        if (statusEffectsUI != null)
-        {
-            Canvas canvas = statusEffectsUI.GetComponentInParent<Canvas>();
-            if (canvas != null)
-                canvas.transform.rotation = camera3D.transform.rotation;
-        }
+        if (camera3D == null || statusEffectsUI == null) return;
+        Canvas canvas = statusEffectsUI.GetComponentInParent<Canvas>();
+        if (canvas != null)
+            canvas.transform.rotation = camera3D.transform.rotation;
     }
 }

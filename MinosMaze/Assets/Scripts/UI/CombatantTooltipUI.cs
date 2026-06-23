@@ -15,6 +15,7 @@ public class CombatantTooltipUI : MonoBehaviour
     [SerializeField] private Sprite chainLightningSprite, rootSprite, stunSprite;
 
     private readonly List<StatusEffectTooltipEntry> entries = new();
+    private bool needSnap;
 
     void Awake()
     {
@@ -74,7 +75,7 @@ public class CombatantTooltipUI : MonoBehaviour
         Debug.Log($"[CombatantTooltipUI] Populate: {combatant.name}, 状态效果 {effects.Count} 个, entryCount={entries.Count}");
     }
 
-    public void UpdatePosition(Vector2 anchorScreenPos)
+    public void UpdatePosition(Vector2 mouseScreenPos)
     {
         var rect = GetComponent<RectTransform>();
         float panelWidth = rect.rect.width;
@@ -85,17 +86,31 @@ public class CombatantTooltipUI : MonoBehaviour
         if (panelHeight <= 1f)
             panelHeight = entries.Count * 120f + Mathf.Max(0, entries.Count - 1) * 4f;
 
-        Vector2 pos = anchorScreenPos;
-        pos.x -= panelWidth * 0.5f;
-        pos.y -= panelHeight + margin;
+        Vector2 pos = mouseScreenPos;
+
+        if (mouseScreenPos.x < Screen.width * 0.5f)
+            pos.x += margin;
+        else
+            pos.x -= panelWidth + margin;
+
+        pos.y -= margin;
 
         pos.x = Mathf.Max(0f, pos.x);
         if (pos.x + panelWidth > Screen.width)
             pos.x = Screen.width - panelWidth;
 
-        pos.y = Mathf.Max(0f, pos.y);
+        float maxY = Screen.height - panelHeight;
+        pos.y = Mathf.Clamp(pos.y, 0f, maxY);
 
-        rect.position = pos;
+        if (needSnap)
+        {
+            rect.position = pos;
+            needSnap = false;
+        }
+        else
+        {
+            rect.position = Vector2.Lerp(rect.position, pos, 1f - Mathf.Exp(-25f * Time.deltaTime));
+        }
     }
 
     private Sprite GetSpriteByType(StatusEffectType type)
@@ -125,6 +140,7 @@ public class CombatantTooltipUI : MonoBehaviour
             gameObject.SetActive(true);
             Canvas.ForceUpdateCanvases();
             LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)transform);
+            needSnap = true;
         }
     }
 

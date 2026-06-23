@@ -5,10 +5,6 @@ public class Perk
 {
     public Sprite Image => data != null ? data.Image : null;
 
-    public string Name => data != null ? data.Name : "";
-
-    public string Description => data != null ? data.Description : "";
-
     private readonly PerkData data;
 
     private readonly PerkCondition condition;
