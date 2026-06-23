@@ -62,7 +62,7 @@ MonoBehaviour:
     <HasAttackRange>k__BackingField: 1
     <AttackRange>k__BackingField: 1
     <ManualTargetEffect>k__BackingField:
-      rid: -2
+      rid: 1965764599686889474
     <OtherEffects>k__BackingField:
     - <TargetMode>k__BackingField:
         rid: 1965764257158791204
@@ -114,3 +114,8 @@ MonoBehaviour:
       data:
         statusEffectType: 4
         stackCount: 3
+    - rid: 1965764599686889474
+      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 6
+        hitCount: 1

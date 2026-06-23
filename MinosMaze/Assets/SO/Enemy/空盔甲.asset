@@ -50,15 +50,15 @@ MonoBehaviour:
     <IsExclusive>k__BackingField: 0
     <MinTurnToUse>k__BackingField: 0
   - <ActionType>k__BackingField: 2
-    <ActionName>k__BackingField: "\u4E0A\u683C\u6321"
-    <BaseDamage>k__BackingField: 0
-    <HitCount>k__BackingField: 1
-    <MoveRange>k__BackingField: 0
-    <StatusEffects>k__BackingField:
-    - <EffectType>k__BackingField: 12
-      <StackCount>k__BackingField: 3
-      <Target>k__BackingField: 2
-      <ReplaceExisting>k__BackingField: 1
+     <ActionName>k__BackingField: "\u4E0A\u62A4\u7532"
+     <BaseDamage>k__BackingField: 0
+     <HitCount>k__BackingField: 1
+     <MoveRange>k__BackingField: 0
+     <StatusEffects>k__BackingField:
+     - <EffectType>k__BackingField: 0
+       <StackCount>k__BackingField: 3
+       <Target>k__BackingField: 2
+       <ReplaceExisting>k__BackingField: 1
     <Weight>k__BackingField: 1
     <Tag>k__BackingField: 
     <CooldownTurns>k__BackingField: 0
