@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7544456266088477283}
   - component: {fileID: 5507478067031176987}
   - component: {fileID: 3691930678226783242}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: floor_energy (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4956,7 +4956,7 @@ GameObject:
   - component: {fileID: 2546670211837180972}
   - component: {fileID: 1451991237616104120}
   - component: {fileID: 8099309815882136481}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: glow_view (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9856,7 +9856,7 @@ GameObject:
   - component: {fileID: 6688725497065334764}
   - component: {fileID: 8726447325098690551}
   - component: {fileID: 5097960380017281736}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: light_wall (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14756,7 +14756,7 @@ GameObject:
   - component: {fileID: 3440257853183520213}
   - component: {fileID: 3440257853183520214}
   - component: {fileID: 3440257853183520215}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: "\u76FE"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14772,9 +14772,9 @@ Transform:
   m_GameObject: {fileID: 3440257853183520208}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.2828772, z: -0, w: 0.9591561}
-  m_LocalPosition: {x: 6.11, y: 0, z: -4.79}
-  m_LocalScale: {x: 0.96566975, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: 6.11, y: -10, z: -4.79}
+  m_LocalScale: {x: 1.4, y: 1.4497709, z: 1.4497709}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4253232525024168269}
   - {fileID: 7458016900677542173}
@@ -19680,7 +19680,7 @@ GameObject:
   - component: {fileID: 3255599887646105838}
   - component: {fileID: 3250551944438465099}
   - component: {fileID: 2950327156875496138}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: glow_floor (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24580,7 +24580,7 @@ GameObject:
   - component: {fileID: 7458016900677542173}
   - component: {fileID: 36108837042526062}
   - component: {fileID: 2584208543615944917}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: floor_circle (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29574,7 +29574,7 @@ GameObject:
   - component: {fileID: 4253232525024168269}
   - component: {fileID: 7345702611288382594}
   - component: {fileID: 2029698002454438717}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: particle_up (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

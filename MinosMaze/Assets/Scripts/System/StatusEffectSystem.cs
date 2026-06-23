@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class StatusEffectSystem : MonoBehaviour
 {
+    [SerializeField] private GameObject armorVFX;
+
+    private static Camera camera3D;
+
     private void OnEnable()
     {
         ActionSystem.AttachPerformer<AddStatusEffectGA>(AddStatusEffectPerformer);
@@ -27,6 +31,11 @@ public class StatusEffectSystem : MonoBehaviour
         foreach (var target in addStatusEffectGA.Targets)
         {
             target.AddStatusEffect(addStatusEffectGA.StatusEffectType, addStatusEffectGA.StackCount);
+
+            if (addStatusEffectGA.StatusEffectType == StatusEffectType.ARMOR)
+            {
+                SpawnArmorVFX(target);
+            }
 
             if (addStatusEffectGA.StatusEffectType == StatusEffectType.ROOT
                 || addStatusEffectGA.StatusEffectType == StatusEffectType.STUN)
@@ -116,6 +125,31 @@ public class StatusEffectSystem : MonoBehaviour
         {
             DealDamageGA chainGA = new(4, 1, new List<CombatantView> { target }, null);
             ActionSystem.Instance.AddReaction(chainGA);
+        }
+    }
+
+    private void SpawnArmorVFX(CombatantView target)
+    {
+        if (armorVFX != null && target != null)
+        {
+            if (camera3D == null)
+            {
+                var camObj = GameObject.FindGameObjectWithTag("3D Camera");
+                if (camObj != null)
+                    camera3D = camObj.GetComponent<Camera>();
+            }
+
+            Vector3 pos = new Vector3(target.transform.position.x, target.transform.position.y + 1, target.transform.position.z);
+            Quaternion rot = camera3D != null ? camera3D.transform.rotation : Quaternion.identity;
+            GameObject vfx = Instantiate(armorVFX, pos, rot);
+
+            vfx.layer = LayerMask.NameToLayer("Combatant");
+            var renderers = vfx.GetComponentsInChildren<Renderer>();
+            foreach (var r in renderers)
+            {
+                r.sortingOrder = 32767;
+                r.material.renderQueue = 5000;
+            }
         }
     }
 }

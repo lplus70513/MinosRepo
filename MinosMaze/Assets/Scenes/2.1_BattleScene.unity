@@ -552,6 +552,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b75259e0d45fc247aa85d5effe332f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  armorVFX: {fileID: 3440257853183520208, guid: 8732950af7e66704b8a78de2156ea42f, type: 3}
 --- !u!1 &270245288
 GameObject:
   m_ObjectHideFlags: 0
