@@ -10,8 +10,24 @@ public class UIEffectEntry : MonoBehaviour
     [SerializeField] private TMP_Text stackCountText;
     [SerializeField] private TMP_Text descText;
 
+    void Awake()
+    {
+        var layoutElement = GetComponent<LayoutElement>();
+        if (layoutElement == null)
+            layoutElement = gameObject.AddComponent<LayoutElement>();
+        layoutElement.preferredWidth = 260f;
+
+        var fitter = GetComponent<ContentSizeFitter>();
+        if (fitter == null)
+            fitter = gameObject.AddComponent<ContentSizeFitter>();
+        fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+    }
+
     public void Set(Sprite iconSprite, string name, int stacks, string description)
     {
+        if (bgImage != null)
+            bgImage.enabled = true;
+
         icon.sprite = iconSprite;
         nameText.text = name;
 
@@ -19,7 +35,7 @@ public class UIEffectEntry : MonoBehaviour
         {
             if (stacks > 0)
             {
-                stackCountText.text = $"x{stacks}";
+                stackCountText.text = stacks.ToString();
                 stackCountText.gameObject.SetActive(true);
             }
             else

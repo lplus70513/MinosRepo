@@ -18,6 +18,8 @@ public class CombatantView : MonoBehaviour
 
     [SerializeField] private StatusEffectsUI statusEffectsUI;
 
+    [SerializeField] protected UIEffectView uiEffectView;
+
     public int HexCoordX { get; set; }
     public int HexCoordZ { get; set; }
 
@@ -101,59 +103,42 @@ public class CombatantView : MonoBehaviour
 
     void Update()
     {
-        if (camera3D == null)
-        {
-            if (!loggedCameraNull) { Debug.LogWarning($"[CombatantView] {name} camera3D 为空，无法检测悬停"); loggedCameraNull = true; }
+        if (uiEffectView == null || camera3D == null)
             return;
-        }
 
         if (!Interactions.Instance.PlayerCanHover())
         {
-            if (currentHovered == this)
-            {
-                UIEffectView.Hide();
-                currentHovered = null;
-            }
+            uiEffectView.Hide();
             return;
         }
 
-        Ray ray = camera3D.ScreenPointToRay(Input.mousePosition);
-        bool mouseOverMe = Physics.Raycast(ray, out RaycastHit hit, 100f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Collide)
-            && hit.collider != null
-            && hit.collider.gameObject == gameObject;
-
-        if (!loggedRaycast && camera3D != null)
+        bool mouseOverMe = false;
+        if (camera3D != null)
         {
-            Debug.Log($"[CombatantView] {name} Update 运行中: mouseOverMe={mouseOverMe}, hasContent={HasUIEffectContent()}, dirty={IsUIEffectDirty}, currentHovered={currentHovered?.name}");
-            loggedRaycast = true;
+            Ray ray = camera3D.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit, 100f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Collide))
+            {
+                mouseOverMe = hit.collider != null && hit.collider.gameObject == gameObject;
+            }
         }
 
         if (mouseOverMe && HasUIEffectContent())
         {
-            if (currentHovered != null && currentHovered != this)
-            {
-                currentHovered.IsUIEffectDirty = true;
-            }
-            currentHovered = this;
-
             if (IsUIEffectDirty)
             {
+                Debug.Log($"[CombatantView] {name} PopulateUIEffect");
                 PopulateUIEffect();
                 IsUIEffectDirty = false;
             }
-            UIEffectView.Show();
+            uiEffectView.Show();
         }
-        else if (currentHovered == this && !mouseOverMe)
+        else
         {
-            UIEffectView.Hide();
-            IsUIEffectDirty = true;
-            currentHovered = null;
+            uiEffectView.Hide();
+            if (!mouseOverMe)
+                IsUIEffectDirty = true;
         }
     }
-
-    private bool loggedCameraNull;
-    private bool loggedRaycast;
-    private static CombatantView currentHovered;
 
     protected virtual bool HasUIEffectContent()
     {
@@ -162,7 +147,8 @@ public class CombatantView : MonoBehaviour
 
     protected virtual void PopulateUIEffect()
     {
-        UIEffectView.Populate(GetStatusEffects(), null);
+        if (uiEffectView == null) return;
+        uiEffectView.Populate(GetStatusEffects(), null);
     }
 
     protected void SetupBase(int health, Sprite image)

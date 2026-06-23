@@ -58,7 +58,8 @@ public class HeroView : CombatantView
 
     protected override void PopulateUIEffect()
     {
+        if (uiEffectView == null) return;
         var perks = PerkSystem.Instance?.ActivePerks;
-        UIEffectView.Populate(GetStatusEffects(), perks);
+        uiEffectView.Populate(GetStatusEffects(), perks);
     }
 }
