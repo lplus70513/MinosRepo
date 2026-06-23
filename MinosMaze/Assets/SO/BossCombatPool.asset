@@ -31,8 +31,6 @@ MonoBehaviour:
       cellType: 2
     enemyDatas:
     - {fileID: 11400000, guid: feef8d76f1327524eb80a12e85f31065, type: 2}
-    - {fileID: 0}
-    - {fileID: 0}
     enemySpawnCoords:
     - {x: 1, y: 0}
     - {x: 2, y: 0}
