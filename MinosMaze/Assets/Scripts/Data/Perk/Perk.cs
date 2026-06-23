@@ -23,19 +23,19 @@ public class Perk
 
     public void OnAdd()
     {
+        SetupPassive();
         if (condition == null)
         {
-            Debug.LogWarning("[Perk] PerkData 为空或 PerkCondition 为空，跳过 OnAdd");
+            Debug.LogWarning("[Perk] PerkData 为空或 PerkCondition 为空，跳过条件订阅");
             return;
         }
         condition.SubscribeCondition(Reaction);
-        SetupPassive();
     }
 
     public void OnRemove()
     {
-        if (condition == null) return;
-        condition.UnsubscribeCondition(Reaction);
+        if (condition != null)
+            condition.UnsubscribeCondition(Reaction);
         RemovePassive();
     }
 
