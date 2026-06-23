@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Image>k__BackingField: {fileID: -1559205702, guid: b5faac27bddf5b440bd406183f276140, type: 3}
   <PerkCondition>k__BackingField:
-    rid: -2
+    rid: 1965764599686889472
   <AutoTargetEffect>k__BackingField:
     rid: -2
   <UseAutoTarget>k__BackingField: 1
@@ -25,3 +25,7 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+    - rid: 1965764599686889472
+      type: {class: OnTurnStartCondition, ns: , asm: Assembly-CSharp}
+      data:
+        reactionTiming: 1

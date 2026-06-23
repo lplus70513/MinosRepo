@@ -53,7 +53,7 @@ MonoBehaviour:
     <AttackRangePattern>k__BackingField:
       rid: -2
   <UpgradeGrade>k__BackingField:
-    <Name>k__BackingField: "\u6218\u795E\u4E4B\u6012"
+    <Name>k__BackingField: "\u6218\u795E\u4E4B\u6012+"
     <Description>k__BackingField: "\u9020\u62105\u70B9\u4F24\u5BB32\u6B21, \u83B7\u5F972\u70B9\u529B\u91CF"
     <Cost>k__BackingField: 1
     <HasAttackRange>k__BackingField: 1
