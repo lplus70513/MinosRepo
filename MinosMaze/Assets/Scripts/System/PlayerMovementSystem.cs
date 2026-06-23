@@ -145,7 +145,7 @@ public class PlayerMovementSystem : Singleton<PlayerMovementSystem>
         HexGrid.ClearAllHighlights();
         highlightsVisible = false;
 
-        int maxMove = enemy.GetMaxMoveRange();
+        int maxMove = GetEnemyCurrentMoveRange(enemy);
         var reachable = HexMove.GetReachableCells(enemy.HexCoordX, enemy.HexCoordZ, maxMove, enemy);
 
         if (maxMove > 0)
@@ -173,6 +173,20 @@ public class PlayerMovementSystem : Singleton<PlayerMovementSystem>
         HexMove.ClearMoveHighlights();
         HexGrid.ClearAllHighlights();
         lastShownEnemy = null;
+    }
+
+    private int GetEnemyCurrentMoveRange(EnemyView enemy)
+    {
+        if (enemy.selectedActions == null || enemy.selectedActions.Count == 0)
+            return 0;
+
+        int maxMove = 0;
+        foreach (var action in enemy.selectedActions)
+        {
+            if (action.ActionType == EnemyActionType.Move && action.MoveRange > maxMove)
+                maxMove = action.MoveRange;
+        }
+        return maxMove;
     }
 
     private bool ShouldShowMoveHighlights()
