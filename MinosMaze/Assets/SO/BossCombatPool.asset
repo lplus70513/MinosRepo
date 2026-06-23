@@ -12,4 +12,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4eb6390901e68e488fdb12c6e64742f, type: 3}
   m_Name: BossCombatPool
   m_EditorClassIdentifier: 
-  configs: []
+  configs:
+  - configName: "\u65C5\u4EBA\u76D4\u7532\u5F02\u9E1F"
+    weight: 100
+    minFloor: 0
+    maxFloor: 0
+    difficultyLevel: 0
+    useCustomMap: 1
+    mapRadius: 5
+    specialCells:
+    - coord: {x: 0, y: 0}
+      cellType: 2
+    - coord: {x: 0, y: 0}
+      cellType: 2
+    - coord: {x: 0, y: 0}
+      cellType: 2
+    - coord: {x: 0, y: 0}
+      cellType: 2
+    enemyDatas:
+    - {fileID: 11400000, guid: feef8d76f1327524eb80a12e85f31065, type: 2}
+    - {fileID: 11400000, guid: a8ada6e43e1f04d468b86fb3be57b9d9, type: 2}
+    - {fileID: 11400000, guid: 0911c322054b1014a931092b41a05251, type: 2}
+    enemySpawnCoords:
+    - {x: 1, y: 0}
+    - {x: 2, y: 0}
+    - {x: 3, y: 0}
+    heroSpawnCoord: {x: 4, y: 0}
+    rewardConfig: {fileID: 11400000, guid: d9898f0919b265243b6544774bee7dda, type: 2}
