@@ -13,13 +13,9 @@ public class GameWinPanelController : MonoBehaviour
             returnButton.onClick.AddListener(OnReturnMainMenu);
     }
 
-    void Start()
-    {
-        gameObject.SetActive(false);
-    }
-
     private void OnReturnMainMenu()
     {
+        Debug.Log("[GameWinPanel] 返回主界面");
         GameManager.Instance.ReturnToMainMenu();
     }
 }

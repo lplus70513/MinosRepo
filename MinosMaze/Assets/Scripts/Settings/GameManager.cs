@@ -125,6 +125,7 @@ public class GameManager : MonoBehaviour
             if (panelObj != null)
             {
                 SettingsPanel = panelObj;
+                Debug.Log("�Զ��ҵ��� SettingsPanel��");
             }
         }
     }
@@ -216,6 +217,7 @@ public class GameManager : MonoBehaviour
                 if (obj.name == "GameWinPanel")
                 {
                     gameWinPanel = obj;
+                    Debug.Log("[GameManager] 自动找到了 GameWinPanel");
                     break;
                 }
             }
@@ -228,6 +230,7 @@ public class GameManager : MonoBehaviour
                 if (obj.name == "GameLosePanel")
                 {
                     gameLosePanel = obj;
+                    Debug.Log("[GameManager] 自动找到了 GameLosePanel");
                     break;
                 }
             }
@@ -470,7 +473,7 @@ public class GameManager : MonoBehaviour
     // 游戏胜利：中心格战斗完成后调用
     public void ShowGameWin()
     {
-        Debug.Log($"[GameManager] 游戏胜利！");
+        Debug.Log("[GameManager] 游戏胜利！");
         FindGamePanelsIfNull();
         if (gameWinPanel == null)
         {

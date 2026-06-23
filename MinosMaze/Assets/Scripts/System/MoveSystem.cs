@@ -60,18 +60,21 @@ public class MoveSystem : Singleton<MoveSystem>
         int dist = HexGrid.HexDistance(puller.HexCoordX, puller.HexCoordZ, target.HexCoordX, target.HexCoordZ);
         if (dist <= 1)
         {
+            Debug.Log($"[MoveSystem] {target.name} 已在身前，无需拖拽");
             yield break;
         }
 
         (int x, int z)? pullCell = FindPullCell(puller.HexCoordX, puller.HexCoordZ, target.HexCoordX, target.HexCoordZ);
         if (pullCell == null)
         {
+            Debug.Log($"[MoveSystem] {target.name} 拖拽目标格全被占据，效果空过");
             yield break;
         }
 
         var (tx, tz) = pullCell.Value;
         MoveGA moveGA = new(target, tx, tz);
         ActionSystem.Instance.AddReaction(moveGA);
+        Debug.Log($"[MoveSystem] 将 {target.name} 拖拽至 ({tx},{tz})");
         yield return null;
     }
 
@@ -83,6 +86,7 @@ public class MoveSystem : Singleton<MoveSystem>
         var enemies = EnemySystem.Instance?.Enemies;
         if (enemies == null || enemies.Count == 0)
         {
+            Debug.Log("[MoveSystem] 无敌人，无法决定后退方向");
             yield break;
         }
 
@@ -101,6 +105,7 @@ public class MoveSystem : Singleton<MoveSystem>
 
         if (nearest == null)
         {
+            Debug.Log("[MoveSystem] 无有效敌人，后退效果空过");
             yield break;
         }
 
@@ -120,6 +125,7 @@ public class MoveSystem : Singleton<MoveSystem>
                 {
                     MoveGA moveGA = new(mover, nx, nz);
                     ActionSystem.Instance.AddReaction(moveGA);
+                    Debug.Log($"[MoveSystem] 后退至 ({nx},{nz})");
                     yield break;
                 }
             }
@@ -153,12 +159,14 @@ public class MoveSystem : Singleton<MoveSystem>
 
         if (bestCell == null)
         {
+            Debug.Log("[MoveSystem] 后退无可用格子，效果空过");
             yield break;
         }
 
         var (bx, bz) = bestCell.Value;
         MoveGA moveGA2 = new(mover, bx, bz);
         ActionSystem.Instance.AddReaction(moveGA2);
+        Debug.Log($"[MoveSystem] 后退至 ({bx},{bz})");
         yield return null;
     }
 
@@ -294,9 +302,11 @@ public class MoveSystem : Singleton<MoveSystem>
                 {
                     MoveGA pushGA = new(enemyAt, pushCell.Value.x, pushCell.Value.z);
                     ActionSystem.Instance.AddReaction(pushGA);
+                    Debug.Log($"[MoveSystem] 冲锋击退 {enemyAt.name} 至 ({pushCell.Value.x},{pushCell.Value.z})");
                 }
                 else
                 {
+                    Debug.Log($"[MoveSystem] {enemyAt.name} 背后无可用格子，击退失败");
                 }
 
                 yield break;

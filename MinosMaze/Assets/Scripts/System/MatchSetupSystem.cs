@@ -32,7 +32,7 @@ public class MatchSetupSystem : MonoBehaviour
 
     private IEnumerator DelayedSetup()
     {
-        Debug.Log($"[MatchSetupSystem] 初始化开始 {gameObject.scene.name}");
+        Debug.Log($"[MatchSetupSystem] === 初始化开始 === scene={gameObject.scene.name}");
 
         _ = MoveSystem.Instance;
         _ = PlayerMovementSystem.Instance;
@@ -42,17 +42,28 @@ public class MatchSetupSystem : MonoBehaviour
         _ = RewardSystem.Instance;
 
         var gm = GameManager.Instance;
+        Debug.Log($"[MatchSetupSystem] GameManager={(gm != null ? "OK" : "NULL")}, PendingEncounter={(gm?.PendingEncounter != null ? $"cellType={gm.PendingEncounter.cellType} floor={gm.PendingEncounter.floorLevel}" : "NULL")}");
 
         bool isBoss = gm != null && gm.IsBossEncounter;
+        if (gm != null) gm.IsBossEncounter = false;
         CombatPoolSO activePool = isBoss ? bossCombatPool : combatPool;
+        Debug.Log($"[MatchSetupSystem] isBoss={isBoss}, activePool={(activePool != null ? activePool.name : "NULL (将使用 fallback)")}");
 
         CombatConfig combat = PickWeightedRandom(gm?.PendingEncounter, activePool);
+        Debug.Log($"[MatchSetupSystem] combatPool={(combatPool != null ? combatPool.name : "NULL")}, combat={(combat != null ? combat.configName : "NULL (使用 fallback)")}");
 
         if (combat != null && combat.useCustomMap)
         {
             var hexGrid = FindObjectOfType<HexGrid>();
             if (hexGrid != null)
+            {
                 hexGrid.RebuildFromConfig(combat.mapRadius, combat.specialCells);
+                Debug.Log($"[MatchSetupSystem] 已根据 CombatConfig 重建地图: radius={combat.mapRadius}, specialCells={combat.specialCells?.Count ?? 0}");
+            }
+            else
+            {
+                Debug.LogWarning("[MatchSetupSystem] 场景中未找到 HexGrid，无法重建地图");
+            }
         }
 
         List<EnemyData> enemies;
@@ -74,6 +85,7 @@ public class MatchSetupSystem : MonoBehaviour
             heroCoord = heroSpawnCoord;
             reward = rewardConfig;
         }
+        Debug.Log($"[MatchSetupSystem] enemies count={enemies?.Count ?? 0}, spawns count={spawns?.Count ?? 0}, heroCoord={heroCoord}");
 
         if (enemies == null || enemies.Count == 0)
         {
@@ -84,12 +96,15 @@ public class MatchSetupSystem : MonoBehaviour
         if (reward != null)
             RewardSystem.Instance.SetConfig(reward);
 
+        Debug.Log($"[MatchSetupSystem] 调用 HeroSystem.Setup, heroData={(heroData != null ? heroData.name : "NULL")}, coord={heroCoord}");
         HeroSystem.Instance.Setup(heroData, heroCoord);
+        Debug.Log($"[MatchSetupSystem] HeroSystem.Setup 完成, HeroView={(HeroSystem.Instance.HeroView != null ? "存在" : "NULL")}");
 
         var camCtrl = FindObjectOfType<CameraController>();
         if (camCtrl != null && HeroSystem.Instance.HeroView != null)
         {
             camCtrl.CenterOn(HeroSystem.Instance.HeroView.transform.position);
+            Debug.Log($"[MatchSetupSystem] 摄像机已居中到英雄位置 {HeroSystem.Instance.HeroView.transform.position}");
         }
 
         if (gm != null && gm.WorldMapState != null && gm.WorldMapState.maxHealth > 0)
@@ -97,7 +112,9 @@ public class MatchSetupSystem : MonoBehaviour
             HeroSystem.Instance.HeroView.SetMaxHealth(gm.WorldMapState.maxHealth);
             HeroSystem.Instance.HeroView.SetCurrentHealth(gm.WorldMapState.currentHealth);
         }
+        Debug.Log($"[MatchSetupSystem] 调用 EnemySystem.Setup, enemies count={enemies?.Count ?? 0}");
         EnemySystem.Instance.Setup(enemies, spawns);
+        Debug.Log($"[MatchSetupSystem] EnemySystem.Setup 完成, Enemies={(EnemySystem.Instance.Enemies != null ? EnemySystem.Instance.Enemies.Count : 0)}");
         if (healthBarPanel != null)
             healthBarPanel.SetupBattle(HeroSystem.Instance.HeroView, EnemySystem.Instance.Enemies);
         List<DeckCardEntry> deck;
@@ -111,20 +128,27 @@ public class MatchSetupSystem : MonoBehaviour
         CardSystem.Instance.SetUp(deck);
         if (perkData != null)
             PerkSystem.Instance.AddPerk(new Perk(perkData));
+        else
+            Debug.LogWarning("[MatchSetupSystem] perkData 未配置或引用丢失，跳过初始 Perk 添加");
+        Debug.Log($"[MatchSetupSystem] 场景初始化完成, 等待淡入结束再抽牌");
 
         var sts = SceneTransitionSystem.Instance;
         if (sts != null)
             yield return new WaitUntil(() => !sts.IsTransitioning);
 
+        Debug.Log($"[MatchSetupSystem] === 计算首轮敌人意图并抽牌 === scene={gameObject.scene.name}");
         EnemySystem.Instance.ComputeAndStoreNextTurnIntents();
         foreach (var enemy in EnemySystem.Instance.Enemies)
             enemy.ShowIntents();
 
+        Debug.Log($"[MatchSetupSystem] === 抽牌 === scene={gameObject.scene.name}");
         DrawCardsGA drawCardsGA = new(5);
         ActionSystem.Instance.Perform(drawCardsGA);
+        Debug.Log($"[MatchSetupSystem] DrawCardsGA 已提交, ActionSystem.IsPerforming={ActionSystem.Instance.IsPerforming}");
+
         _ = BlessingSystem.Instance;
         yield return BlessingSystem.Instance.ApplyBattleStartBlessingsCoroutine();
-        Debug.Log($"[MatchSetupSystem] 初始化结束 {gameObject.scene.name}");
+        Debug.Log($"[MatchSetupSystem] === Start 结束 ===");
     }
 
     private CombatConfig PickWeightedRandom(EncounterConfig pending, CombatPoolSO pool)

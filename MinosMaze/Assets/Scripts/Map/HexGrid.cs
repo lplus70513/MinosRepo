@@ -290,6 +290,7 @@ public class HexGrid : MonoBehaviour
         }
 
         CreateHexagonMap();
+        Debug.Log($"[HexGrid] RebuildFromConfig 完成: radius={mapRadius}, specialCells={specialCells?.Count ?? 0}");
     }
 
     // 供 HexMove 遍历所有六角格的外部访问器

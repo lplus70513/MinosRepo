@@ -62,6 +62,7 @@ public class StatusEffectSystem : MonoBehaviour
             {
                 int doubled = currentStacks * 2;
                 target.SetStatusEffectStacks(doubleStatusGA.StatusEffectType, doubled);
+                Debug.Log($"[StatusEffectSystem] {target.name} 的 {doubleStatusGA.StatusEffectType} 翻倍: {currentStacks} → {doubled}");
             }
             yield return null;
         }
@@ -73,6 +74,7 @@ public class StatusEffectSystem : MonoBehaviour
         if (hero != null)
         {
             hero.ThornsDamage = ga.DamageAmount;
+            Debug.Log($"[StatusEffectSystem] 荆棘护盾激活，反伤 {ga.DamageAmount} 点");
         }
         yield return null;
     }
@@ -87,6 +89,7 @@ public class StatusEffectSystem : MonoBehaviour
 
         DealDamageGA thornsGA = new(hero.ThornsDamage, 1, new List<CombatantView> { attacker }, hero);
         ActionSystem.Instance.AddReaction(thornsGA);
+        Debug.Log($"[StatusEffectSystem] 荆棘反伤 {hero.ThornsDamage} 点给 {attacker.name}");
     }
 
     private void OnDealDamagePost(DealDamageGA dealDamageGA)

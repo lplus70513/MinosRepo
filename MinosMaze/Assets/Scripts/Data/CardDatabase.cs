@@ -40,6 +40,7 @@ public class CardDatabase : ScriptableObject
                 allCards.Add(card);
         }
         UnityEditor.EditorUtility.SetDirty(this);
+        Debug.Log($"[CardDatabase] 已自动填充 {allCards.Count} 张卡牌");
     }
 #endif
 }

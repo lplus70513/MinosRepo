@@ -17,6 +17,7 @@ public class EnemySystem : Singleton<EnemySystem>
 
     void OnEnable()
     {
+        Debug.Log($"[EnemySystem] OnEnable — 注册 AttachPerformer/SubscribeReaction, scene={gameObject.scene.name}");
         ActionSystem.AttachPerformer<EnemyTurnGA>(EnemyTurnPerformer);
         ActionSystem.AttachPerformer<AttackHeroGA>(AttackHeroPerformer);
         ActionSystem.AttachPerformer<KillEnemyGA>(KillEnemyPerformer);
@@ -27,6 +28,7 @@ public class EnemySystem : Singleton<EnemySystem>
 
     void OnDisable()
     {
+        Debug.Log($"[EnemySystem] OnDisable — 注销 AttachPerformer/SubscribeReaction, scene={gameObject.scene.name}");
         ActionSystem.DetachPerformer<EnemyTurnGA>();
         ActionSystem.DetachPerformer<AttackHeroGA>();
         ActionSystem.DetachPerformer<KillEnemyGA>();
@@ -333,6 +335,7 @@ public class EnemySystem : Singleton<EnemySystem>
             {
                 DealDamageGA bleedGA = new(bleedStacks, 1, new List<CombatantView> { combatant }, null);
                 ActionSystem.Instance.AddReaction(bleedGA);
+                Debug.Log($"[EnemySystem] 回合结束 {combatant.name} 出血 {bleedStacks} 点伤害");
             }
         }
 
@@ -355,6 +358,7 @@ public class EnemySystem : Singleton<EnemySystem>
 
     public void ComputeAndStoreNextTurnIntents()
     {
+        Debug.Log($"[EnemySystem] ComputeAndStoreNextTurnIntents, 敌人数量={enemyBoardView.EnemyViews.Count}");
         HeroView heroView = HeroSystem.Instance?.HeroView;
         foreach (var enemy in enemyBoardView.EnemyViews)
         {
@@ -363,6 +367,8 @@ public class EnemySystem : Singleton<EnemySystem>
             enemy.DecrementCooldowns();
             var actions = SelectActions(enemy);
             enemy.selectedActions = actions;
+
+            Debug.Log($"[EnemySystem] {enemy.name} 选中 {actions.Count} 个动作: {string.Join(", ", actions.ConvertAll(a => a.ActionType.ToString()))}");
 
             enemy.currentIntents = actions.ConvertAll(a => new EnemyIntentData
             {

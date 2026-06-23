@@ -69,6 +69,8 @@ public class CardSystem : Singleton<CardSystem>
             return;
         }
         subscriptionsActive = true;
+        Debug.Log("[CardSystem] OnEnable — 注册所有 Performer 和 SubscribeReaction");
+
         ActionSystem.AttachPerformer<DrawCardsGA>(DrawCardsPerformer);
         ActionSystem.AttachPerformer<DiscardAllCardsGA>(DiscardAllCardsPerformer);
         ActionSystem.AttachPerformer<PlayCardGA>(PlayCardPerformer);
@@ -86,6 +88,8 @@ public class CardSystem : Singleton<CardSystem>
     {
         if (!subscriptionsActive) return;
         subscriptionsActive = false;
+        Debug.Log("[CardSystem] OnDisable — 解除所有 Performer 和 SubscribeReaction");
+
         ActionSystem.DetachPerformer<DrawCardsGA>();
         ActionSystem.DetachPerformer<DiscardAllCardsGA>();
         ActionSystem.DetachPerformer<PlayCardGA>();
@@ -117,7 +121,8 @@ public class CardSystem : Singleton<CardSystem>
             hand.Add(card);
             handView.AddCard(card, drawPilePoint.position, drawPilePoint.rotation);
         }
-        // 固有牌已直接加入手牌
+        if (innateCards.Count > 0)
+            Debug.Log($"[CardSystem] 固有牌 {innateCards.Count} 张直接加入手牌");
     }
 
     private IEnumerator DrawCardsPerformer(DrawCardsGA drawCardsGA)
@@ -229,6 +234,7 @@ public class CardSystem : Singleton<CardSystem>
     private IEnumerator BonusDrawPerformer(BonusDrawGA ga)
     {
         bonusDrawNextTurn += ga.Amount;
+        Debug.Log($"[CardSystem] 下回合额外抽牌 +{ga.Amount}，累计: {bonusDrawNextTurn}");
         yield return null;
     }
 
@@ -242,6 +248,7 @@ public class CardSystem : Singleton<CardSystem>
         Card card = new(ga.CardData);
         hand.Add(card);
         CardView cardView = handView.AddCard(card, drawPilePoint.position, drawPilePoint.rotation);
+        Debug.Log($"[CardSystem] 将 {card.Name} 加入手牌");
         yield return null;
     }
 
@@ -255,6 +262,7 @@ public class CardSystem : Singleton<CardSystem>
         hand.Remove(ga.Card);
         // 视觉移除（动画 + Destroy）已由 CardSelectOverlay 在确认时处理
         drawPile.Add(ga.Card);
+        Debug.Log($"[CardSystem] 将 {ga.Card.Name} 放回抽牌堆");
         yield return null;
     }
 
@@ -275,6 +283,8 @@ public class CardSystem : Singleton<CardSystem>
         cardSelectOverlay.OnConfirmed += onConfirmedHandler;
         cardSelectOverlay.OnCancelled += onCancelledHandler;
         cardSelectOverlay.StartSelection(drawPilePoint, handView);
+
+        Debug.Log($"[CardSystem] 等待玩家从手牌中选择一张牌放回抽牌堆 (共 {hand.Count} 张)");
 
         while (!done && pendingSelectGA == ga)
             yield return null;
@@ -299,12 +309,14 @@ public class CardSystem : Singleton<CardSystem>
         if (pendingSelectGA == null) return;
         if (!hand.Contains(cardView.Card)) return;
 
+        Debug.Log($"[CardSystem] 玩家点击了 {cardView.Card.Name}");
         cardSelectOverlay.OnCardLeftClicked(cardView);
     }
 
     private IEnumerator FreePlayPerformer(FreePlayGA ga)
     {
         freePlayRemaining += ga.Amount;
+        Debug.Log($"[CardSystem] 免费出牌次数 +{ga.Amount}，剩余: {freePlayRemaining}");
         handView?.RefreshAllCostDisplays();
         yield return null;
     }
@@ -396,9 +408,11 @@ public class CardSystem : Singleton<CardSystem>
                     : new(card, isFreePlay: true);
                 ActionSystem.Instance.AddReaction(playGA);
                 played++;
+                Debug.Log($"[CardSystem] 随机自动打出: {card.Name}");
                 yield return null;
             }
         }
+        Debug.Log($"[CardSystem] 随机自动打出完成，共 {played} 张");
     }
 
     // Reactions
@@ -412,6 +426,7 @@ public class CardSystem : Singleton<CardSystem>
     private void EnemyTurnPostReaction(EnemyTurnGA enemyTurnGA)
     {
         int drawAmount = 5 + bonusDrawNextTurn;
+        Debug.Log($"[CardSystem] EnemyTurnPostReaction 触发 — bonusDraw={bonusDrawNextTurn}, 将抽 {drawAmount} 张");
         bonusDrawNextTurn = 0;
         DrawCardsGA drawCardsGA = new(drawAmount);
         ActionSystem.Instance.AddReaction(drawCardsGA);
@@ -502,6 +517,7 @@ public class CardSystem : Singleton<CardSystem>
     private IEnumerator ExhaustCardSequence(CardView cardView)
     {
         exhaustPile.Add(cardView.Card);
+        Debug.Log($"[CardSystem] {cardView.Card.Name} 被消耗");
 
         if (cardView == null || cardView.gameObject == null)
             yield break;

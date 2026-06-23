@@ -116,6 +116,7 @@ public class DeckViewer : MonoBehaviour
             if (btn != null)
             {
                 btn.onClick.AddListener(CloseViewer);
+                Debug.Log("[DeckViewer] 关闭按钮已绑定 (Canvas Button)");
             }
             else
             {
@@ -124,10 +125,12 @@ public class DeckViewer : MonoBehaviour
                 {
                     BoxCollider boxCol = closeButton.AddComponent<BoxCollider>();
                     boxCol.size = new Vector3(2f, 1f, 1f);
+                    Debug.Log("[DeckViewer] 关闭按钮自动添加了 BoxCollider");
                 }
                 Clickable3D clickable = closeButton.GetComponent<Clickable3D>();
                 if (clickable == null) clickable = closeButton.AddComponent<Clickable3D>();
                 clickable.onClick.AddListener(CloseViewer);
+                Debug.Log("[DeckViewer] 关闭按钮已绑定 (3D Clickable3D)");
             }
         }
     }
@@ -155,6 +158,8 @@ public class DeckViewer : MonoBehaviour
             Debug.LogError("[DeckViewer] CardSystem.Instance 为 null。");
             return;
         }
+
+        Debug.Log($"[DeckViewer] 打开检视面板，牌堆类型: {type}");
 
         previousTimeScale = Time.timeScale;
         Time.timeScale = 0f;
@@ -236,6 +241,7 @@ public class DeckViewer : MonoBehaviour
         }
 
         List<Card> snapshot = GetSnapshot(type);
+        Debug.Log($"[DeckViewer] 快照获取到 {snapshot.Count} 张卡牌");
 
         if (snapshot.Count == 0)
         {
@@ -301,6 +307,7 @@ public class DeckViewer : MonoBehaviour
         if (cardContainerSortingGroup != null)
         {
             cardContainerSortingGroup.sortingOrder = cardSortingOrder;
+            Debug.Log($"[DeckViewer] cardContainer SortingGroup => {cardSortingOrder}");
         }   
 
         CardView[] allCardViews = FindObjectsByType<CardView>(FindObjectsInactive.Include, FindObjectsSortMode.None);
@@ -318,6 +325,7 @@ public class DeckViewer : MonoBehaviour
             }
         }
 
+        Debug.Log($"[DeckViewer] 已调整 {handSortingOrderBackup.Count} 张手牌 SortingGroup => {handCardSortingOrder}");
     }
 
     private void RestoreSortingGroups()
@@ -360,6 +368,7 @@ public class DeckViewer : MonoBehaviour
             overlayObject.transform.localScale = new Vector3(camWidth, camHeight, 1f);
         }
 
+        Debug.Log("[DeckViewer] 全屏遮罩已创建");
     }
 
     private void DestroyOverlay()

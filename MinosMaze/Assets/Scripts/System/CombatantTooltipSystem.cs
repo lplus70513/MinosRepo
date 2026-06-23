@@ -17,6 +17,7 @@ public class CombatantTooltipSystem : Singleton<CombatantTooltipSystem>
         {
             tooltipInstance = Instantiate(tooltipPrefab, transform);
             tooltipInstance.gameObject.SetActive(false);
+            Debug.Log($"[CombatantTooltipSystem] 已实例化 tooltip: {tooltipPrefab.name}");
         }
         else
         {
@@ -28,7 +29,10 @@ public class CombatantTooltipSystem : Singleton<CombatantTooltipSystem>
     {
         var camObj = GameObject.FindGameObjectWithTag("3D Camera");
         if (camObj != null)
+        {
             camera3D = camObj.GetComponent<Camera>();
+            Debug.Log("[CombatantTooltipSystem] 已找到 3D Camera");
+        }
         else
         {
             Debug.LogError("[CombatantTooltipSystem] 未找到标记为 '3D Camera' 的对象！");
