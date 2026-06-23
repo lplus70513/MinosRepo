@@ -2,14 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public class StatusEffectVFXEntry
+{
+    public StatusEffectType type;
+    public GameObject vfx;
+}
+
 public class StatusEffectSystem : MonoBehaviour
 {
-    [SerializeField] private GameObject armorVFX;
+    [SerializeField] private List<StatusEffectVFXEntry> statusEffectVFXList = new();
 
     private static Camera camera3D;
+    private Dictionary<StatusEffectType, GameObject> vfxLookup;
 
     private void OnEnable()
     {
+        BuildVFXLookup();
         ActionSystem.AttachPerformer<AddStatusEffectGA>(AddStatusEffectPerformer);
         ActionSystem.AttachPerformer<DoubleStatusGA>(DoubleStatusPerformer);
         ActionSystem.AttachPerformer<ApplySpikedShieldGA>(ApplySpikedShieldPerformer);
@@ -32,10 +41,7 @@ public class StatusEffectSystem : MonoBehaviour
         {
             target.AddStatusEffect(addStatusEffectGA.StatusEffectType, addStatusEffectGA.StackCount);
 
-            if (addStatusEffectGA.StatusEffectType == StatusEffectType.ARMOR)
-            {
-                SpawnArmorVFX(target);
-            }
+            SpawnStatusEffectVFX(target, addStatusEffectGA.StatusEffectType);
 
             if (addStatusEffectGA.StatusEffectType == StatusEffectType.ROOT
                 || addStatusEffectGA.StatusEffectType == StatusEffectType.STUN)
@@ -128,28 +134,38 @@ public class StatusEffectSystem : MonoBehaviour
         }
     }
 
-    private void SpawnArmorVFX(CombatantView target)
+    private void BuildVFXLookup()
     {
-        if (armorVFX != null && target != null)
+        vfxLookup = new Dictionary<StatusEffectType, GameObject>();
+        foreach (var entry in statusEffectVFXList)
         {
-            if (camera3D == null)
-            {
-                var camObj = GameObject.FindGameObjectWithTag("3D Camera");
-                if (camObj != null)
-                    camera3D = camObj.GetComponent<Camera>();
-            }
+            if (entry.vfx != null && !vfxLookup.ContainsKey(entry.type))
+                vfxLookup[entry.type] = entry.vfx;
+        }
+    }
 
-            Vector3 pos = new Vector3(target.transform.position.x, target.transform.position.y + 1, target.transform.position.z);
-            Quaternion rot = camera3D != null ? camera3D.transform.rotation : Quaternion.identity;
-            GameObject vfx = Instantiate(armorVFX, pos, rot);
+    private void SpawnStatusEffectVFX(CombatantView target, StatusEffectType type)
+    {
+        if (target == null) return;
+        if (vfxLookup == null || !vfxLookup.TryGetValue(type, out var vfxPrefab) || vfxPrefab == null) return;
 
-            vfx.layer = LayerMask.NameToLayer("Combatant");
-            var renderers = vfx.GetComponentsInChildren<Renderer>();
-            foreach (var r in renderers)
-            {
-                r.sortingOrder = 32767;
-                r.material.renderQueue = 5000;
-            }
+        if (camera3D == null)
+        {
+            var camObj = GameObject.FindGameObjectWithTag("3D Camera");
+            if (camObj != null)
+                camera3D = camObj.GetComponent<Camera>();
+        }
+
+        Vector3 pos = new Vector3(target.transform.position.x, target.transform.position.y + 1, target.transform.position.z);
+        Quaternion rot = camera3D != null ? camera3D.transform.rotation : Quaternion.identity;
+        GameObject vfx = Instantiate(vfxPrefab, pos, rot);
+
+        vfx.layer = LayerMask.NameToLayer("Combatant");
+        var renderers = vfx.GetComponentsInChildren<Renderer>();
+        foreach (var r in renderers)
+        {
+            r.sortingOrder = 32767;
+            r.material.renderQueue = 5000;
         }
     }
 }
