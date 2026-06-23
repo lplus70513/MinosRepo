@@ -42,7 +42,6 @@ public class CostSystem : Singleton<CostSystem>
         if (CardSystem.Instance.FreePlayRemaining > 0)
         {
             CardSystem.Instance.ConsumeFreePlay();
-            Debug.Log($"[CostSystem] 免费出牌，跳过消耗 {action.Amount} 点行动力");
             yield return null;
         }
         else
@@ -66,7 +65,6 @@ public class CostSystem : Singleton<CostSystem>
         }
 
         currentCost += bonusCostNextTurn;
-        Debug.Log($"[CostSystem] 下回合额外行动力 +{bonusCostNextTurn}");
         bonusCostNextTurn = 0;
 
         if (currentCost < 0) currentCost = 0;
@@ -78,14 +76,12 @@ public class CostSystem : Singleton<CostSystem>
     {
         currentCost += action.Amount;
         costUI.UpdateCostText(currentCost);
-        Debug.Log($"[CostSystem] 获得行动力 +{action.Amount}，当前: {currentCost}");
         yield return null;
     }
 
     private IEnumerator BonusCostPerformer(BonusCostGA ga)
     {
         bonusCostNextTurn += ga.Amount;
-        Debug.Log($"[CostSystem] 下回合额外行动力 +{ga.Amount}，累计: {bonusCostNextTurn}");
         yield return null;
     }
 }

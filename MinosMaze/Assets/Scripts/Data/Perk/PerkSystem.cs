@@ -51,7 +51,6 @@ public class PerkSystem : Singleton<PerkSystem>
         }
         Perk perk = new(ga.PerkData);
         AddPerk(perk);
-        Debug.Log($"[PerkSystem] 添加 Perk: {ga.PerkData.name}");
         yield return null;
     }
 

@@ -342,7 +342,6 @@ public class CombatantView : MonoBehaviour
             if (armorStacks > 0)
             {
                 RemoveStatusEffect(StatusEffectType.ARMOR, armorStacks);
-                Debug.Log($"[CombatantView] {name} 回合结束清空护甲 {armorStacks} 层");
             }
         }
     }

@@ -15,7 +15,6 @@ public class LosePanelController : MonoBehaviour
 
     private void OnReturn()
     {
-        Debug.Log("[LosePanel] 返回主菜单");
         GameManager.Instance.ReturnToMainMenu();
     }
 }

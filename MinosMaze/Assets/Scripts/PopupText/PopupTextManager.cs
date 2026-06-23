@@ -34,16 +34,8 @@ namespace UI.PopupText
 
         private bool ValidateSetup()
         {
-            if (popupTextPrefab == null)
-            {
-                Debug.LogWarning("[PopupTextManager] popupTextPrefab 未赋值");
-                return false;
-            }
-            if (popupTextSetting == null)
-            {
-                Debug.LogWarning("[PopupTextManager] popupTextSetting 未赋值");
-                return false;
-            }
+            if (popupTextPrefab == null) return false;
+            if (popupTextSetting == null) return false;
             return true;
         }
 
@@ -72,11 +64,7 @@ namespace UI.PopupText
                 _ => null
             };
 
-            if (textAsset == null)
-            {
-                Debug.LogWarning($"[PopupTextManager] 未找到 {textType} 对应的资源");
-                return;
-            }
+            if (textAsset == null) return;
 
             int toRight = hitVelocity == default ?
                 (Random.Range(0, 1f) > 0.5f ? 1 : -1) :
@@ -99,11 +87,7 @@ namespace UI.PopupText
             if (!ValidateSetup()) return;
 
             var textAsset = popupTextSetting.commonTextAsset;
-            if (textAsset == null)
-            {
-                Debug.LogWarning("[PopupTextManager] commonTextAsset 未赋值");
-                return;
-            }
+            if (textAsset == null) return;
 
             var textData = new PopupTextData(actorTransform.position + Vector3.up * 5f, content, textAsset, toRight: 0);
             var text = pool.Count > 0 ? pool.Dequeue() : CreatePooled();

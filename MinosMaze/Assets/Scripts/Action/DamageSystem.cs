@@ -53,15 +53,10 @@ public class DamageSystem : MonoBehaviour
         foreach (var target in ga.Targets)
         {
             int armorStacks = target.GetStatusEffectStacks(StatusEffectType.ARMOR);
-            if (armorStacks <= 0)
-            {
-                Debug.Log($"[DamageSystem] {target.name} 无护甲，跳过护甲伤害");
-                continue;
-            }
+            if (armorStacks <= 0) continue;
             int modifiedDamage = CalculateModifiedDamage(armorStacks, ga.Caster, target);
             DealDamageGA innerGA = new(modifiedDamage, 1, new List<CombatantView> { target }, ga.Caster);
             ActionSystem.Instance.AddReaction(innerGA);
-            Debug.Log($"[DamageSystem] {target.name} 护甲 {armorStacks} → 伤害 {modifiedDamage}");
             yield return null;
         }
     }

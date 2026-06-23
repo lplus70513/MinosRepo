@@ -126,8 +126,6 @@ public class WinPanelController : MonoBehaviour
 
     private void OnClaim()
     {
-        Debug.Log("[WinPanel] 退出战斗");
-        Interactions.Instance.IsShowingReward = false;
         var hero = HeroSystem.Instance?.HeroView;
         if (hero != null)
             GameManager.Instance.SaveBattleResult(hero.CurrentHealth, hero.MaxHealth);

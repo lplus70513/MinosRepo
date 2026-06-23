@@ -71,8 +71,6 @@ public class CombatantTooltipUI : MonoBehaviour
 
         Canvas.ForceUpdateCanvases();
         LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
-
-        Debug.Log($"[CombatantTooltipUI] Populate: {combatant.name}, 状态效果 {effects.Count} 个, entryCount={entries.Count}");
     }
 
     public void UpdatePosition(Vector2 mouseScreenPos)
@@ -149,7 +147,6 @@ public class CombatantTooltipUI : MonoBehaviour
         if (gameObject.activeSelf)
         {
             gameObject.SetActive(false);
-            Debug.Log("[CombatantTooltipUI] Hide");
         }
     }
 }

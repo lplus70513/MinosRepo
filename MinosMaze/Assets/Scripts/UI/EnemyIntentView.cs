@@ -30,7 +30,6 @@ public class EnemyIntentView : MonoBehaviour
 
         if (canvas.renderMode != RenderMode.WorldSpace)
         {
-            Debug.LogWarning($"[EnemyIntentView] {name} Canvas 渲染模式自动修正: {canvas.renderMode} → WorldSpace");
             canvas.renderMode = RenderMode.WorldSpace;
         }
 
@@ -58,8 +57,6 @@ public class EnemyIntentView : MonoBehaviour
         fitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
         fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
-        Debug.Log($"[EnemyIntentView] {name} 初始化, renderMode={canvas.renderMode}, sortingOrder={canvas.sortingOrder}, canvasGroup={(canvasGroup != null ? "已绑定" : "NULL")}, intentUIPrefab={(intentUIPrefab != null ? intentUIPrefab.name : "NULL")}");
-
         if (canvasGroup != null)
             canvasGroup.alpha = 0f;
         else
@@ -68,7 +65,6 @@ public class EnemyIntentView : MonoBehaviour
 
     public void Show(List<EnemyIntentData> intents)
     {
-        Debug.Log($"[EnemyIntentView] {name} Show() 意图数量={intents?.Count ?? 0}");
         if (canvasGroup == null) return;
         canvasGroup.DOKill();
         if (intents == null || intents.Count == 0)
@@ -82,7 +78,6 @@ public class EnemyIntentView : MonoBehaviour
 
     public void Hide()
     {
-        Debug.Log($"[EnemyIntentView] {name} Hide()");
         if (canvasGroup == null) return;
         canvasGroup.DOKill();
         canvasGroup.DOFade(0f, fadeDuration);
@@ -90,7 +85,6 @@ public class EnemyIntentView : MonoBehaviour
 
     public void TransitionTo(List<EnemyIntentData> intents)
     {
-        Debug.Log($"[EnemyIntentView] {name} TransitionTo() 意图数量={intents?.Count ?? 0}");
         if (canvasGroup == null) return;
         canvasGroup.DOKill();
         if (intents == null || intents.Count == 0)
@@ -100,7 +94,6 @@ public class EnemyIntentView : MonoBehaviour
         }
         canvasGroup.DOFade(0f, fadeDuration).OnComplete(() =>
         {
-            Debug.Log($"[EnemyIntentView] {name} 淡出完成，开始重建子元素");
             RebuildChildren(intents);
             canvasGroup.DOFade(1f, fadeDuration);
         });
@@ -148,7 +141,6 @@ public class EnemyIntentView : MonoBehaviour
                 continue;
             }
             var sprite = GetSpriteForType(intent.IntentType);
-            Debug.Log($"[EnemyIntentView] {name} 创建意图: type={intent.IntentType}, sprite={(sprite != null ? sprite.name : "NULL")}, hit={intent.HitCount}, value={intent.ValuePerHit}");
             ui.SetData(intent, sprite);
         }
     }

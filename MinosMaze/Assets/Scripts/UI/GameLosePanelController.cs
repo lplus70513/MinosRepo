@@ -13,9 +13,13 @@ public class GameLosePanelController : MonoBehaviour
             returnButton.onClick.AddListener(OnReturnMainMenu);
     }
 
+    void Start()
+    {
+        gameObject.SetActive(false);
+    }
+
     private void OnReturnMainMenu()
     {
-        Debug.Log("[GameLosePanel] 返回主界面");
         GameManager.Instance.ReturnToMainMenu();
     }
 }
