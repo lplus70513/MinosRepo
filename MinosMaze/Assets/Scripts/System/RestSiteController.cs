@@ -192,13 +192,16 @@ public class RestSiteController : MonoBehaviour
         GameManager gm = GameManager.Instance;
         var deck = gm.WorldMapState.currentDeck;
 
+        // 启用燃烧消融特效
+        deckViewer.SetBurnMode(true);
+
         deckViewer.OpenForSelection(deck, (entry) =>
         {
             deck.Remove(entry);
-            AudioManager.Instance?.PlaySFX(AudioManager.Instance?.Config?.cardDeleteSFX);
             OnOptionComplete();
         }, () =>
         {
+            deckViewer.SetBurnMode(false);
             ShowButtons();
             optionChosen = false;
         });

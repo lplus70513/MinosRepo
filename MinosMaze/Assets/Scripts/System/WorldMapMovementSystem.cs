@@ -180,7 +180,11 @@ public class WorldMapMovementSystem : Singleton<WorldMapMovementSystem>
         }
 
         MovePoints--;
-        if (gm != null) gm.WorldMapState.stringCount = MovePoints;
+        if (gm != null)
+        {
+            gm.WorldMapState.stringCount = MovePoints;
+            gm.WorldMapState.stepDifficulty++;
+        }
         AudioManager.Instance?.PlaySFX(AudioManager.Instance?.Config?.playerMoveSFX);
         Vector3 targetPos = HexGrid.GetStandingPoint(hexX, hexZ);
         Tween tween = player.transform.DOMove(targetPos, moveDuration);

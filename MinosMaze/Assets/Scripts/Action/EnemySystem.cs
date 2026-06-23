@@ -249,7 +249,7 @@ public class EnemySystem : Singleton<EnemySystem>
             yield return tween.WaitForCompletion();
             attacker.transform.DOMove(startPos, 0.25f);
 
-            int damage = action.BaseDamage;
+            int damage = DifficultySystem.ScaleDamage(action.BaseDamage);
             int hitCount = action.HitCount;
 
             for (int i = 0; i < hitCount; i++)
@@ -368,8 +368,8 @@ public class EnemySystem : Singleton<EnemySystem>
                 IntentType = a.ActionType,
                 HitCount = a.HitCount,
                 ValuePerHit = a.ActionType == EnemyActionType.Attack
-                    ? DamageSystem.CalculateModifiedDamage(a.BaseDamage, enemy, heroView)
-                    : a.BaseDamage,
+                    ? DamageSystem.CalculateModifiedDamage(DifficultySystem.ScaleDamage(a.BaseDamage), enemy, heroView)
+                    : DifficultySystem.ScaleDamage(a.BaseDamage),
             });
         }
     }
@@ -387,8 +387,8 @@ public class EnemySystem : Singleton<EnemySystem>
                 IntentType = a.ActionType,
                 HitCount = a.HitCount,
                 ValuePerHit = a.ActionType == EnemyActionType.Attack
-                    ? DamageSystem.CalculateModifiedDamage(a.BaseDamage, enemy, heroView)
-                    : a.BaseDamage,
+                    ? DamageSystem.CalculateModifiedDamage(DifficultySystem.ScaleDamage(a.BaseDamage), enemy, heroView)
+                    : DifficultySystem.ScaleDamage(a.BaseDamage),
             });
         }
     }
