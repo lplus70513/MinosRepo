@@ -8,6 +8,7 @@ public class HealthBarUI : MonoBehaviour
     [SerializeField] private Image fillImage;
     [SerializeField] private Image bufferImage;
     [SerializeField] private TMP_Text healthValueText;
+    [SerializeField] public TMP_Text enemyNameText;
     [SerializeField] private Image shieldBarImage;
     [SerializeField] private Image shieldIconImage;
     [SerializeField] private TMP_Text shieldValueText;

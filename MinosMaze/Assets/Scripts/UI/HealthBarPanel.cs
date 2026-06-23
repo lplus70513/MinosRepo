@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 using DG.Tweening;
 
 public class HealthBarPanel : MonoBehaviour
@@ -12,7 +11,6 @@ public class HealthBarPanel : MonoBehaviour
     [SerializeField] private HealthBarUI enemyBarPrefab;
     [SerializeField] private RectTransform enemyBarContainer;
     [SerializeField] private Vector3 enemyBarScale = Vector3.one;
-    [SerializeField] private TMP_Text enemyNameTextPrefab;
 
     private Dictionary<CombatantView, HealthBarUI> barMap = new();
     private Dictionary<CombatantView, Action> statusActionMap = new();
@@ -48,12 +46,11 @@ public class HealthBarPanel : MonoBehaviour
             layout.childForceExpandHeight = false;
             layout.spacing = 2;
 
-            var nameText = Instantiate(enemyNameTextPrefab, wrapper.transform);
-            nameText.text = enemy.DisplayName;
-
             var bar = Instantiate(enemyBarPrefab, wrapper.transform);
             bar.Initialize(enemy.MaxHealth, enemy.CurrentHealth);
             bar.transform.localScale = enemyBarScale;
+            bar.enemyNameText.text = enemy.DisplayName;
+
             barMap[enemy] = bar;
 
             Action onStatus = () => OnCombatantStatusChanged(enemy);
@@ -68,7 +65,6 @@ public class HealthBarPanel : MonoBehaviour
         enemyBarContainer.anchoredPosition = enemyBarBasePos.Value + new Vector2(0, 50);
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(enemyBarContainer);
-        AdjustEnemyNamePositions();
     }
 
     private void ClearAll()
@@ -121,19 +117,6 @@ public class HealthBarPanel : MonoBehaviour
         bar.SetArmor(armor);
     }
 
-    private void AdjustEnemyNamePositions()
-    {
-        foreach (Transform wrapper in enemyBarContainer)
-        {
-            if (wrapper.childCount >= 2)
-            {
-                var nameRT = wrapper.GetChild(0) as RectTransform;
-                if (nameRT != null)
-                    nameRT.anchoredPosition += new Vector2(0, -50);
-            }
-        }
-    }
-
     private IEnumerator FadeOutAndRemoveEntry(HealthBarUI bar)
     {
         if (bar == null) yield break;
@@ -178,8 +161,6 @@ public class HealthBarPanel : MonoBehaviour
         if (containerLayout != null)
             containerLayout.enabled = false;
 
-        AdjustEnemyNamePositions();
-
         for (int i = 0; i < siblings.Count && i < newPositions.Count; i++)
         {
             if (siblings[i] == null) continue;
@@ -190,7 +171,6 @@ public class HealthBarPanel : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
         if (containerLayout != null)
             containerLayout.enabled = true;
-        AdjustEnemyNamePositions();
     }
 
     private void OnDestroy()
