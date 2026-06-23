@@ -89,12 +89,6 @@ public class EnemySystem : Singleton<EnemySystem>
 
             if (enemy.CurrentHealth <= 0) continue;
 
-            if (enemy.HasStatusEffect(StatusEffectType.STUN))
-            {
-                enemy.HideIntents();
-                continue;
-            }
-
             // 回合开始自动效果
             if (enemy.SourceData != null && enemy.SourceData.StartOfTurnActions != null && enemy.SourceData.StartOfTurnActions.Count > 0)
             {
@@ -311,7 +305,6 @@ public class EnemySystem : Singleton<EnemySystem>
         {
             enemy.HideIntents();
             enemy.WillRevive = true;
-            enemy.AddStatusEffect(StatusEffectType.STUN, 1);
             yield break;
         }
 

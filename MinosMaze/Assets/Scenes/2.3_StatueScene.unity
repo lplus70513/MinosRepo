@@ -3841,14 +3841,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6507816706809138093, guid: 7c496bf3ab64d0a4cb0f7477fb8cbaea, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 77329f2e9dfbc6f4ea61dc8b8d924b92, type: 2}
-    - target: {fileID: 6507816706809138093, guid: 7c496bf3ab64d0a4cb0f7477fb8cbaea, type: 3}
-      propertyPath: m_hasFontAssetChanged
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8430285419272344356, guid: 7c496bf3ab64d0a4cb0f7477fb8cbaea, type: 3}
       propertyPath: m_Name
       value: Statue_Panel3
@@ -3973,10 +3965,6 @@ MonoBehaviour:
   previewSpacing: 5
   shakeAngle: 15
   shakeInterval: 0.1
-  burnMaterial: {fileID: 0}
-  burnDuration: 1.5
-  flameParticlePrefab: {fileID: 0}
-  smokeParticlePrefab: {fileID: 0}
 --- !u!1 &2082957535
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,10 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using DG.Tweening;
 
 public class HealthBarPanel : MonoBehaviour
 {
@@ -16,7 +14,7 @@ public class HealthBarPanel : MonoBehaviour
 
     private Dictionary<CombatantView, HealthBarUI> barMap = new();
     private Dictionary<CombatantView, Action> statusActionMap = new();
-    private Vector2? enemyBarBasePos;
+    private List<TMP_Text> enemyNameTexts = new();
 
     public void SetupBattle(HeroView hero, List<EnemyView> enemies)
     {
@@ -50,6 +48,7 @@ public class HealthBarPanel : MonoBehaviour
 
             var nameText = Instantiate(enemyNameTextPrefab, wrapper.transform);
             nameText.text = enemy.DisplayName;
+            enemyNameTexts.Add(nameText);
 
             var bar = Instantiate(enemyBarPrefab, wrapper.transform);
             bar.Initialize(enemy.MaxHealth, enemy.CurrentHealth);
@@ -62,17 +61,21 @@ public class HealthBarPanel : MonoBehaviour
             OnCombatantStatusChanged(enemy);
         }
 
-        if (!enemyBarBasePos.HasValue)
-            enemyBarBasePos = enemyBarContainer.anchoredPosition;
-
-        enemyBarContainer.anchoredPosition = enemyBarBasePos.Value + new Vector2(0, 50);
-
         LayoutRebuilder.ForceRebuildLayoutImmediate(enemyBarContainer);
-        AdjustEnemyNamePositions();
+        foreach (var nameText in enemyNameTexts)
+        {
+            nameText.transform.SetParent(playerBar.transform, true);
+        }
     }
 
     private void ClearAll()
     {
+        foreach (var nameText in enemyNameTexts)
+        {
+            if (nameText != null) Destroy(nameText.gameObject);
+        }
+        enemyNameTexts.Clear();
+
         foreach (Transform child in enemyBarContainer)
         {
             Destroy(child.gameObject);
@@ -96,19 +99,14 @@ public class HealthBarPanel : MonoBehaviour
         if (!barMap.TryGetValue(combatant, out var bar)) return;
 
         bar.SetHealth(newHealth);
-        if (newHealth <= 0 && combatant is EnemyView enemy)
+        if (newHealth <= 0 && combatant is EnemyView)
         {
-            bool willRevive = enemy.SourceData != null && enemy.SourceData.CanRevive && !enemy.HasRevived;
-            if (willRevive) return;
-
             combatant.OnHealthChanged -= OnCombatantHealthChanged;
             if (statusActionMap.TryGetValue(combatant, out var act))
             {
                 combatant.OnStatusChanged -= act;
                 statusActionMap.Remove(combatant);
             }
-            barMap.Remove(combatant);
-            StartCoroutine(FadeOutAndRemoveEntry(bar));
         }
     }
 
@@ -119,78 +117,6 @@ public class HealthBarPanel : MonoBehaviour
 
         int armor = combatant.GetStatusEffectStacks(StatusEffectType.ARMOR);
         bar.SetArmor(armor);
-    }
-
-    private void AdjustEnemyNamePositions()
-    {
-        foreach (Transform wrapper in enemyBarContainer)
-        {
-            if (wrapper.childCount >= 2)
-            {
-                var nameRT = wrapper.GetChild(0) as RectTransform;
-                if (nameRT != null)
-                    nameRT.anchoredPosition += new Vector2(0, -50);
-            }
-        }
-    }
-
-    private IEnumerator FadeOutAndRemoveEntry(HealthBarUI bar)
-    {
-        if (bar == null) yield break;
-
-        Transform wrapper = bar.transform.parent;
-        if (wrapper == null) yield break;
-
-        CanvasGroup cg = wrapper.GetComponent<CanvasGroup>();
-        if (cg == null) cg = wrapper.gameObject.AddComponent<CanvasGroup>();
-
-        cg.DOFade(0f, 0.2f);
-        yield return new WaitForSeconds(0.2f);
-
-        if (wrapper == null) yield break;
-
-        var siblings = new List<RectTransform>();
-        var oldPositions = new List<Vector2>();
-        foreach (Transform child in enemyBarContainer)
-        {
-            if (child == null || child == wrapper) continue;
-            var rt = child as RectTransform;
-            if (rt != null)
-            {
-                siblings.Add(rt);
-                oldPositions.Add(rt.anchoredPosition);
-            }
-        }
-
-        wrapper.SetParent(null);
-        Destroy(wrapper.gameObject);
-
-        LayoutRebuilder.ForceRebuildLayoutImmediate(enemyBarContainer);
-
-        var newPositions = new List<Vector2>();
-        for (int i = 0; i < siblings.Count; i++)
-        {
-            if (siblings[i] == null) continue;
-            newPositions.Add(siblings[i].anchoredPosition);
-        }
-
-        var containerLayout = enemyBarContainer.GetComponent<VerticalLayoutGroup>();
-        if (containerLayout != null)
-            containerLayout.enabled = false;
-
-        AdjustEnemyNamePositions();
-
-        for (int i = 0; i < siblings.Count && i < newPositions.Count; i++)
-        {
-            if (siblings[i] == null) continue;
-            siblings[i].anchoredPosition = oldPositions[i];
-            siblings[i].DOAnchorPos(newPositions[i], 0.3f).SetEase(Ease.OutQuad);
-        }
-
-        yield return new WaitForSeconds(0.3f);
-        if (containerLayout != null)
-            containerLayout.enabled = true;
-        AdjustEnemyNamePositions();
     }
 
     private void OnDestroy()
