@@ -215,7 +215,7 @@ public class DeckViewer : MonoBehaviour
         float scroll = Input.GetAxis("Mouse ScrollWheel");
         if (Mathf.Abs(scroll) > 0.001f)
         {
-            scrollOffset += scroll * scrollSpeed;
+            scrollOffset -= scroll * scrollSpeed;
             scrollOffset = Mathf.Clamp(scrollOffset, 0f, maxScrollOffset);
             cardContainer.localPosition = cardContainerBasePos + new Vector3(0, scrollOffset, 0);
             Physics.SyncTransforms();
