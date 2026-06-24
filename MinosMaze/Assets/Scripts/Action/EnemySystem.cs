@@ -74,6 +74,13 @@ public class EnemySystem : Singleton<EnemySystem>
 
     private void EnemyTurnPreReaction(EnemyTurnGA enemyTurnGA)
     {
+        // 回合开始清空敌人护甲
+        foreach (var enemy in enemyBoardView.EnemyViews)
+        {
+            if (enemy != null && enemy.CurrentHealth > 0)
+                enemy.ClearArmorOnTurnEnd();
+        }
+
         HashSet<(int, int)> reservedCells = new();
         foreach (var enemy in enemyBoardView.EnemyViews)
         {
@@ -93,15 +100,6 @@ public class EnemySystem : Singleton<EnemySystem>
             {
                 enemy.HideIntents();
                 continue;
-            }
-
-            // 回合开始自动效果
-            if (enemy.SourceData != null && enemy.SourceData.StartOfTurnActions != null && enemy.SourceData.StartOfTurnActions.Count > 0)
-            {
-                foreach (var action in enemy.SourceData.StartOfTurnActions)
-                {
-                    enemyTurnGA.PerformReactions.Add(new AttackHeroGA(enemy, action));
-                }
             }
 
             var actions = enemy.selectedActions;
@@ -347,11 +345,26 @@ public class EnemySystem : Singleton<EnemySystem>
         foreach (var combatant in allCombatants)
         {
             combatant.DecayTurnEndEffects();
-            combatant.ClearArmorOnTurnEnd();
         }
 
         if (HeroSystem.Instance.HeroView != null)
+        {
+            HeroSystem.Instance.HeroView.ClearArmorOnTurnEnd();
             HeroSystem.Instance.HeroView.ThornsDamage = 0;
+        }
+
+        // 回合结束自动效果（如空盔甲加护盾）
+        foreach (var enemy in enemyBoardView.EnemyViews)
+        {
+            if (enemy == null || enemy.CurrentHealth <= 0) continue;
+            if (enemy.SourceData != null && enemy.SourceData.StartOfTurnActions != null && enemy.SourceData.StartOfTurnActions.Count > 0)
+            {
+                foreach (var action in enemy.SourceData.StartOfTurnActions)
+                {
+                    ActionSystem.Instance.AddReaction(new AttackHeroGA(enemy, action));
+                }
+            }
+        }
 
         ComputeAndStoreNextTurnIntents();
         foreach (var enemy in enemyBoardView.EnemyViews)
