@@ -88,14 +88,25 @@ public class TutorialPanel : MonoBehaviour
     // 公开方法
     // ════════════════════════════════════════════════════════
 
-    /// <summary>显示面板并播放弹出动画</summary>
-    public virtual void Show()
+    /// <summary>显示面板并播放弹出动画（默认）</summary>
+    public void Show() => Show(true);
+
+    /// <summary>显示面板。usePopAnimation=false 时跳过弹性缩放，仅淡入</summary>
+    public virtual void Show(bool usePopAnimation)
     {
         gameObject.SetActive(true);
         canvasGroup.alpha = 0f;
-        scaleRoot.localScale = Vector3.zero;
 
-        scaleRoot.DOScale(1f, popDuration).SetEase(Ease.OutBack).SetUpdate(true);
+        if (usePopAnimation)
+        {
+            scaleRoot.localScale = Vector3.zero;
+            scaleRoot.DOScale(1f, popDuration).SetEase(Ease.OutBack).SetUpdate(true);
+        }
+        else
+        {
+            scaleRoot.localScale = Vector3.one;
+        }
+
         canvasGroup.DOFade(1f, popDuration).SetEase(Ease.OutQuad).SetUpdate(true);
 
         PlayVideo();

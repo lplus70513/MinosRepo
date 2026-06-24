@@ -33,6 +33,9 @@ public class TutorialSystem : MonoBehaviour
     private TutorialPanel currentPanel;
     private CanvasGroup rootCanvasGroup;
 
+    /// <summary>本局已播放过教程的场景名集合（跨场景持久）</summary>
+    private static readonly HashSet<string> playedScenes = new HashSet<string>();
+
     void Start()
     {
         if (tutorialSteps == null) tutorialSteps = new List<TutorialPanel>();
@@ -52,6 +55,15 @@ public class TutorialSystem : MonoBehaviour
     public void Play()
     {
         if (IsPlaying || IsComplete) return;
+
+        string sceneName = gameObject.scene.name;
+        if (playedScenes.Contains(sceneName))
+        {
+            Debug.Log($"[TutorialSystem] 场景 {sceneName} 教程本局已播放过，跳过。");
+            Complete();
+            return;
+        }
+
         if (tutorialSteps != null)
             tutorialSteps.RemoveAll(s => s == null);
         if (tutorialSteps == null || tutorialSteps.Count == 0)
@@ -89,6 +101,7 @@ public class TutorialSystem : MonoBehaviour
     /// <summary>重新开始教程（从头播放）</summary>
     public void Restart()
     {
+        playedScenes.Remove(gameObject.scene.name);
         IsComplete = false;
         IsPlaying = false;
         CurrentStepIndex = -1;
@@ -141,7 +154,7 @@ public class TutorialSystem : MonoBehaviour
         // 实例化并启动当前步骤
         currentPanel = Instantiate(prefab, transform);
         currentPanel.OnClosed += OnStepClosed;
-        currentPanel.Show();
+        currentPanel.Show(CurrentStepIndex == 0);
     }
 
     private void OnStepClosed()
@@ -163,9 +176,14 @@ public class TutorialSystem : MonoBehaviour
 
     private void Complete()
     {
+        bool wasPlaying = IsPlaying;
         IsPlaying = false;
         IsComplete = true;
         CurrentStepIndex = -1;
+
+        if (wasPlaying && gameObject != null)
+            playedScenes.Add(gameObject.scene.name);
+
         OnTutorialComplete?.Invoke();
     }
 

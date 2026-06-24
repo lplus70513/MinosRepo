@@ -977,6 +977,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tutorialSteps:
   - {fileID: 8527536562305096724, guid: 06008253a757206429418ccfa4edd2e7, type: 3}
+  - {fileID: 8527536562305096724, guid: b5f4957e9172a5b47b50c1e093e2a0b3, type: 3}
+  - {fileID: 8527536562305096724, guid: 3845fe38acf6af34c920f46dd1e5e363, type: 3}
   sceneFadeInDelay: 0.3
   sceneFadeInDuration: 0.3
   stepInterval: 0.1
