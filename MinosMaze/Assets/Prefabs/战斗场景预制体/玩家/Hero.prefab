@@ -49,7 +49,7 @@ MonoBehaviour:
   spriteRenderer: {fileID: 0}
   skeletonAnimation: {fileID: 6593780287354153018}
   portraitRoot: {fileID: 5328031295956223235}
-  statusEffectsUI: {fileID: 4070721558248357206}
+  statusEffectsUI: {fileID: 0}
 --- !u!1001 &6554531661012064868
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -108,21 +108,11 @@ PrefabInstance:
       objectReference: {fileID: 1723982374, guid: b8bc86815fe7a5348b803d7838d21148, type: 3}
     m_RemovedComponents:
     - {fileID: 7100000000000010000, guid: 1ce6e464003096c469412a0e46341b74, type: 3}
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 7100000000000010020, guid: 1ce6e464003096c469412a0e46341b74, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1ce6e464003096c469412a0e46341b74, type: 3}
---- !u!114 &4070721558248357206 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7100000000000010034, guid: 1ce6e464003096c469412a0e46341b74, type: 3}
-  m_PrefabInstance: {fileID: 6554531661012064868}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7fbeb66fe213ee49bc555f0c45030f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &4070721558248357241 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7100000000000010013, guid: 1ce6e464003096c469412a0e46341b74, type: 3}
