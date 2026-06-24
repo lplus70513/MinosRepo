@@ -1,29 +1,19 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CombatantTooltipSystem : Singleton<CombatantTooltipSystem>
 {
-    [SerializeField] private CombatantTooltipUI tooltipPrefab;
-
+    [SerializeField] private StatusEffectSlotUI[] slots = new StatusEffectSlotUI[6];
     [SerializeField] private float hoverScreenDistance = 120f;
 
-    private CombatantTooltipUI tooltipInstance;
+    [Header("状态图标")]
+    [SerializeField] private Sprite armorSprite, bleedSprite;
+    [SerializeField] private Sprite strengthSprite, weaknessSprite, vulnerableSprite;
+    [SerializeField] private Sprite fortifySprite, fragileSprite, agileSprite, slowSprite;
+    [SerializeField] private Sprite chainLightningSprite, rootSprite, stunSprite;
+
     private Camera camera3D;
     private CombatantView lastHovered;
-
-    protected override void Awake()
-    {
-        base.Awake();
-        if (tooltipPrefab != null)
-        {
-            tooltipInstance = Instantiate(tooltipPrefab, transform);
-            tooltipInstance.gameObject.SetActive(false);
-            Debug.Log($"[CombatantTooltipSystem] 已实例化 tooltip: {tooltipPrefab.name}");
-        }
-        else
-        {
-            Debug.LogError("[CombatantTooltipSystem] tooltipPrefab 未设置！请在 Inspector 中将 CombatantTooltipUI 预制体拖入 Tooltip Prefab 字段");
-        }
-    }
 
     void Start()
     {
@@ -41,12 +31,13 @@ public class CombatantTooltipSystem : Singleton<CombatantTooltipSystem>
 
     void Update()
     {
-        if (tooltipInstance == null || camera3D == null)
+        if (camera3D == null)
             return;
 
         if (!Interactions.Instance.PlayerCanHover())
         {
-            HideLastHovered();
+            ClearAllSlots();
+            lastHovered = null;
             return;
         }
 
@@ -56,16 +47,74 @@ public class CombatantTooltipSystem : Singleton<CombatantTooltipSystem>
         {
             if (hovered != lastHovered)
             {
-                tooltipInstance.Populate(hovered);
+                PopulateSlots(hovered);
                 lastHovered = hovered;
             }
-            tooltipInstance.Show();
-            tooltipInstance.UpdatePosition(Input.mousePosition);
         }
         else
         {
-            HideLastHovered();
+            ClearAllSlots();
+            lastHovered = null;
         }
+    }
+
+    private void PopulateSlots(CombatantView combatant)
+    {
+        var effects = combatant.GetStatusEffects();
+
+        int slotIndex = 0;
+        foreach (var kvp in effects)
+        {
+            if (slotIndex >= slots.Length)
+                break;
+
+            var slot = slots[slotIndex];
+            slotIndex++;
+
+            if (slot == null)
+                continue;
+
+            Sprite sprite = GetSpriteByType(kvp.Key);
+            string name = StatusEffectData.GetName(kvp.Key);
+            string desc = StatusEffectData.GetDescription(kvp.Key, kvp.Value);
+
+            slot.Populate(sprite, name, desc);
+        }
+
+        for (int i = slotIndex; i < slots.Length; i++)
+        {
+            if (slots[i] != null)
+                slots[i].Clear();
+        }
+    }
+
+    private void ClearAllSlots()
+    {
+        foreach (var slot in slots)
+        {
+            if (slot != null)
+                slot.Clear();
+        }
+    }
+
+    private Sprite GetSpriteByType(StatusEffectType type)
+    {
+        return type switch
+        {
+            StatusEffectType.ARMOR => armorSprite,
+            StatusEffectType.BLEED => bleedSprite,
+            StatusEffectType.STRENGTH => strengthSprite,
+            StatusEffectType.WEAKNESS => weaknessSprite,
+            StatusEffectType.VULNERABLE => vulnerableSprite,
+            StatusEffectType.FORTIFY => fortifySprite,
+            StatusEffectType.FRAGILE => fragileSprite,
+            StatusEffectType.AGILE => agileSprite,
+            StatusEffectType.SLOW => slowSprite,
+            StatusEffectType.CHAIN_LIGHTNING => chainLightningSprite,
+            StatusEffectType.ROOT => rootSprite,
+            StatusEffectType.STUN => stunSprite,
+            _ => null,
+        };
     }
 
     private CombatantView GetHoveredCombatant()
@@ -103,14 +152,5 @@ public class CombatantTooltipSystem : Singleton<CombatantTooltipSystem>
         }
 
         return best;
-    }
-
-    private void HideLastHovered()
-    {
-        if (lastHovered != null)
-        {
-            tooltipInstance.Hide();
-            lastHovered = null;
-        }
     }
 }
