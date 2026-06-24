@@ -956,12 +956,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 634955229}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2005430008}
+  m_Father: {fileID: 1784081788}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &634955231
 MonoBehaviour:
@@ -976,7 +976,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tutorialSteps:
-  - {fileID: 0}
+  - {fileID: 8527536562305096724, guid: 06008253a757206429418ccfa4edd2e7, type: 3}
   sceneFadeInDelay: 0.3
   sceneFadeInDuration: 0.3
   stepInterval: 0.1
@@ -2349,6 +2349,7 @@ RectTransform:
   - {fileID: 560390101}
   - {fileID: 24052583}
   - {fileID: 48195796}
+  - {fileID: 634955230}
   m_Father: {fileID: 1054164266}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2699,7 +2700,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1704656037}
-  - {fileID: 634955230}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2139634638
