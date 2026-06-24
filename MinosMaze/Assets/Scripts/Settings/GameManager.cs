@@ -255,6 +255,7 @@ public class GameManager : MonoBehaviour
     {
         if (isStartingGame) return;
         isStartingGame = true;
+        TutorialSystem.ResetAllPlayedScenes();
         SceneTransitionSystem.Instance.StartCoroutine(NewGameRoutine());
     }
 

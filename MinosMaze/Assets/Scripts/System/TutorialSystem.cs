@@ -36,6 +36,13 @@ public class TutorialSystem : MonoBehaviour
     /// <summary>本局已播放过教程的场景名集合（跨场景持久）</summary>
     private static readonly HashSet<string> playedScenes = new HashSet<string>();
 
+    /// <summary>重置所有场景的教程记录（新游戏开始时调用）</summary>
+    public static void ResetAllPlayedScenes()
+    {
+        playedScenes.Clear();
+        Debug.Log("[TutorialSystem] 已重置所有场景教程记录");
+    }
+
     void Start()
     {
         if (tutorialSteps == null) tutorialSteps = new List<TutorialPanel>();
