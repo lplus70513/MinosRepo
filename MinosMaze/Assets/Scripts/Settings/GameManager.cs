@@ -36,6 +36,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private HeroData heroData;
     [SerializeField] private CardDatabase cardDatabase;
 
+    [Header("名字输入")]
+    [SerializeField] private NameInputDialog nameInputDialog;
+
     [Header("场景切换渐变")]
     [SerializeField] private float fadeOutDuration = 0.3f;
     [SerializeField] private float fadeInDuration = 0.3f;
@@ -243,6 +246,8 @@ public class GameManager : MonoBehaviour
         isStartingGame = false;
         if (SaveSystem.HasSave())
             ContinueGame();
+        else if (nameInputDialog != null)
+            nameInputDialog.Show(() => NewGame());
         else
             NewGame();
     }
@@ -295,6 +300,8 @@ public class GameManager : MonoBehaviour
 
         Instance.ResetWorldMapStateForNewGame();
         PendingNewGame = true;
+        if (!string.IsNullOrEmpty(WorldMapState.playerName))
+            RunStatistics.Instance.StartTracking();
         if (SceneManager.GetSceneByName("1_MainMenu").isLoaded)
             SceneManager.UnloadSceneAsync("1_MainMenu");
         SceneManager.LoadScene(worldMapSceneName, LoadSceneMode.Additive);
@@ -437,6 +444,7 @@ public class GameManager : MonoBehaviour
         IsBossEncounter = false;
         if (gameWinPanel != null) gameWinPanel.SetActive(false);
         if (gameLosePanel != null) gameLosePanel.SetActive(false);
+        RunStatistics.Instance?.ResetForNewRun();
         isStartingGame = false;
         SceneTransitionSystem.Instance.StartCoroutine(ReturnToMainMenuRoutine());
     }
@@ -529,6 +537,9 @@ public class GameManager : MonoBehaviour
         {
             Instance.WorldMapState = loaded;
         }
+
+        if (!string.IsNullOrEmpty(WorldMapState.playerName))
+            RunStatistics.Instance.StartTracking();
 
         if (SceneManager.GetSceneByName("1_MainMenu").isLoaded)
             SceneManager.UnloadSceneAsync("1_MainMenu");

@@ -41,6 +41,8 @@ public class MatchSetupSystem : MonoBehaviour
         BattleResultSystem.Instance.ResetForBattle();
         _ = RewardSystem.Instance;
 
+        _ = RunStatistics.Instance;
+
         var gm = GameManager.Instance;
         Debug.Log($"[MatchSetupSystem] GameManager={(gm != null ? "OK" : "NULL")}, PendingEncounter={(gm?.PendingEncounter != null ? $"cellType={gm.PendingEncounter.cellType} floor={gm.PendingEncounter.floorLevel}" : "NULL")}");
 

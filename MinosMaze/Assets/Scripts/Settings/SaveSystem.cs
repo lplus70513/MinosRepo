@@ -23,6 +23,7 @@ public class SaveData
     public List<SavedDeckEntry> deck = new();
     public List<ActiveBlessing> activeBlessings = new();
     public List<CellLayoutEntry> cellLayout = new();
+    public string playerName;
 }
 
 public static class SaveSystem
@@ -42,7 +43,8 @@ public static class SaveSystem
             floorLevel = state.floorLevel,
             clearedCells = new List<Vector2Int>(state.clearedCells),
             activeBlessings = new List<ActiveBlessing>(state.activeBlessings),
-            cellLayout = new List<CellLayoutEntry>(state.cellLayout)
+            cellLayout = new List<CellLayoutEntry>(state.cellLayout),
+            playerName = state.playerName
         };
 
         foreach (var entry in state.currentDeck)
@@ -79,7 +81,8 @@ public static class SaveSystem
             isNewGame = false,
             clearedCells = new List<Vector2Int>(data.clearedCells),
             activeBlessings = new List<ActiveBlessing>(data.activeBlessings),
-            cellLayout = new List<CellLayoutEntry>(data.cellLayout)
+            cellLayout = new List<CellLayoutEntry>(data.cellLayout),
+            playerName = data.playerName ?? ""
         };
 
         state.currentDeck = new List<DeckCardEntry>();

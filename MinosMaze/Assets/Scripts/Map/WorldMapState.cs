@@ -33,6 +33,7 @@ public class WorldMapState
     public bool isNewGame = true;
     public int floorLevel = 1;
     public int stepDifficulty = 0;
+    public string playerName = "";
 
     // 浅拷贝：值字段直接复制，List 复制独立容器（元素引用共享）。
     // 遭遇场景对列表均为 Add 新元素，不会原地修改已有元素，故浅拷贝足以隔离后续追加。
@@ -52,7 +53,8 @@ public class WorldMapState
             cellLayout = new List<CellLayoutEntry>(cellLayout),
             isNewGame = isNewGame,
             floorLevel = floorLevel,
-            stepDifficulty = stepDifficulty
+            stepDifficulty = stepDifficulty,
+            playerName = playerName
         };
     }
 }

@@ -26,6 +26,10 @@ public class HealthBarPanel : MonoBehaviour
             playerBar.Initialize(hero.MaxHealth, hero.CurrentHealth);
             barMap[hero] = playerBar;
 
+            string playerName = GameManager.Instance?.WorldMapState?.playerName;
+            if (!string.IsNullOrEmpty(playerName))
+                playerBar.enemyNameText.text = playerName;
+
             Action onStatus = () => OnCombatantStatusChanged(hero);
             hero.OnStatusChanged += onStatus;
             statusActionMap[hero] = onStatus;

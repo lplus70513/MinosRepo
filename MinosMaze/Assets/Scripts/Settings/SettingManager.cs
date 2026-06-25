@@ -12,6 +12,10 @@ public class SettingManager : MonoBehaviour
     [Header("设置子面板")]
     [SerializeField] private GameObject settingsSubPanel;
 
+    [Header("排行榜")]
+    [SerializeField] private Button leaderboardButton;
+    [SerializeField] private GameObject leaderboardSubPanel;
+
     [Header("音量滑条")]
     [SerializeField] private Slider bgmSlider;
     [SerializeField] private Slider sfxSlider;
@@ -26,6 +30,8 @@ public class SettingManager : MonoBehaviour
             abandonButton.onClick.AddListener(OnAbandon);
         if (saveAndExitButton != null)
             saveAndExitButton.onClick.AddListener(OnSaveAndExit);
+        if (leaderboardButton != null)
+            leaderboardButton.onClick.AddListener(OnLeaderboard);
 
         if (bgmSlider != null)
         {
@@ -51,6 +57,12 @@ public class SettingManager : MonoBehaviour
     {
         if (GameManager.Instance != null)
             GameManager.Instance.CloseSettings();
+    }
+
+    private void OnLeaderboard()
+    {
+        if (leaderboardSubPanel != null)
+            leaderboardSubPanel.SetActive(true);
     }
 
     private void OnSettings()
