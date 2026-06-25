@@ -34,6 +34,8 @@ public class WorldMapState
     public int floorLevel = 1;
     public int stepDifficulty = 0;
     public string playerName = "";
+    // 宝箱保底：上一个宝箱格是否触发了战斗（宝箱怪）。为 true 时下一个宝箱必定为普通宝箱（奖励）
+    public bool lastTreasureWasMimic = false;
 
     // 浅拷贝：值字段直接复制，List 复制独立容器（元素引用共享）。
     // 遭遇场景对列表均为 Add 新元素，不会原地修改已有元素，故浅拷贝足以隔离后续追加。
@@ -54,7 +56,8 @@ public class WorldMapState
             isNewGame = isNewGame,
             floorLevel = floorLevel,
             stepDifficulty = stepDifficulty,
-            playerName = playerName
+            playerName = playerName,
+            lastTreasureWasMimic = lastTreasureWasMimic
         };
     }
 }

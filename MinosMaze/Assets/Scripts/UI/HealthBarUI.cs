@@ -14,8 +14,16 @@ public class HealthBarUI : MonoBehaviour
     [SerializeField] private TMP_Text shieldValueText;
     [SerializeField] private float bufferDuration = 0.5f;
 
+    [Header("悬停放大高亮（沿用卡牌效果）")]
+    [SerializeField] private float hoverScale = 1.15f;
+    [SerializeField] private float hoverScaleDuration = 0.1f;
+
     private int maxHealth;
     private Tween bufferTween;
+
+    private Vector3 baseScale;
+    private bool baseScaleCaptured;
+    private Tween hoverScaleTween;
 
     public void Initialize(int maxHp, int currentHp)
     {
@@ -67,8 +75,24 @@ public class HealthBarUI : MonoBehaviour
             healthValueText.text = currentHp + "/" + maxHealth;
     }
 
+    public void SetHovered(bool hovered)
+    {
+        if (!baseScaleCaptured)
+        {
+            baseScale = transform.localScale;
+            baseScaleCaptured = true;
+        }
+
+        hoverScaleTween?.Kill();
+        Vector3 target = hovered ? baseScale * hoverScale : baseScale;
+        hoverScaleTween = transform.DOScale(target, hoverScaleDuration)
+            .SetEase(Ease.OutQuad)
+            .SetUpdate(true);
+    }
+
     private void OnDestroy()
     {
         bufferTween?.Kill();
+        hoverScaleTween?.Kill();
     }
 }

@@ -41,6 +41,15 @@ public class TreasureController : MonoBehaviour
 
         isMimic = Random.value < mimicChance;
 
+        // 保底机制：若上一个宝箱格触发了战斗（宝箱怪），则本次必定为普通宝箱（奖励）
+        WorldMapState state = gm != null ? gm.WorldMapState : null;
+        if (state != null && state.lastTreasureWasMimic)
+            isMimic = false;
+
+        // 记录本次结果，供下一个宝箱格判断保底
+        if (state != null)
+            state.lastTreasureWasMimic = isMimic;
+
         if (isMimic)
         {
             normalBackground.SetActive(false);

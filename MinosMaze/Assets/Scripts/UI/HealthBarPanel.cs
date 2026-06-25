@@ -12,9 +12,14 @@ public class HealthBarPanel : MonoBehaviour
     [SerializeField] private RectTransform enemyBarContainer;
     [SerializeField] private Vector3 enemyBarScale = Vector3.one;
 
+    [SerializeField] private float hoverScreenDistance = 120f;
+
     private Dictionary<CombatantView, HealthBarUI> barMap = new();
     private Dictionary<CombatantView, Action> statusActionMap = new();
     private Vector2? enemyBarBasePos;
+
+    private Camera camera3D;
+    private CombatantView currentHovered;
 
     public void SetupBattle(HeroView hero, List<EnemyView> enemies)
     {
@@ -175,6 +180,59 @@ public class HealthBarPanel : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
         if (containerLayout != null)
             containerLayout.enabled = true;
+    }
+
+    private void Update()
+    {
+        if (barMap.Count == 0)
+        {
+            if (currentHovered != null)
+                currentHovered = null;
+            return;
+        }
+
+        if (camera3D == null)
+        {
+            var camObj = GameObject.FindGameObjectWithTag("3D Camera");
+            if (camObj != null) camera3D = camObj.GetComponent<Camera>();
+            if (camera3D == null) return;
+        }
+
+        CombatantView hovered = GetHoveredCombatant();
+        if (hovered == currentHovered) return;
+
+        if (currentHovered != null && barMap.TryGetValue(currentHovered, out var oldBar) && oldBar != null)
+            oldBar.SetHovered(false);
+
+        if (hovered != null && barMap.TryGetValue(hovered, out var newBar) && newBar != null)
+            newBar.SetHovered(true);
+
+        currentHovered = hovered;
+    }
+
+    private CombatantView GetHoveredCombatant()
+    {
+        if (Interactions.Instance != null && !Interactions.Instance.PlayerCanHover())
+            return null;
+
+        Vector2 mouseScreen = Input.mousePosition;
+        CombatantView best = null;
+        float bestDist = hoverScreenDistance;
+
+        foreach (var combatant in barMap.Keys)
+        {
+            if (combatant == null) continue;
+            Vector3 screenPos = camera3D.WorldToScreenPoint(combatant.transform.position);
+            if (screenPos.z < 0f) continue;
+            float dist = Vector2.Distance(mouseScreen, new Vector2(screenPos.x, screenPos.y));
+            if (dist < bestDist)
+            {
+                bestDist = dist;
+                best = combatant;
+            }
+        }
+
+        return best;
     }
 
     private void OnDestroy()
