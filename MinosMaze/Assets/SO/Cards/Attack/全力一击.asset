@@ -51,7 +51,7 @@ MonoBehaviour:
     <HasAttackRange>k__BackingField: 1
     <AttackRange>k__BackingField: 1
     <ManualTargetEffect>k__BackingField:
-      rid: -2
+      rid: 1965764633207767040
     <OtherEffects>k__BackingField: []
     <IsInnate>k__BackingField: 0
     <IsExhaust>k__BackingField: 0
@@ -69,6 +69,11 @@ MonoBehaviour:
       type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
       data:
         damageAmount: 21
+        hitCount: 1
+    - rid: 1965764633207767040
+      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damageAmount: 28
         hitCount: 1
     - rid: 5015277433663258629
       type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
