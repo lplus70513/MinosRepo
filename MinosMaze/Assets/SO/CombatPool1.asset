@@ -318,7 +318,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: feef8d76f1327524eb80a12e85f31065, type: 2}
     enemySpawnCoords:
     - {x: 0, y: 0}
-    - {x: 0, y: 0}
+    - {x: 0, y: 4}
     heroSpawnCoord: {x: 0, y: 3}
     rewardConfig: {fileID: 11400000, guid: d9898f0919b265243b6544774bee7dda, type: 2}
   - configName: "\u7A7A\u76D4\u7532\u53CC\u8001\u9F20"

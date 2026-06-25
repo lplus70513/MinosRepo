@@ -14,6 +14,7 @@ public class CombatantTooltipSystem : Singleton<CombatantTooltipSystem>
 
     private Camera camera3D;
     private CombatantView lastHovered;
+    private int lastStatusSignature;
 
     void Start()
     {
@@ -45,17 +46,33 @@ public class CombatantTooltipSystem : Singleton<CombatantTooltipSystem>
 
         if (hovered != null && hovered.GetStatusEffects().Count > 0)
         {
-            if (hovered != lastHovered)
+            int signature = ComputeStatusSignature(hovered);
+            if (hovered != lastHovered || signature != lastStatusSignature)
             {
                 PopulateSlots(hovered);
                 lastHovered = hovered;
+                lastStatusSignature = signature;
             }
         }
         else
         {
             ClearAllSlots();
             lastHovered = null;
+            lastStatusSignature = 0;
         }
+    }
+
+    private static int ComputeStatusSignature(CombatantView combatant)
+    {
+        int signature = 0;
+        foreach (var kvp in combatant.GetStatusEffects())
+        {
+            unchecked
+            {
+                signature += ((int)kvp.Key + 1) * 31 + kvp.Value * 131;
+            }
+        }
+        return signature;
     }
 
     private void PopulateSlots(CombatantView combatant)
