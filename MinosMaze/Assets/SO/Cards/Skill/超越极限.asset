@@ -117,7 +117,7 @@ MonoBehaviour:
     - rid: 1965764436403159050
       type: {class: DrawCardEffects, ns: , asm: Assembly-CSharp}
       data:
-        drawAmount: 1
+        drawAmount: 2
     - rid: 1965764436403159051
       type: {class: HeroTM, ns: , asm: Assembly-CSharp}
       data: 
@@ -139,7 +139,7 @@ MonoBehaviour:
     - rid: 1965764436403159056
       type: {class: DrawCardEffects, ns: , asm: Assembly-CSharp}
       data:
-        drawAmount: 1
+        drawAmount: 2
     - rid: 1965764436403159057
       type: {class: HeroTM, ns: , asm: Assembly-CSharp}
       data: 
@@ -161,7 +161,7 @@ MonoBehaviour:
     - rid: 1965764436403159062
       type: {class: DrawCardEffects, ns: , asm: Assembly-CSharp}
       data:
-        drawAmount: 1
+        drawAmount: 2
     - rid: 1965764436403159063
       type: {class: HeroTM, ns: , asm: Assembly-CSharp}
       data: 
