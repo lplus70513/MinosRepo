@@ -1321,6 +1321,7 @@ MonoBehaviour:
   enemyBarPrefab: {fileID: 7326061374848083231, guid: 74d1ee517ae9fc543a95445f945eeb1a, type: 3}
   enemyBarContainer: {fileID: 710764740}
   enemyBarScale: {x: 1, y: 1, z: 1}
+  hoverScreenDistance: 120
 --- !u!1 &1054164265
 GameObject:
   m_ObjectHideFlags: 0
