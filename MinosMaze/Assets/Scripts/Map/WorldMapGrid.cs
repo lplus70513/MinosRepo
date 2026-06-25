@@ -347,6 +347,12 @@ public class WorldMapGrid : HexGrid
         {
             Vector2Int spawnCoord = new(posX, posZ);
             WorldMapPlayerSystem.Instance.Setup(spawnCoord, maxHp, curHp);
+
+            var camCtrl = FindObjectOfType<CameraController>();
+            if (camCtrl != null && WorldMapPlayerSystem.Instance.PlayerView != null)
+            {
+                camCtrl.CenterOn(WorldMapPlayerSystem.Instance.PlayerView.transform.position);
+            }
         }
 
         if (healthBarPanel != null)

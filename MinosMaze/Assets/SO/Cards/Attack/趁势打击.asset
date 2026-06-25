@@ -38,7 +38,7 @@ MonoBehaviour:
     <Description>k__BackingField: "\u5BF9\u654C\u4EBA\u9020\u62107\u70B9\u4F24\u5BB3,
       \u82E5\u654C\u4EBA\u62E5\u6709\u865A\u5F31\u5219\u6B64\u724C\u8017\u80FD\u53D8\u4E3A0"
     <Cost>k__BackingField: 1
-    <HasAttackRange>k__BackingField: 0
+    <HasAttackRange>k__BackingField: 1
     <AttackRange>k__BackingField: 1
     <ManualTargetEffect>k__BackingField:
       rid: 1965764450232303644
@@ -59,7 +59,7 @@ MonoBehaviour:
     <Description>k__BackingField: "\u5BF9\u654C\u4EBA\u9020\u62109\u70B9\u4F24\u5BB3,
       \u82E5\u654C\u4EBA\u62E5\u6709\u865A\u5F31\u5219\u6B64\u724C\u8017\u80FD\u53D8\u4E3A0"
     <Cost>k__BackingField: 1
-    <HasAttackRange>k__BackingField: 0
+    <HasAttackRange>k__BackingField: 1
     <AttackRange>k__BackingField: 1
     <ManualTargetEffect>k__BackingField:
       rid: 1965764450232303645
