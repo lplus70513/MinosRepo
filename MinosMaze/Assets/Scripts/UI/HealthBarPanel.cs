@@ -222,6 +222,7 @@ public class HealthBarPanel : MonoBehaviour
         foreach (var combatant in barMap.Keys)
         {
             if (combatant == null) continue;
+            if (combatant is HeroView) continue;
             Vector3 screenPos = camera3D.WorldToScreenPoint(combatant.transform.position);
             if (screenPos.z < 0f) continue;
             float dist = Vector2.Distance(mouseScreen, new Vector2(screenPos.x, screenPos.y));
